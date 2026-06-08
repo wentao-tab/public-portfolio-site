@@ -21,7 +21,7 @@ export const books2026: BookItem[] = [
 	{ no: 12, title: '金刚经说什么', note: '五刷不厌，将深奥佛理化为生活通透的智慧。', mark: '5刷', tone: 'gold' },
 	{ no: 13, title: '病隙碎笔', note: '史铁生在病痛间隙写下对神性、苦难与爱的终极追问。', tone: 'paper' },
 	{ no: 14, title: '英国病人', note: '沙漠、焚身、身份与背叛，诗意长句里烧灼着的爱。', tone: 'blue' },
-	{ no: 15, title: '白露春分', note: '乡土史诗里的命运轮回与顽固生命力。', tone: 'sage' },
+	{ no: 15, title: '白露春分', note: '节气更迭间映照岁月流转与人生聚散，平淡中藏着不动声色的深情与苍凉。', tone: 'sage' },
 	{ no: 16, title: '布鲁克林', note: '漂泊少女在旧世界与新大陆间的徘徊，温柔而克制。', tone: 'rose' },
 	{ no: 17, title: '倦怠社会', note: '对当代成就社会的锋利诊断：我们不是被压迫，而是过度燃烧。', tone: 'ink' },
 	{ no: 18, title: '我与地坛', note: '两遍仍不够，在地坛的寂静中听懂母亲与命运的和解。', mark: '2刷', tone: 'earth' },
