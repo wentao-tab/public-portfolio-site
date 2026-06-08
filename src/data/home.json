@@ -112,15 +112,15 @@
 	},
 	{
 		"id": "12",
-		"cover": "/assets/cover/cover-ricoui-portfolio.jpg",
+		"cover": "/assets/cover/cover-wenxi-ai-clone.jpg",
 		"useVideo": false,
-		"title": "开源个人网站模板",
-		"desc": "Ricoui Portfolio Template",
-		"url": "https://ricoui-portfolio.pages.dev/",
-		"detail": "https://ricoui-portfolio.pages.dev/",
+		"title": "文汐 AI 提示词广场",
+		"desc": "Wenxi AI Clone",
+		"url": "https://wentao-tab.github.io/Wenxi-ai-clone/",
+		"detail": "https://wentao-tab.github.io/Wenxi-ai-clone/",
 		"category": "web,recommend",
 		"tag": "Web",
-		"date": "2026-06-07",
+		"date": "2026-06-08",
 		"mark": true,
 		"opensource": false
 	}
