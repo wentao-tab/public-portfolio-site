@@ -28,7 +28,7 @@ export const nav: Nav = {
 };
 
 // Footer
-export const footerText = `© ${new Date().getFullYear()} Chenxi. All Rights Reserved.`
+export const footerText = `© ${new Date().getFullYear()} Liang Wentao. All Rights Reserved.`
 
 //SEO TDK
 interface SeoTdk {
@@ -50,9 +50,9 @@ export const blogTdk: SeoTdk = {
 }
 // SEO TDK 关于
 export const aboutTdk: SeoTdk = {
-	title: '设计师陈熙的个人介绍',
-	description: '设计师陈熙的个人介绍',
-	keywords: '陈熙,博客'
+	title: '设计师梁文韬的个人介绍',
+	description: '设计师梁文韬的个人介绍',
+	keywords: '梁文韬,产品,设计,读书,博客'
 }
 // SEO TDK  项目
 export const projectTdk: SeoTdk = {
@@ -144,7 +144,7 @@ interface PageDescription {
 export const pageDescription: PageDescription = {
 	index: '我是陈熙，一个拥有超过5年经验的创意设计师和开发人员，在这里可以了解更多关于我的信息，或者阅读我的一些文章和笔记。',
 	project: "这是我的部分项目展示",
-	about: '专注于产品、品牌、UI设计和视觉开发',
+	about: '专注产品、设计，和读书的一些东西',
 	blog: '这是我的个人笔记和想法， 希望你能够获得帮助！',
 }
 
@@ -163,5 +163,4 @@ export const filterItems: FilterItem[] = [
 	{ content: "摄影", dataGroup: "photography" },
 	{ content: "品牌", dataGroup: "brand" },
 ];
-
 
