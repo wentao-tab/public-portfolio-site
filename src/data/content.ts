@@ -23,7 +23,8 @@ export const nav: Nav = {
         { label: '首页', href: withBase('/'), target: '_self' },// target 为 '_blank' 打开新链接
         { label: '项目', href: withBase('/project'), target: '_self' },
         { label: '关于', href: withBase('/about'), target: '_self' },
-        { label: '博客', href: withBase('/blog'), target: '_self' },
+        { label: '知识库', href: 'https://www.yuque.com/yuqueyonghuu7sppu/uoarmx', target: '_blank' },
+        { label: '笔记', href: 'https://flomoapp.com/mine/', target: '_blank' },
     ],
 };
 
@@ -38,15 +39,15 @@ interface SeoTdk {
 }
 // SEO TDK 首页
 export const homeTdk: SeoTdk = {
-	title: '这里是设计师陈熙的个人网站',
-	description: '这是我的设计师陈熙部分项目展示',
-	keywords: '陈熙,博客'
+	title: '梁文韬的作品网站',
+	description: '梁文韬的产品设计、AI 实验、体验设计知识库与阅读记录',
+	keywords: '梁文韬,产品设计,体验设计,AI,读书,作品集'
 }
 // SEO TDK 博客
 export const blogTdk: SeoTdk = {
-	title: '陈熙的博客',
-	description: '记录我的一些想法和笔记',
-	keywords: '陈熙,博客,blog'
+	title: '梁文韬的笔记',
+	description: '记录产品、设计、阅读和日常观察',
+	keywords: '梁文韬,产品,设计,读书,笔记,blog'
 }
 // SEO TDK 关于
 export const aboutTdk: SeoTdk = {
@@ -56,9 +57,9 @@ export const aboutTdk: SeoTdk = {
 }
 // SEO TDK  项目
 export const projectTdk: SeoTdk = {
-	title: '陈熙的项目介绍',
-	description: '这是我的部分项目展示',
-	keywords: '陈熙,博客,project'
+	title: '梁文韬的项目与入口',
+	description: '梁文韬的产品设计、AI 实验、知识库与内容入口',
+	keywords: '梁文韬,产品设计,AI,知识库,project'
 }
 // SEO TDK 404
 export const notFoundTdk: SeoTdk = {
@@ -76,19 +77,28 @@ export const socialLinks = [
 	},
 	{
 	  name: 'Twitter',
-	  url: 'https://x.com/ricouii',
-		icon: `<svg class="ic-twitter icon" width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5t-115.5 248.5-184.5 210.5-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5t-114-159.5q33 5 61 5 43 0 85-11-112-23-185.5-111.5t-73.5-205.5v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5t371.5 99.5q-8-38-8-74 0-134 94.5-228.5t228.5-94.5q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" fill="#666666"></path></svg>`
+	  url: 'https://x.com/wentao72255036',
+		icon: `<svg class="ic-twitter icon ic-social" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.3 10.2 22.5 1h-2l-7.1 8.1L7.7 1H1.2l8.6 12.2L1.2 23h2l7.5-8.6 6 8.6h6.4l-8.8-12.8Zm-2.7 3.1-.9-1.2L3.8 2.5h2.9l5.6 7.8.9 1.2 7.3 10.1h-2.9l-6-8.3Z"></path></svg>`
 	},
 	{
 	  name: 'Xiaohongshu',
-	  url: 'https://www.xiaohongshu.com/user/profile/5f2b6903000000000101f51f',
+	  url: 'https://www.xiaohongshu.com/user/profile/5daec7450000000001005946',
 	  icon: `<svg t="1728957787092"  class="ic-xiaohongshu ic-social icon" viewBox="0 0 2496 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3844" width="128" height="128"><path d="M2366.874 190.874l-3.687-3.687c-33.382-31.949-69.017-21.709-94.617-5.53-22.324 14.132-35.84 38.913-35.84 65.332v73.113h76.595c67.174 0.205 103.629-80.486 57.549-129.228z" fill="" p-id="3845"></path><path d="M2197.3 441.344c0-33.587-0.206-133.734-0.82-164.25-0.82-103.014-106.496-100.556-106.496-100.556h-114.893l-0.819-58.778h-144.18v58.778h-94.617v139.264h93.184v124.723h-140.288V587.57h144.384v316.007h142.95V585.523c70.452 0 134.759-1.024 198.861 0.41 31.95 0.614 49.152 21.094 50.176 52.429 1.23 37.478 0 145.817 0 145.817l-144.384-0.41 55.501 119.809h132.71s101.991 2.662 101.991-101.581V549.888c0.205-84.378-51.814-109.158-173.26-108.544z m-125.748-0.614h-95.232l-1.024-124.724h96.46V440.73zM136.397 684.85c27.853 49.152 55.705 98.1 86.016 151.552 113.664-159.539 108.544-516.505 108.544-516.505H179.2c12.288 190.873-42.598 359.219-42.803 364.953z m297.37-567.091v667.443h-96.052l91.341 121.242h87.45s61.235 0 59.801-89.293c1.024-218.726 1.229-480.87 1.434-699.597-47.719 0-95.847 0-143.975 0.205z m739.123 381.952c29.49-59.597 59.187-118.989 92.364-186.163-62.873 3.686-115.712 6.758-174.49 10.035 25.191-66.97 64.513-135.578 99.943-206.234h-144.179c-41.984 86.221-86.22 171.418-125.542 258.663-24.986 55.091-4.71 82.125 55.91 84.173 20.48 0.819 40.96 0.204 69.222 0.204-9.83 21.504-16.384 36.045-22.937 50.586-19.251 42.189-39.731 83.968-57.14 126.976-14.13 34.816-0.409 62.464 36.25 66.56 50.586 5.53 101.786 3.891 152.576 4.096 5.735 0 13.927-6.349 16.999-12.083 18.227-33.792 35.225-68.403 54.476-106.291-13.107-1.024-20.07-2.048-27.238-2.253-68.813-1.843-68.813-2.048-37.888-64.307 3.686-7.578 7.578-15.975 11.674-23.962z" fill="" p-id="3846"></path><path d="M1536.614 768.205h149.71V906.65h-517.735c25.19-49.767 69.837-138.445 69.837-138.445h147.66V315.597h-91.955V174.08h333.62v139.264h-91.137v454.86zM680.346 318.464h142.13c-10.854 141.312 34.817 329.933 34.817 329.933s-41.37 92.774-71.475 179.814C716.8 768 679.322 586.957 680.346 318.464z m256 440.934h230.195c-25.805 50.381-46.08 91.341-68.199 131.482-4.096 7.373-16.384 14.336-24.985 14.54-67.175 1.025-134.144 0.615-211.354 0.615 29.287-57.958 53.248-105.062 74.343-146.637z" fill="" p-id="3847"></path></svg>`
 	},
-	// RSS 链接不用修改，不想用删除或者注释即可
 	{
-		name: 'RSS',
-		url: withBase('/rss.xml'),
-		icon: `<svg t="1730123988138" class="icon ic-rss ic-social " viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11766" width="256" height="256"><path d="M329.143 768q0 45.714-32 77.714t-77.714 32-77.715-32-32-77.714 32-77.714 77.715-32 77.714 32 32 77.714z m292.571 70.286q1.143 16-9.714 27.428-10.286 12-26.857 12H508q-14.286 0-24.571-9.428T472 844.57q-12.571-130.857-105.429-223.714T142.857 515.43q-14.286-1.143-23.714-11.429t-9.429-24.571v-77.143q0-16.572 12-26.857 9.715-9.715 24.572-9.715h2.857q91.428 7.429 174.857 46T472 515.43q65.143 64.571 103.714 148t46 174.857z m292.572 1.143q1.143 15.428-10.286 26.857-10.286 11.428-26.286 11.428H796q-14.857 0-25.429-10T759.43 843.43Q752.57 720.57 701.714 610T569.43 418t-192-132.286T144 227.43q-14.286-0.572-24.286-11.143t-10-24.857v-81.715q0-16 11.429-26.285 10.286-10.286 25.143-10.286H148q149.714 7.428 286.571 68.571t243.143 168q106.857 106.286 168 243.143t68.572 286.572z" p-id="11767"></path></svg>`
+		name: 'Yuque',
+		url: 'https://www.yuque.com/yuqueyonghuu7sppu/uoarmx',
+		icon: `<svg class="ic-yuque icon ic-social" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 3h16v18H4V3Zm3 4v2h10V7H7Zm0 4v2h10v-2H7Zm0 4v2h6v-2H7Z"></path></svg>`
+	},
+	{
+		name: 'Douyin',
+		url: 'https://www.douyin.com/user/self?showTab=favorite_collection',
+		icon: `<svg class="ic-douyin icon ic-social" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.3 2c.5 2.8 2.1 4.5 4.7 4.8v3.4c-1.7 0-3.2-.5-4.6-1.5v6.4c0 4-2.7 6.9-6.5 6.9A6.4 6.4 0 0 1 2.5 15.6c0-3.8 3.1-6.7 7-6.4v3.5c-1.8-.3-3.3 1-3.3 2.9 0 1.7 1.2 2.9 2.8 2.9 1.7 0 2.9-1.2 2.9-3.2V2h3.4Z"></path></svg>`
+	},
+	{
+		name: 'Flomo',
+		url: 'https://flomoapp.com/mine/',
+		icon: `<svg class="ic-flomo icon ic-social" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4.8C4 3.3 5.3 2 6.8 2h10.4C18.7 2 20 3.3 20 4.8v14.4c0 1.5-1.3 2.8-2.8 2.8H6.8C5.3 22 4 20.7 4 19.2V4.8Zm4 2.7v2h8v-2H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"></path></svg>`
 	},
 	// {
 	//   name: 'Behance',
@@ -142,10 +152,10 @@ interface PageDescription {
 	about?: string
 }
 export const pageDescription: PageDescription = {
-	index: '我是陈熙，一个拥有超过5年经验的创意设计师和开发人员，在这里可以了解更多关于我的信息，或者阅读我的一些文章和笔记。',
-	project: "这是我的部分项目展示",
+	index: '我是梁文韬，关注产品、体验设计、AI 工具和阅读记录。这里收集我的项目、知识库、内容账号和日常观察。',
+	project: "这里整理我的项目、知识库、内容账号和持续更新的个人入口。",
 	about: '专注产品、设计，和读书的一些东西',
-	blog: '这是我的个人笔记和想法， 希望你能够获得帮助！',
+	blog: '记录产品、设计、阅读和日常观察。',
 }
 
 
@@ -157,10 +167,9 @@ export interface FilterItem {
 }
 export const filterItems: FilterItem[] = [
 	{ content: "💎推荐", dataGroup: "recommend" },
-	{ content: "网页", dataGroup: "web" },
-	{ content: "UI", dataGroup: "ui" },
-	{ content: "3D", dataGroup: "3d" },
-	{ content: "摄影", dataGroup: "photography" },
-	{ content: "品牌", dataGroup: "brand" },
+	{ content: "项目", dataGroup: "project" },
+	{ content: "知识库", dataGroup: "knowledge" },
+	{ content: "阅读", dataGroup: "reading" },
+	{ content: "社交", dataGroup: "social" },
+	{ content: "生活", dataGroup: "life" },
 ];
-

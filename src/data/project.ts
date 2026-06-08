@@ -1,42 +1,46 @@
 export interface ProjectItem {
-	id?: number; // 唯一标识符
+	id?: number;
 	title: string
 	title_en?: string
 	description?: string
-	date?: string		//发布日期
-	detail?: string //详细页路径
-  	url?: string  //上线链接
+	date?: string
+	detail?: string
+	url?: string
 	tags?: string[]
 	cover?: string[]
 }
+
 export const projectItems: ProjectItem[] = [
 	{
-		title: "[示例] 3D 图标资产 - 情人节",
-    title_en: "Valentine's Day 3D Assets",
-		date: "2023-10-15",
-    detail: "/detail/free-3d-valentines-assets/",
-    url: "https://web.606design.art/landings/004-free-3d-valentines-assets/",
-    cover: ['free-3d-valentines-assets/01.jpg','free-3d-valentines-assets/02.jpg','free-3d-valentines-assets/03.jpg','free-3d-valentines-assets/04.jpg',],
-		tags: ['3D', 'WEB', 'ICON']
+		title: "文汐 AI 提示词广场",
+		title_en: "Wenxi AI Prompt Gallery",
+		date: "2026-06-08",
+		detail: "https://wentao-tab.github.io/Wenxi-ai-clone/",
+		url: "https://wentao-tab.github.io/Wenxi-ai-clone/",
+		tags: ["AI", "PRODUCT", "WEB"]
 	},
-  {
-		title: "[示例] 待办清单网页版",
-    title_en: "Online Todo List",
-		date: "2023-10-15",
-    detail: "/detail/todo",
-    url: "https://www.ricocc.com/todo/",
-    cover: ['cover/cover-todo.jpg'],
-		tags: ['WEB', 'UI', 'TODO']
+	{
+		title: "体验设计知识库",
+		title_en: "Experience Design Knowledge Base",
+		date: "2026-06-08",
+		detail: "https://www.yuque.com/yuqueyonghuu7sppu/uoarmx",
+		url: "https://www.yuque.com/yuqueyonghuu7sppu/uoarmx",
+		tags: ["UX", "DESIGN", "KNOWLEDGE"]
 	},
-  {
-		title: "[示例] Tink 旅行生活日记",
-    title_en: "AI Landing Page",
-		date: "2023-10-15",
-		url: "https://travellife.zeabur.app/",
-		detail: "/detail/tinklife",
-    cover: ['travel/01.jpg','travel/02.jpg','travel/03.jpg','travel/04.jpg'],
-		tags: ['WEB', 'MOBILE']
+	{
+		title: "读书笔记与碎片记录",
+		title_en: "Reading Notes and Daily Fragments",
+		date: "2026-06-08",
+		detail: "https://flomoapp.com/mine/",
+		url: "https://flomoapp.com/mine/",
+		tags: ["READING", "NOTES", "THINKING"]
 	},
-
+	{
+		title: "只关于网球",
+		title_en: "Tennis Notes on Xiaohongshu",
+		date: "2026-06-08",
+		detail: "https://www.xiaohongshu.com/user/profile/5daec7450000000001005946",
+		url: "https://www.xiaohongshu.com/user/profile/5daec7450000000001005946",
+		tags: ["LIFE", "TENNIS", "SOCIAL"]
+	}
 ];
-

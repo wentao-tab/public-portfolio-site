@@ -1,0 +1,11 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#FFF5F7"/>
+  <rect x="92" y="92" width="1016" height="616" rx="36" fill="#FFFFFF" stroke="#1F1F1F" stroke-width="3"/>
+  <rect x="150" y="168" width="190" height="56" rx="28" fill="#FF2442"/>
+  <text x="190" y="205" fill="#FFFFFF" font-family="Arial, 'PingFang SC', sans-serif" font-size="24" font-weight="800">小红书</text>
+  <text x="150" y="330" fill="#111111" font-family="Arial, 'PingFang SC', sans-serif" font-size="74" font-weight="800">只关于网球</text>
+  <text x="154" y="398" fill="#646464" font-family="Arial, 'PingFang SC', sans-serif" font-size="28">网球内容、收藏与生活兴趣</text>
+  <circle cx="850" cy="390" r="120" fill="#D8F3DC" stroke="#111111" stroke-width="3"/>
+  <path d="M766 474c80-70 154-151 168-206" stroke="#111111" stroke-width="14" stroke-linecap="round"/>
+  <path d="M765 305c84 62 145 135 178 202" stroke="#111111" stroke-width="14" stroke-linecap="round"/>
+</svg>
