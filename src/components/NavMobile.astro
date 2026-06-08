@@ -1,6 +1,9 @@
 ---
 import {nav} from '../data/content';
 import GitHubStars from './GitHubStars.astro';
+import { withBase } from '../utils/paths';
+
+const currentPath = Astro.url.pathname;
 ---
 
 <div class="mobile-header">
@@ -16,12 +19,13 @@ import GitHubStars from './GitHubStars.astro';
 						{nav.items?.map(item => (
 							<li class="m-menu-li">
 								<a
-									aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+									aria-current={currentPath === item.href ? 'page' : undefined}
 									class:list={[
 										'm-menu__link l',
 										{
-											active: Astro.url.pathname === item.href ||
-												(item.href !== '/' && Astro.url.pathname.startsWith(item.href)),
+											active: item.href === withBase('/')
+												? currentPath === item.href
+												: currentPath.startsWith(item.href),
 										},
 									]}
 									href={item.href}

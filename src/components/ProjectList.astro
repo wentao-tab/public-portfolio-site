@@ -1,6 +1,7 @@
 ---
 import { projectItems } from "../data/project";
 import ProjectImage from "../components/ProjectImage.astro";
+import { withBase } from "../utils/paths";
 const reversedItems = projectItems.slice().reverse();
 const images = import.meta.glob<{ default: ImageMetadata }>(
 	"/src/assets/projects/**/*.{jpeg,jpg,png,gif}",
@@ -8,7 +9,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 ---
 {
 	reversedItems.map((item) => (
-		<a href={item.detail} class="project-item border-bottom">
+		<a href={withBase(item.detail || '')} class="project-item border-bottom">
 			<div class="project-header">
 				<div class="project-title">
 					<h3>

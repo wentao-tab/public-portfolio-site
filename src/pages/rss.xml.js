@@ -13,7 +13,7 @@ export async function GET(context) {
       description: post.data.description,
       // ...post.data,
       link: `/blog/${post.id}/`,
-      stylesheet: '/rss/pretty-feed-v3.xsl',
+      stylesheet: `${import.meta.env.BASE_URL}rss/pretty-feed-v3.xsl`,
     })),
   });
 }

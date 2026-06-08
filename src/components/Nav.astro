@@ -6,13 +6,16 @@ import {nav} from '../data/content';
 import EffectSwitch from "../effects/EffectSwitch.astro";
 import NavMobile from "../components/NavMobile.astro";
 import GitHubStars from './GitHubStars.astro';
+import { withBase } from '../utils/paths';
+
+const currentPath = Astro.url.pathname;
 ---
 
 <nav>
 	<div class="container nav-wrapper">
 		<div class="menu-header">
 			<div class="site-title">
-				<a href="/" class="author">
+				<a href={withBase('/')} class="author">
 					<figure class="avatar">
 						<img class="avatar__img"
 							src={nav.avatar} alt=""
@@ -28,12 +31,13 @@ import GitHubStars from './GitHubStars.astro';
 					{nav.items?.map(item => (
 						<li>
 							<a
-							 	aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+							 	aria-current={currentPath === item.href ? 'page' : undefined}
 								 class:list={[
 									'link',
 									{
-										active: Astro.url.pathname === item.href ||
-											(item.href !== '/' && Astro.url.pathname.startsWith(item.href)),
+										active: item.href === withBase('/')
+											? currentPath === item.href
+											: currentPath.startsWith(item.href),
 									},
 								]}
 								href={item.href}

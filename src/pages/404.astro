@@ -2,6 +2,7 @@
 import BlogPostLayout from "../layouts/BlogPostLayout.astro";
 import CallToAction from "../components/CallToAction.astro";
 import { notFoundTdk } from  "../data/content"
+import { withBase } from "../utils/paths";
 ---
 <BlogPostLayout
 	title={notFoundTdk.title  || ''}
@@ -13,14 +14,14 @@ import { notFoundTdk } from  "../data/content"
 			<section>
 				<div class="content">
 					<p class="man">
-						<img src="/assets/404-man.svg" alt="">
+						<img src={withBase('/assets/404-man.svg')} alt="">
 					</p>
 					<p class="text">
 						404 Not Found<br/>
 						这里什么都没有。
 					</p>
 					<div class="btn">
-						<CallToAction href="/" target="_self">
+						<CallToAction href={withBase('/')} target="_self">
 								返回主页
 						</CallToAction>
 					</div>

@@ -2,6 +2,7 @@
 import Analytics from '../components/functions/Analytics.astro';
 import '../styles/layout.scss';
 import '../styles/global.scss';
+import { withBase } from '../utils/paths';
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
@@ -13,14 +14,14 @@ const { title, description,keywords } = Astro.props;
 <meta charset="UTF-8" />
 <meta name="description" property="og:description" content={description} />
 <meta name="keywords" content={keywords} />
-<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="sitemap" href={withBase('/sitemap-index.xml')} />
 <link rel="alternate" type="application/rss+xml" title={title} href={new URL("rss.xml", Astro.site)} />
 
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="generator" content={Astro.generator} />
 <title>{title}</title>
-<link rel="icon" type="image/svg+xml" href="/favicon.png" />
+<link rel="icon" type="image/svg+xml" href={withBase('/favicon.png')} />
 <script is:inline>
 	const getThemePreference = () => {
 		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {

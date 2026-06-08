@@ -6,15 +6,16 @@ import Filter from '../components/Filter.astro';
 // 使用 JSON 数据
 // import cardData from '../components/card.json';
 import cardData from '../data/home.json';
+import { withBase } from '../utils/paths';
 const cards = [];
 for (const [index,item] of cardData.entries()) {
   const card = {
     id: item.id || index,
     title: item.title,
-    cover: item.cover || "",
+    cover: withBase(item.cover || ""),
     description: item.desc || "",
     url: item.url || "",
-    detail: item.detail || "",
+    detail: withBase(item.detail || ""),
     category: item.category || "other",
     tag: item.tag || "",
     date: item.date || "",
@@ -96,8 +97,8 @@ const count = cards.length;
   });
 </script>
 
-<script is:inline type="module">
-import '/plugins/shuffle.js';
+<script is:inline type="module" define:vars={{ shuffleUrl: withBase('/plugins/shuffle.js') }}>
+await import(shuffleUrl);
 var Shuffle = window.Shuffle;
 class Demo {
   constructor(element) {
@@ -390,5 +391,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 }
 </style>
-
 

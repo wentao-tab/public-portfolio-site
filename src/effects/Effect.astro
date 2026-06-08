@@ -1,34 +1,38 @@
+---
+import { withBase } from '../utils/paths';
+---
+
 <div class="train-1">
 	<div class="effects train-icons">
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/bezier.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/bezier.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/game.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/game.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/hourglass.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/hourglass.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/image.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/image.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/rocket.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/rocket.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/compass.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/compass.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/battery.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/battery.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/lamp.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/lamp.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/coffee-cup.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/coffee-cup.png')})`}></div>
 		</div>
 		<div class="effects__img">
-			<div class="effects__img-inner" style="background-image:url(/assets/effects/3dicons/weather.png)"></div>
+			<div class="effects__img-inner" style={`background-image:url(${withBase('/assets/effects/3dicons/weather.png')})`}></div>
 		</div>
 	</div>
 </div>
@@ -39,11 +43,19 @@
 </div>
  -->
 
-<script is:inline src="/plugins/effects/imagesloaded.pkgd.min.js"></script>
-<script is:inline src="/plugins/effects/gsap.min.js"></script>
-<script is:inline type="module">
-	import { preloadImages } from '/plugins/effects/utils.js';
-	import { ImageTrail } from '/plugins/effects/imageTrail.js';
+<script is:inline src={withBase('/plugins/effects/imagesloaded.pkgd.min.js')}></script>
+<script is:inline src={withBase('/plugins/effects/gsap.min.js')}></script>
+<script is:inline type="module" define:vars={{
+	utilsUrl: withBase('/plugins/effects/utils.js'),
+	imageTrailUrl: withBase('/plugins/effects/imageTrail.js'),
+	iconsPath: withBase('/assets/effects/3dicons/'),
+	logosPath: withBase('/assets/effects/logo/'),
+	need3dPath: withBase('/assets/effects/need3d/'),
+}}>
+	const [{ preloadImages }, { ImageTrail }] = await Promise.all([
+		import(utilsUrl),
+		import(imageTrailUrl),
+	]);
 
 	// 图片数组定义
 	const images = [
@@ -139,16 +151,16 @@
 		updateEffectsClass(state);
 		switch (state) {
 			case 0:
-				changeImages(images, '/assets/effects/3dicons/');
+				changeImages(images, iconsPath);
 				break;
 			case 1:
-				changeImages(logoImages, '/assets/effects/logo/');
+				changeImages(logoImages, logosPath);
 				break;
 			case 2:
-				changeImages(need3d, '/assets/effects/need3d/');
+				changeImages(need3d, need3dPath);
 				break;
 			default:
-				changeImages(images, '/assets/effects/3dicons/');
+				changeImages(images, iconsPath);
 		}
 	};
 
