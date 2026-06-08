@@ -38,7 +38,7 @@ jobs:
         run: pnpm build
         env:
           PUBLIC_SITE_URL: https://wentao-tab.github.io/public-portfolio-site/
-          PUBLIC_SITE_NAME: 梁文韬的作品网站
+          PUBLIC_SITE_NAME: 梁文韬的设计与读书思考
           PUBLIC_BASE_PATH: /public-portfolio-site/
 
       - name: Setup Pages

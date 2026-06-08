@@ -39,9 +39,9 @@ interface SeoTdk {
 }
 // SEO TDK 首页
 export const homeTdk: SeoTdk = {
-	title: '梁文韬的作品网站',
-	description: '梁文韬的产品设计、AI 实验、体验设计知识库与阅读记录',
-	keywords: '梁文韬,产品设计,体验设计,AI,读书,作品集'
+	title: '梁文韬的设计与读书思考',
+	description: '梁文韬关于产品设计、体验观察、阅读思考和 AI 工具的个人入口',
+	keywords: '梁文韬,产品设计,体验设计,读书,思考,AI'
 }
 // SEO TDK 博客
 export const blogTdk: SeoTdk = {
@@ -152,7 +152,7 @@ interface PageDescription {
 	about?: string
 }
 export const pageDescription: PageDescription = {
-	index: '我是梁文韬，关注产品、体验设计、AI 工具和阅读记录。这里收集我的项目、知识库、内容账号和日常观察。',
+	index: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。这里先放几个常用入口，书单和其他内容以后慢慢补。',
 	project: "这里整理我的项目、知识库、内容账号和持续更新的个人入口。",
 	about: '专注产品、设计，和读书的一些东西',
 	blog: '记录产品、设计、阅读和日常观察。',
