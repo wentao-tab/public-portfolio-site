@@ -23,6 +23,7 @@ export const nav: Nav = {
         { label: '首页', href: withBase('/'), target: '_self' },// target 为 '_blank' 打开新链接
         { label: '项目', href: withBase('/project'), target: '_self' },
         { label: '关于', href: withBase('/about'), target: '_self' },
+        { label: '书单', href: withBase('/books'), target: '_self' },
         { label: '知识库', href: 'https://www.yuque.com/yuqueyonghuu7sppu/uoarmx', target: '_blank' },
         { label: '笔记', href: 'https://flomoapp.com/mine/', target: '_blank' },
     ],
@@ -60,6 +61,12 @@ export const projectTdk: SeoTdk = {
 	title: '梁文韬的项目与入口',
 	description: '梁文韬的产品设计、AI 实验、知识库与内容入口',
 	keywords: '梁文韬,产品设计,AI,知识库,project'
+}
+// SEO TDK 书单
+export const booksTdk: SeoTdk = {
+	title: '梁文韬的 2026 年书单',
+	description: '梁文韬的 2026 年阅读时间轴、读书记录和重读标记',
+	keywords: '梁文韬,书单,读书,阅读,2026'
 }
 // SEO TDK 404
 export const notFoundTdk: SeoTdk = {
@@ -135,12 +142,14 @@ interface PageTag {
 	about: string
 	blog: string
 	project: string
+	books: string
 }
 export const pageTag: PageTag = {
 	index: 'PORTFOLIO',
 	about: 'ABOUT',
 	blog: 'BLOG',
-	project: 'PROJECT'
+	project: 'PROJECT',
+	books: 'READING'
 }
 
 
@@ -150,12 +159,14 @@ interface PageDescription {
 	project?: string
 	blog?: string
 	about?: string
+	books?: string
 }
 export const pageDescription: PageDescription = {
 	index: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。这里先放几个常用入口，书单和其他内容以后慢慢补。',
 	project: "这里整理我的项目、知识库、内容账号和持续更新的个人入口。",
 	about: '专注产品、设计，和读书的一些东西',
 	blog: '记录产品、设计、阅读和日常观察。',
+	books: '2026 年阅读时间轴，慢慢补想法和重读标记。',
 }
 
 

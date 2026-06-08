@@ -1,0 +1,386 @@
+---
+import BlogPostLayout from "../layouts/BlogPostLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { books2026, bookStats } from "../data/books";
+import { booksTdk, pageDescription, pageTag } from "../data/content";
+---
+
+<BlogPostLayout
+	title={booksTdk.title || ''}
+	description={booksTdk.description || ''}
+	keywords={booksTdk.keywords || ''}
+>
+	<div class="post">
+		<main class="post-wrapper books-page">
+			<SectionHeader
+				tag={pageTag.books}
+				description={pageDescription.books}
+			>
+				我的书单
+			</SectionHeader>
+
+			<section class="reading-board border-top">
+				<div class="reading-summary" aria-label="2026 年阅读概览">
+					<div>
+						<span class="summary-label">YEAR</span>
+						<strong>{bookStats.year}</strong>
+					</div>
+					<div>
+						<span class="summary-label">BOOKS</span>
+						<strong>{bookStats.total}</strong>
+					</div>
+					<div>
+						<span class="summary-label">REREAD</span>
+						<strong>{bookStats.reread}</strong>
+					</div>
+					<div>
+						<span class="summary-label">NOTES</span>
+						<strong>{bookStats.notes}</strong>
+					</div>
+				</div>
+
+				<ol class="book-timeline">
+					{books2026.map((book) => (
+						<li class="timeline-item">
+							<div class="timeline-marker">
+								<span>{String(book.no).padStart(2, '0')}</span>
+							</div>
+							<article class="book-entry">
+								<div class:list={['book-cover', `tone-${book.tone}`]} aria-hidden="true">
+									<div class="cover-topline">2026 READING</div>
+									<div class="cover-title">{book.title}</div>
+									<div class="cover-footer">
+										<span>LW</span>
+										<span>{String(book.no).padStart(2, '0')}</span>
+									</div>
+								</div>
+								<div class="book-copy">
+									<div class="book-meta">
+										<span>#{String(book.no).padStart(2, '0')}</span>
+										{book.mark && <em>{book.mark}</em>}
+									</div>
+									<h2>{book.title}</h2>
+									<p>{book.note || '待读完后补一条短想法。'}</p>
+								</div>
+							</article>
+						</li>
+					))}
+				</ol>
+			</section>
+		</main>
+	</div>
+</BlogPostLayout>
+
+<style lang="scss">
+	.books-page {
+		display: flex;
+		flex-direction: column;
+		margin: 0 auto;
+	}
+
+	.reading-board {
+		padding-top: 32px;
+	}
+
+	.reading-summary {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1px;
+		margin: 0 0 44px;
+		border: 1px solid var(--border);
+		background: var(--border);
+		border-radius: 8px;
+		overflow: hidden;
+
+		div {
+			min-height: 104px;
+			padding: 22px 24px;
+			background:
+				linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.5)),
+				var(--color-999);
+		}
+
+		strong {
+			display: block;
+			margin-top: 12px;
+			color: var(--color-100);
+			font-family: var(--font-type);
+			font-size: 2rem;
+			line-height: 1;
+		}
+	}
+
+	.summary-label {
+		color: var(--color-400);
+		font-family: var(--font-type);
+		font-size: 0.78rem;
+		letter-spacing: 0.04em;
+	}
+
+	.book-timeline {
+		position: relative;
+		display: grid;
+		gap: 28px;
+		margin: 0;
+		padding: 0 0 12px;
+		list-style: none;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 14px;
+			bottom: 40px;
+			left: 28px;
+			width: 1px;
+			background: linear-gradient(180deg, transparent, var(--color-600), transparent);
+		}
+	}
+
+	.timeline-item {
+		position: relative;
+		display: grid;
+		grid-template-columns: 56px 1fr;
+		gap: 24px;
+		align-items: start;
+		margin: 0;
+	}
+
+	.timeline-marker {
+		position: sticky;
+		top: 88px;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		width: 56px;
+		height: 56px;
+		border: 1px solid var(--color-700);
+		border-radius: 50%;
+		background: var(--color-999);
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+
+		span {
+			color: var(--color-100);
+			font-family: var(--font-type);
+			font-size: 0.9rem;
+			line-height: 1;
+		}
+	}
+
+	.book-entry {
+		display: grid;
+		grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+		gap: 28px;
+		align-items: stretch;
+		padding: 24px;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.48)),
+			var(--color-999);
+		box-shadow: 0 18px 52px rgba(0, 0, 0, 0.05);
+	}
+
+	.book-cover {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 308px;
+		aspect-ratio: 4 / 5.4;
+		padding: 24px 22px;
+		overflow: hidden;
+		border: 1px solid rgba(0, 0, 0, 0.12);
+		border-radius: 6px;
+		color: #171717;
+		box-shadow:
+			10px 12px 0 rgba(0, 0, 0, 0.05),
+			0 18px 32px rgba(0, 0, 0, 0.12);
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 16px;
+			border: 1px solid rgba(0, 0, 0, 0.18);
+			border-radius: 4px;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			right: -52px;
+			bottom: -58px;
+			width: 160px;
+			height: 160px;
+			border: 26px solid rgba(255, 255, 255, 0.62);
+			border-radius: 50%;
+		}
+	}
+
+	.cover-topline,
+	.cover-footer {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		justify-content: space-between;
+		color: rgba(0, 0, 0, 0.56);
+		font-family: var(--font-type);
+		font-size: 0.75rem;
+		line-height: 1;
+	}
+
+	.cover-title {
+		position: relative;
+		z-index: 1;
+		max-width: 8em;
+		color: rgba(0, 0, 0, 0.86);
+		font-family: 'Huiwen-mincho', var(--font-body);
+		font-size: clamp(2rem, 4.8vw, 3.25rem);
+		font-weight: 400;
+		line-height: 1.12;
+		overflow-wrap: anywhere;
+	}
+
+	.book-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		h2 {
+			margin: 12px 0 16px;
+			color: var(--color-100);
+			font-size: clamp(1.6rem, 3vw, 2.4rem);
+			line-height: 1.22;
+		}
+
+		p {
+			max-width: 36em;
+			margin: 0;
+			color: var(--color-300);
+			font-size: 1rem;
+			line-height: 1.75;
+		}
+	}
+
+	.book-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: center;
+		color: var(--color-400);
+		font-family: var(--font-type);
+		font-size: 0.8rem;
+
+		em {
+			display: inline-flex;
+			align-items: center;
+			min-height: 28px;
+			padding: 0 12px;
+			border-radius: 999px;
+			background: var(--color-yellow);
+			color: #151515;
+			font-family: var(--font-body);
+			font-size: 0.82rem;
+			font-style: normal;
+			font-weight: 700;
+		}
+	}
+
+	.tone-sage {
+		background: linear-gradient(135deg, #dfead0 0%, #f4f9ec 58%, #b6d6bd 100%);
+	}
+
+	.tone-earth {
+		background: linear-gradient(135deg, #d8c39d 0%, #fbf0d1 54%, #a98a62 100%);
+	}
+
+	.tone-ink {
+		background: linear-gradient(135deg, #17191f 0%, #424a53 100%);
+		color: #f8f3e7;
+
+		.cover-title,
+		.cover-topline,
+		.cover-footer {
+			color: rgba(255, 255, 255, 0.86);
+		}
+	}
+
+	.tone-gold {
+		background: linear-gradient(135deg, #fae5a7 0%, #fff8df 48%, #d4a942 100%);
+	}
+
+	.tone-rose {
+		background: linear-gradient(135deg, #f6d6d4 0%, #fff4f2 48%, #c67d8c 100%);
+	}
+
+	.tone-stone {
+		background: linear-gradient(135deg, #d5d9d2 0%, #f7f7f2 50%, #88928b 100%);
+	}
+
+	.tone-sun {
+		background: linear-gradient(135deg, #ffd66b 0%, #fff6cf 46%, #f07644 100%);
+	}
+
+	.tone-paper {
+		background: linear-gradient(135deg, #f7f2e8 0%, #ffffff 52%, #e1d5c2 100%);
+	}
+
+	.tone-wine {
+		background: linear-gradient(135deg, #5d1f2a 0%, #b36675 48%, #f5dfd9 100%);
+
+		.cover-title,
+		.cover-topline,
+		.cover-footer {
+			color: rgba(255, 255, 255, 0.88);
+		}
+	}
+
+	.tone-blue {
+		background: linear-gradient(135deg, #cddff4 0%, #f7fbff 50%, #6688b8 100%);
+	}
+
+	.tone-sea {
+		background: linear-gradient(135deg, #cce8e3 0%, #f3fffb 50%, #4f9b91 100%);
+	}
+
+	@media(max-width: 767px) {
+		.reading-summary {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			margin-bottom: 32px;
+
+			div {
+				min-height: 92px;
+				padding: 18px;
+			}
+		}
+
+		.timeline-item {
+			grid-template-columns: 40px 1fr;
+			gap: 14px;
+		}
+
+		.book-timeline::before {
+			left: 20px;
+		}
+
+		.timeline-marker {
+			top: 76px;
+			width: 40px;
+			height: 40px;
+		}
+
+		.book-entry {
+			grid-template-columns: 1fr;
+			padding: 18px;
+			gap: 22px;
+		}
+
+		.book-cover {
+			width: min(100%, 260px);
+			min-height: 320px;
+		}
+
+		.book-copy h2 {
+			font-size: 1.5rem;
+		}
+	}
+</style>
