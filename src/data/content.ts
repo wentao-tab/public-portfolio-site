@@ -95,7 +95,7 @@ export const socialLinks = [
 	{
 		name: 'Yuque',
 		url: 'https://www.yuque.com/yuqueyonghuu7sppu/uoarmx',
-		icon: `<svg class="ic-yuque icon ic-social" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 3h16v18H4V3Zm3 4v2h10V7H7Zm0 4v2h10v-2H7Zm0 4v2h6v-2H7Z"></path></svg>`
+		icon: `<svg class="ic-yuque icon ic-social" viewBox="0 0 56 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="28" y="17" text-anchor="middle" fill="currentColor" font-family="Noto Sans SC, PingFang SC, sans-serif" font-size="16" font-weight="800">语雀</text></svg>`
 	},
 	{
 		name: 'Douyin',
@@ -105,7 +105,7 @@ export const socialLinks = [
 	{
 		name: 'Flomo',
 		url: 'https://flomoapp.com/mine/',
-		icon: `<svg class="ic-flomo icon ic-social" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4.8C4 3.3 5.3 2 6.8 2h10.4C18.7 2 20 3.3 20 4.8v14.4c0 1.5-1.3 2.8-2.8 2.8H6.8C5.3 22 4 20.7 4 19.2V4.8Zm4 2.7v2h8v-2H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"></path></svg>`
+		icon: `<svg class="ic-flomo icon ic-social" viewBox="0 0 70 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="35" y="17" text-anchor="middle" fill="currentColor" font-family="Inter, Noto Sans SC, sans-serif" font-size="15" font-weight="800">flomo</text></svg>`
 	},
 	// {
 	//   name: 'Behance',
