@@ -1,5 +1,6 @@
 ---
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import { withBase } from "../../utils/paths";
 ---
 
 <BlogPostLayout
@@ -11,38 +12,14 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 		<main class="project-detail">
 			<section class="detail-hero">
 				<div class="detail-kicker">ENERGY DASHBOARD</div>
-				<h1>凤城全域虚拟电厂智慧驾驶舱</h1>
+				<h1 class="font-huiwen">凤城全域虚拟电厂智慧驾驶舱</h1>
 				<p>
 					面向全域能源调度、负荷聚合、运行态势感知和管理决策的智慧驾驶舱项目。
 				</p>
 			</section>
 
 			<section class="detail-board" aria-label="项目驾驶舱预览">
-				<div class="board-map">
-					<div class="node node-a"></div>
-					<div class="node node-b"></div>
-					<div class="node node-c"></div>
-					<div class="node node-d"></div>
-					<div class="route route-a"></div>
-					<div class="route route-b"></div>
-					<div class="route route-c"></div>
-				</div>
-				<div class="board-panel panel-a">
-					<span>实时负荷</span>
-					<strong>86.4%</strong>
-				</div>
-				<div class="board-panel panel-b">
-					<span>聚合资源</span>
-					<strong>128</strong>
-				</div>
-				<div class="board-chart">
-					<span style="height: 46%"></span>
-					<span style="height: 74%"></span>
-					<span style="height: 56%"></span>
-					<span style="height: 88%"></span>
-					<span style="height: 62%"></span>
-					<span style="height: 78%"></span>
-				</div>
+				<img src={withBase('/assets/cover/cover-fengcheng-vpp.jpg')} alt="凤城全域虚拟电厂智慧驾驶舱页面效果图" loading="eager" />
 			</section>
 
 			<section class="detail-content border-top">
@@ -94,132 +71,16 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 
 	.detail-board {
 		position: relative;
-		display: grid;
-		grid-template-columns: 1.25fr 0.75fr;
-		grid-template-rows: 150px 150px;
-		gap: 14px;
-		min-height: 420px;
-		padding: 18px;
 		overflow: hidden;
 		border: 1px solid var(--border);
 		border-radius: 8px;
-		background:
-			linear-gradient(90deg, rgba(73, 154, 213, 0.1) 1px, transparent 1px),
-			linear-gradient(0deg, rgba(73, 154, 213, 0.1) 1px, transparent 1px),
-			linear-gradient(135deg, #eef8f4 0%, #f8fbff 46%, #dfeeff 100%);
-		background-size: 32px 32px, 32px 32px, auto;
+		background: #eef8f4;
 		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.06);
-	}
 
-	.board-map,
-	.board-panel,
-	.board-chart {
-		border: 1px solid rgba(0, 0, 0, 0.08);
-		border-radius: 8px;
-		background: rgba(255, 255, 255, 0.74);
-	}
-
-	.board-map {
-		position: relative;
-		grid-row: span 2;
-	}
-
-	.node,
-	.route {
-		position: absolute;
-	}
-
-	.node {
-		width: 18px;
-		height: 18px;
-		border: 3px solid var(--color-white);
-		border-radius: 50%;
-		background: var(--color-green);
-		box-shadow: 0 10px 26px rgba(27, 196, 125, 0.35);
-	}
-
-	.node-a {
-		top: 24%;
-		left: 18%;
-	}
-
-	.node-b {
-		top: 42%;
-		right: 20%;
-		background: var(--color-blue);
-	}
-
-	.node-c {
-		bottom: 22%;
-		left: 34%;
-		background: var(--color-yellow);
-	}
-
-	.node-d {
-		bottom: 18%;
-		right: 28%;
-	}
-
-	.route {
-		height: 3px;
-		border-radius: 999px;
-		background: var(--color-blue);
-		opacity: 0.72;
-		transform-origin: left center;
-	}
-
-	.route-a {
-		top: 31%;
-		left: 20%;
-		width: 58%;
-		transform: rotate(14deg);
-	}
-
-	.route-b {
-		top: 56%;
-		left: 34%;
-		width: 36%;
-		transform: rotate(-28deg);
-	}
-
-	.route-c {
-		bottom: 28%;
-		left: 36%;
-		width: 36%;
-		transform: rotate(8deg);
-	}
-
-	.board-panel {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		padding: 24px;
-
-		span {
-			color: var(--color-400);
-			font-size: 0.9rem;
-		}
-
-		strong {
-			margin-top: 10px;
-			color: var(--color-100);
-			font-family: var(--font-type);
-			font-size: 2.6rem;
-			line-height: 1;
-		}
-	}
-
-	.board-chart {
-		display: flex;
-		align-items: end;
-		gap: 12px;
-		padding: 24px;
-
-		span {
-			flex: 1;
-			min-height: 20px;
-			border-radius: 6px 6px 0 0;
-			background: linear-gradient(180deg, var(--color-blue), var(--color-green));
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
 		}
 	}
 
@@ -241,15 +102,6 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 	@media(max-width: 767px) {
 		.detail-hero h1 {
 			font-size: 2.2rem;
-		}
-
-		.detail-board {
-			grid-template-columns: 1fr;
-			grid-template-rows: 260px auto auto 140px;
-		}
-
-		.board-map {
-			grid-row: auto;
 		}
 	}
 </style>
