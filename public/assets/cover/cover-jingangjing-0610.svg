@@ -1,0 +1,33 @@
+<svg width="1680" height="1050" viewBox="0 0 1680 1050" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1680" height="1050" fill="#F5EFE3"/>
+  <radialGradient id="sun" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(760 835) rotate(90) scale(70)">
+    <stop stop-color="#D9A642" stop-opacity=".72"/>
+    <stop offset="1" stop-color="#D9A642" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="mountain" x1="0" y1="702" x2="1680" y2="702" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#B9B7AC" stop-opacity=".12"/>
+    <stop offset=".5" stop-color="#6E7F7C" stop-opacity=".18"/>
+    <stop offset="1" stop-color="#1E2628" stop-opacity=".28"/>
+  </linearGradient>
+  <circle cx="760" cy="835" r="62" fill="url(#sun)"/>
+  <path d="M0 770C110 695 195 718 285 650C385 574 464 626 555 676C662 735 744 697 830 660C943 612 1032 670 1126 726C1229 788 1342 754 1448 682C1540 620 1609 639 1680 596V1050H0V770Z" fill="url(#mountain)"/>
+  <path d="M0 900C112 858 205 856 300 806C434 735 534 781 660 847C784 912 894 890 1003 822C1118 751 1243 821 1338 900C1452 996 1564 955 1680 872V1050H0V900Z" fill="#E8E0D1" opacity=".62"/>
+  <path d="M1338 480C1382 466 1426 450 1466 423C1494 405 1524 389 1558 386" stroke="#333333" stroke-opacity=".42" stroke-width="5" stroke-linecap="round"/>
+  <path d="M1428 454C1415 403 1430 352 1458 304M1464 421C1484 376 1524 350 1572 334M1459 424C1483 454 1515 472 1550 482" stroke="#333333" stroke-opacity=".36" stroke-width="4" stroke-linecap="round"/>
+  <g fill="#333333" opacity=".34">
+    <ellipse cx="1418" cy="396" rx="12" ry="40" transform="rotate(25 1418 396)"/>
+    <ellipse cx="1465" cy="360" rx="12" ry="42" transform="rotate(39 1465 360)"/>
+    <ellipse cx="1510" cy="354" rx="11" ry="38" transform="rotate(65 1510 354)"/>
+    <ellipse cx="1510" cy="476" rx="10" ry="37" transform="rotate(112 1510 476)"/>
+  </g>
+  <path d="M1150 845C1195 828 1233 837 1278 850" stroke="#9F7A35" stroke-opacity=".28" stroke-width="3"/>
+  <path d="M45 102C114 74 187 68 260 82" stroke="#B88A37" stroke-opacity=".28" stroke-width="6" stroke-linecap="round"/>
+  <path d="M61 133C145 104 218 106 303 126" stroke="#B88A37" stroke-opacity=".2" stroke-width="4" stroke-linecap="round"/>
+  <text x="108" y="565" fill="#8B6A2B" font-family="Huiwen-mincho, Songti SC, serif" font-size="120" letter-spacing="4">金刚经的读后感悟</text>
+  <text x="112" y="665" fill="#44403A" font-family="Noto Sans SC, PingFang SC, sans-serif" font-size="40" letter-spacing="12">应无所住，而生其心</text>
+  <rect x="112" y="620" width="42" height="42" fill="none" stroke="#B14A37" stroke-width="4"/>
+  <text x="121" y="647" fill="#B14A37" font-family="Songti SC, serif" font-size="16">读后</text>
+  <text x="720" y="115" fill="#B8AA94" font-family="Songti SC, serif" font-size="28" writing-mode="tb" opacity=".5">须菩提。于意云何。可以身相见如来不。</text>
+  <text x="800" y="95" fill="#B8AA94" font-family="Songti SC, serif" font-size="28" writing-mode="tb" opacity=".42">凡所有相。皆是虚妄。若见诸相非相。即见如来。</text>
+  <text x="880" y="130" fill="#B8AA94" font-family="Songti SC, serif" font-size="28" writing-mode="tb" opacity=".38">应无所住而生其心。不应住色生心。</text>
+</svg>

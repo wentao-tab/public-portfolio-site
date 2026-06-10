@@ -18,17 +18,30 @@ keywords = {homeTdk.keywords  || ''}
     			设计&读书思考
 			</SectionHeader>
 			<section class="home-project border-top">
-				<a class="home-project-card" href={withBase('/project/fengcheng-vpp/')} aria-label="打开凤城全域虚拟电厂智慧驾驶舱项目">
-					<div class="project-visual" aria-hidden="true">
-						<img src={withBase('/assets/cover/cover-fengcheng-vpp.jpg')} alt="" loading="lazy" />
-					</div>
-					<div class="home-project-copy">
-						<div class="project-eyebrow">NEW PROJECT</div>
-						<h2>凤城全域虚拟电厂智慧驾驶舱</h2>
-						<p>面向全域能源调度、负荷聚合与运行态势感知的智慧驾驶舱入口。</p>
-					</div>
-					<span class="home-project-arrow">↗</span>
-				</a>
+				<div class="home-project-list">
+					<a class="home-project-card" href={withBase('/project/fengcheng-vpp/')} aria-label="打开凤城全域虚拟电厂智慧驾驶舱项目">
+						<div class="project-visual" aria-hidden="true">
+							<img src={withBase('/assets/cover/cover-fengcheng-vpp.jpg')} alt="" loading="lazy" />
+						</div>
+						<div class="home-project-copy">
+							<div class="project-eyebrow">NEW PROJECT</div>
+							<h2>凤城全域虚拟电厂智慧驾驶舱</h2>
+							<p>面向全域能源调度、负荷聚合与运行态势感知的智慧驾驶舱入口。</p>
+						</div>
+						<span class="home-project-arrow">↗</span>
+					</a>
+					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0610/')} aria-label="打开我读金刚经感悟 6/10">
+						<div class="project-visual" aria-hidden="true">
+							<img src={withBase('/assets/cover/cover-jingangjing-0610.svg')} alt="" loading="lazy" />
+						</div>
+						<div class="home-project-copy">
+							<div class="project-eyebrow">READING NOTE</div>
+							<h2>我读金刚经感悟 6/10</h2>
+							<p>应无所住而生其心。做一件该做的小事，做完就放下。</p>
+						</div>
+						<span class="home-project-arrow">↗</span>
+					</a>
+				</div>
 			</section>
 		</div>
 	</div>
@@ -37,18 +50,25 @@ keywords = {homeTdk.keywords  || ''}
 
 <style lang="scss">
 	.home-project {
-		max-width: 760px;
+		max-width: 1080px;
 		margin: 18px auto 0;
 		padding-top: 28px;
+	}
+
+	.home-project-list {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 20px;
+		align-items: stretch;
 	}
 
 	.home-project-card {
 		position: relative;
 		display: grid;
-		grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
-		gap: 28px;
-		align-items: center;
-		padding: 22px;
+		grid-template-rows: auto 1fr;
+		gap: 20px;
+		min-height: 100%;
+		padding: 20px;
 		border: 1px solid var(--border);
 		border-radius: 8px;
 		background:
@@ -101,6 +121,21 @@ keywords = {homeTdk.keywords  || ''}
 		}
 	}
 
+	.reading-card {
+		.project-visual {
+			background: #f5efe3;
+		}
+
+		&:hover {
+			border-color: rgba(184, 138, 55, 0.56);
+			box-shadow: 0 34px 84px rgba(120, 87, 34, 0.14);
+		}
+
+		&:hover .home-project-arrow {
+			color: #9b7a35;
+		}
+	}
+
 	.project-visual {
 		position: relative;
 		z-index: 2;
@@ -127,7 +162,7 @@ keywords = {homeTdk.keywords  || ''}
 		h2 {
 			margin: 8px 0 12px;
 			color: var(--color-100);
-			font-size: 1.8rem;
+			font-size: 1.6rem;
 			line-height: 1.28;
 			text-align: left;
 		}
@@ -167,8 +202,11 @@ keywords = {homeTdk.keywords  || ''}
 	}
 
 	@media(max-width: 767px) {
-		.home-project-card {
+		.home-project-list {
 			grid-template-columns: 1fr;
+		}
+
+		.home-project-card {
 			gap: 20px;
 			padding: 18px;
 		}
