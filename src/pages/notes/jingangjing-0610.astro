@@ -8,52 +8,49 @@ import { withBase } from "../../utils/paths";
 	description="应无所住而生其心。该做的事照做，但不要把心黏在结果上。"
 	keywords="金刚经,读书感悟,应无所住而生其心,阅读笔记"
 >
-	<div class="post">
-		<main class="reading-note">
-			<section class="note-hero">
-				<a class="note-back" href={withBase('/')} aria-label="返回首页">
-					<span>←</span>
-					返回首页
-				</a>
-				<img src={withBase('/assets/cover/header-jingangjing-0610.svg')} alt="金刚经的读后感悟" />
-			</section>
+	<main class="reading-note">
+		<a class="note-back" href={withBase('/')} aria-label="返回首页">
+			<span>←</span>
+			返回首页
+		</a>
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
 
-			<article class="note-content">
-				<div class="note-meta">READING NOTE · 2026.06.10</div>
-				<h1 class="font-huiwen">我读金刚经感悟 6/10</h1>
-				<p class="lead">“应无所住而生其心”。</p>
-				<p>我今天理解这句话，不是“什么都不要在乎”，而是：该做的事照做，但不要把心黏在结果上。</p>
-				<p>人最累的地方，往往不是行动本身，而是行动后面那一串附着：别人怎么看我？这件事有没有证明我？我是不是输给谁了？我这样做值不值？这些念头一多，心就“住”了。</p>
-				<p>《金刚经》说“不住”，不是叫人冷漠，而是让人更自由地行动。该努力就努力，该表达就表达，该承担就承担，但不要每一步都拿来加固一个“我”：我的能力、我的面子、我的失败、我的成功。</p>
-				<p>真正的“生其心”，反而是在不执着时才生得出来。因为心不被得失绑住，就更清楚；不被评价牵走，就更有力量；不急着证明自己，就更能把事情做好。</p>
-				<section class="note-reminder">
-					<h2>今天的小提醒</h2>
-					<p>做一件该做的小事，做完就放下。不要反复回看自己表现得好不好。让行动完成在行动里。</p>
-				</section>
-			</article>
-		</main>
-	</div>
+		<article class="note-content">
+			<div class="note-meta">READING NOTE · 2026.06.10</div>
+			<h1 class="font-huiwen">我读金刚经感悟 6/10</h1>
+			<p class="lead">“应无所住而生其心”。</p>
+			<p>我今天理解这句话，不是“什么都不要在乎”，而是：该做的事照做，但不要把心黏在结果上。</p>
+			<p>人最累的地方，往往不是行动本身，而是行动后面那一串附着：别人怎么看我？这件事有没有证明我？我是不是输给谁了？我这样做值不值？这些念头一多，心就“住”了。</p>
+			<p>《金刚经》说“不住”，不是叫人冷漠，而是让人更自由地行动。该努力就努力，该表达就表达，该承担就承担，但不要每一步都拿来加固一个“我”：我的能力、我的面子、我的失败、我的成功。</p>
+			<p>真正的“生其心”，反而是在不执着时才生得出来。因为心不被得失绑住，就更清楚；不被评价牵走，就更有力量；不急着证明自己，就更能把事情做好。</p>
+			<section class="note-reminder">
+				<h2>今天的小提醒</h2>
+				<p>做一件该做的小事，做完就放下。不要反复回看自己表现得好不好。让行动完成在行动里。</p>
+			</section>
+		</article>
+	</main>
 </BlogPostLayout>
 
 <style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
 	.reading-note {
-		max-width: 960px;
-		margin: 0 auto;
+		width: 100%;
+		margin: 0 auto 88px;
 	}
 
 	.note-hero {
-		margin: 36px auto 42px;
-		text-align: center;
+		width: min(1120px, calc(100vw - 48px));
+		margin: 0 auto 72px;
 
 		img {
 			display: block;
 			width: 100%;
 			height: auto;
-			overflow: hidden;
-			border: 1px solid rgba(184, 138, 55, 0.22);
-			border-radius: 8px;
-			background: #f6f0e5;
-			box-shadow: 0 24px 72px rgba(91, 64, 26, 0.08);
 		}
 	}
 
@@ -62,7 +59,7 @@ import { withBase } from "../../utils/paths";
 		align-items: center;
 		gap: 8px;
 		min-height: 34px;
-		margin-bottom: 18px;
+		margin: 34px 0 24px calc((100vw - min(1120px, calc(100vw - 48px))) / 2);
 		padding: 0 16px;
 		border: 1px solid var(--color-700);
 		border-radius: 999px;
@@ -90,34 +87,33 @@ import { withBase } from "../../utils/paths";
 
 	.note-content {
 		max-width: 720px;
-		margin: 0 auto 80px;
-		padding: 42px 44px;
-		border: 1px solid rgba(184, 138, 55, 0.18);
-		border-radius: 8px;
-		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 246, 238, 0.72)),
-			#fffaf0;
-		box-shadow: 0 18px 52px rgba(91, 64, 26, 0.06);
+		margin: 0 auto;
+		padding: 0 24px;
 
 		h1 {
-			margin: 10px 0 26px;
-			font-size: 3rem;
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
 			line-height: 1.18;
 			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
 		}
 
 		p {
-			margin: 0 0 1.2em;
+			margin: 0 0 1.35em;
 			color: var(--color-200);
-			font-size: 1.06rem;
-			line-height: 2;
+			font-size: 1.08rem;
+			line-height: 2.05;
 		}
 
 		.lead {
 			color: #8b6a2b;
 			font-family: 'Huiwen-mincho', var(--font-body);
-			font-size: 1.7rem;
+			font-size: clamp(1.55rem, 3vw, 2rem);
 			line-height: 1.6;
+			margin-bottom: 1.45em;
 		}
 	}
 
@@ -129,9 +125,10 @@ import { withBase } from "../../utils/paths";
 	}
 
 	.note-reminder {
-		margin-top: 34px;
-		padding-top: 26px;
+		margin-top: 44px;
+		padding: 22px 0 0 22px;
 		border-top: 1px solid rgba(184, 138, 55, 0.22);
+		border-left: 3px solid rgba(184, 138, 55, 0.7);
 
 		h2 {
 			margin-bottom: 12px;
@@ -145,11 +142,20 @@ import { withBase } from "../../utils/paths";
 	}
 
 	@media(max-width: 767px) {
+		.note-back {
+			margin-left: 24px;
+		}
+
+		.note-hero {
+			width: calc(100vw - 32px);
+			margin-bottom: 48px;
+		}
+
 		.note-content {
-			padding: 30px 24px;
+			padding: 0 24px;
 
 			h1 {
-				font-size: 2.2rem;
+				font-size: 2.45rem;
 			}
 		}
 	}
