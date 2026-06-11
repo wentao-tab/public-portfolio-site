@@ -1,0 +1,159 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="凡所有相，皆是虚妄"
+	description="别太相信眼前这一刻的感觉很真。看见相，但不马上下结论。"
+	keywords="金刚经,凡所有相皆是虚妄,读书感悟,阅读笔记"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.06.11</div>
+			<h1 class="font-huiwen">凡所有相，皆是虚妄。</h1>
+			<p class="lead">别太相信眼前这一刻的“感觉很真”。</p>
+			<p>我们常常被“相”带走：一个消息、一句评价、一次失败、一个人的态度，马上就变成心里的全部现实。好像对方冷淡一点，就是关系变了；项目卡住一点，就是自己不行；今天状态差一点，就是人生又坏了。</p>
+			<p>但《金刚经》提醒的是：这些都只是相。不是说它们不存在，而是说它们不是最终结论。情绪会变，局面会变，别人对你的看法会变，你对自己的判断也会变。</p>
+			<p>如果把一时的相当成真实，就会被它拖着跑。高兴时膨胀，低落时否定自己，被表象牵来牵去。</p>
+			<p>今天可以练习：看见相，但不马上下结论。事情来了，先稳一下，别急着给它命名为“好事”或“坏事”。</p>
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>遇到一个让你起情绪的事，先对自己说一句：这只是当下显现的一相，还不是全部。</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0611-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		color: #9b7a35;
+		font-family: var(--font-type);
+		font-size: 0.82rem;
+		letter-spacing: 0.04em;
+	}
+
+	.note-reminder {
+		margin-top: 44px;
+		padding: 22px 0 0 22px;
+		border-top: 1px solid rgba(184, 138, 55, 0.22);
+		border-left: 3px solid rgba(184, 138, 55, 0.7);
+
+		h2 {
+			margin-bottom: 12px;
+			color: var(--color-100);
+			font-size: 1.28rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	@media(max-width: 767px) {
+		.note-hero {
+			width: calc(100vw - 32px);
+			margin-top: 34px;
+			margin-bottom: 48px;
+		}
+
+		.note-content {
+			padding: 0 24px;
+
+			h1 {
+				font-size: 2.45rem;
+			}
+		}
+	}
+</style>
