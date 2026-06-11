@@ -1,0 +1,496 @@
+---
+interface Props {
+	articleSelector?: string;
+	storageKey?: string;
+}
+
+const {
+	articleSelector = '.note-content',
+	storageKey = 'detail-comments',
+} = Astro.props;
+---
+
+<section
+	class="detail-interactions"
+	data-article-selector={articleSelector}
+	data-storage-key={storageKey}
+>
+	<div class="detail-search" aria-label="搜索本文">
+		<div class="interaction-title">
+			<span>搜索本文</span>
+			<small data-search-count>0 个结果</small>
+		</div>
+		<label class="search-field">
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M10.8 18.1a7.3 7.3 0 1 1 5.2-2.1l4 4" />
+			</svg>
+			<input type="search" data-detail-search placeholder="输入关键词" autocomplete="off" />
+		</label>
+		<div class="search-results" data-search-results aria-live="polite"></div>
+	</div>
+
+	<div class="detail-comments" aria-label="评论区">
+		<h2><span data-comment-count>0</span> 条评论</h2>
+		<blockquote>既然都看到这了，不妨留下你的评论。</blockquote>
+		<div class="comment-box">
+			<div class="comment-tabs" role="tablist" aria-label="评论编辑">
+				<button type="button" class="is-active" data-comment-tab="write">输入</button>
+				<button type="button" data-comment-tab="preview">预览</button>
+				<span>Aa</span>
+			</div>
+			<div class="comment-editor" data-comment-panel="write">
+				<textarea data-comment-input placeholder="写下你的评论"></textarea>
+			</div>
+			<div class="comment-preview" data-comment-panel="preview" hidden></div>
+			<div class="comment-actions">
+				<p data-comment-status>评论会保存在当前浏览器。</p>
+				<button type="button" data-comment-submit>发布评论</button>
+			</div>
+		</div>
+		<div class="comment-list" data-comment-list></div>
+	</div>
+</section>
+
+<script is:inline define:vars={{ articleSelector, storageKey }}>
+	const root = document.currentScript?.previousElementSibling;
+	const article = document.querySelector(articleSelector);
+
+	if (root && article) {
+		const searchInput = root.querySelector('[data-detail-search]');
+		const searchCount = root.querySelector('[data-search-count]');
+		const searchResults = root.querySelector('[data-search-results]');
+		const searchableBlocks = [...article.querySelectorAll('h1, h2, p')]
+			.filter((node) => !node.closest('.detail-interactions'));
+
+		const clearSearchMarks = () => {
+			searchableBlocks.forEach((node) => node.classList.remove('is-search-hit'));
+		};
+
+		const renderSearch = () => {
+			const query = searchInput.value.trim().toLowerCase();
+			clearSearchMarks();
+			searchResults.innerHTML = '';
+
+			if (!query) {
+				searchCount.textContent = '0 个结果';
+				return;
+			}
+
+			const matches = searchableBlocks
+				.map((node, index) => ({ node, index, text: node.textContent.trim() }))
+				.filter((item) => item.text.toLowerCase().includes(query));
+
+			searchCount.textContent = `${matches.length} 个结果`;
+
+			if (!matches.length) {
+				searchResults.innerHTML = '<p class="empty-result">没有找到匹配内容</p>';
+				return;
+			}
+
+			matches.forEach((item) => {
+				const button = document.createElement('button');
+				button.type = 'button';
+				button.className = 'search-result';
+				button.textContent = item.text.length > 72 ? `${item.text.slice(0, 72)}...` : item.text;
+				button.addEventListener('click', () => {
+					clearSearchMarks();
+					item.node.classList.add('is-search-hit');
+					item.node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				});
+				searchResults.appendChild(button);
+			});
+		};
+
+		searchInput.addEventListener('input', renderSearch);
+
+		const commentInput = root.querySelector('[data-comment-input]');
+		const previewPanel = root.querySelector('[data-comment-panel="preview"]');
+		const writePanel = root.querySelector('[data-comment-panel="write"]');
+		const tabs = [...root.querySelectorAll('[data-comment-tab]')];
+		const submit = root.querySelector('[data-comment-submit]');
+		const status = root.querySelector('[data-comment-status]');
+		const count = root.querySelector('[data-comment-count]');
+		const list = root.querySelector('[data-comment-list]');
+		const key = `portfolio:${storageKey}`;
+
+		const escapeHtml = (value) => value
+			.replaceAll('&', '&amp;')
+			.replaceAll('<', '&lt;')
+			.replaceAll('>', '&gt;')
+			.replaceAll('"', '&quot;')
+			.replaceAll("'", '&#039;');
+
+		const readComments = () => {
+			try {
+				return JSON.parse(localStorage.getItem(key) || '[]');
+			} catch {
+				return [];
+			}
+		};
+
+		const writeComments = (comments) => {
+			localStorage.setItem(key, JSON.stringify(comments));
+		};
+
+		const renderPreview = () => {
+			const value = commentInput.value.trim();
+			previewPanel.innerHTML = value
+				? `<p>${escapeHtml(value).replaceAll('\n', '<br />')}</p>`
+				: '<p class="comment-placeholder">暂无预览内容</p>';
+		};
+
+		const renderComments = () => {
+			const comments = readComments();
+			count.textContent = String(comments.length);
+			list.innerHTML = '';
+
+			if (!comments.length) {
+				list.innerHTML = '<p class="comment-empty">还没有评论。</p>';
+				return;
+			}
+
+			comments.forEach((comment) => {
+				const item = document.createElement('article');
+				item.className = 'comment-item';
+				const date = new Date(comment.createdAt);
+				item.innerHTML = `
+					<div class="comment-avatar">W</div>
+					<div>
+						<div class="comment-meta">
+							<strong>${escapeHtml(comment.author)}</strong>
+							<span>${date.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+						</div>
+						<p>${escapeHtml(comment.body).replaceAll('\n', '<br />')}</p>
+					</div>
+				`;
+				list.appendChild(item);
+			});
+		};
+
+		tabs.forEach((tab) => {
+			tab.addEventListener('click', () => {
+				const mode = tab.dataset.commentTab;
+				tabs.forEach((item) => item.classList.toggle('is-active', item === tab));
+				writePanel.hidden = mode !== 'write';
+				previewPanel.hidden = mode !== 'preview';
+				if (mode === 'preview') renderPreview();
+			});
+		});
+
+		commentInput.addEventListener('input', () => {
+			if (!previewPanel.hidden) renderPreview();
+			status.textContent = commentInput.value.trim() ? '准备发布。' : '评论会保存在当前浏览器。';
+		});
+
+		submit.addEventListener('click', () => {
+			const body = commentInput.value.trim();
+			if (!body) {
+				status.textContent = '先写一点内容再发布。';
+				commentInput.focus();
+				return;
+			}
+
+			const comments = readComments();
+			comments.unshift({
+				author: 'Wentao',
+				body,
+				createdAt: new Date().toISOString(),
+			});
+			writeComments(comments);
+			commentInput.value = '';
+			renderPreview();
+			renderComments();
+			status.textContent = '已发布。';
+		});
+
+		renderComments();
+	}
+</script>
+
+<style lang="scss">
+	.detail-interactions {
+		max-width: 720px;
+		margin: 78px auto 0;
+		padding: 0 24px;
+	}
+
+	.detail-search {
+		margin-bottom: 64px;
+		padding-top: 26px;
+		border-top: 1px solid rgba(0, 0, 0, 0.08);
+	}
+
+	.interaction-title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		margin-bottom: 14px;
+		color: var(--color-100);
+		font-weight: 700;
+
+		small {
+			color: var(--color-400);
+			font-size: 0.82rem;
+			font-weight: 400;
+		}
+	}
+
+	.search-field {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		height: 44px;
+		padding: 0 14px;
+		border: 1px solid var(--color-700);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.72);
+
+		svg {
+			width: 18px;
+			height: 18px;
+			color: var(--color-400);
+			fill: none;
+			stroke: currentColor;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-width: 2;
+		}
+
+		input {
+			width: 100%;
+			border: 0;
+			outline: 0;
+			background: transparent;
+			color: var(--color-100);
+			font: inherit;
+		}
+	}
+
+	.search-results {
+		display: grid;
+		gap: 10px;
+		margin-top: 10px;
+	}
+
+	:global(.detail-interactions .search-result) {
+		width: 100%;
+		padding: 8px 10px;
+		border: 0;
+		border-left: 2px solid rgba(139, 106, 43, 0.2);
+		border-radius: 0;
+		background: transparent;
+		color: var(--color-300);
+		font-size: 0.9rem;
+		line-height: 1.65;
+		text-align: left;
+		cursor: pointer;
+		transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+
+		&:hover {
+			border-left-color: #8b6a2b;
+			background: rgba(139, 106, 43, 0.04);
+			color: var(--color-100);
+		}
+	}
+
+	:global(.note-content .is-search-hit) {
+		border-radius: 4px;
+		background: linear-gradient(180deg, transparent 58%, rgba(247, 210, 82, 0.38) 0);
+	}
+
+	:global(.detail-interactions .empty-result),
+	:global(.detail-interactions .comment-empty),
+	:global(.detail-interactions .comment-placeholder) {
+		margin: 0;
+		color: var(--color-400);
+		font-size: 0.92rem;
+	}
+
+	.detail-comments {
+		h2 {
+			margin: 0 0 22px;
+			color: var(--color-100);
+			font-size: 1.72rem;
+			line-height: 1.25;
+		}
+
+		blockquote {
+			margin: 0 0 22px;
+			padding-left: 18px;
+			border-left: 4px solid rgba(139, 106, 43, 0.26);
+			color: var(--color-100);
+			font-size: 1.25rem;
+			font-weight: 700;
+			line-height: 1.7;
+		}
+	}
+
+	.comment-box {
+		border: 1px solid #cfd6df;
+		border-radius: 6px;
+		background: #fff;
+		overflow: hidden;
+	}
+
+	.comment-tabs {
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid #d8dee6;
+		background: #f6f8fa;
+
+		button {
+			min-width: 72px;
+			padding: 18px 22px;
+			border: 0;
+			border-right: 1px solid transparent;
+			background: transparent;
+			color: #68707c;
+			font-size: 1rem;
+			font-weight: 700;
+			cursor: pointer;
+		}
+
+		button.is-active {
+			margin-bottom: -1px;
+			border-right-color: #d8dee6;
+			border-bottom: 1px solid #fff;
+			background: #fff;
+			color: #20242a;
+		}
+
+		span {
+			margin-left: auto;
+			padding-right: 18px;
+			color: #69717c;
+			font-size: 1.1rem;
+			font-weight: 700;
+		}
+	}
+
+	.comment-editor,
+	.comment-preview {
+		padding: 14px;
+	}
+
+	.comment-editor textarea,
+	.comment-preview {
+		min-height: 150px;
+		width: 100%;
+		border: 1px solid #cfd6df;
+		border-radius: 6px;
+		background: #f6f8fa;
+		color: #20242a;
+		font: inherit;
+		line-height: 1.8;
+	}
+
+	.comment-editor textarea {
+		resize: vertical;
+		padding: 16px;
+		outline: 0;
+
+		&:focus {
+			border-color: rgba(139, 106, 43, 0.42);
+			background: #fff;
+		}
+	}
+
+	.comment-preview {
+		padding: 16px;
+	}
+
+	.comment-actions {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 14px;
+		padding: 2px 14px 14px;
+
+		p {
+			margin: 0;
+			color: var(--color-400);
+			font-size: 0.84rem;
+		}
+
+		button {
+			flex: none;
+			min-height: 40px;
+			padding: 0 18px;
+			border: 0;
+			border-radius: 6px;
+			background: #238636;
+			color: #fff;
+			font-size: 0.95rem;
+			font-weight: 700;
+			cursor: pointer;
+			transition: background 0.2s ease, transform 0.2s ease;
+
+			&:hover {
+				transform: translateY(-1px);
+				background: #1f7a31;
+			}
+		}
+	}
+
+	.comment-list {
+		display: grid;
+		gap: 16px;
+		margin-top: 22px;
+	}
+
+	:global(.detail-interactions .comment-item) {
+		display: grid;
+		grid-template-columns: 36px 1fr;
+		gap: 12px;
+	}
+
+	:global(.detail-interactions .comment-avatar) {
+		display: grid;
+		place-items: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #f7d252, #f0c34a);
+		box-shadow: 0 8px 20px rgba(139, 106, 43, 0.12);
+		color: #101010;
+		font-family: var(--font-type);
+		font-size: 0.85rem;
+		line-height: 1;
+	}
+
+	:global(.detail-interactions .comment-meta) {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+		margin-bottom: 4px;
+
+	}
+
+	:global(.detail-interactions .comment-meta strong) {
+		color: var(--color-100);
+	}
+
+	:global(.detail-interactions .comment-meta span) {
+		color: var(--color-400);
+		font-size: 0.82rem;
+	}
+
+	:global(.detail-interactions .comment-item p) {
+		margin: 0;
+		color: var(--color-200);
+		line-height: 1.8;
+	}
+
+	@media(max-width: 767px) {
+		.detail-interactions {
+			margin-top: 58px;
+			padding: 0 24px;
+		}
+
+		.comment-actions {
+			align-items: stretch;
+			flex-direction: column;
+		}
+	}
+</style>

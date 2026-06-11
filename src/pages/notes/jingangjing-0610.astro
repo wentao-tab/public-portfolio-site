@@ -1,5 +1,6 @@
 ---
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
 import { withBase } from "../../utils/paths";
 ---
 
@@ -30,6 +31,10 @@ import { withBase } from "../../utils/paths";
 				<p>做一件该做的小事，做完就放下。不要反复回看自己表现得好不好。让行动完成在行动里。</p>
 			</section>
 		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0610-comments"
+		/>
 	</main>
 </BlogPostLayout>
 
