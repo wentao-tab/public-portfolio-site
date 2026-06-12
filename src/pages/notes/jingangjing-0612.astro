@@ -1,0 +1,160 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="过去心不可得，现在心不可得，未来心不可得"
+	description="不要把精力浪费在抓不住的心上。过去用于复盘，未来用于规划，现在用于执行。"
+	keywords="金刚经,过去心不可得,现在心不可得,未来心不可得,读书感悟,阅读笔记"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.06.12</div>
+			<h1 class="font-huiwen">过去心不可得，现在心不可得，未来心不可得。</h1>
+			<p class="lead">不要把精力浪费在抓不住的心上。</p>
+			<p>过去心不可得：已经发生的事，只剩记忆和解释。你可以复盘，但反复懊悔没有实际产出。</p>
+			<p>现在心不可得：你以为抓住了“当下的我”，其实念头已经变了。情绪、判断、状态都在流动。</p>
+			<p>未来心不可得：计划有必要，但焦虑式预演只是消耗。未来还没到，很多变量也不受你控制。</p>
+			<p>这句话不是让人不负责，而是让人把注意力从“抓心”转回“做事”。过去用于复盘，未来用于规划，现在用于执行。除此之外的反刍、担忧、证明，大多是多余成本。</p>
+			<p>今天处理事情时，可以少问“我怎么会这样”“以后怎么办”，多问一个更有效的问题：下一步是什么？</p>
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>挑一件拖着你的事，只写下一个下一步动作，然后执行，不继续扩展情绪剧情。</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0612-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		color: #9b7a35;
+		font-family: var(--font-type);
+		font-size: 0.82rem;
+		letter-spacing: 0.04em;
+	}
+
+	.note-reminder {
+		margin-top: 44px;
+		padding: 22px 0 0 22px;
+		border-top: 1px solid rgba(184, 138, 55, 0.22);
+		border-left: 3px solid rgba(184, 138, 55, 0.7);
+
+		h2 {
+			margin-bottom: 12px;
+			color: var(--color-100);
+			font-size: 1.28rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	@media(max-width: 767px) {
+		.note-hero {
+			width: calc(100vw - 32px);
+			margin-top: 34px;
+			margin-bottom: 48px;
+		}
+
+		.note-content {
+			padding: 0 24px;
+
+			h1 {
+				font-size: 2.45rem;
+			}
+		}
+	}
+</style>
