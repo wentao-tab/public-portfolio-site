@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { pageTag, pageDescription } from '../data/content';
+import { withBase } from '../utils/paths';
+
+const nanjingToolUrl = withBase('/tools/nanjing-travel-map/');
+---
+
+<BaseLayout
+	title="梁文韬的小工具"
+	description="梁文韬的个人小工具集合，包含南京出发旅行地图等轻量工具。"
+	keywords="梁文韬,小工具,南京出发,旅行地图,旅游工具"
+>
+	<div class="section hero">
+		<div class="container">
+			<SectionHeader
+				tag={pageTag.tools}
+				description={pageDescription.tools}>
+				小工具
+			</SectionHeader>
+
+			<section class="tools-list border-top">
+				<article class="tool-card">
+					<div class="tool-preview">
+						<iframe
+							src={nanjingToolUrl}
+							title="出发吧！从南京"
+							loading="lazy"
+						></iframe>
+					</div>
+					<div class="tool-info">
+						<div>
+							<p class="tool-kicker">TRAVEL TOOL</p>
+							<h2>出发吧！从南京</h2>
+							<p>一张从南京出发的旅行手账地图，用来快速比较周边目的地、交通方式和门到门耗时。</p>
+						</div>
+						<a class="tool-link" href={nanjingToolUrl} target="_blank" rel="noreferrer">
+							打开完整工具
+							<span>↗</span>
+						</a>
+					</div>
+				</article>
+			</section>
+		</div>
+	</div>
+</BaseLayout>
+
+<style lang="scss">
+	.tools-list {
+		max-width: 980px;
+		margin: 20px auto 0;
+		padding-top: 30px;
+	}
+
+	.tool-card {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+		gap: 24px;
+		align-items: stretch;
+		padding: 18px;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(247, 252, 248, 0.72)),
+			var(--color-999);
+		box-shadow: 0 24px 72px rgba(27, 72, 92, 0.08);
+	}
+
+	.tool-preview {
+		position: relative;
+		height: 330px;
+		overflow: hidden;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 6px;
+		background: #f4efe6;
+	}
+
+	.tool-preview iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		background: #fff;
+	}
+
+	.tool-info {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 8px 6px 6px;
+	}
+
+	.tool-kicker {
+		display: inline-flex;
+		margin: 0 0 14px;
+		padding: 7px 12px;
+		border-radius: 999px;
+		background: var(--color-yellow);
+		color: var(--color-100);
+		font-family: var(--font-type);
+		font-size: 0.78rem;
+		line-height: 1;
+	}
+
+	.tool-info h2 {
+		margin: 0 0 14px;
+		color: var(--color-100);
+		font-size: clamp(1.8rem, 3vw, 2.45rem);
+		line-height: 1.18;
+		text-align: left;
+	}
+
+	.tool-info p:not(.tool-kicker) {
+		max-width: 28em;
+		margin: 0;
+		color: var(--color-300);
+		font-size: 1rem;
+		line-height: 1.85;
+		text-align: left;
+	}
+
+	.tool-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		width: fit-content;
+		min-height: 42px;
+		padding: 0 18px;
+		border-radius: 999px;
+		background: #111;
+		color: #fff;
+		font-size: 0.92rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.tool-link:hover {
+		transform: translateY(-1px);
+		background: #8b6a2b;
+		box-shadow: 0 16px 30px rgba(139, 106, 43, 0.16);
+		text-decoration: none;
+	}
+
+	.tool-link span {
+		font-size: 1.1rem;
+		line-height: 1;
+	}
+
+	@media(max-width: 767px) {
+		.tool-card {
+			grid-template-columns: 1fr;
+			gap: 18px;
+			padding: 14px;
+		}
+
+		.tool-preview {
+			height: 260px;
+		}
+
+		.tool-info {
+			padding: 0 2px 2px;
+		}
+
+		.tool-link {
+			width: 100%;
+		}
+	}
+</style>

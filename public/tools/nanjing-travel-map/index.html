@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>出发吧！从南京 · 旅行手账地图</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Zhi+Mang+Xing&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="paper-bg"></div>
+
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-stamp">✈</span>
+        <h1>出发吧！从南京</h1>
+        <span class="brand-sub">一张手账风格的旅游景点等时地图</span>
+      </div>
+      <nav id="mode-switch" aria-label="出行方式">
+        <button class="mode-btn active" data-mode="best" type="button"><span class="mb-icon">🌈</span>综合最快</button>
+        <button class="mode-btn" data-mode="rail" type="button"><span class="mb-icon">🚄</span>只坐高铁</button>
+        <button class="mode-btn" data-mode="fly" type="button"><span class="mb-icon">🛫</span>只坐飞机</button>
+        <button class="mode-btn" data-mode="drive" type="button"><span class="mb-icon">🚗</span>自己开车</button>
+      </nav>
+    </header>
+
+    <main id="stage">
+      <div id="map-wrap">
+        <svg id="map"></svg>
+
+        <aside id="legend" class="paper-card">
+          <div class="washi washi-pink"></div>
+          <h3>🕰 门到门要多久？</h3>
+          <p class="legend-note">从南京市区出发，含去车站/机场、候车候机与景区接驳的<b>全部</b>时间</p>
+          <ul id="legend-bands"></ul>
+          <p class="legend-foot">旅游目的地演示数据 · 非实时</p>
+        </aside>
+
+        <div id="hover-tip" class="hidden"></div>
+      </div>
+
+      <aside id="panel" class="hidden">
+        <div class="panel-paper">
+          <div class="washi washi-yellow panel-washi"></div>
+          <button id="panel-close" aria-label="关闭" type="button">✕</button>
+          <div id="panel-content"></div>
+        </div>
+      </aside>
+    </main>
+
+    <footer id="credit">
+      <span>🧳 数据为研究性整理（高铁时刻 / 航班 / 导航驾车），出行前请以 12306、航司与地图 App 实时信息为准</span>
+    </footer>
+
+    <script src="vendor/d3.min.js"></script>
+    <script src="assets/china-full.js"></script>
+    <script src="data/cities.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/panel.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
