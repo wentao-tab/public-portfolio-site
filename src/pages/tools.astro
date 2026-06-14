@@ -6,6 +6,8 @@ import { withBase } from '../utils/paths';
 
 const nanjingToolUrl = withBase('/tools/nanjing-travel-map/');
 const nanjingCover = withBase('/assets/cover/cover-nanjing-route-atlas.png');
+const wenxiToolUrl = 'https://wentao-tab.github.io/Wenxi-ai-clone/';
+const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 ---
 
 <BaseLayout
@@ -38,6 +40,22 @@ const nanjingCover = withBase('/assets/cover/cover-nanjing-route-atlas.png');
 						</a>
 					</div>
 				</article>
+				<article class="tool-card">
+					<a class="tool-preview" href={wenxiToolUrl} target="_blank" rel="noreferrer" aria-label="打开提示词图鉴">
+						<img src={wenxiCover} alt="提示词图鉴，汇总多场景优质提示词，一站搜索与灵感发现" loading="lazy" />
+					</a>
+					<div class="tool-info">
+						<div>
+							<p class="tool-kicker">AI TOOL</p>
+							<h2>提示词图鉴</h2>
+							<p>一个 AI 提示词搜索和灵感发现入口，按场景浏览、快速找到可复用的提示词模板。</p>
+						</div>
+						<a class="tool-link" href={wenxiToolUrl} target="_blank" rel="noreferrer">
+							打开完整工具
+							<span>↗</span>
+						</a>
+					</div>
+				</article>
 			</section>
 		</div>
 	</div>
@@ -45,6 +63,8 @@ const nanjingCover = withBase('/assets/cover/cover-nanjing-route-atlas.png');
 
 <style lang="scss">
 	.tools-list {
+		display: grid;
+		gap: 22px;
 		max-width: 980px;
 		margin: 20px auto 0;
 		padding-top: 30px;
