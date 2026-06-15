@@ -3,17 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/paths';
 
 const navItems = [
-	{ label: '主页', href: withBase('/') },
-	{ label: '生活', href: withBase('/life'), active: true },
-	{ label: '技术', href: withBase('/tools') },
-	{ label: '作品', href: withBase('/project') },
-	{ label: '关于', href: withBase('/about') },
+	{ label: '主页', filter: 'all', title: '主页', desc: '把读书、工具、项目和日常观察先收在这张小票里。' },
+	{ label: '生活', filter: 'all', title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。', active: true },
+	{ label: '技术', filter: 'tool', title: '技术', desc: '自己做的小工具和轻量入口。' },
+	{ label: '作品', filter: 'project', title: '作品', desc: '近期作品和项目入口。' },
+	{ label: '关于', filter: 'thought', title: '关于', desc: '一些关于我、设计和读书思考的入口。' },
 ];
 
 const activities = [
-	{ label: '最近阅读', href: withBase('/books'), icon: 'book' },
-	{ label: '工具实验', href: withBase('/tools'), icon: 'tool' },
-	{ label: '项目入口', href: withBase('/project'), icon: 'grid' },
+	{ label: '最近阅读', filter: 'reading', icon: 'book' },
+	{ label: '工具实验', filter: 'tool', icon: 'tool' },
+	{ label: '项目入口', filter: 'project', icon: 'grid' },
 ];
 
 const categories = [
@@ -30,78 +30,66 @@ const entries = [
 		date: '2026年6月15日',
 		title: '无我相。',
 		desc: '少一点“我在证明什么”，事情会轻很多。',
-		href: withBase('/notes/jingangjing-0615/'),
 		category: 'jingangjing',
 	},
 	{
 		date: '2026年6月14日',
 		title: '不取法，不取非法。',
 		desc: '不要被规则绑住，也不要用“反规则”绑住自己。',
-		href: withBase('/notes/jingangjing-0614/'),
 		category: 'jingangjing',
 	},
 	{
 		date: '2026年6月12日',
 		title: '过去心不可得，现在心不可得，未来心不可得。',
 		desc: '过去用于复盘，未来用于规划，现在用于执行。',
-		href: withBase('/notes/jingangjing-0612/'),
 		category: 'jingangjing',
 	},
 	{
 		date: '2026年6月11日',
 		title: '凡所有相，皆是虚妄。',
 		desc: '看见相，但不马上下结论。',
-		href: withBase('/notes/jingangjing-0611/'),
 		category: 'jingangjing',
 	},
 	{
 		date: '2026年6月10日',
 		title: '我读金刚经感悟 6/10',
 		desc: '该做的事照做，但不要把心黏在结果上。',
-		href: withBase('/notes/jingangjing-0610/'),
 		category: 'jingangjing',
 	},
 	{
 		date: '2026年6月14日',
 		title: '提示词图鉴',
 		desc: 'AI 提示词搜索和灵感发现入口，按场景快速找到可复用模板。',
-		href: 'https://wentao-tab.github.io/Wenxi-ai-clone/',
 		category: 'tool',
-		external: true,
 	},
 	{
 		date: '2026年6月12日',
 		title: '出发吧！从南京',
 		desc: '从南京出发的旅行手账地图，比较目的地、交通方式和门到门耗时。',
-		href: withBase('/tools/nanjing-travel-map/'),
 		category: 'tool',
 	},
 	{
 		date: '2026年6月',
 		title: '凤城全域虚拟电厂智慧驾驶舱',
 		desc: '能源调度、负荷聚合与运行态势感知的智慧驾驶舱项目入口。',
-		href: withBase('/project/fengcheng-vpp/'),
 		category: 'project',
 	},
 	{
 		date: '2026年',
 		title: '我的 2026 年书单',
 		desc: '把读过的书、重读标记和一句话感受整理成时间轴。',
-		href: withBase('/books/'),
 		category: 'reading',
 	},
 	{
 		date: '正在发生',
 		title: '设计&读书思考',
 		desc: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。',
-		href: withBase('/'),
 		category: 'thought',
 	},
 	{
 		date: '关于我',
 		title: '梁文韬的个人介绍',
 		desc: '专注产品、设计，和读书的一些东西。',
-		href: withBase('/about/'),
 		category: 'thought',
 	},
 ];
@@ -138,9 +126,9 @@ const entries = [
 				</div>
 
 				<div class="brand-line">
-					<a class="life-avatar" href={withBase('/about/')} aria-label="关于梁文韬">
+					<button class="life-avatar" type="button" data-panel-filter="thought" data-panel-title="关于" data-panel-desc="一些关于我、设计和读书思考的入口。" aria-label="查看关于内容">
 						<img src={withBase('/assets/author.png')} alt="" />
-					</a>
+					</button>
 					<div>
 						<div class="brand-name">WENTAO</div>
 						<div class="brand-sub" data-life-subtitle>life receipt</div>
@@ -154,7 +142,15 @@ const entries = [
 				<div class="control-line">
 					<nav class="printer-nav" aria-label="生活页导航">
 						{navItems.map((item) => (
-							<a class:list={['printer-btn', { active: item.active }]} href={item.href}>{item.label}</a>
+							<button
+								class:list={['printer-btn', { active: item.active }]}
+								type="button"
+								data-panel-filter={item.filter}
+								data-panel-title={item.title}
+								data-panel-desc={item.desc}
+							>
+								{item.label}
+							</button>
 						))}
 					</nav>
 
@@ -194,10 +190,10 @@ const entries = [
 						<p class="section-label">活动</p>
 						<div class="chip-row">
 							{activities.map((activity) => (
-								<a class="chip chip-link" href={activity.href}>
+								<button class="chip chip-link" type="button" data-filter={activity.filter}>
 									<span>{activity.icon === 'book' ? '冊' : activity.icon === 'tool' ? '⚙' : '▦'}</span>
 									{activity.label}
-								</a>
+								</button>
 							))}
 						</div>
 					</section>
@@ -219,26 +215,27 @@ const entries = [
 
 					<section class="entry-list" data-entry-list>
 						{entries.map((entry) => (
-							<a
+							<button
 								class="entry"
-								href={entry.href}
+								type="button"
 								data-category={entry.category}
-								target={entry.external ? '_blank' : '_self'}
-								rel={entry.external ? 'noreferrer' : undefined}
+								data-entry-title={entry.title}
+								data-entry-desc={entry.desc}
+								data-entry-date={entry.date}
 							>
 								<time>{entry.date}</time>
 								<h2>{entry.title}</h2>
 								<p>{entry.desc}</p>
-							</a>
+							</button>
 						))}
 					</section>
 
 					<footer class="receipt-footer">
 						<span>© 2026 Liang Wentao</span>
 						<div>
-							<a href="https://github.com/wentao-tab/public-portfolio-site" target="_blank" rel="noreferrer">GitHub</a>
-							<a href={withBase('/tools/')}>Tools</a>
-							<a href={withBase('/books/')}>Books</a>
+							<button type="button" data-filter="all">All</button>
+							<button type="button" data-filter="tool">Tools</button>
+							<button type="button" data-filter="reading">Books</button>
 						</div>
 					</footer>
 				</div>
@@ -250,6 +247,7 @@ const entries = [
 <script>
 	const page = document.querySelector('[data-life-page]');
 	const chips = [...document.querySelectorAll('[data-filter]')] as HTMLButtonElement[];
+	const panelButtons = [...document.querySelectorAll('[data-panel-filter]')] as HTMLButtonElement[];
 	const entries = [...document.querySelectorAll('.entry')] as HTMLElement[];
 	const count = document.querySelector('[data-entry-count]');
 	const receiptTitle = document.querySelector('[data-receipt-title]');
@@ -272,19 +270,49 @@ const entries = [
 		count.textContent = String(entries.filter((entry) => entry.style.display !== 'none').length);
 	};
 
+	const feedPaper = () => {
+		page?.classList.remove('is-printing');
+		requestAnimationFrame(() => page?.classList.add('is-printing'));
+	};
+
+	const applyFilter = (filter = 'all', title?: string, desc?: string) => {
+		const meta = categoryMeta[filter as keyof typeof categoryMeta] ?? categoryMeta.all;
+		entries.forEach((entry) => {
+			entry.style.display = filter === 'all' || entry.dataset.category === filter ? '' : 'none';
+			entry.classList.remove('highlight');
+		});
+		chips.forEach((item) => item.classList.toggle('active', item.dataset.filter === filter));
+		panelButtons.forEach((item) => item.classList.toggle('active', item.dataset.panelFilter === filter && item.dataset.panelTitle === title));
+		if (receiptTitle) receiptTitle.textContent = title || meta.title;
+		if (receiptDesc) receiptDesc.textContent = desc || meta.desc;
+		setCount();
+		feedPaper();
+	};
+
 	chips.forEach((chip) => {
-		chip.addEventListener('click', () => {
-			const filter = chip.dataset.filter ?? 'all';
-			const meta = categoryMeta[filter as keyof typeof categoryMeta] ?? categoryMeta.all;
-			chips.forEach((item) => item.classList.toggle('active', item === chip));
-			entries.forEach((entry) => {
-				entry.style.display = filter === 'all' || entry.dataset.category === filter ? '' : 'none';
-			});
-			if (receiptTitle) receiptTitle.textContent = meta.title;
-			if (receiptDesc) receiptDesc.textContent = meta.desc;
-			setCount();
-			page?.classList.remove('is-printing');
-			requestAnimationFrame(() => page?.classList.add('is-printing'));
+		chip.addEventListener('click', () => applyFilter(chip.dataset.filter ?? 'all'));
+	});
+
+	panelButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			applyFilter(
+				button.dataset.panelFilter ?? 'all',
+				button.dataset.panelTitle,
+				button.dataset.panelDesc,
+			);
+		});
+	});
+
+	entries.forEach((entry) => {
+		entry.addEventListener('click', () => {
+			entries.forEach((item) => item.classList.remove('highlight'));
+			entry.classList.add('highlight');
+			if (receiptTitle) receiptTitle.textContent = entry.dataset.entryTitle || '';
+			if (receiptDesc) {
+				const date = entry.dataset.entryDate ? `${entry.dataset.entryDate} · ` : '';
+				receiptDesc.textContent = `${date}${entry.dataset.entryDesc || ''}`;
+			}
+			feedPaper();
 		});
 	});
 
@@ -294,6 +322,11 @@ const entries = [
 		if (!target) return;
 		target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		target.classList.add('highlight');
+		if (receiptTitle) receiptTitle.textContent = target.dataset.entryTitle || '';
+		if (receiptDesc) {
+			const date = target.dataset.entryDate ? `${target.dataset.entryDate} · ` : '';
+			receiptDesc.textContent = `${date}${target.dataset.entryDesc || ''}`;
+		}
 		setTimeout(() => target.classList.remove('highlight'), 1200);
 	});
 
@@ -496,8 +529,10 @@ const entries = [
 		width: 46px;
 		height: 46px;
 		padding: 5px;
+		border: 0;
 		border-radius: 50%;
 		background: rgba(0, 0, 0, 0.08);
+		cursor: pointer;
 	}
 
 	.life-avatar img {
@@ -566,6 +601,7 @@ const entries = [
 		border-radius: 8px;
 		background: linear-gradient(180deg, #eee8dc, var(--button));
 		color: var(--ink);
+		cursor: pointer;
 		box-shadow:
 			0 6px 0 rgba(102, 92, 74, 0.2),
 			0 8px 14px rgba(0, 0, 0, 0.1),
@@ -796,6 +832,7 @@ const entries = [
 		border-radius: 3px;
 		background: rgba(255, 255, 255, 0.34);
 		color: var(--ink);
+		font-family: var(--font-body);
 		font-size: 0.78rem;
 		text-decoration: none;
 		cursor: pointer;
@@ -818,11 +855,17 @@ const entries = [
 
 	.entry {
 		display: block;
+		width: 100%;
 		padding: 14px 10px;
+		border: 0;
 		border-bottom: 1px dotted rgba(53, 50, 43, 0.12);
 		border-radius: 5px;
+		background: transparent;
 		color: var(--ink);
+		font-family: var(--font-body);
+		text-align: left;
 		text-decoration: none;
+		cursor: pointer;
 		transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 	}
 
@@ -875,12 +918,19 @@ const entries = [
 		gap: 14px;
 	}
 
-	.receipt-footer a {
+	.receipt-footer button {
+		border: 0;
+		background: transparent;
 		color: inherit;
+		font-family: var(--font-type);
+		font-size: inherit;
+		letter-spacing: inherit;
 		text-decoration: none;
+		text-transform: uppercase;
+		cursor: pointer;
 	}
 
-	.receipt-footer a:hover {
+	.receipt-footer button:hover {
 		color: var(--accent);
 	}
 
