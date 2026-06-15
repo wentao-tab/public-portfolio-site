@@ -182,12 +182,9 @@ const categoryMetaJson = JSON.stringify(categoryMeta);
 	const feedPaper = (update?: () => void) => {
 		page?.classList.remove('is-printing');
 		if (paper instanceof HTMLElement) void paper.offsetWidth;
+		update?.();
 		page?.classList.add('is-printing');
-		window.setTimeout(() => {
-			update?.();
-			page?.classList.add('has-fresh-ink');
-		}, 180);
-		window.setTimeout(() => page?.classList.remove('is-printing', 'has-fresh-ink'), 820);
+		window.setTimeout(() => page?.classList.remove('is-printing'), 420);
 	};
 
 	const applyFilter = (filter = 'all', title?: string, desc?: string) => {
@@ -549,7 +546,7 @@ const categoryMetaJson = JSON.stringify(categoryMeta);
 		font-size: 0.96rem;
 		font-weight: 700;
 		text-decoration: none;
-		transition: transform 0.18s ease, box-shadow 0.18s ease;
+		transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
 	}
 
 	.printer-btn:hover,
@@ -891,34 +888,30 @@ const categoryMetaJson = JSON.stringify(categoryMeta);
 	}
 
 	.life-page.is-printing .paper {
-		animation: paper-feed 0.82s cubic-bezier(0.2, 0.8, 0.2, 1);
+		animation: paper-feed 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.life-page.is-printing .paper::before {
-		animation: slot-flash 0.82s ease;
+		animation: slot-flash 0.38s ease;
 	}
 
 	.life-page.is-printing .paper-inner {
-		animation: ink-refresh 0.82s ease;
+		animation: ink-refresh 0.28s ease;
 	}
 
 	@keyframes paper-feed {
 		0% {
-			filter: brightness(0.98);
-			transform: translateY(-56px) scaleY(0.94);
-		}
-
-		30% {
-			filter: brightness(1.02);
+			filter: brightness(0.99);
 			transform: translateY(-18px) scaleY(0.985);
 		}
 
-		58% {
-			transform: translateY(14px) scaleY(1.012);
+		42% {
+			filter: brightness(1.02);
+			transform: translateY(7px) scaleY(1.006);
 		}
 
-		78% {
-			transform: translateY(-4px) scaleY(0.998);
+		72% {
+			transform: translateY(-2px) scaleY(0.999);
 		}
 
 		100% {
@@ -928,41 +921,31 @@ const categoryMetaJson = JSON.stringify(categoryMeta);
 	}
 
 	@keyframes ink-refresh {
-		0%,
-		24% {
-			opacity: 0.28;
-			filter: blur(1.2px);
-			transform: translateY(-10px);
-		}
-
-		62% {
-			opacity: 0.78;
-			filter: blur(0.2px);
-			transform: translateY(3px);
+		0% {
+			opacity: 0.62;
+			filter: contrast(1.08) blur(0.4px);
 		}
 
 		100% {
 			opacity: 1;
-			filter: blur(0);
-			transform: translateY(0);
+			filter: contrast(1) blur(0);
 		}
 	}
 
 	@keyframes slot-flash {
-		0%,
-		18% {
-			opacity: 0.72;
-			transform: translateY(-12px);
+		0% {
+			opacity: 0.5;
+			transform: translateY(-6px);
 		}
 
-		60% {
-			opacity: 0.28;
-			transform: translateY(8px);
+		48% {
+			opacity: 0.22;
+			transform: translateY(3px);
 		}
 
 		100% {
 			opacity: 0;
-			transform: translateY(18px);
+			transform: translateY(10px);
 		}
 	}
 
