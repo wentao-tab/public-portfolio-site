@@ -5,9 +5,9 @@ import { withBase } from '../utils/paths';
 const navItems = [
 	{ label: '主页', href: withBase('/') },
 	{ label: '生活', href: withBase('/life'), active: true },
-	{ label: '项目', href: withBase('/project') },
-	{ label: '书单', href: withBase('/books') },
-	{ label: '工具', href: withBase('/tools') },
+	{ label: '技术', href: withBase('/tools') },
+	{ label: '作品', href: withBase('/project') },
+	{ label: '关于', href: withBase('/about') },
 ];
 
 const activities = [
@@ -17,12 +17,12 @@ const activities = [
 ];
 
 const categories = [
-	{ label: '全部', value: 'all', count: 10 },
-	{ label: '金刚经', value: 'jingangjing', count: 4 },
-	{ label: '工具', value: 'tool', count: 2 },
-	{ label: '项目', value: 'project', count: 1 },
-	{ label: '书单', value: 'reading', count: 1 },
-	{ label: '观察', value: 'thought', count: 2 },
+	{ label: '全部', value: 'all', count: 10, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
+	{ label: '金刚经', value: 'jingangjing', count: 4, title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
+	{ label: '工具', value: 'tool', count: 2, title: '工具', desc: '自己做的小工具和轻量入口。' },
+	{ label: '项目', value: 'project', count: 1, title: '项目', desc: '近期作品和项目入口。' },
+	{ label: '书单', value: 'reading', count: 1, title: '书单', desc: '阅读记录、书单和重读标记。' },
+	{ label: '观察', value: 'thought', count: 2, title: '观察', desc: '产品、设计和日常想法。' },
 ];
 
 const entries = [
@@ -176,7 +176,8 @@ const entries = [
 					<div class="receipt-title">
 						<div>
 							<p class="kicker">PRINTED LIFE</p>
-							<h1>生活</h1>
+							<h1 data-receipt-title>生活</h1>
+							<p class="receipt-desc" data-receipt-desc>读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。</p>
 							<p class="count"><span data-entry-count>{entries.length}</span> 条</p>
 						</div>
 						<button class="mini-print" type="button" data-random-entry>随机吐一张</button>
@@ -244,10 +245,20 @@ const entries = [
 	const chips = [...document.querySelectorAll('[data-filter]')] as HTMLButtonElement[];
 	const entries = [...document.querySelectorAll('.entry')] as HTMLElement[];
 	const count = document.querySelector('[data-entry-count]');
+	const receiptTitle = document.querySelector('[data-receipt-title]');
+	const receiptDesc = document.querySelector('[data-receipt-desc]');
 	const randomButton = document.querySelector('[data-random-entry]');
 	const themeButton = document.querySelector('[data-life-theme]');
 	const langButton = document.querySelector('[data-life-lang]');
 	const subtitle = document.querySelector('[data-life-subtitle]');
+	const categoryMeta = {
+		all: { title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
+		jingangjing: { title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
+		tool: { title: '工具', desc: '自己做的小工具和轻量入口。' },
+		project: { title: '项目', desc: '近期作品和项目入口。' },
+		reading: { title: '书单', desc: '阅读记录、书单和重读标记。' },
+		thought: { title: '观察', desc: '产品、设计和日常想法。' },
+	};
 
 	const setCount = () => {
 		if (!count) return;
@@ -256,11 +267,14 @@ const entries = [
 
 	chips.forEach((chip) => {
 		chip.addEventListener('click', () => {
-			const filter = chip.dataset.filter;
+			const filter = chip.dataset.filter ?? 'all';
+			const meta = categoryMeta[filter as keyof typeof categoryMeta] ?? categoryMeta.all;
 			chips.forEach((item) => item.classList.toggle('active', item === chip));
 			entries.forEach((entry) => {
 				entry.style.display = filter === 'all' || entry.dataset.category === filter ? '' : 'none';
 			});
+			if (receiptTitle) receiptTitle.textContent = meta.title;
+			if (receiptDesc) receiptDesc.textContent = meta.desc;
 			setCount();
 			page?.classList.remove('is-printing');
 			requestAnimationFrame(() => page?.classList.add('is-printing'));
@@ -290,8 +304,8 @@ const entries = [
 </script>
 
 <style lang="scss">
-	:global(nav),
-	:global(footer) {
+	:global(body > div > nav),
+	:global(body > div > footer) {
 		display: none !important;
 	}
 
@@ -525,27 +539,31 @@ const entries = [
 		align-items: center;
 		justify-content: space-between;
 		gap: 24px;
-		padding: 0 38px 28px;
+		padding: 6px 38px 30px;
 	}
 
 	.printer-nav {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
+		gap: 14px;
 	}
 
 	.printer-btn {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-height: 34px;
-		padding: 0 16px;
-		border: 1px solid rgba(60, 50, 36, 0.14);
-		border-radius: 6px;
-		background: var(--button);
+		min-width: 82px;
+		min-height: 46px;
+		padding: 0 18px;
+		border: 1px solid rgba(60, 50, 36, 0.18);
+		border-radius: 8px;
+		background: linear-gradient(180deg, #eee8dc, var(--button));
 		color: var(--ink);
-		box-shadow: 0 4px 0 rgba(0, 0, 0, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-		font-size: 0.82rem;
+		box-shadow:
+			0 6px 0 rgba(102, 92, 74, 0.2),
+			0 8px 14px rgba(0, 0, 0, 0.1),
+			inset 0 1px 0 rgba(255, 255, 255, 0.55);
+		font-size: 0.96rem;
 		font-weight: 700;
 		text-decoration: none;
 		transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -554,7 +572,10 @@ const entries = [
 	.printer-btn:hover,
 	.printer-btn.active {
 		transform: translateY(2px);
-		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+		box-shadow:
+			0 3px 0 rgba(102, 92, 74, 0.22),
+			0 5px 9px rgba(0, 0, 0, 0.09),
+			inset 0 1px 0 rgba(255, 255, 255, 0.35);
 		text-decoration: none;
 	}
 
@@ -716,6 +737,14 @@ const entries = [
 		margin: 10px 0 0;
 		color: var(--muted);
 		font-size: 0.82rem;
+	}
+
+	.receipt-desc {
+		max-width: 420px;
+		margin: 8px 0 0;
+		color: var(--muted);
+		font-size: 0.92rem;
+		line-height: 1.8;
 	}
 
 	.mini-print {
