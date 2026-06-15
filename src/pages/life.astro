@@ -184,7 +184,7 @@ const categoryMetaJson = JSON.stringify(categoryMeta);
 		if (paper instanceof HTMLElement) void paper.offsetWidth;
 		update?.();
 		page?.classList.add('is-printing');
-		window.setTimeout(() => page?.classList.remove('is-printing'), 760);
+		window.setTimeout(() => page?.classList.remove('is-printing'), 640);
 	};
 
 	const applyFilter = (filter = 'all', title?: string, desc?: string) => {
@@ -888,73 +888,32 @@ const categoryMetaJson = JSON.stringify(categoryMeta);
 	}
 
 	.life-page.is-printing .paper {
-		animation: paper-feed 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+		animation: paper-feed 0.62s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.life-page.is-printing .paper::before {
-		animation: slot-flash 0.72s ease;
-	}
-
-	.life-page.is-printing .paper-inner {
-		animation: ink-refresh 0.46s ease;
+		animation: slot-flash 0.62s ease;
 	}
 
 	@keyframes paper-feed {
 		0% {
-			filter: brightness(0.99);
-			transform: translateY(-34px) scaleY(0.97);
-		}
-
-		34% {
-			filter: brightness(1.02);
-			transform: translateY(-14px) scaleY(0.99);
-		}
-
-		62% {
-			transform: translateY(-5px) scaleY(0.997);
-		}
-
-		82% {
-			transform: translateY(-1px) scaleY(0.999);
+			transform: translate3d(0, -28px, 0);
 		}
 
 		100% {
-			filter: brightness(1);
-			transform: translateY(0) scaleY(1);
-		}
-	}
-
-	@keyframes ink-refresh {
-		0% {
-			opacity: 0.48;
-			filter: contrast(1.08) blur(0.5px);
-		}
-
-		55% {
-			opacity: 0.84;
-			filter: contrast(1.04) blur(0.15px);
-		}
-
-		100% {
-			opacity: 1;
-			filter: contrast(1) blur(0);
+			transform: translate3d(0, 0, 0);
 		}
 	}
 
 	@keyframes slot-flash {
 		0% {
-			opacity: 0.58;
-			transform: translateY(-10px);
-		}
-
-		46% {
-			opacity: 0.26;
-			transform: translateY(5px);
+			opacity: 0.38;
+			transform: translate3d(0, -8px, 0);
 		}
 
 		100% {
 			opacity: 0;
-			transform: translateY(16px);
+			transform: translate3d(0, 10px, 0);
 		}
 	}
 
