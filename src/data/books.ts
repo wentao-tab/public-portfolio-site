@@ -33,6 +33,8 @@ export const books2026: BookItem[] = [
 	{ no: 24, title: '沉思录', note: '帝王的深夜自省，至今仍是斯多葛派的床头书。', tone: 'stone' },
 	{ no: 25, title: '赞美闲散', note: '为“无用”正名，闲散不是懒惰而是对抗异化的温柔反抗。', tone: 'paper' },
 	{ no: 26, title: '周易说什么', note: '化玄奥为平易，将卦象哲理拉回日常决策与修身之道。', mark: '韩鹏杰', tone: 'gold' },
+	{ no: 27, title: '十一种孤独', mark: '理查德·耶茨', tone: 'blue' },
+	{ no: 28, title: '鹅之书', mark: '李翊云', tone: 'paper' },
 ];
 
 export const bookStats = {
