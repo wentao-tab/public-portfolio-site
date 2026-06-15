@@ -1,0 +1,924 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/paths';
+
+const navItems = [
+	{ label: '主页', href: withBase('/') },
+	{ label: '生活', href: withBase('/life'), active: true },
+	{ label: '项目', href: withBase('/project') },
+	{ label: '书单', href: withBase('/books') },
+	{ label: '工具', href: withBase('/tools') },
+];
+
+const activities = [
+	{ label: '最近阅读', href: withBase('/books'), icon: 'book' },
+	{ label: '工具实验', href: withBase('/tools'), icon: 'tool' },
+	{ label: '项目入口', href: withBase('/project'), icon: 'grid' },
+];
+
+const categories = [
+	{ label: '全部', value: 'all', count: 10 },
+	{ label: '金刚经', value: 'jingangjing', count: 4 },
+	{ label: '工具', value: 'tool', count: 2 },
+	{ label: '项目', value: 'project', count: 1 },
+	{ label: '书单', value: 'reading', count: 1 },
+	{ label: '观察', value: 'thought', count: 2 },
+];
+
+const entries = [
+	{
+		date: '2026年6月14日',
+		title: '不取法，不取非法。',
+		desc: '不要被规则绑住，也不要用“反规则”绑住自己。',
+		href: withBase('/notes/jingangjing-0614/'),
+		category: 'jingangjing',
+	},
+	{
+		date: '2026年6月12日',
+		title: '过去心不可得，现在心不可得，未来心不可得。',
+		desc: '过去用于复盘，未来用于规划，现在用于执行。',
+		href: withBase('/notes/jingangjing-0612/'),
+		category: 'jingangjing',
+	},
+	{
+		date: '2026年6月11日',
+		title: '凡所有相，皆是虚妄。',
+		desc: '看见相，但不马上下结论。',
+		href: withBase('/notes/jingangjing-0611/'),
+		category: 'jingangjing',
+	},
+	{
+		date: '2026年6月10日',
+		title: '我读金刚经感悟 6/10',
+		desc: '该做的事照做，但不要把心黏在结果上。',
+		href: withBase('/notes/jingangjing-0610/'),
+		category: 'jingangjing',
+	},
+	{
+		date: '2026年6月14日',
+		title: '提示词图鉴',
+		desc: 'AI 提示词搜索和灵感发现入口，按场景快速找到可复用模板。',
+		href: 'https://wentao-tab.github.io/Wenxi-ai-clone/',
+		category: 'tool',
+		external: true,
+	},
+	{
+		date: '2026年6月12日',
+		title: '出发吧！从南京',
+		desc: '从南京出发的旅行手账地图，比较目的地、交通方式和门到门耗时。',
+		href: withBase('/tools/nanjing-travel-map/'),
+		category: 'tool',
+	},
+	{
+		date: '2026年6月',
+		title: '凤城全域虚拟电厂智慧驾驶舱',
+		desc: '能源调度、负荷聚合与运行态势感知的智慧驾驶舱项目入口。',
+		href: withBase('/project/fengcheng-vpp/'),
+		category: 'project',
+	},
+	{
+		date: '2026年',
+		title: '我的 2026 年书单',
+		desc: '把读过的书、重读标记和一句话感受整理成时间轴。',
+		href: withBase('/books/'),
+		category: 'reading',
+	},
+	{
+		date: '正在发生',
+		title: '设计&读书思考',
+		desc: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。',
+		href: withBase('/'),
+		category: 'thought',
+	},
+	{
+		date: '关于我',
+		title: '梁文韬的个人介绍',
+		desc: '专注产品、设计，和读书的一些东西。',
+		href: withBase('/about/'),
+		category: 'thought',
+	},
+];
+---
+
+<BaseLayout
+	title="梁文韬的生活小票"
+	description="梁文韬的生活入口，整理读书、工具、项目和日常观察。"
+	keywords="梁文韬,生活,读书,工具,项目,观察"
+>
+	<main class="life-page" data-life-page>
+		<div class="snail-lane" aria-hidden="true">
+			<div class="snail">
+				<svg viewBox="0 0 60 36" role="img">
+					<path class="snail-foot" d="M8 34 C3.5 34 3.5 29.4 9 28.2 C18 26.5 42 26.5 51 28.2 C56.5 29.4 56.5 34 52 34 Z" />
+					<path class="snail-neck" d="M24.5 31 C23.5 25 25 22.8 30 22.8 C35 22.8 36.5 25 35.5 31 Z" />
+					<path class="snail-stalk" d="M28 24 C27 19 26.8 15 26.5 11" />
+					<path class="snail-stalk" d="M32 23.6 C33 18 33.4 14 33.8 9.2" />
+					<circle class="snail-eye" cx="26.5" cy="10.4" r="2.4" />
+					<circle class="snail-eye" cx="33.8" cy="8.8" r="2.6" />
+					<circle class="snail-shell" cx="30" cy="19" r="12" />
+					<path class="snail-spiral" d="M30 19 C30 16.6 33 16.6 33 19.6 C33 23.6 27 23.6 27 18.6 C27 13.2 35.6 13.2 35.6 19.6 C35.6 27 23 27 23 18.6 C23 10.2 38.6 10.2 38.6 19.6" />
+				</svg>
+			</div>
+		</div>
+
+		<section class="printer">
+			<header class="printer-head">
+				<div class="stickers" aria-hidden="true">
+					<span class="sticker sticker-red">Swift</span>
+					<span class="sticker sticker-blue">AI</span>
+					<span class="sticker sticker-star">✳</span>
+					<span class="sticker sticker-cloud">☁</span>
+				</div>
+
+				<div class="brand-line">
+					<a class="life-avatar" href={withBase('/about/')} aria-label="关于梁文韬">
+						<img src={withBase('/assets/author.png')} alt="" />
+					</a>
+					<div>
+						<div class="brand-name">WENTAO</div>
+						<div class="brand-sub" data-life-subtitle>life receipt</div>
+					</div>
+					<div class="power">
+						<span></span>
+						<small>ON</small>
+					</div>
+				</div>
+
+				<div class="control-line">
+					<nav class="printer-nav" aria-label="生活页导航">
+						{navItems.map((item) => (
+							<a class:list={['printer-btn', { active: item.active }]} href={item.href}>{item.label}</a>
+						))}
+					</nav>
+
+					<div class="knobs" aria-label="页面控制">
+						<button class="dial" type="button" data-life-lang aria-label="切换显示语言">
+							<span class="dial-label dial-left">EN</span>
+							<span class="dial-label dial-right active">中</span>
+							<i></i>
+						</button>
+						<button class="dial" type="button" data-life-theme aria-label="切换主题">
+							<span class="dial-label dial-left active">亮</span>
+							<span class="dial-label dial-right">暗</span>
+							<i></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="paper-slot" aria-hidden="true"></div>
+			</header>
+
+			<section class="paper">
+				<div class="paper-holes left" aria-hidden="true"></div>
+				<div class="paper-holes right" aria-hidden="true"></div>
+
+				<div class="paper-inner">
+					<div class="receipt-title">
+						<div>
+							<p class="kicker">PRINTED LIFE</p>
+							<h1>生活</h1>
+							<p class="count"><span data-entry-count>{entries.length}</span> 条</p>
+						</div>
+						<button class="mini-print" type="button" data-random-entry>随机吐一张</button>
+					</div>
+
+					<section class="receipt-section">
+						<p class="section-label">活动</p>
+						<div class="chip-row">
+							{activities.map((activity) => (
+								<a class="chip chip-link" href={activity.href}>
+									<span>{activity.icon === 'book' ? '冊' : activity.icon === 'tool' ? '⚙' : '▦'}</span>
+									{activity.label}
+								</a>
+							))}
+						</div>
+					</section>
+
+					<section class="receipt-section">
+						<p class="section-label">分类</p>
+						<div class="chip-row" data-filter-row>
+							{categories.map((category) => (
+								<button
+									class:list={['chip', 'filter-chip', { active: category.value === 'all' }]}
+									type="button"
+									data-filter={category.value}
+								>
+									{category.label} ({category.count})
+								</button>
+							))}
+						</div>
+					</section>
+
+					<section class="entry-list" data-entry-list>
+						{entries.map((entry) => (
+							<a
+								class="entry"
+								href={entry.href}
+								data-category={entry.category}
+								target={entry.external ? '_blank' : '_self'}
+								rel={entry.external ? 'noreferrer' : undefined}
+							>
+								<time>{entry.date}</time>
+								<h2>{entry.title}</h2>
+								<p>{entry.desc}</p>
+							</a>
+						))}
+					</section>
+
+					<footer class="receipt-footer">
+						<span>© 2026 Liang Wentao</span>
+						<div>
+							<a href="https://github.com/wentao-tab/public-portfolio-site" target="_blank" rel="noreferrer">GitHub</a>
+							<a href={withBase('/tools/')}>Tools</a>
+							<a href={withBase('/books/')}>Books</a>
+						</div>
+					</footer>
+				</div>
+			</section>
+		</section>
+	</main>
+</BaseLayout>
+
+<script>
+	const page = document.querySelector('[data-life-page]');
+	const chips = [...document.querySelectorAll('[data-filter]')] as HTMLButtonElement[];
+	const entries = [...document.querySelectorAll('.entry')] as HTMLElement[];
+	const count = document.querySelector('[data-entry-count]');
+	const randomButton = document.querySelector('[data-random-entry]');
+	const themeButton = document.querySelector('[data-life-theme]');
+	const langButton = document.querySelector('[data-life-lang]');
+	const subtitle = document.querySelector('[data-life-subtitle]');
+
+	const setCount = () => {
+		if (!count) return;
+		count.textContent = String(entries.filter((entry) => entry.style.display !== 'none').length);
+	};
+
+	chips.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			const filter = chip.dataset.filter;
+			chips.forEach((item) => item.classList.toggle('active', item === chip));
+			entries.forEach((entry) => {
+				entry.style.display = filter === 'all' || entry.dataset.category === filter ? '' : 'none';
+			});
+			setCount();
+			page?.classList.remove('is-printing');
+			requestAnimationFrame(() => page?.classList.add('is-printing'));
+		});
+	});
+
+	randomButton?.addEventListener('click', () => {
+		const visible = entries.filter((entry) => entry.style.display !== 'none');
+		const target = visible[Math.floor(Math.random() * visible.length)];
+		if (!target) return;
+		target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		target.classList.add('highlight');
+		setTimeout(() => target.classList.remove('highlight'), 1200);
+	});
+
+	themeButton?.addEventListener('click', () => {
+		document.documentElement.classList.toggle('theme-dark');
+		themeButton.classList.toggle('active');
+	});
+
+	langButton?.addEventListener('click', () => {
+		langButton.classList.toggle('active');
+		if (subtitle) {
+			subtitle.textContent = langButton.classList.contains('active') ? 'life printer' : 'life receipt';
+		}
+	});
+</script>
+
+<style lang="scss">
+	:global(nav),
+	:global(footer) {
+		display: none !important;
+	}
+
+	:global(body) {
+		background: #dfe0d7;
+	}
+
+	.life-page {
+		--life-bg: #dfe0d7;
+		--printer: #efeadf;
+		--printer-dark: #d9d2c4;
+		--paper: #fffdf5;
+		--ink: #35322b;
+		--muted: rgba(53, 50, 43, 0.56);
+		--faint: rgba(53, 50, 43, 0.09);
+		--accent: #b37b45;
+		--button: #d9d0bf;
+		min-height: 100vh;
+		padding: 38px 16px 68px;
+		background:
+			linear-gradient(rgba(80, 82, 70, 0.06) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(80, 82, 70, 0.06) 1px, transparent 1px),
+			var(--life-bg);
+		background-size: 48px 48px;
+		color: var(--ink);
+		font-family: var(--font-body);
+	}
+
+	:global(.theme-dark) .life-page {
+		--life-bg: #181a17;
+		--printer: #282821;
+		--printer-dark: #171713;
+		--paper: #202018;
+		--ink: #eee8d6;
+		--muted: rgba(238, 232, 214, 0.58);
+		--faint: rgba(238, 232, 214, 0.1);
+		--button: #39372d;
+		background-color: var(--life-bg);
+	}
+
+	.snail-lane {
+		position: fixed;
+		top: 16px;
+		left: 0;
+		right: 0;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.snail {
+		width: 46px;
+		margin-left: 22%;
+		animation: snail-walk 28s linear infinite alternate;
+	}
+
+	.snail svg {
+		display: block;
+		width: 100%;
+		filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1));
+	}
+
+	.snail-foot,
+	.snail-neck {
+		fill: #c7b98c;
+	}
+
+	.snail-stalk,
+	.snail-spiral {
+		fill: none;
+		stroke: #7c6a43;
+		stroke-linecap: round;
+		stroke-width: 1.8;
+	}
+
+	.snail-eye {
+		fill: #f4e8bd;
+		stroke: #7c6a43;
+		stroke-width: 1;
+	}
+
+	.snail-shell {
+		fill: #d9a14b;
+		stroke: #8f6c38;
+		stroke-width: 1.5;
+	}
+
+	@keyframes snail-walk {
+		from { transform: translateX(0); }
+		to { transform: translateX(56vw); }
+	}
+
+	.printer {
+		position: relative;
+		z-index: 2;
+		max-width: 760px;
+		margin: 0 auto;
+	}
+
+	.printer-head {
+		position: relative;
+		z-index: 4;
+		overflow: hidden;
+		border-radius: 36px 36px 4px 4px;
+		background: linear-gradient(180deg, #f8f2e8, var(--printer));
+		box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+	}
+
+	:global(.theme-dark) .printer-head {
+		background: linear-gradient(180deg, #323229, var(--printer));
+	}
+
+	.stickers {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		z-index: 1;
+		opacity: 0.72;
+	}
+
+	.sticker {
+		position: absolute;
+		display: grid;
+		place-items: center;
+		width: 38px;
+		height: 38px;
+		border-radius: 11px;
+		background: #fff;
+		box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+		color: #4b6aa8;
+		font-family: var(--font-type);
+		font-size: 0.62rem;
+		font-weight: 700;
+		transform: rotate(-8deg);
+	}
+
+	.sticker-red {
+		left: 22px;
+		top: 12px;
+		background: #ef5b3d;
+		color: #fff;
+		transform: rotate(-8deg) scale(0.82);
+	}
+
+	.sticker-blue {
+		left: 258px;
+		top: 64px;
+		background: #4d7edb;
+		color: #fff;
+		transform: rotate(-9deg) scale(0.9);
+	}
+
+	.sticker-star {
+		left: 50%;
+		top: 24px;
+		color: #d95c4b;
+		font-size: 1.6rem;
+		box-shadow: none;
+		background: transparent;
+	}
+
+	.sticker-cloud {
+		right: 210px;
+		top: 30px;
+		color: #f0822d;
+		box-shadow: none;
+		background: transparent;
+		font-size: 1.5rem;
+	}
+
+	.brand-line {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		padding: 36px 38px 22px;
+	}
+
+	.life-avatar {
+		display: block;
+		width: 46px;
+		height: 46px;
+		padding: 5px;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.08);
+	}
+
+	.life-avatar img {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	.brand-name {
+		font-family: var(--font-type);
+		font-size: 1rem;
+		letter-spacing: 0.24em;
+	}
+
+	.brand-sub {
+		margin-top: 3px;
+		color: var(--muted);
+		font-family: var(--font-type);
+		font-size: 0.62rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.power {
+		margin-left: auto;
+		display: grid;
+		justify-items: center;
+		gap: 4px;
+		font-family: var(--font-type);
+		font-size: 0.56rem;
+		color: var(--muted);
+	}
+
+	.power span {
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		background: #28c36f;
+		box-shadow: 0 0 14px rgba(40, 195, 111, 0.7);
+	}
+
+	.control-line {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 0 38px 28px;
+	}
+
+	.printer-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.printer-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 34px;
+		padding: 0 16px;
+		border: 1px solid rgba(60, 50, 36, 0.14);
+		border-radius: 6px;
+		background: var(--button);
+		color: var(--ink);
+		box-shadow: 0 4px 0 rgba(0, 0, 0, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+		font-size: 0.82rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: transform 0.18s ease, box-shadow 0.18s ease;
+	}
+
+	.printer-btn:hover,
+	.printer-btn.active {
+		transform: translateY(2px);
+		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+		text-decoration: none;
+	}
+
+	.knobs {
+		display: flex;
+		gap: 22px;
+	}
+
+	.dial {
+		position: relative;
+		width: 42px;
+		height: 42px;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.dial::before {
+		content: "";
+		position: absolute;
+		inset: 8px;
+		border-radius: 50%;
+		background: #e7decf;
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.08);
+	}
+
+	.dial i {
+		position: absolute;
+		inset: 12px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, #fff8ec, #d5c7b3);
+		transition: transform 0.25s ease;
+	}
+
+	.dial i::after {
+		content: "";
+		position: absolute;
+		top: 3px;
+		left: 50%;
+		width: 2px;
+		height: 8px;
+		border-radius: 2px;
+		background: var(--accent);
+		transform: translateX(-50%);
+	}
+
+	.dial.active i {
+		transform: rotate(105deg);
+	}
+
+	.dial-label {
+		position: absolute;
+		top: -6px;
+		color: var(--muted);
+		font-family: var(--font-type);
+		font-size: 0.55rem;
+	}
+
+	.dial-left {
+		left: -6px;
+	}
+
+	.dial-right {
+		right: -6px;
+	}
+
+	.dial-label.active {
+		color: var(--accent);
+	}
+
+	.paper-slot {
+		position: relative;
+		height: 20px;
+		background: var(--printer-dark);
+		box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15);
+	}
+
+	.paper-slot::after {
+		content: "";
+		position: absolute;
+		left: 34px;
+		right: 34px;
+		top: 7px;
+		height: 6px;
+		border-radius: 2px;
+		background: rgba(0, 0, 0, 0.58);
+	}
+
+	.paper {
+		position: relative;
+		z-index: 3;
+		width: calc(100% - 78px);
+		margin: -8px auto 0;
+		background:
+			radial-gradient(circle, rgba(70, 65, 50, 0.08) 0 1px, transparent 1px),
+			var(--paper);
+		background-size: 8px 8px;
+		box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+		clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 98% 100%, 96% calc(100% - 8px), 94% 100%, 92% calc(100% - 8px), 90% 100%, 88% calc(100% - 8px), 86% 100%, 84% calc(100% - 8px), 82% 100%, 80% calc(100% - 8px), 78% 100%, 76% calc(100% - 8px), 74% 100%, 72% calc(100% - 8px), 70% 100%, 68% calc(100% - 8px), 66% 100%, 64% calc(100% - 8px), 62% 100%, 60% calc(100% - 8px), 58% 100%, 56% calc(100% - 8px), 54% 100%, 52% calc(100% - 8px), 50% 100%, 48% calc(100% - 8px), 46% 100%, 44% calc(100% - 8px), 42% 100%, 40% calc(100% - 8px), 38% 100%, 36% calc(100% - 8px), 34% 100%, 32% calc(100% - 8px), 30% 100%, 28% calc(100% - 8px), 26% 100%, 24% calc(100% - 8px), 22% 100%, 20% calc(100% - 8px), 18% 100%, 16% calc(100% - 8px), 14% 100%, 12% calc(100% - 8px), 10% 100%, 8% calc(100% - 8px), 6% 100%, 4% calc(100% - 8px), 2% 100%, 0 calc(100% - 8px));
+	}
+
+	.paper-inner {
+		position: relative;
+		padding: 44px 44px 74px;
+	}
+
+	.paper-holes {
+		position: absolute;
+		top: 18px;
+		bottom: 28px;
+		width: 16px;
+		background-image: radial-gradient(circle, transparent 0 3px, rgba(53, 50, 43, 0.1) 3.4px, transparent 4px);
+		background-size: 16px 28px;
+		opacity: 0.72;
+	}
+
+	.paper-holes.left {
+		left: 4px;
+	}
+
+	.paper-holes.right {
+		right: 4px;
+	}
+
+	.receipt-title {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 20px;
+		margin-bottom: 34px;
+	}
+
+	.kicker,
+	.section-label,
+	.count,
+	.entry time,
+	.receipt-footer {
+		font-family: var(--font-type);
+	}
+
+	.kicker {
+		margin: 0 0 10px;
+		color: var(--muted);
+		font-size: 0.72rem;
+		letter-spacing: 0.18em;
+	}
+
+	.receipt-title h1 {
+		margin: 0;
+		color: var(--ink);
+		font-family: 'Huiwen-mincho', serif;
+		font-size: 2.35rem;
+		font-weight: 400;
+		line-height: 1;
+		text-align: left;
+	}
+
+	.count {
+		margin: 10px 0 0;
+		color: var(--muted);
+		font-size: 0.82rem;
+	}
+
+	.mini-print {
+		min-height: 32px;
+		padding: 0 12px;
+		border: 1px solid var(--faint);
+		border-radius: 4px;
+		background: rgba(255, 255, 255, 0.42);
+		color: var(--ink);
+		font-size: 0.78rem;
+		cursor: pointer;
+	}
+
+	.receipt-section {
+		margin-bottom: 34px;
+	}
+
+	.section-label {
+		display: inline-flex;
+		align-items: center;
+		margin: 0 0 12px;
+		padding: 4px 10px;
+		background: rgba(53, 50, 43, 0.05);
+		color: var(--muted);
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+	}
+
+	.chip-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		min-height: 28px;
+		padding: 0 10px;
+		border: 1px solid rgba(53, 50, 43, 0.13);
+		border-radius: 3px;
+		background: rgba(255, 255, 255, 0.34);
+		color: var(--ink);
+		font-size: 0.78rem;
+		text-decoration: none;
+		cursor: pointer;
+		transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+	}
+
+	.chip:hover,
+	.chip.active {
+		background: rgba(179, 123, 69, 0.14);
+		color: var(--accent);
+		text-decoration: none;
+		transform: translateY(-1px);
+	}
+
+	.entry-list {
+		display: grid;
+		gap: 2px;
+		margin-top: 48px;
+	}
+
+	.entry {
+		display: block;
+		padding: 14px 10px;
+		border-bottom: 1px dotted rgba(53, 50, 43, 0.12);
+		border-radius: 5px;
+		color: var(--ink);
+		text-decoration: none;
+		transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+	}
+
+	.entry:hover,
+	.entry.highlight {
+		background: rgba(179, 123, 69, 0.08);
+		color: var(--accent);
+		text-decoration: none;
+		transform: translateX(4px);
+	}
+
+	.entry time {
+		display: block;
+		margin-bottom: 5px;
+		color: var(--muted);
+		font-size: 0.72rem;
+	}
+
+	.entry h2 {
+		margin: 0;
+		color: currentColor;
+		font-family: 'Huiwen-mincho', serif;
+		font-size: 1.12rem;
+		font-weight: 400;
+		line-height: 1.45;
+		text-align: left;
+	}
+
+	.entry p {
+		margin: 4px 0 0;
+		color: var(--muted);
+		font-size: 0.86rem;
+		line-height: 1.75;
+		text-align: left;
+	}
+
+	.receipt-footer {
+		display: flex;
+		justify-content: space-between;
+		gap: 16px;
+		margin-top: 72px;
+		color: var(--muted);
+		font-size: 0.66rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.receipt-footer div {
+		display: flex;
+		gap: 14px;
+	}
+
+	.receipt-footer a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.receipt-footer a:hover {
+		color: var(--accent);
+	}
+
+	.life-page.is-printing .paper {
+		animation: paper-feed 0.44s ease;
+	}
+
+	@keyframes paper-feed {
+		0% { transform: translateY(-8px); }
+		100% { transform: translateY(0); }
+	}
+
+	@media(max-width: 767px) {
+		.life-page {
+			padding: 22px 12px 46px;
+		}
+
+		.printer-head {
+			border-radius: 24px 24px 4px 4px;
+		}
+
+		.brand-line,
+		.control-line {
+			padding-left: 22px;
+			padding-right: 22px;
+		}
+
+		.control-line {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 14px;
+			padding-top: 4px;
+		}
+
+		.printer-nav {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			width: 100%;
+			gap: 8px;
+		}
+
+		.printer-btn {
+			min-width: 0;
+			padding: 0 8px;
+			font-size: 0.78rem;
+		}
+
+		.knobs {
+			align-self: flex-end;
+			margin-top: 2px;
+		}
+
+		.paper {
+			width: calc(100% - 24px);
+		}
+
+		.paper-inner {
+			padding: 34px 26px 64px;
+		}
+
+		.receipt-title {
+			flex-direction: column;
+		}
+
+		.receipt-title h1 {
+			font-size: 2rem;
+		}
+
+		.receipt-footer {
+			flex-direction: column;
+		}
+
+		.sticker {
+			display: none;
+		}
+	}
+</style>

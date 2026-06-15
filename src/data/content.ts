@@ -21,6 +21,7 @@ export const nav: Nav = {
 	avatar: withBase('/assets/author.png'),
     items: [
         { label: '首页', href: withBase('/'), target: '_self' },// target 为 '_blank' 打开新链接
+        { label: '生活', href: withBase('/life'), target: '_self' },
         { label: '项目', href: withBase('/project'), target: '_self' },
         { label: '关于', href: withBase('/about'), target: '_self' },
         { label: '书单', href: withBase('/books'), target: '_self' },
@@ -145,6 +146,7 @@ interface PageTag {
 	project: string
 	books: string
 	tools: string
+	life: string
 }
 export const pageTag: PageTag = {
 	index: 'PORTFOLIO',
@@ -152,7 +154,8 @@ export const pageTag: PageTag = {
 	blog: 'BLOG',
 	project: 'PROJECT',
 	books: 'READING',
-	tools: 'TOOLS'
+	tools: 'TOOLS',
+	life: 'LIFE'
 }
 
 
@@ -164,6 +167,7 @@ interface PageDescription {
 	about?: string
 	books?: string
 	tools?: string
+	life?: string
 }
 export const pageDescription: PageDescription = {
 	index: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。这里先放几个常用入口，书单和其他内容以后慢慢补。',
@@ -172,6 +176,7 @@ export const pageDescription: PageDescription = {
 	blog: '记录产品、设计、阅读和日常观察。',
 	books: '2026 年阅读时间轴，慢慢补想法和重读标记。',
 	tools: '一些自己做的小工具，先轻量放着，后面慢慢补。',
+	life: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。',
 }
 
 
