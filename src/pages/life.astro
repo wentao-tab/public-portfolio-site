@@ -320,7 +320,6 @@ const entries = [
 		const visible = entries.filter((entry) => entry.style.display !== 'none');
 		const target = visible[Math.floor(Math.random() * visible.length)];
 		if (!target) return;
-		target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		target.classList.add('highlight');
 		if (receiptTitle) receiptTitle.textContent = target.dataset.entryTitle || '';
 		if (receiptDesc) {
@@ -345,8 +344,15 @@ const entries = [
 
 <style lang="scss">
 	:global(body > div > nav),
-	:global(body > div > footer) {
+	:global(body > div > footer),
+	:global(.train-1),
+	:global(.effects) {
 		display: none !important;
+	}
+
+	:global(.train-1),
+	:global(.effects) {
+		pointer-events: none !important;
 	}
 
 	:global(body) {
@@ -388,17 +394,22 @@ const entries = [
 
 	.snail-lane {
 		position: fixed;
-		top: 16px;
-		left: 0;
-		right: 0;
-		z-index: 1;
+		top: 10px;
+		left: 50%;
+		z-index: 3;
+		width: min(760px, calc(100vw - 32px));
+		height: 48px;
+		overflow: hidden;
 		pointer-events: none;
+		transform: translateX(-50%);
 	}
 
 	.snail {
+		position: absolute;
+		top: 0;
+		left: 86px;
 		width: 46px;
-		margin-left: 22%;
-		animation: snail-walk 28s linear infinite alternate;
+		animation: snail-idle 4.8s ease-in-out infinite;
 	}
 
 	.snail svg {
@@ -432,9 +443,19 @@ const entries = [
 		stroke-width: 1.5;
 	}
 
-	@keyframes snail-walk {
-		from { transform: translateX(0); }
-		to { transform: translateX(56vw); }
+	@keyframes snail-idle {
+		0%,
+		100% {
+			transform: translate3d(0, 0, 0) rotate(-1deg);
+		}
+
+		45% {
+			transform: translate3d(10px, -2px, 0) rotate(1deg);
+		}
+
+		70% {
+			transform: translate3d(5px, 1px, 0) rotate(0deg);
+		}
 	}
 
 	.printer {
@@ -946,6 +967,17 @@ const entries = [
 	@media(max-width: 767px) {
 		.life-page {
 			padding: 22px 12px 46px;
+		}
+
+		.snail-lane {
+			top: 6px;
+			width: calc(100vw - 24px);
+			height: 42px;
+		}
+
+		.snail {
+			left: 34px;
+			width: 40px;
 		}
 
 		.printer-head {
