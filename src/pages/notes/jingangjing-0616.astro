@@ -1,0 +1,160 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="无所得"
+	description="真正有价值的成长，常常不是多拿到什么，而是少被什么牵着走。"
+	keywords="金刚经,无所得,读书感悟,阅读笔记"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.06.16</div>
+			<h1 class="font-huiwen">无所得。</h1>
+			<p class="lead">真正有价值的成长，常常不是“多拿到什么”，而是少被什么牵着走。</p>
+			<p>我们做事很容易带着一个隐形目标：我要得到认可、得到确定感、得到安全、得到一个证明自己没白忙的结果。这样当然能推动行动，但也会让心越来越紧。因为一旦没得到，就觉得失败；得到以后，又怕失去。</p>
+			<p>《金刚经》说“无所得”，不是说不要结果，也不是躺平。它更像是在提醒：结果可以追求，但不要把结果变成心的主人。你可以争取成事，但不要把“成了”当作自己的全部价值；你可以学习进步，但不要执着于“我终于变成某种人”。</p>
+			<p>无所得的好处，是让行动更干净。今天该写就写，该谈就谈，该改就改。做完以后，收获自然留下，没必要再抓着它反复确认。</p>
+			<p>很多时候，人不是缺少所得，而是被“必须有所得”困住了。</p>
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天做一件事时，把目标写清楚，但做完后只复盘行动，不审判自己值不值得。</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0616-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		color: #9b7a35;
+		font-family: var(--font-type);
+		font-size: 0.82rem;
+		letter-spacing: 0.04em;
+	}
+
+	.note-reminder {
+		margin-top: 44px;
+		padding: 22px 0 0 22px;
+		border-top: 1px solid rgba(184, 138, 55, 0.22);
+		border-left: 3px solid rgba(184, 138, 55, 0.7);
+
+		h2 {
+			margin-bottom: 12px;
+			color: var(--color-100);
+			font-size: 1.28rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	@media(max-width: 767px) {
+		.note-hero {
+			width: calc(100vw - 32px);
+			margin-top: 34px;
+			margin-bottom: 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+
+			p {
+				font-size: 1rem;
+				line-height: 1.95;
+			}
+		}
+	}
+</style>

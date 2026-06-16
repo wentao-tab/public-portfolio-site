@@ -17,8 +17,8 @@ export const personalSite2 = {
 		{ label: '项目入口', filter: 'project', icon: 'grid' },
 	],
 	categories: [
-		{ label: '全部', value: 'all', count: 11, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
-		{ label: '金刚经', value: 'jingangjing', count: 5, title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
+		{ label: '全部', value: 'all', count: 12, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
+		{ label: '金刚经', value: 'jingangjing', count: 6, title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
 		{ label: '工具', value: 'tool', count: 2, title: '工具', desc: '自己做的小工具和轻量入口。' },
 		{ label: '项目', value: 'project', count: 1, title: '项目', desc: '近期作品和项目入口。' },
 		{ label: '书单', value: 'reading', count: 1, title: '书单', desc: '阅读记录、书单和重读标记。' },
@@ -33,6 +33,12 @@ export const personalSite2 = {
 		thought: { title: '观察', desc: '产品、设计和日常想法。' },
 	},
 	entries: [
+		{
+			date: '2026年6月16日',
+			title: '无所得。',
+			desc: '真正有价值的成长，常常不是多拿到什么，而是少被什么牵着走。',
+			category: 'jingangjing',
+		},
 		{
 			date: '2026年6月15日',
 			title: '无我相。',
