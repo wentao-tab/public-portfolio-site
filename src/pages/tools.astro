@@ -8,6 +8,7 @@ const nanjingToolUrl = withBase('/tools/nanjing-travel-map/');
 const nanjingCover = withBase('/assets/cover/cover-nanjing-route-atlas.png');
 const wenxiToolUrl = 'https://wentao-tab.github.io/Wenxi-ai-clone/';
 const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
+const sleepToolUrl = withBase('/sleep/');
 ---
 
 <BaseLayout
@@ -51,6 +52,28 @@ const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 							<p>一个 AI 提示词搜索和灵感发现入口，按场景浏览、快速找到可复用的提示词模板。</p>
 						</div>
 						<a class="tool-link" href={wenxiToolUrl} target="_blank" rel="noreferrer">
+							打开完整工具
+							<span>↗</span>
+						</a>
+					</div>
+				</article>
+				<article class="tool-card">
+					<a class="tool-preview forest-preview" href={sleepToolUrl} aria-label="打开鸟鸣睡眠舱">
+						<div class="preview-sky" aria-hidden="true">
+							<span></span><span></span><span></span><span></span>
+						</div>
+						<div class="preview-copy">
+							<p>Birds Only</p>
+							<strong>鸟鸣睡眠舱</strong>
+						</div>
+					</a>
+					<div class="tool-info">
+						<div>
+							<p class="tool-kicker">SLEEP TOOL</p>
+							<h2>鸟鸣睡眠舱</h2>
+							<p>参考 tree.fm 的极简首屏交互，只放南京奥体鸟鸣，用来学习、工作和睡前放松。</p>
+						</div>
+						<a class="tool-link" href={sleepToolUrl}>
 							打开完整工具
 							<span>↗</span>
 						</a>
@@ -130,6 +153,101 @@ const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 		transform: translateY(0);
 	}
 
+	.forest-preview {
+		display: grid;
+		place-items: center;
+		background:
+			radial-gradient(circle at 50% 34%, rgba(255, 246, 207, 0.82), transparent 24%),
+			linear-gradient(180deg, #dfe8dc 0%, #e9ede3 44%, #809078 100%);
+	}
+
+	.preview-sky {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+	}
+
+	.preview-sky::before {
+		content: "";
+		position: absolute;
+		inset: auto -8% 0;
+		height: 48%;
+		background: linear-gradient(180deg, rgba(111, 132, 107, 0.2), rgba(61, 78, 58, 0.76));
+		clip-path: polygon(0 68%, 12% 54%, 24% 64%, 36% 42%, 48% 58%, 62% 38%, 76% 56%, 90% 42%, 100% 54%, 100% 100%, 0 100%);
+	}
+
+	.preview-sky span {
+		position: absolute;
+		top: 28%;
+		left: -12%;
+		width: 38px;
+		height: 16px;
+		animation: preview-fly 18s linear infinite;
+	}
+
+	.preview-sky span::before,
+	.preview-sky span::after {
+		content: "";
+		position: absolute;
+		top: 7px;
+		width: 20px;
+		height: 8px;
+		border-top: 2px solid rgba(29, 42, 34, 0.58);
+	}
+
+	.preview-sky span::before {
+		right: 18px;
+		border-radius: 100% 0 0;
+	}
+
+	.preview-sky span::after {
+		left: 18px;
+		border-radius: 0 100% 0 0;
+	}
+
+	.preview-sky span:nth-child(2) {
+		top: 22%;
+		animation-delay: -7s;
+		transform: scale(0.72);
+	}
+
+	.preview-sky span:nth-child(3) {
+		top: 40%;
+		animation-delay: -12s;
+		transform: scale(0.55);
+	}
+
+	.preview-sky span:nth-child(4) {
+		top: 16%;
+		animation-delay: -15s;
+		transform: scale(0.45);
+		opacity: 0.72;
+	}
+
+	.preview-copy {
+		position: relative;
+		z-index: 2;
+		display: grid;
+		gap: 12px;
+		text-align: center;
+	}
+
+	.preview-copy p {
+		margin: 0;
+		color: rgba(29, 42, 34, 0.56);
+		font-family: var(--font-type);
+		font-size: 0.8rem;
+		letter-spacing: 0.12em;
+	}
+
+	.preview-copy strong {
+		color: #1d2a22;
+		font-family: 'Huiwen-mincho', serif;
+		font-size: clamp(2rem, 5vw, 3.6rem);
+		font-weight: 400;
+		line-height: 1;
+	}
+
 	.tool-info {
 		display: flex;
 		flex-direction: column;
@@ -194,6 +312,11 @@ const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 	.tool-link span {
 		font-size: 1.1rem;
 		line-height: 1;
+	}
+
+	@keyframes preview-fly {
+		0% { translate: -10% 0; }
+		100% { translate: 1280% -40px; }
 	}
 
 	@media(max-width: 767px) {

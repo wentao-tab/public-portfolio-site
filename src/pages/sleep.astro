@@ -1,0 +1,456 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/paths';
+
+const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
+---
+
+<BaseLayout
+	title="鸟鸣白噪音｜梁文韬"
+	description="一页只播放鸟鸣的沉浸式白噪音空间，适合学习、工作和睡前放松。"
+	keywords="鸟鸣,白噪音,失眠,助眠,学习,工作,梁文韬"
+>
+	<main class="forest-page" data-forest-page>
+		<header class="forest-nav">
+			<a href={withBase('/')} aria-label="返回首页">Liang Wentao</a>
+			<span>Nanjing field recording</span>
+		</header>
+
+		<div class="forest-scene" aria-hidden="true">
+			<div class="sun"></div>
+			<div class="ridge ridge-back"></div>
+			<div class="ridge ridge-front"></div>
+			<div class="mist mist-1"></div>
+			<div class="mist mist-2"></div>
+			<div class="flock flock-1">
+				<span></span><span></span><span></span><span></span>
+			</div>
+			<div class="flock flock-2">
+				<span></span><span></span><span></span>
+			</div>
+			<div class="flock flock-3">
+				<span></span><span></span><span></span><span></span><span></span>
+			</div>
+		</div>
+
+		<section class="forest-hero" aria-label="鸟鸣白噪音">
+			<p class="eyebrow">BIRDS ONLY · NO MUSIC</p>
+			<button class="listen-button" type="button" data-listen-button>
+				<span data-listen-label>Listen to Nanjing Birds</span>
+			</button>
+			<h1>听一段南京清晨的鸟鸣</h1>
+			<p class="intro">给学习、工作和睡前留一片更安静的森林。每次点击都会从这段录音里随机打开一个新的起点。</p>
+
+			<div class="sound-meta" data-sound-meta>
+				<span class="pulse"></span>
+				<span data-sound-status>等待开始</span>
+			</div>
+		</section>
+
+		<audio data-bird-audio src={birdAudio} preload="auto" loop playsinline></audio>
+	</main>
+</BaseLayout>
+
+<script>
+	const page = document.querySelector('[data-forest-page]');
+	const button = document.querySelector('[data-listen-button]') as HTMLButtonElement | null;
+	const label = document.querySelector('[data-listen-label]');
+	const status = document.querySelector('[data-sound-status]');
+	const audio = document.querySelector('[data-bird-audio]') as HTMLAudioElement | null;
+
+	const setPlaying = (playing: boolean) => {
+		page?.classList.toggle('is-playing', playing);
+		if (label) label.textContent = playing ? 'Listen to Another Moment' : 'Listen to Nanjing Birds';
+		if (status) status.textContent = playing ? '南京奥体 · 6.1 鸟鸣正在播放' : '等待开始';
+	};
+
+	const randomSeek = () => {
+		if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 12) return;
+		audio.currentTime = Math.random() * Math.max(audio.duration - 10, 0);
+	};
+
+	const playBirds = async () => {
+		if (!audio) return;
+		audio.volume = 0.72;
+		randomSeek();
+		try {
+			await audio.play();
+			setPlaying(true);
+		} catch {
+			setPlaying(false);
+			if (status) status.textContent = '浏览器拦截了自动播放，请再点一次';
+		}
+	};
+
+	button?.addEventListener('click', playBirds);
+	audio?.addEventListener('loadedmetadata', () => {
+		if (page?.classList.contains('is-playing')) randomSeek();
+	});
+	audio?.addEventListener('pause', () => setPlaying(false));
+</script>
+
+<style lang="scss">
+	:global(nav),
+	:global(footer),
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	:global(body) {
+		background: #e9ede3;
+	}
+
+	.forest-page {
+		position: relative;
+		min-height: 100vh;
+		overflow: hidden;
+		background:
+			radial-gradient(circle at 50% 42%, rgba(255, 245, 205, 0.54), transparent 26%),
+			linear-gradient(180deg, #dfe8dc 0%, #e9ede3 45%, #c9d5c0 100%);
+		color: #1d2a22;
+		font-family: "Inter", "Noto Sans SC", sans-serif;
+	}
+
+	.forest-page::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 4;
+		pointer-events: none;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent 28%, rgba(29, 42, 34, 0.08) 100%),
+			radial-gradient(circle at 50% 62%, transparent 0 28%, rgba(255, 255, 255, 0.2) 58%, transparent 80%);
+	}
+
+	.forest-nav {
+		position: relative;
+		z-index: 8;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: min(1160px, calc(100vw - 44px));
+		margin: 0 auto;
+		padding: 28px 0;
+		color: rgba(29, 42, 34, 0.62);
+		font-size: 0.9rem;
+	}
+
+	.forest-nav a {
+		color: #1d2a22;
+		font-family: var(--font-type);
+		font-size: 0.88rem;
+		letter-spacing: 0.06em;
+		text-decoration: none;
+	}
+
+	.forest-scene {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.sun {
+		position: absolute;
+		top: 15%;
+		left: 50%;
+		width: clamp(150px, 18vw, 260px);
+		aspect-ratio: 1;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(255, 246, 207, 0.92), rgba(232, 206, 142, 0.16) 58%, transparent 70%);
+		transform: translateX(-50%);
+		filter: blur(1px);
+		animation: sun-breathe 8s ease-in-out infinite;
+	}
+
+	.ridge {
+		position: absolute;
+		left: -6%;
+		right: -6%;
+		bottom: 0;
+		height: 46%;
+		background: #9ead95;
+		clip-path: polygon(0 72%, 10% 56%, 20% 62%, 30% 42%, 40% 58%, 52% 34%, 64% 56%, 76% 38%, 88% 55%, 100% 36%, 100% 100%, 0 100%);
+	}
+
+	.ridge-back {
+		bottom: 12%;
+		height: 42%;
+		background: rgba(111, 132, 107, 0.38);
+		filter: blur(2px);
+		transform: translateY(12px);
+	}
+
+	.ridge-front {
+		background:
+			linear-gradient(180deg, rgba(93, 113, 88, 0.4), rgba(61, 78, 58, 0.82)),
+			#84937b;
+	}
+
+	.mist {
+		position: absolute;
+		left: -18%;
+		width: 136%;
+		height: 18%;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.26);
+		filter: blur(22px);
+		animation: mist-drift 20s ease-in-out infinite alternate;
+	}
+
+	.mist-1 {
+		bottom: 28%;
+	}
+
+	.mist-2 {
+		bottom: 16%;
+		animation-duration: 28s;
+		animation-direction: alternate-reverse;
+	}
+
+	.flock {
+		position: absolute;
+		left: -12vw;
+		display: flex;
+		gap: clamp(16px, 2vw, 32px);
+		align-items: center;
+		animation: fly 34s linear infinite;
+	}
+
+	.flock span {
+		position: relative;
+		width: 44px;
+		height: 18px;
+		opacity: 0.58;
+	}
+
+	.flock span::before,
+	.flock span::after {
+		content: "";
+		position: absolute;
+		top: 8px;
+		width: 24px;
+		height: 8px;
+		border-top: 2px solid rgba(29, 42, 34, 0.56);
+	}
+
+	.flock span::before {
+		right: 20px;
+		border-radius: 100% 0 0;
+		transform-origin: right center;
+		animation: wing-lift-left 2.7s ease-in-out infinite;
+	}
+
+	.flock span::after {
+		left: 20px;
+		border-radius: 0 100% 0 0;
+		transform-origin: left center;
+		animation: wing-lift-right 2.7s ease-in-out infinite;
+	}
+
+	.flock-1 {
+		top: 23%;
+		animation-duration: 42s;
+		animation-delay: -6s;
+	}
+
+	.flock-2 {
+		top: 34%;
+		transform: scale(0.72);
+		opacity: 0.7;
+		animation-duration: 55s;
+		animation-delay: -24s;
+	}
+
+	.flock-3 {
+		top: 16%;
+		transform: scale(0.52);
+		opacity: 0.44;
+		animation-duration: 68s;
+		animation-delay: -40s;
+	}
+
+	.forest-hero {
+		position: relative;
+		z-index: 7;
+		display: flex;
+		min-height: calc(100vh - 96px);
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: min(920px, calc(100vw - 40px));
+		margin: 0 auto;
+		padding: 20px 0 90px;
+		text-align: center;
+	}
+
+	.eyebrow {
+		margin: 0 0 22px;
+		color: rgba(29, 42, 34, 0.52);
+		font-family: var(--font-type);
+		font-size: 0.78rem;
+		letter-spacing: 0.14em;
+	}
+
+	.listen-button {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 82px;
+		padding: 0 44px;
+		border: 0;
+		border-radius: 999px;
+		background: #1f3329;
+		color: #fffaf0;
+		font-family: var(--font-type);
+		font-size: clamp(1rem, 1.7vw, 1.28rem);
+		font-weight: 800;
+		letter-spacing: 0.02em;
+		box-shadow:
+			0 22px 62px rgba(31, 51, 41, 0.24),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+		cursor: pointer;
+		transition: transform 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+	}
+
+	.listen-button::before {
+		content: "";
+		position: absolute;
+		inset: -12px;
+		border-radius: inherit;
+		border: 1px solid rgba(31, 51, 41, 0.14);
+		animation: button-ring 2.8s ease-in-out infinite;
+	}
+
+	.listen-button:hover {
+		transform: translateY(-3px);
+		background: #172820;
+		box-shadow:
+			0 30px 78px rgba(31, 51, 41, 0.3),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+	}
+
+	h1 {
+		max-width: 11em;
+		margin: 54px auto 0;
+		color: #1b2a22;
+		font-family: 'Huiwen-mincho', serif !important;
+		font-size: clamp(3.3rem, 8vw, 7.4rem);
+		font-weight: 400;
+		line-height: 1.02;
+		letter-spacing: 0;
+	}
+
+	.intro {
+		max-width: 35em;
+		margin: 28px auto 0;
+		color: rgba(29, 42, 34, 0.66);
+		font-size: 1rem;
+		line-height: 1.9;
+	}
+
+	.sound-meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 34px;
+		padding: 9px 14px;
+		border: 1px solid rgba(29, 42, 34, 0.12);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.22);
+		color: rgba(29, 42, 34, 0.58);
+		font-size: 0.84rem;
+		backdrop-filter: blur(14px);
+	}
+
+	.pulse {
+		width: 8px;
+		height: 8px;
+		border-radius: 999px;
+		background: rgba(29, 42, 34, 0.3);
+	}
+
+	.is-playing .pulse {
+		background: #26754d;
+		box-shadow: 0 0 0 7px rgba(38, 117, 77, 0.14);
+		animation: pulse 1.8s ease-in-out infinite;
+	}
+
+	.is-playing .ridge-front {
+		animation: ridge-shift 9s ease-in-out infinite alternate;
+	}
+
+	@keyframes fly {
+		0% { translate: -10vw 0; }
+		50% { translate: 56vw -8vh; }
+		100% { translate: 122vw 3vh; }
+	}
+
+	@keyframes wing-lift-left {
+		0%, 100% { rotate: 3deg; }
+		50% { rotate: -18deg; }
+	}
+
+	@keyframes wing-lift-right {
+		0%, 100% { rotate: -3deg; }
+		50% { rotate: 18deg; }
+	}
+
+	@keyframes sun-breathe {
+		0%, 100% { transform: translateX(-50%) scale(0.96); opacity: 0.82; }
+		50% { transform: translateX(-50%) scale(1.06); opacity: 1; }
+	}
+
+	@keyframes mist-drift {
+		from { transform: translateX(-4%); }
+		to { transform: translateX(4%); }
+	}
+
+	@keyframes button-ring {
+		0%, 100% { opacity: 0.35; transform: scale(0.98); }
+		50% { opacity: 0.72; transform: scale(1.04); }
+	}
+
+	@keyframes pulse {
+		0%, 100% { transform: scale(1); }
+		50% { transform: scale(1.3); }
+	}
+
+	@keyframes ridge-shift {
+		from { transform: translateY(0); }
+		to { transform: translateY(8px); }
+	}
+
+	@media(max-width: 767px) {
+		.forest-nav {
+			width: min(100% - 32px, 720px);
+			padding-top: 22px;
+			font-size: 0.78rem;
+		}
+
+		.forest-nav span {
+			display: none;
+		}
+
+		.forest-hero {
+			min-height: calc(100vh - 78px);
+			width: min(100% - 32px, 680px);
+			padding-bottom: 70px;
+		}
+
+		.listen-button {
+			min-height: 70px;
+			width: min(100%, 330px);
+			padding: 0 22px;
+		}
+
+		h1 {
+			margin-top: 44px;
+		}
+
+		.intro {
+			font-size: 0.95rem;
+		}
+	}
+</style>

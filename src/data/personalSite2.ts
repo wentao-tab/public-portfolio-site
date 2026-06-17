@@ -17,9 +17,9 @@ export const personalSite2 = {
 		{ label: '项目入口', filter: 'project', icon: 'grid' },
 	],
 	categories: [
-		{ label: '全部', value: 'all', count: 13, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
+		{ label: '全部', value: 'all', count: 14, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
 		{ label: '金刚经', value: 'jingangjing', count: 7, title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
-		{ label: '工具', value: 'tool', count: 2, title: '工具', desc: '自己做的小工具和轻量入口。' },
+		{ label: '工具', value: 'tool', count: 3, title: '工具', desc: '自己做的小工具和轻量入口。' },
 		{ label: '项目', value: 'project', count: 1, title: '项目', desc: '近期作品和项目入口。' },
 		{ label: '书单', value: 'reading', count: 1, title: '书单', desc: '阅读记录、书单和重读标记。' },
 		{ label: '观察', value: 'thought', count: 2, title: '观察', desc: '产品、设计和日常想法。' },
@@ -79,6 +79,12 @@ export const personalSite2 = {
 			date: '2026年6月14日',
 			title: '提示词图鉴',
 			desc: 'AI 提示词搜索和灵感发现入口，按场景快速找到可复用模板。',
+			category: 'tool',
+		},
+		{
+			date: '2026年6月17日',
+			title: '鸟鸣睡眠舱',
+			desc: '参考 tree.fm 的极简首屏交互，只放南京奥体鸟鸣。',
 			category: 'tool',
 		},
 		{
