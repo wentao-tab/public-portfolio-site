@@ -60,10 +60,6 @@ const sounds = [
 			<p class="intro">风过林梢，鸟落枝头。世界安静下来，只剩一片温柔的沙沙声，像月光在树叶上写字，一撇一捺，都是安眠的韵脚。</p>
 		</section>
 
-		<div class="expand-curtain" aria-hidden="true" data-expand-curtain>
-			<img src={forestImage} alt="" loading="eager" />
-		</div>
-
 		<section class="player-screen" aria-label="南京奥体鸟鸣播放页">
 			<div class="player-bg" aria-hidden="true">
 				<img src={forestImage} alt="" loading="eager" />
@@ -137,27 +133,15 @@ const sounds = [
 		if (playerLabel) playerLabel.textContent = playing ? 'stop' : 'begin';
 	};
 
-	const enterPlayer = (animate = true) => {
-		if (!page || page.classList.contains('is-player') || page.classList.contains('is-expanding')) return;
-		if (!animate) {
-			page.classList.add('is-player');
-			if (window.location.hash !== '#forest') history.pushState(null, '', '#forest');
-			return;
-		}
-
-		page.classList.add('is-expanding');
-		window.setTimeout(() => {
-			page.classList.add('is-player');
-			page.classList.remove('is-expanding');
-		}, 760);
-
+	const enterPlayer = () => {
+		if (!page || page.classList.contains('is-player')) return;
+		page.classList.add('is-player');
 		if (window.location.hash !== '#forest') history.pushState(null, '', '#forest');
 	};
 
 	const exitPlayer = () => {
 		audio?.pause();
 		setPlaying(false);
-		page?.classList.remove('is-expanding');
 		page?.classList.remove('is-player');
 		if (window.location.hash === '#forest') {
 			history.pushState(null, '', window.location.pathname + window.location.search);
@@ -224,20 +208,18 @@ const sounds = [
 	syncSoundText();
 
 	if (window.location.hash === '#forest') {
-		enterPlayer(false);
+		enterPlayer();
 		void playBirds();
 	}
 
 	window.addEventListener('popstate', () => {
 		if (window.location.hash === '#forest') {
 			page?.classList.add('is-player');
-			page?.classList.remove('is-expanding');
 			void playBirds();
 			return;
 		}
 		audio?.pause();
 		setPlaying(false);
-		page?.classList.remove('is-expanding');
 		page?.classList.remove('is-player');
 	});
 
@@ -554,56 +536,6 @@ const sounds = [
 		transform: translateX(-50%);
 	}
 
-	.expand-curtain {
-		position: fixed;
-		z-index: 6;
-		inset: 0;
-		width: 100vw;
-		height: 100vh;
-		overflow: hidden;
-		opacity: 0;
-		pointer-events: none;
-		clip-path: circle(16vh at 50% 44%);
-		will-change: clip-path, opacity, transform;
-	}
-
-	.expand-curtain img {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-		filter: saturate(0.9) brightness(0.64) contrast(1.06);
-	}
-
-	.expand-curtain::after {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background:
-			linear-gradient(180deg, rgba(0, 20, 6, 0.14), rgba(0, 9, 2, 0.66)),
-			radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(0, 14, 3, 0.5) 100%);
-	}
-
-	.is-expanding .expand-curtain {
-		opacity: 1;
-		animation: forest-curtain-open 760ms cubic-bezier(0.19, 1, 0.22, 1) both;
-	}
-
-	.is-expanding .cover-screen {
-		animation: cover-drift-out 560ms ease both;
-	}
-
-	.is-expanding .listen-button {
-		animation: listen-button-sink 360ms ease both;
-	}
-
-	.is-expanding .player-screen {
-		visibility: hidden;
-		opacity: 0;
-		pointer-events: none;
-	}
-
 	.player-screen {
 		position: absolute;
 		inset: 0;
@@ -841,44 +773,6 @@ const sounds = [
 		to { opacity: 1; transform: translateY(0); }
 	}
 
-	@keyframes forest-curtain-open {
-		0% {
-			clip-path: circle(16vh at 50% 44%);
-			transform: scale(1.02);
-		}
-		42% {
-			opacity: 1;
-			clip-path: circle(48vh at 50% 45%);
-			transform: scale(1.01);
-		}
-		100% {
-			clip-path: circle(145vmax at 50% 50%);
-			transform: none;
-		}
-	}
-
-	@keyframes cover-drift-out {
-		from {
-			opacity: 1;
-			transform: scale(1);
-		}
-		to {
-			opacity: 0;
-			transform: scale(0.985);
-		}
-	}
-
-	@keyframes listen-button-sink {
-		from {
-			opacity: 1;
-			transform: translate(-50%, -50%) scale(1);
-		}
-		to {
-			opacity: 0;
-			transform: translate(-50%, 10px) scale(0.96);
-		}
-	}
-
 	@media(max-width: 767px) {
 		.forest-nav {
 			padding: 20px;
@@ -917,8 +811,6 @@ const sounds = [
 			gap: 12px;
 			white-space: nowrap;
 		}
-
-		.expand-curtain { clip-path: circle(18vh at 50% 42%); }
 
 		.listen-button i {
 			width: 42px;
