@@ -13,7 +13,7 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 	<main class="forest-page" data-forest-page>
 		<header class="forest-nav">
 			<a href={withBase('/')} aria-label="返回首页">Liang Wentao</a>
-			<span>Nanjing field recording</span>
+			<button class="about-button" type="button" data-about-open>About</button>
 		</header>
 
 		<div class="forest-scene" aria-hidden="true">
@@ -36,10 +36,13 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		<section class="forest-hero" aria-label="鸟鸣白噪音">
 			<p class="eyebrow">BIRDS ONLY · NO MUSIC</p>
 			<button class="listen-button" type="button" data-listen-button>
-				<span data-listen-label>Listen to Nanjing Birds</span>
+				<span data-listen-label>凌晨4点钟的鸟叫</span>
 			</button>
-			<h1>听一段南京清晨的鸟鸣</h1>
-			<p class="intro">给学习、工作和睡前留一片更安静的森林。每次点击都会从这段录音里随机打开一个新的起点。</p>
+			<h1>
+				<span>林籁</span>
+				<em>fm</em>
+			</h1>
+			<p class="intro">风过林梢，鸟落枝头。世界安静下来，只剩一片温柔的沙沙声，像月光在树叶上写字，一撇一捺，都是安眠的韵脚。</p>
 
 			<div class="sound-meta" data-sound-meta>
 				<span class="pulse"></span>
@@ -48,6 +51,19 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		</section>
 
 		<audio data-bird-audio src={birdAudio} preload="auto" loop playsinline></audio>
+
+		<div class="about-layer" data-about-layer hidden>
+			<button class="about-backdrop" type="button" data-about-close aria-label="关闭关于"></button>
+			<aside class="about-panel" aria-label="关于林籁 fm">
+				<button class="about-close" type="button" data-about-close aria-label="关闭关于">×</button>
+				<p class="about-kicker">ABOUT</p>
+				<h2>关于林籁 fm</h2>
+				<p>我是 <strong>梁文韬</strong>，一名关注产品和设计的创作者，喜欢把想法打磨成清晰、好用、有质感的体验。</p>
+				<p>我也长期保持阅读和记录，从书里整理方法、观点和灵感，再把它们放回到产品、设计与日常创作里。</p>
+				<p>除了日常工作之外，我会把部分时间投入到个人项目、阅读和知识整理中。关注产品如何解决真实问题，也关注设计如何让信息更清楚、体验更自然。</p>
+				<p>如果你也对产品、设计或读书感兴趣，欢迎和我聊聊。</p>
+			</aside>
+		</div>
 	</main>
 </BaseLayout>
 
@@ -57,10 +73,13 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 	const label = document.querySelector('[data-listen-label]');
 	const status = document.querySelector('[data-sound-status]');
 	const audio = document.querySelector('[data-bird-audio]') as HTMLAudioElement | null;
+	const aboutLayer = document.querySelector('[data-about-layer]') as HTMLElement | null;
+	const aboutOpen = document.querySelector('[data-about-open]') as HTMLButtonElement | null;
+	const aboutCloseButtons = [...document.querySelectorAll('[data-about-close]')] as HTMLButtonElement[];
 
 	const setPlaying = (playing: boolean) => {
 		page?.classList.toggle('is-playing', playing);
-		if (label) label.textContent = playing ? 'Listen to Another Moment' : 'Listen to Nanjing Birds';
+		if (label) label.textContent = '凌晨4点钟的鸟叫';
 		if (status) status.textContent = playing ? '南京奥体 · 6.1 鸟鸣正在播放' : '等待开始';
 	};
 
@@ -87,6 +106,24 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		if (page?.classList.contains('is-playing')) randomSeek();
 	});
 	audio?.addEventListener('pause', () => setPlaying(false));
+
+	aboutOpen?.addEventListener('click', () => {
+		aboutLayer?.removeAttribute('hidden');
+		page?.classList.add('is-about-open');
+	});
+
+	aboutCloseButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			aboutLayer?.setAttribute('hidden', '');
+			page?.classList.remove('is-about-open');
+		});
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key !== 'Escape') return;
+		aboutLayer?.setAttribute('hidden', '');
+		page?.classList.remove('is-about-open');
+	});
 </script>
 
 <style lang="scss">
@@ -141,6 +178,25 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		font-size: 0.88rem;
 		letter-spacing: 0.06em;
 		text-decoration: none;
+	}
+
+	.about-button {
+		min-height: 42px;
+		padding: 0 18px;
+		border: 1px solid rgba(29, 42, 34, 0.2);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.12);
+		color: #1d2a22;
+		font: inherit;
+		cursor: pointer;
+		backdrop-filter: blur(14px);
+		transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+	}
+
+	.about-button:hover {
+		transform: translateY(-1px);
+		border-color: rgba(29, 42, 34, 0.34);
+		background: rgba(255, 255, 255, 0.24);
 	}
 
 	.forest-scene {
@@ -332,6 +388,10 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 	}
 
 	h1 {
+		display: inline-flex;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 0.08em;
 		max-width: 11em;
 		margin: 54px auto 0;
 		color: #1b2a22;
@@ -342,12 +402,21 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		letter-spacing: 0;
 	}
 
+	h1 em {
+		margin-top: 0.08em;
+		color: rgba(27, 42, 34, 0.82);
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 0.34em;
+		font-style: normal;
+		line-height: 1;
+	}
+
 	.intro {
-		max-width: 35em;
+		max-width: 39em;
 		margin: 28px auto 0;
 		color: rgba(29, 42, 34, 0.66);
-		font-size: 1rem;
-		line-height: 1.9;
+		font-size: 1.05rem;
+		line-height: 2;
 	}
 
 	.sound-meta {
@@ -379,6 +448,85 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 
 	.is-playing .ridge-front {
 		animation: ridge-shift 9s ease-in-out infinite alternate;
+	}
+
+	.about-layer {
+		position: fixed;
+		inset: 0;
+		z-index: 20;
+		display: block;
+	}
+
+	.about-layer[hidden] {
+		display: none;
+	}
+
+	.about-backdrop {
+		position: absolute;
+		inset: 0;
+		border: 0;
+		background: rgba(8, 24, 13, 0.34);
+		cursor: pointer;
+		backdrop-filter: blur(8px);
+	}
+
+	.about-panel {
+		position: absolute;
+		top: 82px;
+		right: max(24px, calc((100vw - 1160px) / 2));
+		width: min(410px, calc(100vw - 36px));
+		padding: 30px;
+		border: 1px solid rgba(255, 255, 255, 0.28);
+		border-radius: 8px;
+		background: rgba(247, 244, 229, 0.9);
+		color: #1d2a22;
+		box-shadow: 0 28px 90px rgba(9, 25, 14, 0.24);
+		backdrop-filter: blur(24px) saturate(140%);
+		animation: about-in 0.26s ease both;
+	}
+
+	.about-close {
+		position: absolute;
+		top: 16px;
+		right: 16px;
+		width: 34px;
+		height: 34px;
+		border: 1px solid rgba(29, 42, 34, 0.14);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.3);
+		color: rgba(29, 42, 34, 0.68);
+		font-size: 1.25rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.about-kicker {
+		margin: 0 0 12px;
+		color: rgba(29, 42, 34, 0.48);
+		font-family: var(--font-type);
+		font-size: 0.76rem;
+		letter-spacing: 0.14em;
+	}
+
+	.about-panel h2 {
+		margin: 0 0 18px;
+		color: #1d2a22;
+		font-family: 'Huiwen-mincho', serif;
+		font-size: 2rem;
+		font-weight: 400;
+		line-height: 1.2;
+		text-align: left;
+	}
+
+	.about-panel p:not(.about-kicker) {
+		margin: 0 0 1em;
+		color: rgba(29, 42, 34, 0.72);
+		font-size: 0.98rem;
+		line-height: 1.9;
+	}
+
+	.about-panel p:last-child {
+		margin-bottom: 0;
 	}
 
 	@keyframes fly {
@@ -422,15 +570,22 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		to { transform: translateY(8px); }
 	}
 
+	@keyframes about-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 	@media(max-width: 767px) {
 		.forest-nav {
 			width: min(100% - 32px, 720px);
 			padding-top: 22px;
 			font-size: 0.78rem;
-		}
-
-		.forest-nav span {
-			display: none;
 		}
 
 		.forest-hero {
@@ -451,6 +606,12 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 
 		.intro {
 			font-size: 0.95rem;
+		}
+
+		.about-panel {
+			top: 72px;
+			right: 16px;
+			padding: 24px;
 		}
 	}
 </style>
