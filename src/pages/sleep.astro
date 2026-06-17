@@ -14,6 +14,7 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 	<main class="forest-page" data-forest-page>
 		<header class="forest-nav">
 			<a class="home-link" href={withBase('/')} aria-label="返回首页">Linlai fm</a>
+			<button class="player-back" type="button" data-player-back aria-label="返回林籁 fm 首页">← Back</button>
 			<button class="about-button" type="button" data-about-open>About</button>
 		</header>
 
@@ -48,11 +49,15 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 			<div class="player-bottom">
 				<button class="player-button" type="button" data-player-button aria-label="暂停或继续播放鸟鸣">
 					<span data-player-icon aria-hidden="true"></span>
-					<strong data-player-label>暂停鸟鸣</strong>
+					<strong data-player-label>stop</strong>
 				</button>
 				<div class="sound-meta" data-sound-meta>
 					<span data-sound-status>等待开始</span>
 				</div>
+				<button class="next-journey" type="button" data-next-journey>
+					<span>下一段自由之旅</span>
+					<i aria-hidden="true">→</i>
+				</button>
 			</div>
 		</section>
 
@@ -75,6 +80,8 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 	const page = document.querySelector('[data-forest-page]');
 	const enterButton = document.querySelector('[data-enter-button]') as HTMLButtonElement | null;
 	const playerButton = document.querySelector('[data-player-button]') as HTMLButtonElement | null;
+	const playerBack = document.querySelector('[data-player-back]') as HTMLButtonElement | null;
+	const nextJourney = document.querySelector('[data-next-journey]') as HTMLButtonElement | null;
 	const status = document.querySelector('[data-sound-status]');
 	const playerLabel = document.querySelector('[data-player-label]');
 	const audio = document.querySelector('[data-bird-audio]') as HTMLAudioElement | null;
@@ -85,12 +92,21 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 	const setPlaying = (playing: boolean) => {
 		page?.classList.toggle('is-playing', playing);
 		if (status) status.textContent = playing ? '南京奥体 · 6.1 鸟鸣正在播放' : '等待开始';
-		if (playerLabel) playerLabel.textContent = playing ? '暂停鸟鸣' : '继续鸟鸣';
+		if (playerLabel) playerLabel.textContent = playing ? 'stop' : 'begin';
 	};
 
 	const enterPlayer = () => {
 		page?.classList.add('is-player');
 		if (window.location.hash !== '#forest') history.pushState(null, '', '#forest');
+	};
+
+	const exitPlayer = () => {
+		audio?.pause();
+		setPlaying(false);
+		page?.classList.remove('is-player');
+		if (window.location.hash === '#forest') {
+			history.pushState(null, '', window.location.pathname + window.location.search);
+		}
 	};
 
 	const randomSeek = () => {
@@ -105,9 +121,11 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		try {
 			await audio.play();
 			setPlaying(true);
-		} catch {
+		} catch (error) {
 			setPlaying(false);
-			if (status) status.textContent = '浏览器拦截了自动播放，请再点一次';
+			if ((error as DOMException).name !== 'AbortError' && status) {
+				status.textContent = '浏览器拦截了自动播放，请再点一次';
+			}
 		}
 	};
 
@@ -125,6 +143,13 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		audio.pause();
 	});
 
+	nextJourney?.addEventListener('click', () => {
+		randomSeek();
+		void playBirds();
+	});
+
+	playerBack?.addEventListener('click', exitPlayer);
+
 	audio?.addEventListener('loadedmetadata', () => {
 		if (page?.classList.contains('is-playing')) randomSeek();
 	});
@@ -133,11 +158,19 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 	audio?.addEventListener('pause', () => setPlaying(false));
 
 	if (window.location.hash === '#forest') {
-		page?.classList.add('is-player');
+		enterPlayer();
+		void playBirds();
 	}
 
 	window.addEventListener('popstate', () => {
-		page?.classList.toggle('is-player', window.location.hash === '#forest');
+		if (window.location.hash === '#forest') {
+			page?.classList.add('is-player');
+			void playBirds();
+			return;
+		}
+		audio?.pause();
+		setPlaying(false);
+		page?.classList.remove('is-player');
 	});
 
 	aboutOpen?.addEventListener('click', () => {
@@ -154,8 +187,14 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 
 	document.addEventListener('keydown', (event) => {
 		if (event.key !== 'Escape') return;
-		aboutLayer?.setAttribute('hidden', '');
-		page?.classList.remove('is-about-open');
+		if (!aboutLayer?.hasAttribute('hidden')) {
+			aboutLayer?.setAttribute('hidden', '');
+			page?.classList.remove('is-about-open');
+			return;
+		}
+		if (page?.classList.contains('is-player')) {
+			exitPlayer();
+		}
 	});
 </script>
 
@@ -187,9 +226,9 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		position: fixed;
 		inset: 0 0 auto;
 		z-index: 10;
-		display: flex;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		justify-content: space-between;
 		padding: 24px 32px;
 	}
 
@@ -201,7 +240,45 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		text-decoration: none;
 	}
 
+	.player-back {
+		visibility: hidden;
+		opacity: 0;
+		justify-self: center;
+		min-height: 40px;
+		padding: 0 18px;
+		border: 1px solid rgba(255, 255, 255, 0.28);
+		border-radius: 999px;
+		background: rgba(0, 25, 8, 0.18);
+		color: rgba(255, 255, 255, 0.78);
+		font: inherit;
+		font-size: 0.92rem;
+		font-weight: 300;
+		letter-spacing: 0.02em;
+		cursor: pointer;
+		backdrop-filter: blur(10px);
+		transition:
+			opacity 0.24s ease,
+			visibility 0.24s ease,
+			transform 0.24s ease,
+			background 0.24s ease,
+			border-color 0.24s ease,
+			color 0.24s ease;
+	}
+
+	.is-player .player-back {
+		visibility: visible;
+		opacity: 1;
+	}
+
+	.player-back:hover {
+		transform: translateX(-3px);
+		border-color: rgba(255, 255, 255, 0.62);
+		background: rgba(255, 255, 255, 0.08);
+		color: #fff;
+	}
+
 	.about-button {
+		justify-self: end;
 		min-height: 42px;
 		padding: 0 18px;
 		border: 1px solid rgba(255, 255, 255, 0.34);
@@ -410,17 +487,7 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 	}
 
 	.native-player {
-		position: relative;
-		z-index: 4;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.native-player audio {
-		width: min(360px, calc(100vw - 72px));
-		height: 44px;
-		opacity: 0.94;
+		display: none;
 	}
 
 	.player-bottom {
@@ -442,7 +509,7 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		gap: 16px;
 		min-width: 178px;
 		min-height: 64px;
-		padding: 0 26px 0 10px;
+		padding: 0 34px 0 10px;
 		border: 1px solid rgba(255, 255, 255, 0.74);
 		border-radius: 999px;
 		background: rgba(255, 255, 255, 0.08);
@@ -451,12 +518,23 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		font-weight: 500;
 		cursor: pointer;
 		backdrop-filter: blur(10px);
-		transition: background 0.22s ease, transform 0.22s ease;
+		box-shadow:
+			0 0 0 1px rgba(255, 255, 255, 0.08),
+			0 18px 48px rgba(0, 0, 0, 0.18);
+		transition:
+			background 0.24s ease,
+			border-color 0.24s ease,
+			box-shadow 0.24s ease,
+			transform 0.24s ease;
 	}
 
 	.player-button:hover {
-		transform: translateY(-1px);
-		background: rgba(255, 255, 255, 0.14);
+		transform: translateY(-2px) scale(1.015);
+		border-color: rgba(255, 255, 255, 0.94);
+		background: rgba(255, 255, 255, 0.13);
+		box-shadow:
+			0 0 0 4px rgba(255, 255, 255, 0.06),
+			0 22px 62px rgba(0, 0, 0, 0.24);
 	}
 
 	.sound-meta {
@@ -464,6 +542,54 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		color: rgba(255, 255, 255, 0.74);
 		font-size: 0.9rem;
 		font-weight: 300;
+	}
+
+	.next-journey {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		min-height: 54px;
+		margin-top: 34px;
+		padding: 0 30px;
+		border: 1px solid rgba(255, 255, 255, 0.7);
+		border-radius: 999px;
+		background: rgba(0, 22, 6, 0.58);
+		color: rgba(255, 255, 255, 0.9);
+		font: inherit;
+		font-size: 1.02rem;
+		font-weight: 650;
+		cursor: pointer;
+		box-shadow:
+			inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+			0 16px 48px rgba(0, 0, 0, 0.2);
+		backdrop-filter: blur(12px);
+		transition:
+			background 0.24s ease,
+			border-color 0.24s ease,
+			box-shadow 0.24s ease,
+			color 0.24s ease,
+			transform 0.24s ease;
+	}
+
+	.next-journey i {
+		display: inline-block;
+		font-style: normal;
+		transition: transform 0.24s ease;
+	}
+
+	.next-journey:hover {
+		transform: translateY(-2px);
+		border-color: rgba(255, 255, 255, 0.96);
+		background: rgba(2, 37, 11, 0.78);
+		color: #fff;
+		box-shadow:
+			0 0 0 4px rgba(255, 255, 255, 0.06),
+			0 24px 70px rgba(0, 0, 0, 0.28);
+	}
+
+	.next-journey:hover i {
+		transform: translateX(4px);
 	}
 
 	.about-layer {
@@ -564,6 +690,12 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 			padding: 0 14px;
 		}
 
+		.player-back {
+			min-height: 36px;
+			padding: 0 14px;
+			font-size: 0.84rem;
+		}
+
 		.forest-card {
 			top: 18vh;
 			width: 62vw;
@@ -601,6 +733,13 @@ const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888
 		.player-button {
 			min-height: 58px;
 			padding-right: 20px;
+		}
+
+		.next-journey {
+			min-height: 50px;
+			margin-top: 24px;
+			padding: 0 24px;
+			font-size: 0.96rem;
 		}
 
 		[data-player-icon] {
