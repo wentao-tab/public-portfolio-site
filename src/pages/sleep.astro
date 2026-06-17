@@ -3,45 +3,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/paths';
 
 const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
+const forestImage = 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85';
 ---
 
 <BaseLayout
-	title="鸟鸣白噪音｜梁文韬"
-	description="一页只播放鸟鸣的沉浸式白噪音空间，适合学习、工作和睡前放松。"
-	keywords="鸟鸣,白噪音,失眠,助眠,学习,工作,梁文韬"
+	title="林籁 fm｜梁文韬"
+	description="只播放鸟鸣的沉浸式白噪音空间，适合学习、工作和睡前放松。"
+	keywords="林籁,fm,鸟鸣,白噪音,失眠,助眠,学习,工作,梁文韬"
 >
 	<main class="forest-page" data-forest-page>
 		<header class="forest-nav">
-			<a href={withBase('/')} aria-label="返回首页">Liang Wentao</a>
+			<a class="home-link" href={withBase('/')} aria-label="返回首页">林籁 fm</a>
 			<button class="about-button" type="button" data-about-open>About</button>
 		</header>
 
-		<div class="forest-scene" aria-hidden="true">
-			<div class="sun"></div>
-			<div class="ridge ridge-back"></div>
-			<div class="ridge ridge-front"></div>
-			<div class="mist mist-1"></div>
-			<div class="mist mist-2"></div>
-			<div class="flock flock-1">
-				<span></span><span></span><span></span><span></span>
+		<section class="hero" aria-label="林籁 fm 鸟鸣播放器">
+			<div class="forest-card" aria-hidden="true">
+				<img src={forestImage} alt="" loading="eager" />
 			</div>
-			<div class="flock flock-2">
-				<span></span><span></span><span></span>
-			</div>
-			<div class="flock flock-3">
+
+			<div class="bird-field" aria-hidden="true">
 				<span></span><span></span><span></span><span></span><span></span>
 			</div>
-		</div>
 
-		<section class="forest-hero" aria-label="鸟鸣白噪音">
-			<p class="eyebrow">BIRDS ONLY · NO MUSIC</p>
-			<button class="listen-button" type="button" data-listen-button>
-				<span data-listen-label>凌晨4点钟的鸟叫</span>
-			</button>
 			<h1>
 				<span>林籁</span>
 				<em>fm</em>
 			</h1>
+
+			<button class="listen-button" type="button" data-listen-button>
+				<span data-listen-label>凌晨4点钟的鸟叫</span>
+				<i aria-hidden="true"></i>
+			</button>
+
 			<p class="intro">风过林梢，鸟落枝头。世界安静下来，只剩一片温柔的沙沙声，像月光在树叶上写字，一撇一捺，都是安眠的韵脚。</p>
 
 			<div class="sound-meta" data-sound-meta>
@@ -70,7 +64,6 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 <script>
 	const page = document.querySelector('[data-forest-page]');
 	const button = document.querySelector('[data-listen-button]') as HTMLButtonElement | null;
-	const label = document.querySelector('[data-listen-label]');
 	const status = document.querySelector('[data-sound-status]');
 	const audio = document.querySelector('[data-bird-audio]') as HTMLAudioElement | null;
 	const aboutLayer = document.querySelector('[data-about-layer]') as HTMLElement | null;
@@ -79,7 +72,6 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 
 	const setPlaying = (playing: boolean) => {
 		page?.classList.toggle('is-playing', playing);
-		if (label) label.textContent = '凌晨4点钟的鸟叫';
 		if (status) status.textContent = playing ? '南京奥体 · 6.1 鸟鸣正在播放' : '等待开始';
 	};
 
@@ -134,7 +126,7 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 	}
 
 	:global(body) {
-		background: #e9ede3;
+		background: #001b07;
 	}
 
 	.forest-page {
@@ -142,313 +134,265 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		min-height: 100vh;
 		overflow: hidden;
 		background:
-			radial-gradient(circle at 50% 42%, rgba(255, 245, 205, 0.54), transparent 26%),
-			linear-gradient(180deg, #dfe8dc 0%, #e9ede3 45%, #c9d5c0 100%);
-		color: #1d2a22;
+			radial-gradient(circle at 50% 44%, rgba(34, 94, 41, 0.22), transparent 24%),
+			linear-gradient(180deg, #001b07 0%, #001905 52%, #001403 100%);
+		color: #fff;
 		font-family: "Inter", "Noto Sans SC", sans-serif;
 	}
 
-	.forest-page::after {
+	.forest-page::before {
 		content: "";
-		position: absolute;
+		position: fixed;
 		inset: 0;
-		z-index: 4;
+		z-index: 1;
 		pointer-events: none;
 		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent 28%, rgba(29, 42, 34, 0.08) 100%),
-			radial-gradient(circle at 50% 62%, transparent 0 28%, rgba(255, 255, 255, 0.2) 58%, transparent 80%);
+			linear-gradient(180deg, rgba(0, 18, 4, 0.2), transparent 36%, rgba(0, 10, 2, 0.42)),
+			repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 4px);
+		mix-blend-mode: screen;
+		opacity: 0.26;
 	}
 
 	.forest-nav {
-		position: relative;
-		z-index: 8;
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 10;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: min(1160px, calc(100vw - 44px));
-		margin: 0 auto;
-		padding: 28px 0;
-		color: rgba(29, 42, 34, 0.62);
-		font-size: 0.9rem;
+		padding: 28px 34px;
 	}
 
-	.forest-nav a {
-		color: #1d2a22;
-		font-family: var(--font-type);
-		font-size: 0.88rem;
-		letter-spacing: 0.06em;
+	.home-link {
+		color: rgba(255, 255, 255, 0.72);
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: 0.98rem;
 		text-decoration: none;
 	}
 
 	.about-button {
 		min-height: 42px;
 		padding: 0 18px;
-		border: 1px solid rgba(29, 42, 34, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.34);
 		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.12);
-		color: #1d2a22;
-		font: inherit;
+		background: transparent;
+		color: rgba(255, 255, 255, 0.9);
+		font-size: 1rem;
 		cursor: pointer;
-		backdrop-filter: blur(14px);
 		transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
 	}
 
 	.about-button:hover {
 		transform: translateY(-1px);
-		border-color: rgba(29, 42, 34, 0.34);
-		background: rgba(255, 255, 255, 0.24);
+		border-color: rgba(255, 255, 255, 0.66);
+		background: rgba(255, 255, 255, 0.08);
 	}
 
-	.forest-scene {
-		position: absolute;
-		inset: 0;
-		z-index: 1;
-		pointer-events: none;
-	}
-
-	.sun {
-		position: absolute;
-		top: 15%;
-		left: 50%;
-		width: clamp(150px, 18vw, 260px);
-		aspect-ratio: 1;
-		border-radius: 50%;
-		background: radial-gradient(circle, rgba(255, 246, 207, 0.92), rgba(232, 206, 142, 0.16) 58%, transparent 70%);
-		transform: translateX(-50%);
-		filter: blur(1px);
-		animation: sun-breathe 8s ease-in-out infinite;
-	}
-
-	.ridge {
-		position: absolute;
-		left: -6%;
-		right: -6%;
-		bottom: 0;
-		height: 46%;
-		background: #9ead95;
-		clip-path: polygon(0 72%, 10% 56%, 20% 62%, 30% 42%, 40% 58%, 52% 34%, 64% 56%, 76% 38%, 88% 55%, 100% 36%, 100% 100%, 0 100%);
-	}
-
-	.ridge-back {
-		bottom: 12%;
-		height: 42%;
-		background: rgba(111, 132, 107, 0.38);
-		filter: blur(2px);
-		transform: translateY(12px);
-	}
-
-	.ridge-front {
-		background:
-			linear-gradient(180deg, rgba(93, 113, 88, 0.4), rgba(61, 78, 58, 0.82)),
-			#84937b;
-	}
-
-	.mist {
-		position: absolute;
-		left: -18%;
-		width: 136%;
-		height: 18%;
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.26);
-		filter: blur(22px);
-		animation: mist-drift 20s ease-in-out infinite alternate;
-	}
-
-	.mist-1 {
-		bottom: 28%;
-	}
-
-	.mist-2 {
-		bottom: 16%;
-		animation-duration: 28s;
-		animation-direction: alternate-reverse;
-	}
-
-	.flock {
-		position: absolute;
-		left: -12vw;
-		display: flex;
-		gap: clamp(16px, 2vw, 32px);
-		align-items: center;
-		animation: fly 34s linear infinite;
-	}
-
-	.flock span {
+	.hero {
 		position: relative;
-		width: 44px;
-		height: 18px;
-		opacity: 0.58;
-	}
-
-	.flock span::before,
-	.flock span::after {
-		content: "";
-		position: absolute;
-		top: 8px;
-		width: 24px;
-		height: 8px;
-		border-top: 2px solid rgba(29, 42, 34, 0.56);
-	}
-
-	.flock span::before {
-		right: 20px;
-		border-radius: 100% 0 0;
-		transform-origin: right center;
-		animation: wing-lift-left 2.7s ease-in-out infinite;
-	}
-
-	.flock span::after {
-		left: 20px;
-		border-radius: 0 100% 0 0;
-		transform-origin: left center;
-		animation: wing-lift-right 2.7s ease-in-out infinite;
-	}
-
-	.flock-1 {
-		top: 23%;
-		animation-duration: 42s;
-		animation-delay: -6s;
-	}
-
-	.flock-2 {
-		top: 34%;
-		transform: scale(0.72);
-		opacity: 0.7;
-		animation-duration: 55s;
-		animation-delay: -24s;
-	}
-
-	.flock-3 {
-		top: 16%;
-		transform: scale(0.52);
-		opacity: 0.44;
-		animation-duration: 68s;
-		animation-delay: -40s;
-	}
-
-	.forest-hero {
-		position: relative;
-		z-index: 7;
-		display: flex;
-		min-height: calc(100vh - 96px);
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		width: min(920px, calc(100vw - 40px));
-		margin: 0 auto;
-		padding: 20px 0 90px;
+		z-index: 2;
+		display: grid;
+		min-height: 100vh;
+		place-items: center;
+		padding: 72px 24px 70px;
 		text-align: center;
 	}
 
-	.eyebrow {
-		margin: 0 0 22px;
-		color: rgba(29, 42, 34, 0.52);
-		font-family: var(--font-type);
-		font-size: 0.78rem;
-		letter-spacing: 0.14em;
+	.forest-card {
+		position: absolute;
+		top: 14.2vh;
+		left: 50%;
+		width: min(28vw, 410px);
+		min-width: 270px;
+		aspect-ratio: 0.78;
+		overflow: hidden;
+		background: #06300d;
+		transform: translateX(-50%);
+		box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
 	}
 
-	.listen-button {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 82px;
-		padding: 0 44px;
-		border: 0;
-		border-radius: 999px;
-		background: #1f3329;
-		color: #fffaf0;
-		font-family: var(--font-type);
-		font-size: clamp(1rem, 1.7vw, 1.28rem);
-		font-weight: 800;
-		letter-spacing: 0.02em;
-		box-shadow:
-			0 22px 62px rgba(31, 51, 41, 0.24),
-			inset 0 0 0 1px rgba(255, 255, 255, 0.14);
-		cursor: pointer;
-		transition: transform 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
-	}
-
-	.listen-button::before {
+	.forest-card::after {
 		content: "";
 		position: absolute;
-		inset: -12px;
-		border-radius: inherit;
-		border: 1px solid rgba(31, 51, 41, 0.14);
-		animation: button-ring 2.8s ease-in-out infinite;
+		inset: 0;
+		background:
+			linear-gradient(180deg, rgba(0, 25, 6, 0.16), rgba(0, 20, 4, 0.52)),
+			radial-gradient(circle at 50% 38%, transparent 0 34%, rgba(0, 16, 4, 0.42) 82%);
 	}
 
-	.listen-button:hover {
-		transform: translateY(-3px);
-		background: #172820;
-		box-shadow:
-			0 30px 78px rgba(31, 51, 41, 0.3),
-			inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+	.forest-card img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: saturate(0.84) brightness(0.54) contrast(1.1);
+		transform: scale(1.03);
 	}
 
 	h1 {
+		position: relative;
+		z-index: 3;
 		display: inline-flex;
 		align-items: flex-start;
 		justify-content: center;
 		gap: 0.08em;
-		max-width: 11em;
-		margin: 54px auto 0;
-		color: #1b2a22;
-		font-family: 'Huiwen-mincho', serif !important;
-		font-size: clamp(3.3rem, 8vw, 7.4rem);
+		margin: 0 0 96px;
+		color: #fff;
+		font-family: 'Huiwen-mincho', Georgia, serif !important;
+		font-size: clamp(6.6rem, 17vw, 18rem);
 		font-weight: 400;
-		line-height: 1.02;
+		line-height: 0.82;
 		letter-spacing: 0;
+		text-shadow: 0 24px 70px rgba(0, 0, 0, 0.26);
 	}
 
 	h1 em {
-		margin-top: 0.08em;
-		color: rgba(27, 42, 34, 0.82);
+		margin-top: -0.04em;
 		font-family: Georgia, 'Times New Roman', serif;
-		font-size: 0.34em;
+		font-size: 0.24em;
 		font-style: normal;
 		line-height: 1;
 	}
 
+	.listen-button {
+		position: absolute;
+		z-index: 4;
+		top: 58vh;
+		left: 50%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 18px;
+		min-height: 70px;
+		padding: 0 12px 0 30px;
+		border: 0;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.94);
+		color: #04210a;
+		font-size: clamp(0.94rem, 1.2vw, 1.1rem);
+		font-weight: 800;
+		box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+		cursor: pointer;
+		transform: translate(-50%, -50%);
+		transition: transform 0.22s ease, box-shadow 0.22s ease;
+	}
+
+	.listen-button:hover {
+		transform: translate(-50%, -52%);
+		box-shadow: 0 32px 88px rgba(0, 0, 0, 0.32);
+	}
+
+	.listen-button i {
+		position: relative;
+		width: 52px;
+		height: 52px;
+		border-radius: 50%;
+		background: #d7ecd4;
+	}
+
+	.listen-button i::before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 52%;
+		width: 0;
+		height: 0;
+		border-top: 9px solid transparent;
+		border-bottom: 9px solid transparent;
+		border-left: 13px solid #002407;
+		transform: translate(-42%, -50%);
+	}
+
+	.is-playing .listen-button i::before {
+		left: 50%;
+		width: 13px;
+		height: 18px;
+		border: 0;
+		border-right: 4px solid #002407;
+		border-left: 4px solid #002407;
+		transform: translate(-50%, -50%);
+	}
+
 	.intro {
-		max-width: 39em;
-		margin: 28px auto 0;
-		color: rgba(29, 42, 34, 0.66);
-		font-size: 1.05rem;
-		line-height: 2;
+		position: absolute;
+		left: 50%;
+		bottom: 7vh;
+		z-index: 3;
+		width: min(900px, calc(100vw - 42px));
+		margin: 0;
+		color: rgba(255, 255, 255, 0.86);
+		font-size: clamp(1rem, 1.4vw, 1.35rem);
+		line-height: 1.85;
+		transform: translateX(-50%);
 	}
 
 	.sound-meta {
+		position: absolute;
+		left: 50%;
+		bottom: 3vh;
+		z-index: 4;
 		display: inline-flex;
 		align-items: center;
-		gap: 10px;
-		margin-top: 34px;
-		padding: 9px 14px;
-		border: 1px solid rgba(29, 42, 34, 0.12);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.22);
-		color: rgba(29, 42, 34, 0.58);
-		font-size: 0.84rem;
-		backdrop-filter: blur(14px);
+		gap: 9px;
+		color: rgba(255, 255, 255, 0.54);
+		font-size: 0.82rem;
+		transform: translateX(-50%);
 	}
 
 	.pulse {
-		width: 8px;
-		height: 8px;
-		border-radius: 999px;
-		background: rgba(29, 42, 34, 0.3);
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.36);
 	}
 
 	.is-playing .pulse {
-		background: #26754d;
-		box-shadow: 0 0 0 7px rgba(38, 117, 77, 0.14);
+		background: #d7ecd4;
+		box-shadow: 0 0 0 7px rgba(215, 236, 212, 0.12);
 		animation: pulse 1.8s ease-in-out infinite;
 	}
 
-	.is-playing .ridge-front {
-		animation: ridge-shift 9s ease-in-out infinite alternate;
+	.bird-field {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		pointer-events: none;
+		opacity: 0.28;
 	}
+
+	.bird-field span {
+		position: absolute;
+		top: 24%;
+		left: -8vw;
+		width: 42px;
+		height: 17px;
+		animation: fly 42s linear infinite;
+	}
+
+	.bird-field span::before,
+	.bird-field span::after {
+		content: "";
+		position: absolute;
+		top: 8px;
+		width: 22px;
+		height: 8px;
+		border-top: 2px solid rgba(255, 255, 255, 0.72);
+	}
+
+	.bird-field span::before {
+		right: 19px;
+		border-radius: 100% 0 0;
+	}
+
+	.bird-field span::after {
+		left: 19px;
+		border-radius: 0 100% 0 0;
+	}
+
+	.bird-field span:nth-child(2) { top: 33%; animation-delay: -9s; transform: scale(0.72); }
+	.bird-field span:nth-child(3) { top: 18%; animation-delay: -18s; transform: scale(0.54); }
+	.bird-field span:nth-child(4) { top: 44%; animation-delay: -27s; transform: scale(0.48); }
+	.bird-field span:nth-child(5) { top: 12%; animation-delay: -36s; transform: scale(0.38); }
 
 	.about-layer {
 		position: fixed;
@@ -465,7 +409,7 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		position: absolute;
 		inset: 0;
 		border: 0;
-		background: rgba(8, 24, 13, 0.34);
+		background: rgba(0, 15, 4, 0.42);
 		cursor: pointer;
 		backdrop-filter: blur(8px);
 	}
@@ -473,14 +417,14 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 	.about-panel {
 		position: absolute;
 		top: 82px;
-		right: max(24px, calc((100vw - 1160px) / 2));
+		right: 34px;
 		width: min(410px, calc(100vw - 36px));
 		padding: 30px;
-		border: 1px solid rgba(255, 255, 255, 0.28);
+		border: 1px solid rgba(255, 255, 255, 0.18);
 		border-radius: 8px;
-		background: rgba(247, 244, 229, 0.9);
-		color: #1d2a22;
-		box-shadow: 0 28px 90px rgba(9, 25, 14, 0.24);
+		background: rgba(4, 27, 9, 0.92);
+		color: #fff;
+		box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
 		backdrop-filter: blur(24px) saturate(140%);
 		animation: about-in 0.26s ease both;
 	}
@@ -491,10 +435,10 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		right: 16px;
 		width: 34px;
 		height: 34px;
-		border: 1px solid rgba(29, 42, 34, 0.14);
+		border: 1px solid rgba(255, 255, 255, 0.14);
 		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.3);
-		color: rgba(29, 42, 34, 0.68);
+		background: rgba(255, 255, 255, 0.08);
+		color: rgba(255, 255, 255, 0.75);
 		font-size: 1.25rem;
 		line-height: 1;
 		cursor: pointer;
@@ -502,7 +446,7 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 
 	.about-kicker {
 		margin: 0 0 12px;
-		color: rgba(29, 42, 34, 0.48);
+		color: rgba(255, 255, 255, 0.48);
 		font-family: var(--font-type);
 		font-size: 0.76rem;
 		letter-spacing: 0.14em;
@@ -510,7 +454,7 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 
 	.about-panel h2 {
 		margin: 0 0 18px;
-		color: #1d2a22;
+		color: #fff;
 		font-family: 'Huiwen-mincho', serif;
 		font-size: 2rem;
 		font-weight: 400;
@@ -520,7 +464,7 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 
 	.about-panel p:not(.about-kicker) {
 		margin: 0 0 1em;
-		color: rgba(29, 42, 34, 0.72);
+		color: rgba(255, 255, 255, 0.72);
 		font-size: 0.98rem;
 		line-height: 1.9;
 	}
@@ -529,83 +473,72 @@ const birdAudio = withBase('/assets/audio/nanjing-olympic-birds-0601.mp4');
 		margin-bottom: 0;
 	}
 
-	@keyframes fly {
-		0% { translate: -10vw 0; }
-		50% { translate: 56vw -8vh; }
-		100% { translate: 122vw 3vh; }
-	}
-
-	@keyframes wing-lift-left {
-		0%, 100% { rotate: 3deg; }
-		50% { rotate: -18deg; }
-	}
-
-	@keyframes wing-lift-right {
-		0%, 100% { rotate: -3deg; }
-		50% { rotate: 18deg; }
-	}
-
-	@keyframes sun-breathe {
-		0%, 100% { transform: translateX(-50%) scale(0.96); opacity: 0.82; }
-		50% { transform: translateX(-50%) scale(1.06); opacity: 1; }
-	}
-
-	@keyframes mist-drift {
-		from { transform: translateX(-4%); }
-		to { transform: translateX(4%); }
-	}
-
-	@keyframes button-ring {
-		0%, 100% { opacity: 0.35; transform: scale(0.98); }
-		50% { opacity: 0.72; transform: scale(1.04); }
-	}
-
 	@keyframes pulse {
 		0%, 100% { transform: scale(1); }
 		50% { transform: scale(1.3); }
 	}
 
-	@keyframes ridge-shift {
-		from { transform: translateY(0); }
-		to { transform: translateY(8px); }
+	@keyframes fly {
+		0% { translate: -10vw 0; }
+		52% { translate: 58vw -6vh; }
+		100% { translate: 120vw 2vh; }
 	}
 
 	@keyframes about-in {
-		from {
-			opacity: 0;
-			transform: translateY(-8px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		from { opacity: 0; transform: translateY(-8px); }
+		to { opacity: 1; transform: translateY(0); }
 	}
 
 	@media(max-width: 767px) {
 		.forest-nav {
-			width: min(100% - 32px, 720px);
-			padding-top: 22px;
-			font-size: 0.78rem;
+			padding: 20px;
 		}
 
-		.forest-hero {
-			min-height: calc(100vh - 78px);
-			width: min(100% - 32px, 680px);
-			padding-bottom: 70px;
+		.home-link {
+			font-size: 0.88rem;
 		}
 
-		.listen-button {
-			min-height: 70px;
-			width: min(100%, 330px);
-			padding: 0 22px;
+		.about-button {
+			min-height: 38px;
+			padding: 0 14px;
+		}
+
+		.hero {
+			padding-inline: 18px;
+		}
+
+		.forest-card {
+			top: 18vh;
+			width: 62vw;
+			min-width: 230px;
 		}
 
 		h1 {
-			margin-top: 44px;
+			margin-bottom: 80px;
+			font-size: clamp(5.2rem, 24vw, 8.5rem);
+		}
+
+		.listen-button {
+			top: 59vh;
+			min-height: 58px;
+			padding-left: 22px;
+			gap: 12px;
+			white-space: nowrap;
+		}
+
+		.listen-button i {
+			width: 42px;
+			height: 42px;
 		}
 
 		.intro {
-			font-size: 0.95rem;
+			bottom: 8vh;
+			font-size: 0.94rem;
+			line-height: 1.75;
+		}
+
+		.sound-meta {
+			bottom: 3.2vh;
 		}
 
 		.about-panel {
