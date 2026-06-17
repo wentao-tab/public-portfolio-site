@@ -1,0 +1,161 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="若以恒河沙等身命布施"
+	description="数量再大，也不等于心真正自由。"
+	keywords="金刚经,恒河沙,布施,读书感悟,阅读笔记"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.06.17</div>
+			<h1 class="font-huiwen">若以恒河沙等身命布施。</h1>
+			<p class="lead">数量再大，也不等于心真正自由。</p>
+			<p>《金刚经》里常用“恒河沙”来形容不可计量。以恒河沙那么多的身命去布施，已经是极大的牺牲；但佛仍然说，若有人受持经中四句偈、为他人说，福德更胜。</p>
+			<p>这不是贬低布施，而是在区分两件事：外在付出和心地转化。</p>
+			<p>一个人可以付出很多，但心里仍然住在“我付出了”“我很伟大”“别人应该记得我”。这样布施再大，还是围着“我相”转。反过来，如果一个人真正理解“不住相”，哪怕只是一句法义进了心，行为就会变干净：该帮就帮，不求占有功德；该给就给，不把对方变成欠自己的人。</p>
+			<p>南怀瑾讲《金刚经》的重点是：佛法不是算账。不是用多少财富、多少牺牲，换多少福报。真正难的是把“我在布施”的那个我放下。</p>
+			<p>所以，恒河沙布施很大；但若心仍被功德、名声、牺牲感绑住，就还没有到般若。</p>
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天帮人或付出时，做完就停，不在心里追加一句：“我都已经这样了。”</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0617-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		color: #9b7a35;
+		font-family: var(--font-type);
+		font-size: 0.82rem;
+		letter-spacing: 0.04em;
+	}
+
+	.note-reminder {
+		margin-top: 44px;
+		padding: 22px 0 0 22px;
+		border-top: 1px solid rgba(184, 138, 55, 0.22);
+		border-left: 3px solid rgba(184, 138, 55, 0.7);
+
+		h2 {
+			margin-bottom: 12px;
+			color: var(--color-100);
+			font-size: 1.28rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	@media(max-width: 767px) {
+		.note-hero {
+			width: calc(100vw - 32px);
+			margin-top: 34px;
+			margin-bottom: 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+
+			p {
+				font-size: 1rem;
+				line-height: 1.95;
+			}
+		}
+	}
+</style>
