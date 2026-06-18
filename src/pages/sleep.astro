@@ -145,18 +145,16 @@ const sounds = [
 			return;
 		}
 
-		const rect = entryCard.getBoundingClientRect();
-		entryExpander.style.setProperty('--entry-x', `${rect.left}px`);
-		entryExpander.style.setProperty('--entry-y', `${rect.top}px`);
-		entryExpander.style.setProperty('--entry-scale-x', `${rect.width / window.innerWidth}`);
-		entryExpander.style.setProperty('--entry-scale-y', `${rect.height / window.innerHeight}`);
 		page.classList.add('is-entering');
 
 		window.setTimeout(() => {
 			page.classList.add('is-player');
-			page.classList.remove('is-entering');
 			if (window.location.hash !== '#forest') history.pushState(null, '', '#forest');
-		}, 860);
+		}, 520);
+
+		window.setTimeout(() => {
+			page.classList.remove('is-entering');
+		}, 1040);
 	};
 
 	const exitPlayer = () => {
@@ -597,13 +595,13 @@ const sounds = [
 		height: 100vh;
 		overflow: hidden;
 		background:
-			radial-gradient(circle at 54% 42%, rgba(40, 96, 42, 0.58), transparent 0 32%),
-			linear-gradient(135deg, #092f13 0%, #031f09 48%, #001905 100%);
+			radial-gradient(circle at 52% 44%, rgba(38, 91, 40, 0.42), transparent 0 48%),
+			linear-gradient(180deg, #062c10 0%, #001f08 52%, #001504 100%);
 		box-shadow: 0 0 0 1px rgba(209, 236, 207, 0.16) inset;
 		opacity: 0;
 		pointer-events: none;
-		transform: translate(var(--entry-x, 50vw), var(--entry-y, 50vh)) scale(var(--entry-scale-x, 0.28), var(--entry-scale-y, 0.55));
-		transform-origin: top left;
+		transform: scale(1.018);
+		transform-origin: center;
 		will-change: opacity, transform;
 	}
 
@@ -617,7 +615,7 @@ const sounds = [
 	}
 
 	.is-entering .entry-expander {
-		animation: entry-box-open 860ms cubic-bezier(0.65, 0, 0.35, 1) both;
+		animation: entry-full-wash 1040ms cubic-bezier(0.55, 0, 0.2, 1) both;
 	}
 
 	.player-screen {
@@ -629,7 +627,7 @@ const sounds = [
 		pointer-events: none;
 	}
 
-	.is-entering .player-screen {
+	.is-entering:not(.is-player) .player-screen {
 		visibility: hidden;
 		opacity: 0;
 		pointer-events: none;
@@ -863,14 +861,22 @@ const sounds = [
 		to { opacity: 1; transform: translateY(0); }
 	}
 
-	@keyframes entry-box-open {
+	@keyframes entry-full-wash {
 		0% {
+			opacity: 0;
+			transform: scale(0.992);
+		}
+		20% {
 			opacity: 1;
-			transform: translate(var(--entry-x), var(--entry-y)) scale(var(--entry-scale-x), var(--entry-scale-y));
+			transform: scale(1);
+		}
+		58% {
+			opacity: 1;
+			transform: scale(1);
 		}
 		100% {
-			opacity: 1;
-			transform: translate(0, 0) scale(1);
+			opacity: 0;
+			transform: scale(1.012);
 		}
 	}
 
