@@ -7,12 +7,13 @@ interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
 	keywords?: string | undefined;
+	favicon?: string | undefined;
 }
-const { title, description,keywords } = Astro.props;
+const { title, description,keywords, favicon } = Astro.props;
 ---
 <html lang=en>
 	<head>
-		<MainHead title={title} description={description}  keywords={keywords} />
+		<MainHead title={title} description={description}  keywords={keywords} favicon={favicon} />
 	</head>
 	<body class="_body">
 		<div class="">
