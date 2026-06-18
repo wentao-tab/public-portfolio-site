@@ -58,7 +58,14 @@ const sounds = [
 				<i aria-hidden="true"></i>
 			</button>
 
-			<p class="intro">风过林梢，鸟落枝头。世界安静下来，只剩一片温柔的沙沙声，像月光在树叶上写字，一撇一捺，都是安眠的韵脚。</p>
+			<p class="intro">
+				<span>风过林梢，鸟落枝头。</span>
+				<span class="intro-detail">
+					<span>世界安静下来，只剩一片温柔的沙沙声，</span>
+					<span>像月光在树叶上写字，一撇一捺，</span>
+					<span>都是安眠的韵脚。</span>
+				</span>
+			</p>
 		</section>
 
 		<div class="entry-expander" aria-hidden="true" data-entry-expander></div>
@@ -578,13 +585,24 @@ const sounds = [
 		left: 50%;
 		bottom: 6.8vh;
 		z-index: 3;
-		width: min(880px, calc(100vw - 42px));
+		width: min(960px, calc(100vw - 42px));
 		margin: 0;
 		color: rgba(255, 255, 255, 0.82);
 		font-size: clamp(1rem, 1.18vw, 1.18rem);
 		font-weight: 300;
 		line-height: 1.9;
+		text-align: center;
 		transform: translateX(-50%);
+		overflow-wrap: anywhere;
+		word-break: break-all;
+	}
+
+	.intro > span {
+		display: block;
+	}
+
+	.intro-detail span {
+		display: inline;
 	}
 
 	.entry-expander {
@@ -926,8 +944,13 @@ const sounds = [
 
 		.intro {
 			bottom: 7vh;
+			width: min(300px, calc(100vw - 56px));
 			font-size: 0.94rem;
 			line-height: 1.75;
+		}
+
+		.intro-detail span {
+			display: block;
 		}
 
 		.player-bottom {
