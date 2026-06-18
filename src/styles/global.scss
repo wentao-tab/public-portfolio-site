@@ -54,9 +54,9 @@
     font-style: normal;
 }
 
-@import url("https://chinese-fonts-cdn.deno.dev/packages/hwmct/dist/汇文明朝体/result.css");
+@import url("https://unpkg.com/@chinese-fonts/hwmct@3.0.0/dist/%E6%B1%87%E6%96%87%E6%98%8E%E6%9C%9D%E4%BD%93/result.css");
 .font-huiwen {
-    font-family:'Huiwen-mincho'!important;
+    font-family: 'Huiwen-mincho', "Songti SC", STSong, SimSun, serif !important;
     font-weight:400!important;
 }
 
