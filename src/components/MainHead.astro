@@ -8,19 +8,52 @@ interface Props {
 	description?: string | undefined;
 	keywords?: string | undefined;
 	favicon?: string | undefined;
+	image?: string | undefined;
+	canonicalPath?: string | undefined;
+	type?: string | undefined;
 }
-const { title, description,keywords, favicon = withBase('/favicon.png') } = Astro.props;
+const {
+	title,
+	description,
+	keywords,
+	favicon = withBase('/favicon.png'),
+	image = withBase('/favicon.png'),
+	canonicalPath,
+	type = 'website',
+} = Astro.props;
+const siteUrl = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://hiwentao.com/').replace(/\/$/, '');
+const toAbsoluteUrl = (value: string) => {
+	if (/^[a-z][a-z0-9+.-]*:/i.test(value)) return value;
+	const normalized = value.startsWith('/') ? value : `/${value}`;
+	return `${siteUrl}${normalized}`;
+};
+const canonicalUrl = toAbsoluteUrl(canonicalPath ?? Astro.url.pathname);
+const imageUrl = toAbsoluteUrl(image);
 ---
 
 <meta charset="UTF-8" />
-<meta name="description" property="og:description" content={description} />
+<meta name="description" content={description} />
 <meta name="keywords" content={keywords} />
 <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
+<link rel="canonical" href={canonicalUrl} />
 
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="generator" content={Astro.generator} />
 <title>{title}</title>
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="梁文韬的设计与读书思考" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:secure_url" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="675" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
 <link rel="icon" type="image/png" href={favicon} />
 <link rel="apple-touch-icon" href={favicon} />
 <script is:inline>
