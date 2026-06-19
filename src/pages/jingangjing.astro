@@ -120,7 +120,7 @@ const makePrompt = (visual: string, index: number) =>
 	`16:9 Chinese ink watercolor Buddhist sutra illustration. Scene: ${visual} Composition panel ${index + 1}, quiet cinematic framing, ivory rice-paper texture, pale mineral washes, thin sepia line art, restrained gold and pine green accents. No readable writing, no captions, no logo, no watermark.`;
 
 const imageForCard = (chapter: number, sentence: number) =>
-	chapter <= 32 ? withBase(`/assets/jingangjing/c${String(chapter).padStart(2, "0")}-s${String(sentence).padStart(2, "0")}.png`) : "";
+	chapter <= 32 ? withBase(`/assets/jingangjing/c${String(chapter).padStart(2, "0")}-s${String(sentence).padStart(2, "0")}.webp`) : "";
 
 const chapters = chapterTitles.map((title, index) => {
 	const [quote, plain, visual] = chapterNotes[index];
