@@ -6,7 +6,61 @@ import { withBase } from "../../utils/paths";
 const meta = diamondSutraData.meta;
 const title = "金刚般若波罗蜜经";
 const byline = `${meta.dynasty ?? ""}${meta.translator ?? ""}译`;
-const paragraphs = diamondSutraData.paragraphs.filter((item) => item.position >= 3 && item.position <= 128);
+const chapterTitles = [
+	"法会因由分",
+	"善现启请分",
+	"大乘正宗分",
+	"妙行无住分",
+	"如理实见分",
+	"正信希有分",
+	"无得无说分",
+	"依法出生分",
+	"一相无相分",
+	"庄严净土分",
+	"无为福胜分",
+	"尊重正教分",
+	"如法受持分",
+	"离相寂灭分",
+	"持经功德分",
+	"能净业障分",
+	"究竟无我分",
+	"一体同观分",
+	"法界通化分",
+	"离色离相分",
+	"非说所说分",
+	"无法可得分",
+	"净心行善分",
+	"福智无比分",
+	"化无所化分",
+	"法身非相分",
+	"无断无灭分",
+	"不受不贪分",
+	"威仪寂静分",
+	"一合理相分",
+	"知见不生分",
+	"应化非真分",
+];
+const chapterStartPositions = [
+	3, 5, 8, 9, 15, 18, 22, 24, 27, 35, 42, 47, 48, 57, 63, 66,
+	69, 78, 93, 96, 100, 103, 105, 106, 107, 108, 114, 116, 119, 120, 123, 126,
+];
+const traditionalToSimplifiedEntries = [
+	["聞", "闻"], ["時", "时"], ["衛", "卫"], ["國", "国"], ["樹", "树"], ["獨", "独"], ["園", "园"], ["與", "与"], ["眾", "众"], ["爾", "尔"], ["著", "着"], ["鉢", "钵"], ["於", "于"], ["還", "还"], ["處", "处"], ["飯", "饭"], ["訖", "讫"], ["長", "长"], ["從", "从"], ["護", "护"], ["諸", "诸"], ["囑", "嘱"], ["發", "发"], ["應", "应"], ["諦", "谛"], ["聽", "听"], ["當", "当"], ["說", "说"], ["樂", "乐"], ["訶", "诃"], ["類", "类"], ["濕", "湿"], ["無", "无"], ["餘", "余"], ["滅", "灭"], ["邊", "边"], ["實", "实"], ["壽", "寿"], ["復", "复"], ["謂", "谓"], ["聲", "声"], ["觸", "触"], ["東", "东"], ["虛", "虚"], ["觀", "观"], ["見", "见"], ["來", "来"], ["須", "须"], ["頗", "颇"], ["後", "后"], ["歲", "岁"], ["種", "种"], ["萬", "万"], ["淨", "净"], ["覺", "觉"], ["經", "经"], ["恆", "恒"], ["間", "间"], ["門", "门"], ["閻", "阎"], ["羅", "罗"], ["數", "数"], ["師", "师"], ["資", "资"], ["糧", "粮"], ["圓", "圆"], ["滿", "满"], ["報", "报"], ["語", "语"], ["轉", "转"], ["輪", "轮"], ["聖", "圣"], ["過", "过"], ["現", "现"], ["塵", "尘"], ["貪", "贪"], ["臥", "卧"], ["斷", "断"], ["頂", "顶"], ["禮", "礼"], ["圍", "围"], ["繞", "绕"], ["號", "号"], ["億", "亿"], ["醫", "医"], ["歡", "欢"], ["論", "论"], ["諍", "诤"], ["詞", "词"], ["義", "义"], ["體", "体"], ["個", "个"], ["儘", "尽"], ["盡", "尽"], ["髮", "发"], ["鬚", "须"], ["麼", "么"], ["裡", "里"], ["裏", "里"], ["這", "这"], ["會", "会"], ["誰", "谁"], ["讓", "让"], ["變", "变"], ["懷", "怀"], ["壞", "坏"], ["靈", "灵"], ["鐘", "钟"], ["銅", "铜"], ["銀", "银"], ["鐵", "铁"], ["鑑", "鉴"], ["寶", "宝"], ["嚴", "严"], ["勝", "胜"], ["離", "离"], ["業", "业"], ["達", "达"], ["夢", "梦"], ["盧", "卢"], ["蘇", "苏"], ["陳", "陈"], ["頭", "头"], ["腦", "脑"], ["軀", "躯"], ["壓", "压"], ["寫", "写"], ["誦", "诵"], ["讀", "读"], ["贊", "赞"], ["歎", "叹"], ["請", "请"], ["啟", "启"], ["厲", "厉"], ["齊", "齐"],
+] as const;
+const toSimplified = (text: string) =>
+	traditionalToSimplifiedEntries.reduce((next, [from, to]) => next.replaceAll(from, to), text);
+const baseParagraphs = diamondSutraData.paragraphs.filter((item) => item.position >= 3 && item.position <= 128);
+const chapterByPosition = new Map(chapterStartPositions.map((position, index) => [position, index + 1]));
+const paragraphs = baseParagraphs.map((paragraph) => ({
+	...paragraph,
+	simplifiedText: toSimplified(paragraph.originalText),
+	chapter: chapterByPosition.get(paragraph.position),
+}));
+const chapterNav = chapterTitles.map((title, index) => ({
+	number: index + 1,
+	title,
+	href: `#chapter-${index + 1}`,
+}));
 ---
 
 <html lang="zh-CN">
@@ -30,23 +84,53 @@ const paragraphs = diamondSutraData.paragraphs.filter((item) => item.position >=
 				<p class="source-byline">{byline}</p>
 			</section>
 
-			<article class="source-content" aria-label="金刚般若波罗蜜经原文与白话翻译">
-				{paragraphs.map((paragraph) => {
-					const translation = paragraph.translations?.find((item) => item.language === "zh-CN")?.translatedText ?? "";
-					return (
-						<section class="source-entry">
-							<div class="original-block">
-								<p>{paragraph.originalText}</p>
-							</div>
-							{translation && (
-								<div class="translation-block">
-									<p>{translation}</p>
+			<div class="source-layout">
+				<article class="source-content" aria-label="金刚般若波罗蜜经原文与白话翻译">
+					{paragraphs.map((paragraph) => {
+						const translation = paragraph.translations?.find((item) => item.language === "zh-CN")?.translatedText ?? "";
+						return (
+							<section class="source-entry" id={paragraph.chapter ? `chapter-${paragraph.chapter}` : `paragraph-${paragraph.position}`}>
+								{paragraph.chapter && (
+									<h2>
+										<span>{String(paragraph.chapter).padStart(2, "0")}</span>
+										{chapterTitles[paragraph.chapter - 1]}
+									</h2>
+								)}
+								<div class="source-text-card">
+									<div class="source-row traditional-row">
+										<span class="source-label">繁</span>
+										<p>{paragraph.originalText}</p>
+									</div>
+									<div class="source-row simplified-row">
+										<span class="source-label">简</span>
+										<p>{paragraph.simplifiedText}</p>
+									</div>
+									{translation && (
+										<div class="source-row translation-row">
+											<span class="source-label">译</span>
+											<p>{translation}</p>
+										</div>
+									)}
 								</div>
-							)}
-						</section>
-					);
-				})}
-			</article>
+							</section>
+						);
+					})}
+				</article>
+
+				<aside class="chapter-tree" aria-label="金刚经章节目录">
+					<div class="tree-card">
+						<p>章节组织树</p>
+						<nav>
+							{chapterNav.map((chapter) => (
+								<a href={chapter.href}>
+									<span>{String(chapter.number).padStart(2, "0")}</span>
+									<strong>{chapter.title}</strong>
+								</a>
+							))}
+						</nav>
+					</div>
+				</aside>
+			</div>
 
 			<footer class="source-footer">
 				<a href={withBase("/jingangjing/")}>返回配图阅读</a>
@@ -66,6 +150,10 @@ const paragraphs = diamondSutraData.paragraphs.filter((item) => item.position >=
 	:global(body.source-reader-body) {
 		color: #34302c;
 		font-family: Iowan Old Style, Songti SC, "Noto Serif CJK SC", PingFang SC, serif;
+	}
+
+	:global(body.source-reader-body) {
+		scroll-behavior: smooth;
 	}
 
 	.source-reader {
@@ -135,48 +223,170 @@ const paragraphs = diamondSutraData.paragraphs.filter((item) => item.position >=
 		text-align: right;
 	}
 
-	.source-content {
+	.source-layout {
 		display: grid;
-		gap: 54px;
+		grid-template-columns: minmax(0, 1fr) 220px;
+		gap: 36px;
 		width: min(1180px, calc(100% - 48px));
 		margin: 0 auto;
 		padding-bottom: 72px;
 	}
 
-	.source-entry {
+	.source-content {
 		display: grid;
-		gap: 28px;
+		gap: 42px;
+		min-width: 0;
 	}
 
-	.original-block {
-		padding: 24px 28px;
+	.source-entry {
+		display: grid;
+		gap: 16px;
+		scroll-margin-top: 86px;
+	}
+
+	.source-entry h2 {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		margin: 0;
+		color: #9c681f;
+		font-family: PingFang SC, sans-serif;
+		font-size: 16px;
+		font-weight: 800;
+		letter-spacing: 0;
+	}
+
+	.source-entry h2 span {
+		display: inline-grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 999px;
+		background: rgba(183, 137, 59, 0.14);
+		color: #8c5a13;
+		font-size: 12px;
+	}
+
+	.source-text-card {
+		display: grid;
+		gap: 18px;
+		padding: 22px 26px;
 		border-left: 3px solid rgba(183, 137, 59, 0.32);
 		border-radius: 0 10px 10px 0;
 		background: rgba(246, 241, 232, 0.76);
 	}
 
-	.original-block p,
-	.translation-block p {
+	.source-row {
+		display: grid;
+		grid-template-columns: 34px minmax(0, 1fr);
+		gap: 16px;
+		align-items: start;
+	}
+
+	.source-label {
+		display: inline-grid;
+		place-items: center;
+		width: 28px;
+		height: 28px;
+		border-radius: 999px;
+		background: rgba(165, 107, 24, 0.11);
+		color: #9c681f;
+		font-family: PingFang SC, sans-serif;
+		font-size: 13px;
+		font-weight: 800;
+		line-height: 1;
+	}
+
+	.source-row p {
 		margin: 0;
 		letter-spacing: 0;
 		white-space: pre-line;
 	}
 
-	.original-block p {
+	.traditional-row p,
+	.simplified-row p {
 		color: rgba(52, 48, 44, 0.86);
-		font-size: 28px;
-		font-weight: 650;
-		line-height: 2;
-	}
-
-	.translation-block {
-		padding: 0 8px 0 18px;
-	}
-
-	.translation-block p {
-		color: rgba(52, 48, 44, 0.84);
 		font-size: 25px;
-		line-height: 2.05;
+		font-weight: 650;
+		line-height: 1.9;
+	}
+
+	.simplified-row {
+		padding-top: 18px;
+		border-top: 1px solid rgba(183, 137, 59, 0.13);
+	}
+
+	.translation-row {
+		padding-top: 18px;
+		border-top: 1px solid rgba(183, 137, 59, 0.13);
+	}
+
+	.translation-row p {
+		color: rgba(52, 48, 44, 0.84);
+		font-family: PingFang SC, "Noto Sans CJK SC", sans-serif;
+		font-size: 21px;
+		line-height: 1.95;
+	}
+
+	.chapter-tree {
+		position: relative;
+	}
+
+	.tree-card {
+		position: sticky;
+		top: 82px;
+		max-height: calc(100vh - 112px);
+		overflow: auto;
+		padding: 18px 14px;
+		border: 1px solid rgba(161, 122, 64, 0.16);
+		border-radius: 12px;
+		background: rgba(255, 252, 246, 0.72);
+		box-shadow: 0 18px 44px rgba(52, 48, 44, 0.06);
+		backdrop-filter: blur(12px);
+	}
+
+	.tree-card p {
+		margin: 0 0 12px;
+		color: #9c681f;
+		font-family: PingFang SC, sans-serif;
+		font-size: 14px;
+		font-weight: 800;
+	}
+
+	.tree-card nav {
+		display: grid;
+		gap: 4px;
+	}
+
+	.tree-card a {
+		display: grid;
+		grid-template-columns: 28px minmax(0, 1fr);
+		gap: 8px;
+		align-items: center;
+		padding: 8px 8px;
+		border-radius: 8px;
+		color: rgba(52, 48, 44, 0.74);
+		font-family: PingFang SC, sans-serif;
+		font-size: 13px;
+		font-weight: 700;
+		line-height: 1.25;
+		text-decoration: none;
+	}
+
+	.tree-card a:hover {
+		background: rgba(183, 137, 59, 0.11);
+		color: #614014;
+	}
+
+	.tree-card a span {
+		color: rgba(156, 104, 31, 0.78);
+		font-size: 12px;
+	}
+
+	.tree-card a strong {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.source-footer {
@@ -221,27 +431,78 @@ const paragraphs = diamondSutraData.paragraphs.filter((item) => item.position >=
 			font-size: 16px;
 		}
 
-		.source-content {
+		.source-layout {
+			grid-template-columns: 1fr;
 			width: min(100% - 28px, 1180px);
-			gap: 38px;
+			gap: 24px;
 		}
 
-		.original-block {
-			padding: 18px 20px;
+		.chapter-tree {
+			order: -1;
+			position: sticky;
+			top: 58px;
+			z-index: 8;
+			margin: 0 -14px;
+			padding: 0 14px;
+			background: rgba(251, 250, 247, 0.92);
+			backdrop-filter: blur(12px);
 		}
 
-		.original-block p {
-			font-size: 22px;
-			line-height: 1.9;
+		.tree-card {
+			position: static;
+			max-height: none;
+			overflow: hidden;
+			padding: 12px 0;
+			border: 0;
+			border-radius: 0;
+			background: transparent;
+			box-shadow: none;
 		}
 
-		.translation-block {
-			padding-left: 8px;
+		.tree-card p {
+			margin-left: 2px;
+			font-size: 13px;
 		}
 
-		.translation-block p {
+		.tree-card nav {
+			display: flex;
+			gap: 8px;
+			overflow-x: auto;
+			padding-bottom: 4px;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		.tree-card a {
+			flex: 0 0 auto;
+			grid-template-columns: auto auto;
+			padding: 8px 10px;
+			border: 1px solid rgba(161, 122, 64, 0.16);
+			background: rgba(255, 252, 246, 0.76);
+		}
+
+		.source-content {
+			gap: 36px;
+		}
+
+		.source-text-card {
+			gap: 15px;
+			padding: 18px 18px;
+		}
+
+		.source-row {
+			grid-template-columns: 30px minmax(0, 1fr);
+			gap: 12px;
+		}
+
+		.traditional-row p,
+		.simplified-row p {
+			font-size: 21px;
+			line-height: 1.82;
+		}
+
+		.translation-row p {
 			font-size: 18px;
-			line-height: 1.95;
+			line-height: 1.9;
 		}
 	}
 </style>
