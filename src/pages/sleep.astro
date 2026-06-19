@@ -118,6 +118,7 @@ const sounds = [
 	const enterButton = document.querySelector('[data-enter-button]') as HTMLButtonElement | null;
 	const entryCard = document.querySelector('[data-entry-card]') as HTMLButtonElement | null;
 	const entryExpander = document.querySelector('[data-entry-expander]') as HTMLElement | null;
+	const playerScreen = document.querySelector('.player-screen') as HTMLElement | null;
 	const playerButton = document.querySelector('[data-player-button]') as HTMLButtonElement | null;
 	const playerBack = document.querySelector('[data-player-back]') as HTMLButtonElement | null;
 	const nextJourney = document.querySelector('[data-next-journey]') as HTMLButtonElement | null;
@@ -144,6 +145,10 @@ const sounds = [
 		if (playerLabel) playerLabel.textContent = playing ? 'stop' : 'begin';
 	};
 
+	const setImmersive = (immersive: boolean) => {
+		page?.classList.toggle('is-immersive', immersive);
+	};
+
 	const enterPlayer = (animate = true) => {
 		if (!page || page.classList.contains('is-player') || page.classList.contains('is-entering')) return;
 		if (!animate || !entryCard || !entryExpander) {
@@ -167,11 +172,42 @@ const sounds = [
 	const exitPlayer = () => {
 		audio?.pause();
 		setPlaying(false);
+		setImmersive(false);
 		page?.classList.remove('is-entering');
 		page?.classList.remove('is-player');
 		if (window.location.hash === '#forest') {
 			history.pushState(null, '', window.location.pathname + window.location.search);
 		}
+	};
+
+	const enterImmersive = async () => {
+		if (!page?.classList.contains('is-player')) return;
+		if (!aboutLayer?.hasAttribute('hidden')) aboutLayer?.setAttribute('hidden', '');
+		page?.classList.remove('is-about-open');
+
+		try {
+			if (!document.fullscreenElement) await page?.requestFullscreen?.();
+		} catch {
+			// Some browsers can reject fullscreen; keep the page-level immersive mode.
+		}
+		setImmersive(true);
+	};
+
+	const exitImmersive = async () => {
+		setImmersive(false);
+		try {
+			if (document.fullscreenElement) await document.exitFullscreen?.();
+		} catch {
+			setImmersive(false);
+		}
+	};
+
+	const toggleImmersive = () => {
+		if (page?.classList.contains('is-immersive') || document.fullscreenElement) {
+			void exitImmersive();
+			return;
+		}
+		void enterImmersive();
 	};
 
 	const randomSeek = () => {
@@ -229,6 +265,26 @@ const sounds = [
 
 	playerBack?.addEventListener('click', exitPlayer);
 
+	playerScreen?.addEventListener('dblclick', (event) => {
+		if ((event.target as HTMLElement).closest('button, a, audio')) return;
+		toggleImmersive();
+	});
+
+	let lastTouchTime = 0;
+	playerScreen?.addEventListener('touchend', (event) => {
+		if ((event.target as HTMLElement).closest('button, a, audio')) return;
+		const now = Date.now();
+		if (now - lastTouchTime < 320) {
+			event.preventDefault();
+			toggleImmersive();
+		}
+		lastTouchTime = now;
+	}, { passive: false });
+
+	document.addEventListener('fullscreenchange', () => {
+		setImmersive(Boolean(document.fullscreenElement));
+	});
+
 	audio?.addEventListener('loadedmetadata', () => {
 		if (page?.classList.contains('is-playing')) randomSeek();
 	});
@@ -268,7 +324,16 @@ const sounds = [
 	});
 
 	document.addEventListener('keydown', (event) => {
+		if (event.key.toLowerCase() === 'f' && page?.classList.contains('is-player')) {
+			event.preventDefault();
+			toggleImmersive();
+			return;
+		}
 		if (event.key !== 'Escape') return;
+		if (page?.classList.contains('is-immersive') || document.fullscreenElement) {
+			setImmersive(false);
+			return;
+		}
 		if (!aboutLayer?.hasAttribute('hidden')) {
 			aboutLayer?.setAttribute('hidden', '');
 			page?.classList.remove('is-about-open');
@@ -657,6 +722,18 @@ const sounds = [
 		pointer-events: auto;
 	}
 
+	.is-immersive .forest-nav {
+		visibility: hidden;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.is-immersive .player-shade {
+		background:
+			linear-gradient(180deg, rgba(0, 16, 5, 0.2), rgba(0, 11, 4, 0.32)),
+			radial-gradient(circle at 50% 50%, transparent 0 32%, rgba(0, 12, 3, 0.5) 100%);
+	}
+
 	.player-bg,
 	.player-bg img,
 	.player-shade {
@@ -745,6 +822,16 @@ const sounds = [
 		font-size: 0.9rem;
 		font-weight: 300;
 		line-height: 1.4;
+	}
+
+	.is-immersive .player-bottom {
+		bottom: 50%;
+		transform: translate(-50%, 50%);
+	}
+
+	.is-immersive .sound-meta,
+	.is-immersive .next-journey {
+		display: none;
 	}
 
 	.next-journey {
