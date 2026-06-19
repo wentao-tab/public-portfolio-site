@@ -1,7 +1,6 @@
 ---
 import MainHead from "../components/MainHead.astro";
 import { withBase } from "../utils/paths";
-import diamondSutraData from "../data/diamond-sutra.json";
 
 const chapterTitles = [
 	"法会因由分",
@@ -153,53 +152,6 @@ const chapters = chapterTitles.map((title, index) => {
 	};
 });
 
-const sourceRanges = [
-	[3, 4],
-	[5, 7],
-	[8, 8],
-	[9, 14],
-	[15, 17],
-	[18, 21],
-	[22, 23],
-	[24, 26],
-	[27, 34],
-	[35, 41],
-	[42, 46],
-	[47, 47],
-	[48, 56],
-	[57, 62],
-	[63, 65],
-	[66, 68],
-	[69, 77],
-	[78, 92],
-	[93, 95],
-	[96, 99],
-	[100, 102],
-	[103, 104],
-	[105, 105],
-	[106, 106],
-	[107, 107],
-	[108, 113],
-	[114, 115],
-	[116, 118],
-	[119, 119],
-	[120, 122],
-	[123, 125],
-	[126, 128],
-];
-
-const sourceParagraphs = diamondSutraData.paragraphs;
-const sourceChapters = chapters.map((chapter, index) => {
-	const [start, end] = sourceRanges[index];
-	const paragraphs = sourceParagraphs.filter((item) => item.position >= start && item.position <= end);
-	return {
-		...chapter,
-		sourceParagraphs: paragraphs.map((item) => ({
-			...item,
-			translation: item.translations?.find((translation) => translation.language === "zh-CN")?.translatedText ?? "",
-		})),
-	};
-});
 ---
 
 <html lang="zh-CN">
@@ -241,7 +193,7 @@ const sourceChapters = chapters.map((chapter, index) => {
 						<em data-audio-state>点击播放</em>
 					</span>
 				</button>
-				<button class="reader-link source-toggle" type="button" data-source-toggle aria-pressed="false">原文来源</button>
+				<a class="reader-link" href={withBase("/jingangjing/source/")}>原文阅读</a>
 				<a class="reader-link" href={withBase("/notes/jingangjing-0619/")}>读经笔记</a>
 			</nav>
 			<audio data-sutra-audio preload="metadata">
@@ -262,7 +214,7 @@ const sourceChapters = chapters.map((chapter, index) => {
 				</div>
 			</aside>
 
-			<section class="reading-pane" data-reader-view="cards" aria-live="polite">
+			<section class="reading-pane" aria-live="polite">
 				{chapters.map((chapter) => (
 					<article class:list={["chapter-panel", chapter.chapter === 1 && "active"]} data-chapter-panel={chapter.chapter}>
 						<header class="chapter-header">
@@ -342,45 +294,6 @@ const sourceChapters = chapters.map((chapter, index) => {
 				))}
 			</section>
 
-			<section class="source-pane" data-reader-view="source" aria-live="polite" hidden>
-				{sourceChapters.map((chapter) => (
-					<article class:list={["source-panel", chapter.chapter === 1 && "active"]} data-source-panel={chapter.chapter}>
-						<header class="source-header">
-							<div>
-								<p class="source-eyebrow">原文对照 · 第 {String(chapter.chapter).padStart(2, "0")} 品</p>
-								<h1>{chapter.title}</h1>
-							</div>
-							<div class="chapter-stepper source-stepper">
-								<button class="step-button" type="button" data-move="-1" aria-label="上一品">‹</button>
-								<select aria-label="选择品目" data-chapter-select>
-									{chapters.map((item) => (
-										<option value={item.chapter} selected={item.chapter === chapter.chapter}>
-											{String(item.chapter).padStart(2, "0")} {item.title}
-										</option>
-									))}
-								</select>
-								<button class="step-button" type="button" data-move="1" aria-label="下一品">›</button>
-							</div>
-						</header>
-						<div class="source-list">
-							{chapter.sourceParagraphs.map((paragraph) => (
-								<article class="source-pair">
-									<div class="source-original-block">
-										<span>原文 · {String(paragraph.position).padStart(3, "0")}</span>
-										<p>{paragraph.originalText}</p>
-									</div>
-									{paragraph.translation && (
-										<div class="source-translation-block">
-											<span>白话翻译</span>
-											<p>{paragraph.translation}</p>
-										</div>
-									)}
-								</article>
-							))}
-						</div>
-					</article>
-				))}
-			</section>
 		</div>
 
 		<footer class="sutra-footer">
@@ -426,13 +339,9 @@ const sourceChapters = chapters.map((chapter, index) => {
 		title: button.querySelector("strong")?.textContent?.trim() ?? "",
 	}));
 	const chapters = [...document.querySelectorAll("[data-chapter-panel]")];
-	const sourcePanels = [...document.querySelectorAll("[data-source-panel]")];
 	const chapterButtons = [...document.querySelectorAll("[data-chapter-target]")];
 	const selects = [...document.querySelectorAll("[data-chapter-select]")];
 	const cardButtons = [...document.querySelectorAll("[data-open-card]")];
-	const sourceToggle = document.querySelector("[data-source-toggle]");
-	const cardView = document.querySelector('[data-reader-view="cards"]');
-	const sourceView = document.querySelector('[data-reader-view="source"]');
 	const lightbox = document.querySelector("[data-lightbox]");
 	const railTitle = document.querySelector("[data-rail-title]");
 	const sutraAudio = document.querySelector("[data-sutra-audio]");
@@ -440,7 +349,6 @@ const sourceChapters = chapters.map((chapter, index) => {
 	const audioState = document.querySelector("[data-audio-state]");
 	let activeChapter = 1;
 	let activeCard = 0;
-	let sourceMode = false;
 
 	function hydrateChapterImages(panel) {
 		panel?.querySelectorAll("img[data-card-image]:not([src])").forEach((image) => {
@@ -453,22 +361,11 @@ const sourceChapters = chapters.map((chapter, index) => {
 		activeChapter = clamped;
 		hydrateChapterImages(chapters.find((panel) => Number(panel.dataset.chapterPanel) === clamped));
 		chapters.forEach((panel) => panel.classList.toggle("active", Number(panel.dataset.chapterPanel) === clamped));
-		sourcePanels.forEach((panel) => panel.classList.toggle("active", Number(panel.dataset.sourcePanel) === clamped));
 		chapterButtons.forEach((button) => button.classList.toggle("active", Number(button.dataset.chapterTarget) === clamped));
 		selects.forEach((select) => (select.value = String(clamped)));
 		const current = chapterMeta.find((item) => item.chapter === clamped);
 		if (railTitle && current) railTitle.textContent = `第 ${String(clamped).padStart(2, "0")} 品 · ${current.title}`;
 		window.scrollTo({ top: 0, behavior: "smooth" });
-	}
-
-	function setReaderMode(nextSourceMode) {
-		sourceMode = Boolean(nextSourceMode);
-		document.body.classList.toggle("sutra-source-mode", sourceMode);
-		sourceToggle?.setAttribute("aria-pressed", String(sourceMode));
-		if (sourceToggle) sourceToggle.textContent = sourceMode ? "配图阅读" : "原文来源";
-		if (cardView) cardView.hidden = sourceMode;
-		if (sourceView) sourceView.hidden = !sourceMode;
-		showChapter(activeChapter);
 	}
 
 	function setLightboxFromButton(button) {
@@ -508,7 +405,6 @@ const sourceChapters = chapters.map((chapter, index) => {
 
 	chapterButtons.forEach((button) => button.addEventListener("click", () => showChapter(button.dataset.chapterTarget)));
 	selects.forEach((select) => select.addEventListener("change", () => showChapter(select.value)));
-	sourceToggle?.addEventListener("click", () => setReaderMode(!sourceMode));
 	document.querySelectorAll("[data-move]").forEach((button) => {
 		button.addEventListener("click", () => showChapter(activeChapter + Number(button.dataset.move)));
 	});
