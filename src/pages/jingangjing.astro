@@ -122,6 +122,9 @@ const makePrompt = (visual: string, index: number) =>
 const imageForCard = (chapter: number, sentence: number) =>
 	chapter <= 32 ? withBase(`/assets/jingangjing/c${String(chapter).padStart(2, "0")}-s${String(sentence).padStart(2, "0")}.webp`) : "";
 
+const cardImageForCard = (chapter: number, sentence: number) =>
+	chapter <= 32 ? withBase(`/assets/jingangjing/c${String(chapter).padStart(2, "0")}-s${String(sentence).padStart(2, "0")}-card.webp`) : "";
+
 const chapters = chapterTitles.map((title, index) => {
 	const [quote, plain, visual] = chapterNotes[index];
 	const chapter = index + 1;
@@ -136,6 +139,7 @@ const chapters = chapterTitles.map((title, index) => {
 				sentence: quote,
 				plain,
 				image: imageForCard(chapter, 1),
+				cardImage: cardImageForCard(chapter, 1),
 				prompt: makePrompt(visual, index),
 			},
 			{
@@ -143,6 +147,7 @@ const chapters = chapterTitles.map((title, index) => {
 				sentence: secondCardSentences[index],
 				plain: secondCardPlains[index] ?? `这一句承接「${title}」，继续把本品主题推向“不住相”的理解。`,
 				image: imageForCard(chapter, 2),
+				cardImage: cardImageForCard(chapter, 2),
 				prompt: makePrompt(`${visual} A second quieter frame focused on hands, objects, and empty space.`, index),
 			},
 		],
@@ -253,12 +258,17 @@ const chapters = chapterTitles.map((title, index) => {
 										data-image={card.image}
 										aria-label={`打开第 ${chapter.chapter} 品第 ${cardIndex + 1} 张配图`}
 									>
-										{card.image ? (
+										{card.cardImage ? (
 											<img
 												class="comic-image"
-												src={card.image}
+												src={chapter.chapter === 1 ? card.cardImage : undefined}
+												data-card-image={card.cardImage}
 												alt={`第 ${chapter.chapter} 品第 ${cardIndex + 1} 张配图：${card.sentence}`}
-												loading={chapter.chapter === 1 ? "eager" : "lazy"}
+												width="1200"
+												height="676"
+												loading={chapter.chapter === 1 && cardIndex === 0 ? "eager" : "lazy"}
+												fetchpriority={chapter.chapter === 1 && cardIndex === 0 ? "high" : "auto"}
+												decoding="async"
 											/>
 										) : (
 											<div class={`comic-fallback fallback-${cardIndex % 5}`} aria-label={card.prompt}>
@@ -340,9 +350,16 @@ const chapters = chapterTitles.map((title, index) => {
 	let activeChapter = 1;
 	let activeCard = 0;
 
+	function hydrateChapterImages(panel) {
+		panel?.querySelectorAll("img[data-card-image]:not([src])").forEach((image) => {
+			image.src = image.dataset.cardImage;
+		});
+	}
+
 	function showChapter(next) {
 		const clamped = Math.max(1, Math.min(chapters.length, Number(next)));
 		activeChapter = clamped;
+		hydrateChapterImages(chapters.find((panel) => Number(panel.dataset.chapterPanel) === clamped));
 		chapters.forEach((panel) => panel.classList.toggle("active", Number(panel.dataset.chapterPanel) === clamped));
 		chapterButtons.forEach((button) => button.classList.toggle("active", Number(button.dataset.chapterTarget) === clamped));
 		selects.forEach((select) => (select.value = String(clamped)));
