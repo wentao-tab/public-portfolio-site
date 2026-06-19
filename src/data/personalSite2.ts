@@ -17,9 +17,9 @@ export const personalSite2 = {
 		{ label: '项目入口', filter: 'project', icon: 'grid' },
 	],
 	categories: [
-		{ label: '全部', value: 'all', count: 15, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
+		{ label: '全部', value: 'all', count: 16, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
 		{ label: '金刚经', value: 'jingangjing', count: 8, title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
-		{ label: '工具', value: 'tool', count: 3, title: '工具', desc: '自己做的小工具和轻量入口。' },
+		{ label: '工具', value: 'tool', count: 4, title: '工具', desc: '自己做的小工具和轻量入口。' },
 		{ label: '项目', value: 'project', count: 1, title: '项目', desc: '近期作品和项目入口。' },
 		{ label: '书单', value: 'reading', count: 1, title: '书单', desc: '阅读记录、书单和重读标记。' },
 		{ label: '观察', value: 'thought', count: 2, title: '观察', desc: '产品、设计和日常想法。' },
@@ -80,6 +80,12 @@ export const personalSite2 = {
 			title: '我读金刚经感悟 6/10',
 			desc: '该做的事照做，但不要把心黏在结果上。',
 			category: 'jingangjing',
+		},
+		{
+			date: '2026年6月19日',
+			title: '金刚经配图版',
+			desc: '把《金刚经》三十二品整理成图文卡片，配合核心经文、白话提示和水墨插图阅读。',
+			category: 'tool',
 		},
 		{
 			date: '2026年6月14日',

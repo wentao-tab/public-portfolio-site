@@ -10,6 +10,8 @@ const wenxiToolUrl = 'https://wentao-tab.github.io/Wenxi-ai-clone/';
 const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 const sleepToolUrl = withBase('/sleep/');
 const sleepToolCover = withBase('/assets/cover/cover-linlai-tool.png');
+const jingangjingToolUrl = withBase('/jingangjing/');
+const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
 ---
 
 <BaseLayout
@@ -69,6 +71,22 @@ const sleepToolCover = withBase('/assets/cover/cover-linlai-tool.png');
 							<p>参考 tree.fm 的极简首屏交互，只放南京奥体鸟鸣，用来学习、工作和睡前放松。</p>
 						</div>
 						<a class="tool-link" href={sleepToolUrl}>
+							打开完整工具
+							<span>↗</span>
+						</a>
+					</div>
+				</article>
+				<article class="tool-card">
+					<a class="tool-preview sutra-preview" href={jingangjingToolUrl} aria-label="打开金刚经配图版">
+						<img src={jingangjingCover} alt="金刚经配图版，水墨佛学风格图文阅读工具封面" loading="lazy" />
+					</a>
+					<div class="tool-info">
+						<div>
+							<p class="tool-kicker">SUTRA TOOL</p>
+							<h2>金刚经配图版</h2>
+							<p>把《金刚经》三十二品整理成图文卡片，配合核心经文、白话提示、诵读音频和水墨插图阅读。</p>
+						</div>
+						<a class="tool-link" href={jingangjingToolUrl}>
 							打开完整工具
 							<span>↗</span>
 						</a>
@@ -152,7 +170,12 @@ const sleepToolCover = withBase('/assets/cover/cover-linlai-tool.png');
 		background: #061f0d;
 	}
 
-	.forest-preview img {
+	.sutra-preview {
+		background: #efe7d6;
+	}
+
+	.forest-preview img,
+	.sutra-preview img {
 		object-position: center;
 	}
 

@@ -12,6 +12,9 @@ export default defineConfig({
     }
   },
   envPrefix: 'PUBLIC_',
+  devToolbar: {
+    enabled: false,
+  },
   site: SITE_URL,
   base: BASE_PATH,
   integrations: [sitemap(), mdx()],
