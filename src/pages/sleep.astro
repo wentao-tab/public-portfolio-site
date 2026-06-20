@@ -3,6 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/paths';
 
 const forestImage = withBase('/assets/cover/cover-linlai-forest.png');
+const forestWideImage = withBase('/assets/cover/cover-linlai-forest-wide.webp');
+const forestPortraitImage = withBase('/assets/cover/cover-linlai-forest-portrait.webp');
+const forestCardImage = withBase('/assets/cover/cover-linlai-forest-card.webp');
 const sounds = [
 	{
 		title: '四点鸟鸣',
@@ -42,10 +45,14 @@ const sounds = [
 
 		<section class="cover-screen" aria-label="林籁 fm 鸟鸣入口">
 			<div class="cover-bg" aria-hidden="true">
-				<img src={forestImage} alt="" loading="eager" />
+				<picture>
+					<source media="(max-width: 767px)" srcset={forestPortraitImage} type="image/webp" />
+					<source srcset={forestWideImage} type="image/webp" />
+					<img src={forestImage} alt="" loading="eager" decoding="async" fetchpriority="high" />
+				</picture>
 			</div>
 			<button class="forest-card" type="button" data-entry-card aria-label="进入林籁 fm 播放页">
-				<img src={forestImage} alt="" loading="eager" />
+				<img src={forestCardImage} alt="" loading="eager" decoding="async" />
 			</button>
 
 			<h1>
@@ -72,12 +79,16 @@ const sounds = [
 
 		<section class="player-screen" aria-label="南京奥体鸟鸣播放页">
 			<div class="player-bg" aria-hidden="true">
-				<img src={forestImage} alt="" loading="eager" />
+				<picture>
+					<source media="(max-width: 767px)" srcset={forestPortraitImage} type="image/webp" />
+					<source srcset={forestWideImage} type="image/webp" />
+					<img src={forestImage} alt="" loading="lazy" decoding="async" />
+				</picture>
 			</div>
 			<div class="player-shade" aria-hidden="true"></div>
 
 			<div class="native-player">
-				<audio data-bird-audio src={sounds[0].src} preload="auto" loop playsinline controls></audio>
+				<audio data-bird-audio preload="none" loop playsinline controls></audio>
 			</div>
 
 			<div class="player-bottom">
@@ -133,10 +144,27 @@ const sounds = [
 
 	const getCurrentSound = () => sounds[currentSoundIndex] ?? sounds[0];
 
+	const setLoadingAudio = (loading: boolean) => {
+		page?.classList.toggle('is-loading-audio', loading);
+		if (playerButton) playerButton.disabled = loading;
+		if (enterButton) enterButton.disabled = loading;
+		if (entryCard) entryCard.disabled = loading;
+		if (status) status.textContent = loading ? '正在唤醒森林...' : audio?.paused ? '等待开始' : getCurrentSound().status;
+		if (playerLabel) playerLabel.textContent = loading ? 'loading' : audio?.paused ? 'begin' : 'stop';
+	};
+
+	const ensureAudioSource = () => {
+		if (!audio) return;
+		const sound = getCurrentSound();
+		if (audio.currentSrc.endsWith(sound.src) || audio.getAttribute('src') === sound.src) return;
+		audio.src = sound.src;
+		audio.load();
+	};
+
 	const syncSoundText = () => {
 		const sound = getCurrentSound();
 		if (listenLabel) listenLabel.textContent = sound.title;
-		if (status && !page?.classList.contains('is-playing')) status.textContent = '等待开始';
+		if (status && !page?.classList.contains('is-playing') && !page?.classList.contains('is-loading-audio')) status.textContent = '等待开始';
 	};
 
 	const setPlaying = (playing: boolean) => {
@@ -219,16 +247,18 @@ const sounds = [
 		if (!audio || sounds.length === 0) return;
 		currentSoundIndex = (index + sounds.length) % sounds.length;
 		audio.pause();
-		audio.src = getCurrentSound().src;
+		audio.removeAttribute('src');
 		audio.load();
 		syncSoundText();
 	};
 
 	const playBirds = async () => {
 		if (!audio) return;
+		ensureAudioSource();
 		audio.volume = 0.72;
-		randomSeek();
+		setLoadingAudio(true);
 		try {
+			if (audio.readyState >= 1) randomSeek();
 			await audio.play();
 			setPlaying(true);
 		} catch (error) {
@@ -236,6 +266,8 @@ const sounds = [
 			if ((error as DOMException).name !== 'AbortError' && status) {
 				status.textContent = '等待开始';
 			}
+		} finally {
+			setLoadingAudio(false);
 		}
 	};
 
@@ -461,6 +493,7 @@ const sounds = [
 	}
 
 	.cover-bg,
+	.cover-bg picture,
 	.cover-bg img {
 		position: absolute;
 		inset: 0;
@@ -612,6 +645,33 @@ const sounds = [
 		box-shadow: 0 32px 88px rgba(0, 0, 0, 0.32);
 	}
 
+	.listen-button:disabled,
+	.forest-card:disabled,
+	.player-button:disabled {
+		cursor: wait;
+	}
+
+	.is-loading-audio .listen-button {
+		background: rgba(235, 249, 231, 0.96);
+	}
+
+	.is-loading-audio .listen-button i,
+	.is-loading-audio [data-player-icon] {
+		animation: loading-pulse 1.1s ease-in-out infinite;
+	}
+
+	.is-loading-audio .listen-button i::before,
+	.is-loading-audio [data-player-icon]::before {
+		left: 50%;
+		width: 18px;
+		height: 18px;
+		border: 2px solid rgba(0, 36, 7, 0.28);
+		border-top-color: #002407;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		animation: loading-spin 0.8s linear infinite;
+	}
+
 	.listen-button i,
 	[data-player-icon] {
 		position: relative;
@@ -735,6 +795,7 @@ const sounds = [
 	}
 
 	.player-bg,
+	.player-bg picture,
 	.player-bg img,
 	.player-shade {
 		position: absolute;
@@ -982,6 +1043,15 @@ const sounds = [
 			opacity: 0;
 			transform: scale(1.012);
 		}
+	}
+
+	@keyframes loading-spin {
+		to { transform: translate(-50%, -50%) rotate(1turn); }
+	}
+
+	@keyframes loading-pulse {
+		0%, 100% { box-shadow: 0 0 0 0 rgba(215, 236, 212, 0.34); }
+		50% { box-shadow: 0 0 0 10px rgba(215, 236, 212, 0); }
 	}
 
 	@media(max-width: 767px) {
