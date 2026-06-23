@@ -1,0 +1,168 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="法尚应舍，何况非法。"
+	description="方法是船，不是家。"
+	keywords="金刚经,法尚应舍,学习方法,修行方法,读书感悟,阅读笔记"
+	canonicalPath="/notes/jingangjing-0622/"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.06.22</div>
+			<h1 class="font-huiwen">法尚应舍，何况非法。</h1>
+			<p class="lead">方法是船，不是家。</p>
+
+			<p>《金刚经》说法像筏子，是用来过河的。过河之前，船很重要；过河之后，还把船背在身上，就变成负担。</p>
+			<p>学习、修行、工作方法也是这样。某个方法曾经帮过你，它就有价值；但如果你开始维护它、炫耀它、害怕离开它，它就从工具变成了新的执着。</p>
+			<p>读书也一样。第一遍、第二遍、第四遍，这些路径有用，但不要执着“四遍”这个形式。真正要看的是：它有没有让你更清楚？有没有让你能用？有没有减少自欺？</p>
+			<p>佛法本身也不能变成身份。懂几个概念、会讲“无所住”“非相”“无我”，如果只是拿来证明自己更清醒，那也是住法相。</p>
+			<p>所以“法尚应舍”不是否定方法，而是提醒：用它，别被它用。</p>
+
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天检查一个你依赖的方法或观点，问一句：它现在还在帮我过河，还是已经变成我背着的船？</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0622-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		color: #9b7a35;
+		font-family: var(--font-type);
+		font-size: 0.82rem;
+		letter-spacing: 0.04em;
+	}
+
+	.note-reminder {
+		margin-top: 44px;
+		padding: 22px 0 0 22px;
+		border-top: 1px solid rgba(184, 138, 55, 0.22);
+		border-left: 3px solid rgba(184, 138, 55, 0.7);
+
+		h2 {
+			margin-bottom: 12px;
+			color: var(--color-100);
+			font-size: 1.28rem;
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	@media(max-width: 767px) {
+		.note-hero {
+			width: calc(100vw - 32px);
+			margin-top: 34px;
+			margin-bottom: 48px;
+		}
+
+		.note-content {
+			padding: 0 24px;
+
+			h1 {
+				font-size: 2.45rem;
+			}
+
+			p {
+				font-size: 1rem;
+				line-height: 1.95;
+			}
+		}
+	}
+</style>
