@@ -12,6 +12,8 @@ const sleepToolUrl = withBase('/sleep/');
 const sleepToolCover = withBase('/assets/cover/cover-linlai-tool.png');
 const jingangjingToolUrl = withBase('/jingangjing/');
 const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
+const yingzuorushiToolUrl = 'http://127.0.0.1:4322/chat';
+const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.png');
 ---
 
 <BaseLayout
@@ -87,6 +89,22 @@ const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
 							<p>把《金刚经》三十二品整理成图文卡片，配合核心经文、白话提示、诵读音频和水墨插图阅读。</p>
 						</div>
 						<a class="tool-link" href={jingangjingToolUrl}>
+							打开完整工具
+							<span>↗</span>
+						</a>
+					</div>
+				</article>
+				<article class="tool-card">
+					<a class="tool-preview sutra-chat-preview" href={yingzuorushiToolUrl} target="_blank" rel="noreferrer" aria-label="打开应作如是">
+						<img src={yingzuorushiCover} alt="应作如是，经卷、莲花和佛学意象的问答工具封面" loading="lazy" />
+					</a>
+					<div class="tool-info">
+						<div>
+							<p class="tool-kicker">SUTRA CHAT</p>
+							<h2>应作如是</h2>
+							<p>一个围绕金刚经阅读与思考的对话入口，用来整理问题、拆解经文和沉淀当下的理解。</p>
+						</div>
+						<a class="tool-link" href={yingzuorushiToolUrl} target="_blank" rel="noreferrer">
 							打开完整工具
 							<span>↗</span>
 						</a>
@@ -174,8 +192,13 @@ const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
 		background: #efe7d6;
 	}
 
+	.sutra-chat-preview {
+		background: #071724;
+	}
+
 	.forest-preview img,
-	.sutra-preview img {
+	.sutra-preview img,
+	.sutra-chat-preview img {
 		object-position: center;
 	}
 
