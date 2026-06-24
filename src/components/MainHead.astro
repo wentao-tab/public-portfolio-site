@@ -57,6 +57,14 @@ const imageUrl = toAbsoluteUrl(image);
 <link rel="icon" type="image/png" href={favicon} />
 <link rel="apple-touch-icon" href={favicon} />
 <script is:inline>
+	if (
+		window.location.hostname === 'wentao-tab.github.io' &&
+		window.location.pathname.startsWith('/public-portfolio-site')
+	) {
+		const targetPath = window.location.pathname.replace(/^\/public-portfolio-site\/?/, '/');
+		window.location.replace(`https://hiwentao.com${targetPath}${window.location.search}${window.location.hash}`);
+	}
+
 	const getThemePreference = () => {
 		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
 			return localStorage.getItem('theme');
