@@ -1,0 +1,83 @@
+---
+import MainHead from '../components/MainHead.astro';
+
+const chatUrl = 'https://wentao-tab.github.io/jingangjing-illustrated-reader/chat/';
+---
+
+<html lang="zh-CN">
+	<head>
+		<MainHead
+			title="应作如是"
+			description="一个围绕金刚经阅读与思考的对话入口，用来整理问题、拆解经文和沉淀当下的理解。"
+			keywords="应作如是,金刚经,佛学智能体,佛法问答"
+			canonicalPath="/sutra-chat/"
+		/>
+	</head>
+	<body class="sutra-chat-body">
+		<a class="back-link" href="/tools/" aria-label="返回小工具">← 返回小工具</a>
+		<iframe
+			class="sutra-chat-frame"
+			src={chatUrl}
+			title="应作如是佛学智能体"
+			loading="eager"
+			allow="clipboard-write"
+		></iframe>
+	</body>
+</html>
+
+<style>
+	:root {
+		color-scheme: light;
+	}
+
+	body.sutra-chat-body {
+		margin: 0;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		background: #fbfaf5;
+	}
+
+	.back-link {
+		position: fixed;
+		left: 18px;
+		top: 18px;
+		z-index: 10;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 9px 13px;
+		border: 1px solid rgba(36, 49, 45, 0.12);
+		border-radius: 999px;
+		background: rgba(255, 253, 248, 0.86);
+		color: #24312d;
+		font-size: 14px;
+		line-height: 1;
+		text-decoration: none;
+		box-shadow: 0 12px 36px rgba(29, 44, 40, 0.08);
+		backdrop-filter: blur(14px);
+		transition: transform 0.2s ease, background 0.2s ease;
+	}
+
+	.back-link:hover {
+		background: #fffdf8;
+		transform: translateY(-1px);
+	}
+
+	.sutra-chat-frame {
+		display: block;
+		width: 100vw;
+		height: 100vh;
+		border: 0;
+		background: #fbfaf5;
+	}
+
+	@media (max-width: 720px) {
+		.back-link {
+			left: 12px;
+			top: 12px;
+			padding: 8px 11px;
+			font-size: 13px;
+		}
+	}
+</style>

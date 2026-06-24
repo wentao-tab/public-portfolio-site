@@ -12,7 +12,7 @@ const sleepToolUrl = withBase('/sleep/');
 const sleepToolCover = withBase('/assets/cover/cover-linlai-tool.png');
 const jingangjingToolUrl = withBase('/jingangjing/');
 const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
-const yingzuorushiToolUrl = 'https://wentao-tab.github.io/jingangjing-illustrated-reader/chat/';
+const yingzuorushiToolUrl = withBase('/sutra-chat/');
 const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp');
 ---
 
@@ -95,7 +95,7 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 					</div>
 				</article>
 				<article class="tool-card">
-					<a class="tool-preview sutra-chat-preview" href={yingzuorushiToolUrl} target="_blank" rel="noreferrer" aria-label="打开应作如是">
+					<a class="tool-preview sutra-chat-preview" href={yingzuorushiToolUrl} aria-label="打开应作如是">
 						<img src={yingzuorushiCover} alt="应作如是，经卷、莲花和佛学意象的问答工具封面" loading="lazy" />
 					</a>
 					<div class="tool-info">
@@ -104,7 +104,7 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 							<h2>应作如是</h2>
 							<p>一个围绕金刚经阅读与思考的对话入口，用来整理问题、拆解经文和沉淀当下的理解。</p>
 						</div>
-						<a class="tool-link" href={yingzuorushiToolUrl} target="_blank" rel="noreferrer">
+						<a class="tool-link" href={yingzuorushiToolUrl}>
 							打开完整工具
 							<span>↗</span>
 						</a>
