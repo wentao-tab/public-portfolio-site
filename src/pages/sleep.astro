@@ -2,30 +2,39 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/paths';
 
-const forestImage = withBase('/assets/cover/cover-linlai-forest.png');
 const forestWideImage = withBase('/assets/cover/cover-linlai-forest-wide.webp');
-const forestPortraitImage = withBase('/assets/cover/cover-linlai-forest-portrait.webp');
 const forestCardImage = withBase('/assets/cover/cover-linlai-forest-card.webp');
+const defaultSoundImage = forestWideImage;
 const sounds = [
 	{
 		title: '山夜入眠',
 		status: '山夜入眠正在播放',
 		src: withBase('/assets/audio/hochschwendberg-overnight.mp3'),
+		image: withBase('/assets/cover/cover-linlai-sound-mountain-night.webp'),
 	},
 	{
 		title: '雪岭松风',
 		status: '雪岭松风正在播放',
 		src: withBase('/assets/audio/sierra-nevada.mp3'),
+		image: withBase('/assets/cover/cover-linlai-sound-snow-pines.webp'),
 	},
 	{
 		title: '晨林微光',
 		status: '晨林微光正在播放',
 		src: withBase('/assets/audio/soundscape-abaca-09uhr10.mp3'),
+		image: withBase('/assets/cover/cover-linlai-sound-morning-light.webp'),
+	},
+	{
+		title: '森林漫步',
+		status: '森林漫步正在播放',
+		src: withBase('/assets/audio/forest-walk.mp3'),
+		image: withBase('/assets/cover/cover-linlai-sound-forest-walk.webp'),
 	},
 	{
 		title: '四点鸟鸣',
 		status: '四点鸟鸣正在播放',
 		src: withBase('/assets/audio/nanjing-olympic-birds-0601.mp4'),
+		image: defaultSoundImage,
 	},
 ];
 ---
@@ -45,11 +54,7 @@ const sounds = [
 
 		<section class="cover-screen" aria-label="林籁 fm 鸟鸣入口">
 			<div class="cover-bg" aria-hidden="true">
-				<picture>
-					<source media="(max-width: 767px)" srcset={forestPortraitImage} type="image/webp" />
-					<source srcset={forestWideImage} type="image/webp" />
-					<img src={forestImage} alt="" loading="eager" decoding="async" fetchpriority="high" />
-				</picture>
+				<img data-cover-bg-image src={sounds[0].image} alt="" loading="eager" decoding="async" fetchpriority="high" />
 			</div>
 			<button class="forest-card" type="button" data-entry-card aria-label="进入林籁 fm 播放页">
 				<img src={forestCardImage} alt="" loading="eager" decoding="async" />
@@ -79,11 +84,7 @@ const sounds = [
 
 		<section class="player-screen" aria-label="南京奥体鸟鸣播放页">
 			<div class="player-bg" aria-hidden="true">
-				<picture>
-					<source media="(max-width: 767px)" srcset={forestPortraitImage} type="image/webp" />
-					<source srcset={forestWideImage} type="image/webp" />
-					<img src={forestImage} alt="" loading="lazy" decoding="async" />
-				</picture>
+				<img data-player-bg-image src={sounds[0].image} alt="" loading="lazy" decoding="async" />
 			</div>
 			<div class="player-shade" aria-hidden="true"></div>
 
@@ -125,7 +126,7 @@ const sounds = [
 <script>
 	const page = document.querySelector('[data-forest-page]');
 	const soundData = document.querySelector('#forest-sounds')?.textContent ?? '[]';
-	const sounds = JSON.parse(soundData) as Array<{ title: string; status: string; src: string }>;
+	const sounds = JSON.parse(soundData) as Array<{ title: string; status: string; src: string; image: string }>;
 	const enterButton = document.querySelector('[data-enter-button]') as HTMLButtonElement | null;
 	const entryCard = document.querySelector('[data-entry-card]') as HTMLButtonElement | null;
 	const entryExpander = document.querySelector('[data-entry-expander]') as HTMLElement | null;
@@ -136,6 +137,8 @@ const sounds = [
 	const listenLabel = document.querySelector('[data-listen-label]');
 	const status = document.querySelector('[data-sound-status]');
 	const playerLabel = document.querySelector('[data-player-label]');
+	const coverBgImage = document.querySelector('[data-cover-bg-image]') as HTMLImageElement | null;
+	const playerBgImage = document.querySelector('[data-player-bg-image]') as HTMLImageElement | null;
 	const audio = document.querySelector('[data-bird-audio]') as HTMLAudioElement | null;
 	const aboutLayer = document.querySelector('[data-about-layer]') as HTMLElement | null;
 	const aboutOpen = document.querySelector('[data-about-open]') as HTMLButtonElement | null;
@@ -143,6 +146,13 @@ const sounds = [
 	let currentSoundIndex = 0;
 
 	const getCurrentSound = () => sounds[currentSoundIndex] ?? sounds[0];
+
+	const setBackgroundImage = () => {
+		const image = getCurrentSound()?.image;
+		if (!image) return;
+		if (coverBgImage && coverBgImage.getAttribute('src') !== image) coverBgImage.src = image;
+		if (playerBgImage && playerBgImage.getAttribute('src') !== image) playerBgImage.src = image;
+	};
 
 	const setLoadingAudio = (loading: boolean) => {
 		page?.classList.toggle('is-loading-audio', loading);
@@ -165,6 +175,7 @@ const sounds = [
 		const sound = getCurrentSound();
 		if (listenLabel) listenLabel.textContent = sound.title;
 		if (status && !page?.classList.contains('is-playing') && !page?.classList.contains('is-loading-audio')) status.textContent = '等待开始';
+		setBackgroundImage();
 	};
 
 	const setPlaying = (playing: boolean) => {
