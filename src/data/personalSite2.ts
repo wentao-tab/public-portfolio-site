@@ -1,3 +1,66 @@
+import { formatChineseDate, readingNotes } from './readingNotes';
+
+const noteEntries = readingNotes.map((note) => ({
+	date: formatChineseDate(note.date),
+	title: note.title,
+	desc: note.desc,
+	category: note.category,
+}));
+
+const staticEntries = [
+	{
+		date: '2026年6月19日',
+		title: '金刚经配图版',
+		desc: '把《金刚经》三十二品整理成图文卡片，配合核心经文、白话提示和水墨插图阅读。',
+		category: 'tool',
+	},
+	{
+		date: '2026年6月14日',
+		title: '提示词图鉴',
+		desc: 'AI 提示词搜索和灵感发现入口，按场景快速找到可复用模板。',
+		category: 'tool',
+	},
+	{
+		date: '2026年6月17日',
+		title: '鸟鸣睡眠舱',
+		desc: '参考 tree.fm 的极简首屏交互，只放南京奥体鸟鸣。',
+		category: 'tool',
+	},
+	{
+		date: '2026年6月12日',
+		title: '出发吧！从南京',
+		desc: '从南京出发的旅行手账地图，比较目的地、交通方式和门到门耗时。',
+		category: 'tool',
+	},
+	{
+		date: '2026年6月',
+		title: '凤城全域虚拟电厂智慧驾驶舱',
+		desc: '能源调度、负荷聚合与运行态势感知的智慧驾驶舱项目入口。',
+		category: 'project',
+	},
+	{
+		date: '2026年',
+		title: '我的 2026 年书单',
+		desc: '把读过的书、重读标记和一句话感受整理成时间轴。',
+		category: 'reading',
+	},
+	{
+		date: '正在发生',
+		title: '设计&读书思考',
+		desc: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。',
+		category: 'thought',
+	},
+	{
+		date: '关于我',
+		title: '梁文韬的个人介绍',
+		desc: '专注产品、设计，和读书的一些东西。',
+		category: 'thought',
+	},
+];
+
+const siteEntries = [...noteEntries, ...staticEntries];
+const countByCategory = (category: string) => siteEntries.filter((entry) => entry.category === category).length;
+
 export const personalSite2 = {
 	metadata: {
 		title: '梁文韬的生活小票',
@@ -17,12 +80,12 @@ export const personalSite2 = {
 		{ label: '项目入口', filter: 'project', icon: 'grid' },
 	],
 	categories: [
-		{ label: '全部', value: 'all', count: 19, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
-		{ label: '金刚经', value: 'jingangjing', count: 11, title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
-		{ label: '工具', value: 'tool', count: 4, title: '工具', desc: '自己做的小工具和轻量入口。' },
-		{ label: '项目', value: 'project', count: 1, title: '项目', desc: '近期作品和项目入口。' },
-		{ label: '书单', value: 'reading', count: 1, title: '书单', desc: '阅读记录、书单和重读标记。' },
-		{ label: '观察', value: 'thought', count: 2, title: '观察', desc: '产品、设计和日常想法。' },
+		{ label: '全部', value: 'all', count: siteEntries.length, title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
+		{ label: '金刚经', value: 'jingangjing', count: countByCategory('jingangjing'), title: '金刚经', desc: '近期整理的金刚经读后感悟。' },
+		{ label: '工具', value: 'tool', count: countByCategory('tool'), title: '工具', desc: '自己做的小工具和轻量入口。' },
+		{ label: '项目', value: 'project', count: countByCategory('project'), title: '项目', desc: '近期作品和项目入口。' },
+		{ label: '书单', value: 'reading', count: countByCategory('reading'), title: '书单', desc: '阅读记录、书单和重读标记。' },
+		{ label: '观察', value: 'thought', count: countByCategory('thought'), title: '观察', desc: '产品、设计和日常想法。' },
 	],
 	categoryMeta: {
 		all: { title: '生活', desc: '读书、工具、项目和日常观察，像一张慢慢吐出来的生活小票。' },
@@ -32,120 +95,5 @@ export const personalSite2 = {
 		reading: { title: '书单', desc: '阅读记录、书单和重读标记。' },
 		thought: { title: '观察', desc: '产品、设计和日常想法。' },
 	},
-	entries: [
-		{
-			date: '2026年6月25日',
-			title: '一切有为法，如梦幻泡影。',
-			desc: '认真处理事情，但不要把一时的局面当成永恒结论。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月24日',
-			title: '知见不生。',
-			desc: '看清一件事以后，不要马上拿它生成一个新的“我”。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月23日',
-			title: '如来者，即诸法如义。',
-			desc: '不要把“答案”想得太远，它往往就在眼前这件事里。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月19日',
-			title: '不住好人相。',
-			desc: '善意要保留，但不要把“我是好人”变成自己的任务。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月17日',
-			title: '若以恒河沙等身命布施。',
-			desc: '数量再大，也不等于心真正自由。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月16日',
-			title: '无所得。',
-			desc: '真正有价值的成长，常常不是多拿到什么，而是少被什么牵着走。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月15日',
-			title: '无我相。',
-			desc: '少一点“我在证明什么”，事情会轻很多。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月14日',
-			title: '不取法，不取非法。',
-			desc: '不要被规则绑住，也不要用“反规则”绑住自己。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月12日',
-			title: '过去心不可得，现在心不可得，未来心不可得。',
-			desc: '过去用于复盘，未来用于规划，现在用于执行。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月11日',
-			title: '凡所有相，皆是虚妄。',
-			desc: '看见相，但不马上下结论。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月10日',
-			title: '我读金刚经感悟 6/10',
-			desc: '该做的事照做，但不要把心黏在结果上。',
-			category: 'jingangjing',
-		},
-		{
-			date: '2026年6月19日',
-			title: '金刚经配图版',
-			desc: '把《金刚经》三十二品整理成图文卡片，配合核心经文、白话提示和水墨插图阅读。',
-			category: 'tool',
-		},
-		{
-			date: '2026年6月14日',
-			title: '提示词图鉴',
-			desc: 'AI 提示词搜索和灵感发现入口，按场景快速找到可复用模板。',
-			category: 'tool',
-		},
-		{
-			date: '2026年6月17日',
-			title: '鸟鸣睡眠舱',
-			desc: '参考 tree.fm 的极简首屏交互，只放南京奥体鸟鸣。',
-			category: 'tool',
-		},
-		{
-			date: '2026年6月12日',
-			title: '出发吧！从南京',
-			desc: '从南京出发的旅行手账地图，比较目的地、交通方式和门到门耗时。',
-			category: 'tool',
-		},
-		{
-			date: '2026年6月',
-			title: '凤城全域虚拟电厂智慧驾驶舱',
-			desc: '能源调度、负荷聚合与运行态势感知的智慧驾驶舱项目入口。',
-			category: 'project',
-		},
-		{
-			date: '2026年',
-			title: '我的 2026 年书单',
-			desc: '把读过的书、重读标记和一句话感受整理成时间轴。',
-			category: 'reading',
-		},
-		{
-			date: '正在发生',
-			title: '设计&读书思考',
-			desc: '关注产品设计、体验观察、阅读思考和一些 AI 工具实验。',
-			category: 'thought',
-		},
-		{
-			date: '关于我',
-			title: '梁文韬的个人介绍',
-			desc: '专注产品、设计，和读书的一些东西。',
-			category: 'thought',
-		},
-	],
+	entries: siteEntries,
 };

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeader from "../components/SectionHeader.astro";
 import {pageTag, pageDescription,homeTdk} from '../data/content';
+import { formatDotDate, getNoteUrl, sortedReadingNotes } from '../data/readingNotes';
 import { withBase } from '../utils/paths';
 ---
 
@@ -33,188 +34,22 @@ keywords = {homeTdk.keywords  || ''}
 						</div>
 						<span class="home-project-arrow">↗</span>
 					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0625/')} aria-label="打开一切有为法，如梦幻泡影。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-								<div class="project-eyebrow">READING NOTE</div>
-								<time class="project-date" datetime="2026-06-25">2026.06.25</time>
+					{sortedReadingNotes.map((note) => (
+						<a class="home-project-card reading-card" href={withBase(getNoteUrl(note))} aria-label={`打开${note.title}`}>
+							<div class="project-visual" aria-hidden="true">
+								<img src={withBase(note.homeCover ?? note.cover)} alt="" loading="lazy" />
 							</div>
-							<h2>一切有为法，如梦幻泡影。</h2>
-							<p>认真处理事情，但不要把一时的局面当成永恒结论。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0624/')} aria-label="打开知见不生。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-								<div class="project-eyebrow">READING NOTE</div>
-								<time class="project-date" datetime="2026-06-24">2026.06.24</time>
+							<div class="home-project-copy">
+								<div class="project-meta">
+									<div class="project-eyebrow">READING NOTE</div>
+									<time class="project-date" datetime={note.date}>{formatDotDate(note.date)}</time>
+								</div>
+								<h2>{note.title}</h2>
+								<p>{note.desc}</p>
 							</div>
-							<h2>知见不生。</h2>
-							<p>看清一件事以后，不要马上拿它生成一个新的“我”。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0623/')} aria-label="打开如来者，即诸法如义。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-23">2026.06.23</time>
-								</div>
-							<h2>如来者，即诸法如义。</h2>
-							<p>不要把“答案”想得太远，它往往就在眼前这件事里。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0622/')} aria-label="打开法尚应舍，何况非法。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-22">2026.06.22</time>
-								</div>
-							<h2>法尚应舍，何况非法。</h2>
-							<p>方法是船，不是家。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-learning-fourth-read/')} aria-label="打开受持。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-learning-fourth-read.webp')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-19">2026.06.19</time>
-								</div>
-							<h2>受持。</h2>
-							<p>真正懂，不是会复述，而是能在事上用出来。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0619/')} aria-label="打开不住好人相。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-19">2026.06.19</time>
-								</div>
-							<h2>不住好人相。</h2>
-							<p>善意要保留，但不要把“我是好人”变成自己的任务。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0610/')} aria-label="打开我读金刚经感悟 6/10">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-10">2026.06.10</time>
-								</div>
-							<h2>我读金刚经感悟 6/10</h2>
-							<p>应无所住而生其心。做一件该做的小事，做完就放下。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0611/')} aria-label="打开凡所有相，皆是虚妄。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-11">2026.06.11</time>
-								</div>
-							<h2>凡所有相，皆是虚妄。</h2>
-							<p>别太相信眼前这一刻的感觉很真。看见相，但不马上下结论。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0612/')} aria-label="打开过去心不可得，现在心不可得，未来心不可得。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-12">2026.06.12</time>
-								</div>
-							<h2>过去心不可得，现在心不可得，未来心不可得。</h2>
-							<p>不要把精力浪费在抓不住的心上。下一步是什么？</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0614/')} aria-label="打开不取法，不取非法。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-14">2026.06.14</time>
-								</div>
-							<h2>不取法，不取非法。</h2>
-							<p>不要被规则绑住，也不要用“反规则”绑住自己。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0615/')} aria-label="打开无我相。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-15">2026.06.15</time>
-								</div>
-							<h2>无我相。</h2>
-							<p>少一点“我在证明什么”，事情会轻很多。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0616/')} aria-label="打开无所得。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-16">2026.06.16</time>
-								</div>
-							<h2>无所得。</h2>
-							<p>真正有价值的成长，常常不是多拿到什么，而是少被什么牵着走。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
-					<a class="home-project-card reading-card" href={withBase('/notes/jingangjing-0617/')} aria-label="打开若以恒河沙等身命布施。">
-						<div class="project-visual" aria-hidden="true">
-							<img src={withBase('/assets/cover/cover-jingangjing-0610.png')} alt="" loading="lazy" />
-						</div>
-						<div class="home-project-copy">
-							<div class="project-meta">
-									<div class="project-eyebrow">READING NOTE</div>
-									<time class="project-date" datetime="2026-06-17">2026.06.17</time>
-								</div>
-							<h2>若以恒河沙等身命布施。</h2>
-							<p>数量再大，也不等于心真正自由。</p>
-						</div>
-						<span class="home-project-arrow">↗</span>
-					</a>
+							<span class="home-project-arrow">↗</span>
+						</a>
+					))}
 				</div>
 			</section>
 		</div>

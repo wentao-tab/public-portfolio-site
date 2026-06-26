@@ -12,6 +12,12 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "site:notes": "node scripts/check-site-workflow.mjs",
+    "site:branch": "node scripts/check-site-workflow.mjs --branch",
+    "site:check": "PUBLIC_SITE_URL=https://hiwentao.com/ PUBLIC_SITE_NAME='梁文韬的设计与读书思考' PUBLIC_BASE_PATH=/ npx -y node@22.12.0 node_modules/astro/bin/astro.mjs check",
+    "site:build": "PUBLIC_SITE_URL=https://hiwentao.com/ PUBLIC_SITE_NAME='梁文韬的设计与读书思考' PUBLIC_BASE_PATH=/ npx -y node@22.12.0 node_modules/astro/bin/astro.mjs build",
+    "site:verify": "npm run site:notes && npm run site:check && npm run site:build",
+    "site:prepublish": "npm run site:branch && npm run site:verify",
     "preview": "astro preview",
     "astro": "astro"
   },
