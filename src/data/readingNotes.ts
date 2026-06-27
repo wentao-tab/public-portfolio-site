@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0627',
+		title: '心行善。',
+		desc: '善事要做，但别让善事变成新的负担。',
+		date: '2026-06-27',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0626',
 		title: '不惊、不怖、不畏。',
 		desc: '真正的理解，会减少内心的过度反应。',
