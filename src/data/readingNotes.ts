@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0630',
+		title: '无住生心。',
+		desc: '心不黏住，行动才干净。',
+		date: '2026-06-30',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0629',
 		title: '无诤。',
 		desc: '很多时候，不争不是认输，而是不把自己交给对抗。',
