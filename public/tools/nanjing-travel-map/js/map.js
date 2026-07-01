@@ -129,14 +129,23 @@ const TravelMap = (() => {
       .extent([[0, 0], [width, height]])
       .translateExtent([[-width * 0.3, -height * 0.3], [width * 1.3, height * 1.3]])
       .filter(ev => ev.type === "wheel" || ev.type === "dblclick")
-      .on("zoom", ev => {
-        currentTransform = ev.transform;
-        rootG.attr("transform", currentTransform);
-        updateLOD(currentTransform.k);
-      });
+      .on("zoom", ev => applyZoom(ev.transform));
 
     svg.call(zoomBehavior);
     svg.node().addEventListener("wheel", ev => ev.preventDefault(), { passive: false });
+  }
+
+  function markerTransform(d, k = currentTransform.k) {
+    const [x, y] = projection(d.coord);
+    return `translate(${x},${y}) scale(${1 / Math.max(1, k)})`;
+  }
+
+  function applyZoom(transform) {
+    currentTransform = transform;
+    rootG.attr("transform", currentTransform);
+    rootG.selectAll(".city-sticker,.home-marker")
+      .attr("transform", d => markerTransform(d, currentTransform.k));
+    updateLOD(currentTransform.k);
   }
 
   function buildDefs() {
@@ -297,10 +306,7 @@ const TravelMap = (() => {
       .data(CITY_DATA.cities, d => d.id)
       .join("g")
       .attr("class", "city-sticker")
-      .attr("transform", d => {
-        const [x, y] = projection(d.coord);
-        return `translate(${x},${y})`;
-      })
+      .attr("transform", d => markerTransform(d))
       .on("click", (ev, d) => { ev.stopPropagation(); onCityClick(d); })
       .on("mousemove", (ev, d) => showTip(ev, d))
       .on("mouseleave", hideTip);
@@ -369,12 +375,11 @@ const TravelMap = (() => {
 
   function drawHome() {
     const home = CITY_DATA.home;
-    const [x, y] = projection(home.coord);
     const g = rootG.select(".layer-cities")
       .append("g")
       .datum(home)
       .attr("class", "home-marker")
-      .attr("transform", `translate(${x},${y})`);
+      .attr("transform", markerTransform(home));
 
     g.append("circle").attr("class", "home-pulse")
       .attr("r", 11).attr("fill", "none")
@@ -430,8 +435,7 @@ const TravelMap = (() => {
     drawIsochrones();
     drawCities();
     drawHome();
-    rootG.attr("transform", currentTransform);
-    updateLOD(currentTransform.k);
+    applyZoom(currentTransform);
   }
 
   return { init, setMode, fmtMin, doorToDoor, bandColor, currentMode: () => mode };
