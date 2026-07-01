@@ -414,6 +414,202 @@ const CITY_DATA = (() => {
       ],
       tips: "湿地风大且日晒强，防风防晒都要准备。",
     },
+    {
+      id: "taizhou_qinhu", minK: 1.4, name: "泰州溱湖", emoji: "🛶", sub: "湿地、早茶与老街", coord: [120.09, 32.45], label: { dx: 14, dy: -10, anchor: "start" },
+      hook: "早茶之后去湿地吹风",
+      tagline: "泰州适合把节奏放慢：早上吃一顿早茶，下午去溱湖湿地看水鸟和芦苇。",
+      transport: {
+        rail: { title: "南京→泰州", breakdown: "市区→南京站约30分 + 候车25分 + 动车约1小时10分 + 泰州站→老街约25分", price: "二等座约¥60-90", veh: 70, arr: 25 },
+        fly: null,
+        drive: { title: "沪陕/启扬高速", breakdown: "约160km，自驾约2小时10分，适合早茶+溱湖一日往返", veh: 130 },
+      },
+      recommend: { mode: "drive", reason: "泰州市区和溱湖之间有距离，自驾串早茶、老街和湿地最顺。" },
+      spots: [
+        { emoji: "🍵", name: "泰州早茶" }, { emoji: "🏮", name: "老街" },
+        { emoji: "🛶", name: "溱湖湿地" }, { emoji: "🦆", name: "水鸟芦苇荡" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "泰州早茶", "老街", "溱湖湿地", "返南京"], note: "早茶建议早点到，溱湖下午光线更柔。" },
+      ],
+      tips: "泰州适合慢游，别把景点排得太密。",
+    },
+    {
+      id: "nantong_langshan", name: "南通狼山", emoji: "🌊", sub: "江海交汇与滨江城市", coord: [120.86, 32.01], label: { dx: 16, dy: 2, anchor: "start" },
+      hook: "去长江入海前看一眼风",
+      tagline: "狼山、濠河和滨江公园，把南通串成一个很舒服的江海周末。",
+      transport: {
+        rail: { title: "南京→南通", breakdown: "市区→南京站约30分 + 候车25分 + 动车约1小时50分 + 南通站→狼山约35分", price: "二等座约¥100-150", veh: 110, arr: 35 },
+        fly: null,
+        drive: { title: "沪陕高速", breakdown: "约260km，自驾约3小时10分", veh: 190 },
+      },
+      recommend: { mode: "rail", reason: "动车时间稳定，落地打车去狼山和濠河都方便；不想跨江开车就坐火车。" },
+      spots: [
+        { emoji: "⛰", name: "狼山" }, { emoji: "🌉", name: "濠河" },
+        { emoji: "🌊", name: "滨江公园" }, { emoji: "🏛", name: "南通博物苑" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "南通站", "狼山", "濠河夜游"], note: "濠河夜游比白天更有城市感。" },
+        { day: "DAY 2", route: ["南通博物苑", "滨江公园", "返南京"], note: "江边风大，春秋带薄外套。" },
+      ],
+      tips: "南通适合松弛两日游，也可以压缩成一日往返。",
+    },
+    {
+      id: "huaian", name: "淮安河下古镇", emoji: "🍜", sub: "运河、古镇与淮扬菜", coord: [119.02, 33.61], label: { dx: 14, dy: -10, anchor: "start" },
+      hook: "被低估的运河慢城",
+      tagline: "河下古镇、里运河和一桌淮扬菜，淮安适合不赶路的周末。",
+      transport: {
+        rail: { title: "南京→淮安东", breakdown: "市区→南京站约30分 + 候车25分 + 动车约1小时50分 + 淮安东→河下古镇约30分", price: "二等座约¥100-150", veh: 110, arr: 30 },
+        fly: null,
+        drive: { title: "长深高速", breakdown: "约210km，自驾约2小时45分", veh: 165 },
+      },
+      recommend: { mode: "rail", reason: "淮安东到市区接驳成熟，火车不用担心返程开夜路。" },
+      spots: [
+        { emoji: "🏮", name: "河下古镇" }, { emoji: "🌊", name: "里运河" },
+        { emoji: "🍜", name: "淮扬菜" }, { emoji: "🏛", name: "周恩来纪念馆" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "河下古镇", "淮扬菜晚餐", "里运河夜景"], note: "河下适合傍晚慢走。" },
+        { day: "DAY 2", route: ["周恩来纪念馆", "清江浦", "返南京"], note: "纪念馆留足参观时间。" },
+      ],
+      tips: "淮扬菜清淡精细，适合带长辈一起去。",
+    },
+    {
+      id: "xuzhou", name: "徐州云龙湖", emoji: "🏛", sub: "两汉文化与烧烤", coord: [117.18, 34.27], label: { dx: -14, dy: -10, anchor: "end" },
+      hook: "一半汉文化，一半烟火气",
+      tagline: "云龙湖、汉文化景区和一顿徐州烧烤，北江苏的性格很鲜明。",
+      transport: {
+        rail: { title: "南京南→徐州东", breakdown: "市区→南京南35分 + 候车25分 + 高铁约1小时25分 + 徐州东→云龙湖约35分", price: "二等座约¥150-220", veh: 85, arr: 35 },
+        fly: null,
+        drive: { title: "新扬/淮徐高速", breakdown: "约340km，自驾约4小时", veh: 240 },
+      },
+      recommend: { mode: "rail", reason: "高铁到徐州东很快，城市内打车方便，周末不必自驾长距离。" },
+      spots: [
+        { emoji: "🌊", name: "云龙湖" }, { emoji: "🏛", name: "汉文化景区" },
+        { emoji: "⛰", name: "云龙山" }, { emoji: "🍢", name: "徐州烧烤" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京南", "徐州东", "云龙湖", "烧烤夜宵"], note: "云龙湖傍晚很适合散步。" },
+        { day: "DAY 2", route: ["汉文化景区", "云龙山", "返南京"], note: "汉文化景区更适合上午去。" },
+      ],
+      tips: "徐州口味重，烧烤和把子肉都很有地方特色。",
+    },
+    {
+      id: "suqian_luoma", name: "宿迁骆马湖", emoji: "🌅", sub: "湖边日落与项王故里", coord: [118.28, 33.96], label: { dx: 14, dy: 12, anchor: "start" },
+      hook: "去湖边看一个安静日落",
+      tagline: "骆马湖、三台山和项王故里，宿迁适合想避开热门城市的人。",
+      transport: {
+        rail: { title: "南京→宿迁", breakdown: "市区→南京站约30分 + 候车25分 + 动车约2小时10分 + 宿迁站→骆马湖约30分", price: "二等座约¥120-170", veh: 130, arr: 30 },
+        fly: null,
+        drive: { title: "新扬高速", breakdown: "约250km，自驾约3小时10分", veh: 190 },
+      },
+      recommend: { mode: "drive", reason: "骆马湖、三台山和市区之间更适合自驾串联，节奏更自由。" },
+      spots: [
+        { emoji: "🌊", name: "骆马湖" }, { emoji: "🌲", name: "三台山" },
+        { emoji: "🏛", name: "项王故里" }, { emoji: "🌅", name: "湖边日落" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "项王故里", "骆马湖日落"], note: "湖边日落是宿迁最舒服的时刻。" },
+        { day: "DAY 2", route: ["三台山森林公园", "返南京"], note: "春天花海、秋天林色都不错。" },
+      ],
+      tips: "宿迁游客密度低，适合想找安静周末的人。",
+    },
+    {
+      id: "hefei", name: "合肥巢湖", emoji: "🌊", sub: "湖岸、逍遥津与省博", coord: [117.23, 31.82], label: { dx: -14, dy: 14, anchor: "end" },
+      hook: "从南京向西的一小时城市",
+      tagline: "合肥不是只用来中转，巢湖岸线、省博和罍街夜宵能撑起一个短周末。",
+      transport: {
+        rail: { title: "南京南→合肥南", breakdown: "市区→南京南35分 + 候车25分 + 高铁约50分 + 合肥南→市区约25分", price: "二等座约¥70-110", veh: 50, arr: 25 },
+        fly: null,
+        drive: { title: "沪陕高速", breakdown: "约170km，自驾约2小时10分", veh: 130 },
+      },
+      recommend: { mode: "rail", reason: "高铁非常密集，合肥南进城方便；一日往返也轻松。" },
+      spots: [
+        { emoji: "🌊", name: "巢湖岸线" }, { emoji: "🏛", name: "安徽博物院" },
+        { emoji: "🌳", name: "逍遥津" }, { emoji: "🍢", name: "罍街" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京南", "合肥南", "安徽博物院", "罍街夜宵"], note: "省博建议提前看展讯。" },
+        { day: "DAY 2", route: ["巢湖岸线", "逍遥津", "返南京"], note: "巢湖天气好时体验更好。" },
+      ],
+      tips: "合肥适合短打，别把它只当换乘站。",
+    },
+    {
+      id: "wuhu", minK: 1.5, name: "芜湖鸠兹", emoji: "🎡", sub: "方特、古镇与长江边", coord: [118.38, 31.33], label: { dx: -14, dy: 20, anchor: "end" },
+      hook: "亲子乐园和古镇都能玩",
+      tagline: "芜湖离南京近，方特适合亲子，鸠兹古镇适合夜景和轻松散步。",
+      transport: {
+        rail: { title: "南京南→芜湖", breakdown: "市区→南京南35分 + 候车25分 + 高铁约45分 + 芜湖站→鸠兹古镇约25分", price: "二等座约¥40-70", veh: 45, arr: 25 },
+        fly: null,
+        drive: { title: "宁芜高速", breakdown: "约110km，自驾约1小时35分", veh: 95 },
+      },
+      recommend: { mode: "drive", reason: "芜湖离南京近，带孩子去方特或多点串游时自驾更方便。" },
+      spots: [
+        { emoji: "🎢", name: "方特" }, { emoji: "🏮", name: "鸠兹古镇" },
+        { emoji: "🌊", name: "滨江公园" }, { emoji: "🍤", name: "小吃街" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "方特", "鸠兹古镇夜景", "返南京"], note: "亲子玩法可以把方特留一整天。" },
+      ],
+      tips: "芜湖适合一日游，夜景后返程也不算累。",
+    },
+    {
+      id: "chuzhou", minK: 1.4, name: "滁州琅琊山", emoji: "⛰", sub: "醉翁亭与欧阳修", coord: [118.32, 32.30], label: { dx: -16, dy: -12, anchor: "end" },
+      hook: "半小时去读一篇《醉翁亭记》",
+      tagline: "滁州离南京太近，琅琊山和醉翁亭很适合做成半日或一日散心。",
+      transport: {
+        rail: { title: "南京南→滁州", breakdown: "市区→南京南35分 + 候车25分 + 高铁约18分 + 滁州站→琅琊山约30分", price: "二等座约¥25-40", veh: 18, arr: 30 },
+        fly: null,
+        drive: { title: "宁洛高速", breakdown: "约70km，自驾约1小时10分", veh: 70 },
+      },
+      recommend: { mode: "drive", reason: "距离近，自驾门到门最轻松；如果不想开车，高铁也很快。" },
+      spots: [
+        { emoji: "⛰", name: "琅琊山" }, { emoji: "🏯", name: "醉翁亭" },
+        { emoji: "📖", name: "欧阳修纪念馆" }, { emoji: "🌲", name: "山林步道" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "琅琊山", "醉翁亭", "午餐", "返南京"], note: "适合天气好的上午出发。" },
+      ],
+      tips: "这是最轻量的出逃路线，适合临时起意。",
+    },
+    {
+      id: "xuancheng", name: "宣城敬亭山", emoji: "📜", sub: "诗山、徽味与皖南入口", coord: [118.76, 30.94], label: { dx: -14, dy: 14, anchor: "end" },
+      hook: "相看两不厌，只有敬亭山",
+      tagline: "宣城是皖南的安静入口，敬亭山、鳄鱼湖和徽味小城都很适合慢慢走。",
+      transport: {
+        rail: { title: "南京南→宣城", breakdown: "市区→南京南35分 + 候车25分 + 高铁约1小时15分 + 宣城站→敬亭山约20分", price: "二等座约¥70-110", veh: 75, arr: 20 },
+        fly: null,
+        drive: { title: "宁宣高速", breakdown: "约160km，自驾约2小时10分", veh: 130 },
+      },
+      recommend: { mode: "drive", reason: "宣城周边景点分散，自驾能顺手接上泾县、查济或桃花潭。" },
+      spots: [
+        { emoji: "⛰", name: "敬亭山" }, { emoji: "🐊", name: "扬子鳄景区" },
+        { emoji: "🏘", name: "水东老街" }, { emoji: "🍜", name: "徽味小吃" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "敬亭山", "水东老街", "返南京"], note: "想更松弛可以住一晚，第二天去泾县。" },
+      ],
+      tips: "宣城不适合赶景点，慢下来才有味道。",
+    },
+    {
+      id: "jiuhuashan", name: "九华山", emoji: "🛕", sub: "佛国山色", coord: [117.81, 30.48], label: { dx: -14, dy: 10, anchor: "end" },
+      hook: "从南京去皖南拜一座山",
+      tagline: "九华山比黄山更安静一些，寺庙、山路和云气适合留一个完整周末。",
+      transport: {
+        rail: { title: "南京南→池州/九华山方向", breakdown: "高铁约1小时50分 + 站点到九华山游客中心约50分；合计约3小时20分", price: "二等座约¥120-190", veh: 110, arr: 50 },
+        fly: null,
+        drive: { title: "宁芜/沪渝高速", breakdown: "约250km，自驾约3小时30分", veh: 210 },
+      },
+      recommend: { mode: "drive", reason: "九华山山下与景区接驳要留时间，自驾到游客中心更自由；不想开山路就高铁+接驳。" },
+      spots: [
+        { emoji: "🛕", name: "化城寺" }, { emoji: "⛰", name: "天台景区" },
+        { emoji: "🌫", name: "花台" }, { emoji: "🏮", name: "九华街" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "九华山游客中心", "九华街", "化城寺"], note: "第一天以抵达和九华街为主，不要太赶。" },
+        { day: "DAY 2", route: ["天台景区", "花台", "返南京"], note: "山里天气变化快，带雨具。" },
+      ],
+      tips: "旺季住宿和景交要提前确认，山上昼夜温差明显。",
+    },
   ];
 
   const anchors = [];
