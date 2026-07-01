@@ -22,10 +22,11 @@ const TravelMap = (() => {
   const ONWARD_SPEED_KMH = 65;     // 抵达枢纽后继续驾车的平均速度
   const GRID_STEP = 7;             // 等时场采样步长（像素）
 
-  let svg, rootG, projection, geoPath;
+  let svg, rootG, projection, geoPath, zoomBehavior;
   let chinaFC, provinces, dashLine, mode = "best";
   let onCityClick = () => {};
   let width = 0, height = 0;
+  let currentTransform = d3.zoomIdentity;
 
   /* ---------- 工具 ---------- */
 
@@ -117,8 +118,25 @@ const TravelMap = (() => {
     drawCities();
     drawHome();
     buildLegend();
+    setupZoom();
 
     updateLOD(1);
+  }
+
+  function setupZoom() {
+    zoomBehavior = d3.zoom()
+      .scaleExtent([1, 4.2])
+      .extent([[0, 0], [width, height]])
+      .translateExtent([[-width * 0.3, -height * 0.3], [width * 1.3, height * 1.3]])
+      .filter(ev => ev.type === "wheel" || ev.type === "dblclick")
+      .on("zoom", ev => {
+        currentTransform = ev.transform;
+        rootG.attr("transform", currentTransform);
+        updateLOD(currentTransform.k);
+      });
+
+    svg.call(zoomBehavior);
+    svg.node().addEventListener("wheel", ev => ev.preventDefault(), { passive: false });
   }
 
   function buildDefs() {
@@ -412,7 +430,8 @@ const TravelMap = (() => {
     drawIsochrones();
     drawCities();
     drawHome();
-    updateLOD(1);
+    rootG.attr("transform", currentTransform);
+    updateLOD(currentTransform.k);
   }
 
   return { init, setMode, fmtMin, doorToDoor, bandColor, currentMode: () => mode };
