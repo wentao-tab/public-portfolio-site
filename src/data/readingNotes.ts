@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0702',
+		title: '恒河沙。',
+		desc: '数量很大，不代表意义就更深。',
+		date: '2026-07-02',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0630',
 		title: '无住生心。',
 		desc: '心不黏住，行动才干净。',

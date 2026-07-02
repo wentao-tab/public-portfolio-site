@@ -1,0 +1,166 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="恒河沙。"
+	description="数量很大，不代表意义就更深。"
+	keywords="金刚经,恒河沙,读书感悟,阅读笔记"
+	canonicalPath="/notes/jingangjing-0702/"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.07.02</div>
+			<h1 class="font-huiwen">恒河沙。</h1>
+			<p class="lead">数量很大，不代表意义就更深。</p>
+
+			<p>《金刚经》常用“恒河沙”来形容不可计量：恒河里有多少沙，已经数不清；若还有像恒河沙那么多条恒河，那数量更不可思议。</p>
+			<p>佛为什么反复用这种夸张尺度？不是为了让人震撼数字，而是把人的计较心拉开。我们很容易被“多少”绑住：读了多少书，做了多少事，付出了多少，亏欠了多少，别人给了多少回应。</p>
+			<p>但《金刚经》会进一步问：数量背后的心是什么？如果做了很多，却都在记账，那数量越大，负担也越大。如果只读了一句，但真的进入生活，反而有力量。</p>
+			<p>学习也是这样。读五遍不是为了炫耀次数，而是因为每一遍都让你变得更能看见。恒河沙提醒我们：大，不一定在数量；大，可能在心量。</p>
+
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天少用“我已经做了多少”衡量自己，改问：这件事有没有让我更清楚一点。</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0702-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		margin-bottom: 12px;
+		color: #9b7532;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.note-reminder {
+		margin-top: 46px;
+		padding: 28px 30px;
+		border: 1px solid rgba(139, 106, 43, 0.22);
+		border-radius: 2px;
+		background: rgba(255, 248, 232, 0.54);
+
+		h2 {
+			margin: 0 0 12px;
+			color: #8b6a2b;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.note-hero {
+			width: calc(100vw - 24px);
+			margin: 34px auto 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+		}
+
+		.note-reminder {
+			padding: 22px;
+		}
+	}
+</style>
