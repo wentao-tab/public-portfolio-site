@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0704',
+		title: '微尘。',
+		desc: '很多看似完整的东西，其实都是一点点条件组合起来的。',
+		date: '2026-07-04',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0702',
 		title: '恒河沙。',
 		desc: '数量很大，不代表意义就更深。',
