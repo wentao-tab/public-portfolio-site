@@ -1,0 +1,166 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="信心清净。"
+	description="真正的信，不是相信自己一定赢，而是不被一时混乱完全拖走。"
+	keywords="金刚经,信心清净,读书感悟,阅读笔记"
+	canonicalPath="/notes/jingangjing-0707/"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.07.07</div>
+			<h1 class="font-huiwen">信心清净。</h1>
+			<p class="lead">真正的信，不是相信自己一定赢，而是不被一时混乱完全拖走。</p>
+
+			<p>《金刚经》里说“信心清净，则生实相”。这里的信，不是盲信，也不是给自己打气。它更像一种清明的稳定：我还看不全，但我愿意继续看；我现在不确定，但不急着用恐惧下结论。</p>
+			<p>人状态差的时候，很容易把所有东西都染黑。一个项目卡住，就觉得自己不行；一次关系不顺，就觉得别人都靠不住；读书读不懂，就觉得自己没天分。心一浊，看到的世界也跟着变形。</p>
+			<p>信心清净，是先把这层浊气降下来。不是立刻变乐观，而是恢复一点基本判断：事情还在变化，我还有下一步，眼前这一相不是全部。</p>
+			<p>南怀瑾讲《金刚经》，常把高深处落回日常。清净信心就是这样：不是玄妙境界，而是你在不确定中，还能保持一点不自欺、不自弃的力量。</p>
+
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天遇到一个不确定的问题，先不要问“是不是完了”，改问：“我现在能确认的事实有哪三个？”</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0707-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		margin-bottom: 12px;
+		color: #9b7532;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.note-reminder {
+		margin-top: 46px;
+		padding: 28px 30px;
+		border: 1px solid rgba(139, 106, 43, 0.22);
+		border-radius: 2px;
+		background: rgba(255, 248, 232, 0.54);
+
+		h2 {
+			margin: 0 0 12px;
+			color: #8b6a2b;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.note-hero {
+			width: calc(100vw - 24px);
+			margin: 34px auto 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+		}
+
+		.note-reminder {
+			padding: 22px;
+		}
+	}
+</style>
