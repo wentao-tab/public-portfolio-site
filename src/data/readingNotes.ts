@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0707-32xiang',
+		title: '三十二相。',
+		desc: '外在呈现可以庄严，但不能替代内在真实。',
+		date: '2026-07-07',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0707',
 		title: '信心清净。',
 		desc: '真正的信，不是相信自己一定赢，而是不被一时混乱完全拖走。',
