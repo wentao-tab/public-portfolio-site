@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0708',
+		title: '法身、报身、化身。',
+		desc: '一个人不只看他说什么，还要看他活出来什么、产生什么作用。',
+		date: '2026-07-08',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0707-32xiang',
 		title: '三十二相。',
 		desc: '外在呈现可以庄严，但不能替代内在真实。',
