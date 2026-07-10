@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0710',
+		title: '语言与沉默。',
+		desc: '能说清楚很重要，但不是所有理解都靠说出来证明。',
+		date: '2026-07-10',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0708',
 		title: '法身、报身、化身。',
 		desc: '一个人不只看他说什么，还要看他活出来什么、产生什么作用。',
