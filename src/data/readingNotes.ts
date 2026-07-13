@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0713',
+		title: '大千世界。',
+		desc: '把尺度放大，很多执着会自动变小。',
+		date: '2026-07-13',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0710',
 		title: '语言与沉默。',
 		desc: '能说清楚很重要，但不是所有理解都靠说出来证明。',
