@@ -610,6 +610,204 @@ const CITY_DATA = (() => {
       ],
       tips: "旺季住宿和景交要提前确认，山上昼夜温差明显。",
     },
+    {
+      id: "maanshan_caishiji", minK: 1.4, name: "马鞍山采石矶", emoji: "🌊", sub: "长江诗岸与李白传说", coord: [118.51, 31.67], label: { dx: -16, dy: 18, anchor: "end" },
+      hook: "南京南边最近的江岸小逃离",
+      tagline: "采石矶、长江岸线和一座不紧不慢的小城，适合临时起意的半日或一日游。",
+      transport: {
+        rail: { title: "南京南→马鞍山东", breakdown: "市区→南京南35分 + 候车25分 + 高铁约18分 + 马鞍山东→采石矶约25分", price: "二等座约¥20-35", veh: 18, arr: 25 },
+        fly: null,
+        drive: { title: "宁芜高速/江东南路", breakdown: "约65km，自驾约1小时10分", veh: 70 },
+      },
+      recommend: { mode: "drive", reason: "距离很近，自驾门到门最省心；想喝酒或不想停车，高铁也完全可行。" },
+      spots: [
+        { emoji: "🌊", name: "采石矶" }, { emoji: "📖", name: "太白楼" },
+        { emoji: "⛰", name: "翠螺山" }, { emoji: "🍜", name: "本地小馆" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "采石矶", "太白楼", "江边散步", "返南京"], note: "下午去江边光线更柔，适合轻松拍照。" },
+      ],
+      tips: "这是压力最小的短途路线，适合只想换个地方走走。",
+    },
+    {
+      id: "bengbu_longzihu", name: "蚌埠龙子湖", emoji: "🦪", sub: "淮河、湖岸与珍珠城", coord: [117.38, 32.92], label: { dx: -14, dy: -10, anchor: "end" },
+      hook: "向北去看淮河边的湖",
+      tagline: "龙子湖、淮河文化和一顿接地气的皖北小吃，适合想换口味的短周末。",
+      transport: {
+        rail: { title: "南京南→蚌埠南", breakdown: "市区→南京南35分 + 候车25分 + 高铁约55分 + 蚌埠南→龙子湖约25分", price: "二等座约¥70-110", veh: 55, arr: 25 },
+        fly: null,
+        drive: { title: "宁洛高速", breakdown: "约210km，自驾约2小时40分", veh: 160 },
+      },
+      recommend: { mode: "rail", reason: "高铁直达快，蚌埠南进城方便；一日往返不需要长时间开车。" },
+      spots: [
+        { emoji: "🌊", name: "龙子湖" }, { emoji: "🏛", name: "蚌埠博物馆" },
+        { emoji: "🌉", name: "淮河风情" }, { emoji: "🍢", name: "皖北小吃" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京南", "蚌埠南", "龙子湖", "博物馆", "淮河夜景"], note: "龙子湖适合傍晚慢走，别排太满。" },
+      ],
+      tips: "蚌埠适合短打，不用抱着热门景区心态去。",
+    },
+    {
+      id: "yixing_zhuhai", name: "宜兴竹海", emoji: "🎋", sub: "竹林、紫砂与山水", coord: [119.82, 31.34], label: { dx: 14, dy: 12, anchor: "start" },
+      hook: "南京去竹林里喘口气",
+      tagline: "宜兴的竹海、陶瓷和山水，比常规城市游更松弛，适合两天慢慢晃。",
+      transport: {
+        rail: { title: "南京南→宜兴", breakdown: "市区→南京南35分 + 候车25分 + 高铁约40分 + 宜兴站→竹海约50分", price: "二等座约¥55-85", veh: 40, arr: 50 },
+        fly: null,
+        drive: { title: "长深高速", breakdown: "约150km，自驾约2小时10分，景点之间更自由", veh: 130 },
+      },
+      recommend: { mode: "drive", reason: "竹海、善卷洞和紫砂街分散，自驾串联更舒服。" },
+      spots: [
+        { emoji: "🎋", name: "宜兴竹海" }, { emoji: "🏺", name: "紫砂街" },
+        { emoji: "🕳", name: "善卷洞" }, { emoji: "☕", name: "山里茶馆" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "宜兴竹海", "山里民宿", "紫砂街"], note: "竹海下午光线漂亮，住一晚更松弛。" },
+        { day: "DAY 2", route: ["善卷洞", "陶艺体验", "返南京"], note: "陶艺体验最好提前预约。" },
+      ],
+      tips: "宜兴适合自驾小环线，别只当成一个单景点。",
+    },
+    {
+      id: "zhouzhuang", name: "昆山周庄", emoji: "🚣", sub: "双桥、水巷与江南夜色", coord: [120.85, 31.12], label: { dx: 16, dy: 10, anchor: "start" },
+      hook: "把江南水乡压缩进一个周末",
+      tagline: "周庄比苏州古城更像一张水乡明信片，适合住一晚等游客散场。",
+      transport: {
+        rail: { title: "南京南→昆山南+接驳", breakdown: "高铁约1小时25分 + 昆山南→周庄约50分；加上市内与候车约3小时15分", price: "二等座约¥110-160", veh: 85, arr: 50 },
+        fly: null,
+        drive: { title: "沪蓉/常嘉高速", breakdown: "约250km，自驾约3小时20分", veh: 200 },
+      },
+      recommend: { mode: "drive", reason: "周庄离高铁站还有接驳，自驾带行李和住景区更顺。" },
+      spots: [
+        { emoji: "🌉", name: "双桥" }, { emoji: "🏮", name: "古镇夜景" },
+        { emoji: "🛶", name: "水巷摇橹" }, { emoji: "🏘", name: "沈厅" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "周庄", "双桥", "水巷夜游"], note: "建议住一晚，早晚体验比白天好。" },
+        { day: "DAY 2", route: ["清晨古镇", "沈厅", "返南京"], note: "早上游客少，水面最安静。" },
+      ],
+      tips: "周庄适合慢，不适合赶；避开节假日会舒服很多。",
+    },
+    {
+      id: "xitang", name: "嘉兴西塘", emoji: "🏮", sub: "廊棚、石桥与水边夜色", coord: [120.89, 30.94], label: { dx: 16, dy: -6, anchor: "start" },
+      hook: "更生活感一点的水乡夜游",
+      tagline: "西塘的廊棚和夜色适合慢慢走，雨天反而更有江南味。",
+      transport: {
+        rail: { title: "南京南→嘉善南+接驳", breakdown: "高铁约1小时55分 + 嘉善南→西塘约30分；合计约3小时25分", price: "二等座约¥150-210", veh: 115, arr: 30 },
+        fly: null,
+        drive: { title: "长深/申嘉湖高速", breakdown: "约285km，自驾约3小时40分", veh: 220 },
+      },
+      recommend: { mode: "drive", reason: "西塘适合住一晚，自驾门到门更顺；如果不住景区，高铁也可。" },
+      spots: [
+        { emoji: "🏮", name: "烟雨长廊" }, { emoji: "🌉", name: "送子来凤桥" },
+        { emoji: "🛶", name: "水上游船" }, { emoji: "🍶", name: "水边小馆" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "西塘", "烟雨长廊", "古镇夜景"], note: "夜景是重点，白天不用太赶。" },
+        { day: "DAY 2", route: ["清晨水巷", "咖啡小店", "返南京"], note: "清晨的西塘更安静。" },
+      ],
+      tips: "古镇商业化明显，但住一晚能避开最拥挤时段。",
+    },
+    {
+      id: "ningbo_dongqianhu", name: "宁波东钱湖", emoji: "🌊", sub: "湖山、老外滩与海味", coord: [121.55, 29.87], label: { dx: 14, dy: 16, anchor: "start" },
+      hook: "去浙东吃海味看湖山",
+      tagline: "宁波适合把城市、湖和海味放在一起：白天东钱湖，晚上老外滩。",
+      transport: {
+        rail: { title: "南京南→宁波", breakdown: "市区→南京南35分 + 候车25分 + 高铁约2小时20分 + 宁波站→东钱湖约40分", price: "二等座约¥170-240", veh: 140, arr: 40 },
+        fly: null,
+        drive: { title: "长深/沈海方向", breakdown: "约430km，自驾约5小时20分", veh: 320 },
+      },
+      recommend: { mode: "rail", reason: "高铁进宁波很顺，市区和东钱湖打车可达；比自驾省体力。" },
+      spots: [
+        { emoji: "🌊", name: "东钱湖" }, { emoji: "🏮", name: "老外滩" },
+        { emoji: "🏛", name: "天一阁" }, { emoji: "🦞", name: "宁波海味" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京南", "宁波站", "天一阁", "老外滩"], note: "老外滩适合晚上去。" },
+        { day: "DAY 2", route: ["东钱湖", "韩岭老街", "返南京"], note: "天气好时湖边体验很好。" },
+      ],
+      tips: "宁波可和舟山、奉化溪口组合成长线。",
+    },
+    {
+      id: "anqing_tianzhushan", name: "安庆天柱山", emoji: "⛰", sub: "皖西山色与古皖文化", coord: [116.47, 30.73], label: { dx: -14, dy: 12, anchor: "end" },
+      hook: "从南京向西去看一座硬朗的山",
+      tagline: "天柱山不如黄山热门，但山体很有力量感，适合想避开人潮的小长假。",
+      transport: {
+        rail: { title: "南京南→潜山/安庆方向", breakdown: "高铁约2小时20分 + 站点到天柱山约45分；合计约4小时5分", price: "二等座约¥160-230", veh: 140, arr: 45 },
+        fly: null,
+        drive: { title: "沪渝高速", breakdown: "约330km，自驾约4小时20分", veh: 260 },
+      },
+      recommend: { mode: "drive", reason: "天柱山接驳和周边住宿更适合自驾，小长假节奏更自由。" },
+      spots: [
+        { emoji: "⛰", name: "天柱山" }, { emoji: "🪨", name: "炼丹湖" },
+        { emoji: "🏛", name: "山谷流泉" }, { emoji: "🍜", name: "皖西小吃" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "潜山", "山下入住", "山谷流泉"], note: "第一天先适应，不要急着登顶。" },
+        { day: "DAY 2", route: ["天柱山主峰", "炼丹湖", "返南京"], note: "爬山强度不低，穿防滑鞋。" },
+      ],
+      tips: "适合两天一晚；雨后云雾很加分。",
+    },
+    {
+      id: "tongling_yongquan", name: "铜陵永泉", emoji: "♨️", sub: "江南园林与温泉小镇", coord: [117.82, 30.94], label: { dx: -14, dy: 16, anchor: "end" },
+      hook: "皖南入口的温泉休息站",
+      tagline: "铜陵适合轻度度假：逛园林、泡温泉、吃一顿顺安酥糖味的地方菜。",
+      transport: {
+        rail: { title: "南京南→铜陵", breakdown: "市区→南京南35分 + 候车25分 + 高铁约1小时15分 + 铜陵站→永泉约30分", price: "二等座约¥80-130", veh: 75, arr: 30 },
+        fly: null,
+        drive: { title: "宁芜/沪渝高速", breakdown: "约180km，自驾约2小时30分", veh: 150 },
+      },
+      recommend: { mode: "drive", reason: "温泉和周边点位更适合自驾，行李和返程时间都更自由。" },
+      spots: [
+        { emoji: "♨️", name: "永泉小镇" }, { emoji: "🌳", name: "江南园林" },
+        { emoji: "🌊", name: "长江岸线" }, { emoji: "🍬", name: "顺安酥糖" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "永泉小镇", "园林散步", "温泉"], note: "适合周五下班后或周六上午出发。" },
+        { day: "DAY 2", route: ["铜陵老城", "江边走走", "返南京"], note: "别排太多景点，重点是放松。" },
+      ],
+      tips: "这是休息型目的地，不是打卡型目的地。",
+    },
+    {
+      id: "jingxian_taohuatan", name: "泾县桃花潭", emoji: "📜", sub: "宣纸、古村与诗意水岸", coord: [118.41, 30.69], label: { dx: -16, dy: -10, anchor: "end" },
+      hook: "去皖南读一首李白",
+      tagline: "桃花潭、查济和宣纸文化村，泾县适合把皖南的山水和纸墨一起看。",
+      transport: {
+        rail: { title: "南京南→泾县", breakdown: "市区→南京南35分 + 候车25分 + 高铁约1小时20分 + 泾县站→桃花潭约45分", price: "二等座约¥80-130", veh: 80, arr: 45 },
+        fly: null,
+        drive: { title: "宁宣高速/山路接驳", breakdown: "约190km，自驾约2小时50分，适合串古村", veh: 170 },
+      },
+      recommend: { mode: "drive", reason: "泾县景点分散，桃花潭、查济、宣纸文化村自驾串起来最顺。" },
+      spots: [
+        { emoji: "🌊", name: "桃花潭" }, { emoji: "🏘", name: "查济古村" },
+        { emoji: "📜", name: "宣纸文化村" }, { emoji: "🌿", name: "皖南山水" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京", "桃花潭", "查济古村", "住泾县"], note: "桃花潭适合傍晚，水面光线更好。" },
+        { day: "DAY 2", route: ["宣纸文化村", "月亮湾", "返南京"], note: "想玩水就留给夏天。" },
+      ],
+      tips: "皖南山路多，自驾别赶夜路。",
+    },
+    {
+      id: "jixi_longchuan", name: "绩溪龙川", emoji: "🏘", sub: "徽州古村与山谷小城", coord: [118.58, 30.07], label: { dx: 14, dy: 18, anchor: "start" },
+      hook: "比宏村更安静的徽州入口",
+      tagline: "绩溪有古村、徽菜和山路，适合把周末过得更素一点、更慢一点。",
+      transport: {
+        rail: { title: "南京南→绩溪北", breakdown: "市区→南京南35分 + 候车25分 + 高铁约2小时10分 + 绩溪北→龙川约20分", price: "二等座约¥150-210", veh: 130, arr: 20 },
+        fly: null,
+        drive: { title: "宁宣杭/溧宁高速", breakdown: "约280km，自驾约3小时50分", veh: 230 },
+      },
+      recommend: { mode: "rail", reason: "高铁到绩溪北很直接，龙川离站不远；想串皖南小村再自驾。" },
+      spots: [
+        { emoji: "🏘", name: "龙川景区" }, { emoji: "🥘", name: "徽菜" },
+        { emoji: "🌄", name: "障山大峡谷" }, { emoji: "📷", name: "古村巷道" },
+      ],
+      itinerary: [
+        { day: "DAY 1", route: ["南京南", "绩溪北", "龙川古村", "徽菜晚餐"], note: "古村适合慢慢拍，不要赶路。" },
+        { day: "DAY 2", route: ["障山大峡谷", "绩溪老街", "返南京"], note: "体力一般可只保留龙川和老街。" },
+      ],
+      tips: "绩溪适合作为皖南小环线起点。",
+    },
   ];
 
   const anchors = [];
