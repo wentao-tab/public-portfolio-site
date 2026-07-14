@@ -1,0 +1,847 @@
+---
+import { withBase } from "../utils/paths";
+import type { ClassicReaderData } from "../data/classicReaders";
+
+interface Props {
+	reader: ClassicReaderData;
+}
+
+const { reader } = Astro.props;
+const chapterCount = reader.chapters.length;
+const readerLinks = [
+	{ label: "金刚经", href: "/jingangjing/", slug: "jingangjing" },
+	{ label: "心经", href: "/xinjing/", slug: "xinjing" },
+	{ label: "了凡四训", href: "/liaofan/", slug: "liaofan" },
+];
+---
+
+<main class="classic-reader" data-classic-root>
+	<header class="classic-topbar">
+		<a class="classic-brand" href={withBase("/jingangjing/")} aria-label="返回金刚经配图版">
+			<span class="classic-brand-mark" aria-hidden="true">
+				<span>{reader.brandTitle.slice(0, 1)}</span>
+			</span>
+			<span>
+				<em>{reader.brandEyebrow}</em>
+				<strong>{reader.brandTitle}</strong>
+				<i>{reader.brandSubtitle}</i>
+			</span>
+		</a>
+		<div class="classic-mantra" aria-hidden="true">
+			<span>{reader.mantra[0]}</span>
+			<b></b>
+			<span>{reader.mantra[1]}</span>
+		</div>
+		<nav class="classic-links" aria-label="经典阅读链接">
+			{readerLinks.map((link) => (
+				<a class:list={["classic-link", link.slug === reader.slug && "active"]} href={withBase(link.href)} aria-current={link.slug === reader.slug ? "page" : undefined}>
+					{link.label}
+				</a>
+			))}
+		</nav>
+	</header>
+
+	<section class="classic-hero">
+		<p class="classic-eyebrow">CLASSIC READER</p>
+		<h1>{reader.title}</h1>
+		<p>{reader.description}</p>
+		<div class="classic-meta">
+			<span>{reader.byline}</span>
+			<span>{chapterCount} 个维护章节</span>
+			<span>图片待补</span>
+		</div>
+	</section>
+
+	<div class="classic-shell">
+		<aside class="classic-rail" aria-label="章节目录">
+			<div class="classic-rail-title">目录</div>
+			<div class="classic-chapter-list">
+				{reader.chapters.map((chapter) => (
+					<button class:list={["classic-chapter-button", chapter.chapter === 1 && "active"]} type="button" data-classic-target={chapter.chapter}>
+						<span>{String(chapter.chapter).padStart(2, "0")}</span>
+						<strong>{chapter.title}</strong>
+					</button>
+				))}
+			</div>
+		</aside>
+
+		<section class="classic-pane" aria-live="polite">
+			{reader.chapters.map((chapter) => (
+				<article class:list={["classic-panel", chapter.chapter === 1 && "active"]} data-classic-panel={chapter.chapter}>
+					<header class="classic-panel-header">
+						<div>
+							<p>第 {String(chapter.chapter).padStart(2, "0")} 章</p>
+							<h2>{chapter.title}</h2>
+						</div>
+						<div class="classic-stepper">
+							<button type="button" data-classic-move="-1" aria-label="上一章">‹</button>
+							<select aria-label="选择章节" data-classic-select>
+								{reader.chapters.map((item) => (
+									<option value={item.chapter} selected={item.chapter === chapter.chapter}>
+										{String(item.chapter).padStart(2, "0")} {item.title}
+									</option>
+								))}
+							</select>
+							<button type="button" data-classic-move="1" aria-label="下一章">›</button>
+						</div>
+					</header>
+					<p class="classic-gist">{chapter.gist}</p>
+					<blockquote>{chapter.text}</blockquote>
+
+					<div class="classic-card-grid">
+						{chapter.cards.map((card, cardIndex) => (
+							<article class="classic-card">
+								<div class="classic-card-meta">
+									<span>{chapter.title}</span>
+									<strong>{String(cardIndex + 1).padStart(2, "0")}</strong>
+								</div>
+								<button
+									class="classic-card-frame"
+									type="button"
+									data-classic-open-card={card.id}
+									data-classic-title={`${reader.title} · ${chapter.title}`}
+									data-classic-sentence={card.sentence}
+									data-classic-plain={card.plain}
+									data-classic-image={card.image ?? ""}
+									aria-label={`打开 ${chapter.title} 第 ${cardIndex + 1} 张卡片`}
+								>
+									{card.image ? (
+										<img src={card.image} alt={`${chapter.title} 配图 ${cardIndex + 1}`} loading="lazy" decoding="async" />
+									) : (
+										<div class="classic-image-placeholder">
+											<span>IMAGE PENDING</span>
+											<strong>{chapter.title}</strong>
+											<em>配图待补</em>
+										</div>
+									)}
+								</button>
+								<div class="classic-card-copy">
+									<p>{card.sentence}</p>
+									<span>{card.plain}</span>
+								</div>
+							</article>
+						))}
+					</div>
+				</article>
+			))}
+		</section>
+	</div>
+
+	<section class="classic-pending">
+		<div>
+			<p>明早待确认</p>
+			<h2>先把骨架搭稳，图片和全文校对再补。</h2>
+		</div>
+		<ul>
+			{reader.pending.map((item) => <li>{item}</li>)}
+		</ul>
+	</section>
+
+	<footer class="classic-footer">{reader.footer}</footer>
+
+	<div class="classic-lightbox" data-classic-lightbox hidden>
+		<button class="classic-lightbox-close" type="button" data-classic-close aria-label="关闭">×</button>
+		<div class="classic-lightbox-inner">
+			<div class="classic-lightbox-visual" data-classic-lightbox-visual>
+				<span>配图待补</span>
+			</div>
+			<div class="classic-lightbox-copy">
+				<p data-classic-lightbox-title></p>
+				<h2 data-classic-lightbox-sentence></h2>
+				<span data-classic-lightbox-plain></span>
+			</div>
+		</div>
+	</div>
+</main>
+
+	<script>
+		const root = document.querySelector<HTMLElement>("[data-classic-root]");
+		if (root) {
+			const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-classic-target]"));
+			const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-classic-panel]"));
+			const selects = Array.from(root.querySelectorAll<HTMLSelectElement>("[data-classic-select]"));
+			let activeChapter = 1;
+
+			const showChapter = (chapter: string | number | undefined) => {
+				activeChapter = Number(chapter);
+				buttons.forEach((button) => {
+					button.classList.toggle("active", Number(button.dataset.classicTarget) === activeChapter);
+			});
+			panels.forEach((panel) => {
+				panel.classList.toggle("active", Number(panel.dataset.classicPanel) === activeChapter);
+			});
+			selects.forEach((select) => {
+				select.value = String(activeChapter);
+			});
+		};
+
+		buttons.forEach((button) => {
+			button.addEventListener("click", () => showChapter(button.dataset.classicTarget));
+		});
+
+		selects.forEach((select) => {
+			select.addEventListener("change", () => showChapter(select.value));
+		});
+
+			root.querySelectorAll<HTMLButtonElement>("[data-classic-move]").forEach((button) => {
+				button.addEventListener("click", () => {
+					const max = panels.length;
+					const delta = Number(button.dataset.classicMove);
+				const next = ((activeChapter - 1 + delta + max) % max) + 1;
+				showChapter(next);
+			});
+		});
+
+			const lightbox = root.querySelector<HTMLElement>("[data-classic-lightbox]");
+			const visual = root.querySelector<HTMLElement>("[data-classic-lightbox-visual]");
+			const title = root.querySelector<HTMLElement>("[data-classic-lightbox-title]");
+			const sentence = root.querySelector<HTMLElement>("[data-classic-lightbox-sentence]");
+			const plain = root.querySelector<HTMLElement>("[data-classic-lightbox-plain]");
+
+			root.querySelectorAll<HTMLButtonElement>("[data-classic-open-card]").forEach((button) => {
+			button.addEventListener("click", () => {
+				if (!lightbox || !visual || !title || !sentence || !plain) return;
+				const image = button.dataset.classicImage;
+				visual.innerHTML = image
+					? `<img src="${image}" alt="">`
+					: `<span>配图待补</span><strong>${button.dataset.classicSentence ?? ""}</strong>`;
+				title.textContent = button.dataset.classicTitle ?? "";
+				sentence.textContent = button.dataset.classicSentence ?? "";
+				plain.textContent = button.dataset.classicPlain ?? "";
+				lightbox.hidden = false;
+				document.documentElement.classList.add("classic-lightbox-open");
+			});
+		});
+
+		const closeLightbox = () => {
+			if (!lightbox) return;
+			lightbox.hidden = true;
+			document.documentElement.classList.remove("classic-lightbox-open");
+		};
+
+		root.querySelector("[data-classic-close]")?.addEventListener("click", closeLightbox);
+		lightbox?.addEventListener("click", (event) => {
+			if (event.target === lightbox) closeLightbox();
+		});
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") closeLightbox();
+		});
+	}
+</script>
+
+<style lang="scss">
+	:global(body.classic-reader-body) {
+		margin: 0;
+		min-height: 100vh;
+		background:
+			radial-gradient(circle at 18% 12%, rgba(198, 165, 95, 0.12), transparent 28rem),
+			linear-gradient(180deg, #faf8f1 0%, #f4efe3 100%);
+		color: #24362f;
+		font-family: "LXGW WenKai", "Noto Serif SC", "Songti SC", serif;
+	}
+
+	:global(.classic-lightbox-open) {
+		overflow: hidden;
+	}
+
+	.classic-reader {
+		width: min(1440px, calc(100vw - 40px));
+		margin: 0 auto;
+		padding: 30px 0 52px;
+	}
+
+	.classic-topbar {
+		position: sticky;
+		top: 18px;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 18px;
+		padding: 14px 18px;
+		border: 1px solid rgba(141, 113, 68, 0.18);
+		border-radius: 28px;
+		background: rgba(255, 253, 246, 0.86);
+		box-shadow: 0 20px 70px rgba(87, 70, 42, 0.12);
+		backdrop-filter: blur(18px);
+	}
+
+	.classic-brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		color: inherit;
+		text-decoration: none;
+
+		em,
+		i {
+			display: block;
+			color: rgba(36, 54, 47, 0.58);
+			font-family: "Courier New", monospace;
+			font-size: 11px;
+			font-style: normal;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+		}
+
+		strong {
+			display: block;
+			font-size: 20px;
+			line-height: 1.2;
+		}
+	}
+
+	.classic-brand-mark {
+		display: grid;
+		width: 44px;
+		height: 44px;
+		place-items: center;
+		border-radius: 50%;
+		background: #efe3ca;
+		color: #9a6d17;
+		box-shadow: inset 0 0 0 1px rgba(154, 109, 23, 0.14);
+
+		span {
+			font-size: 20px;
+			font-weight: 700;
+		}
+	}
+
+	.classic-mantra {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		color: rgba(36, 54, 47, 0.55);
+		font-size: 14px;
+		white-space: nowrap;
+
+		b {
+			width: 42px;
+			height: 1px;
+			background: rgba(154, 109, 23, 0.28);
+		}
+	}
+
+	.classic-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		justify-content: flex-end;
+	}
+
+	.classic-link {
+		border: 1px solid rgba(141, 113, 68, 0.22);
+		border-radius: 999px;
+		padding: 9px 14px;
+		color: rgba(36, 54, 47, 0.72);
+		text-decoration: none;
+		background: rgba(255, 255, 255, 0.58);
+		transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+
+		&:hover {
+			transform: translateY(-1px);
+			background: #fff8df;
+			color: #6e4a05;
+		}
+
+		&.active {
+			background: #111;
+			color: #fff;
+		}
+	}
+
+	.classic-hero {
+		padding: 96px 20px 64px;
+		text-align: center;
+
+		h1 {
+			margin: 0;
+			font-size: clamp(54px, 8vw, 132px);
+			font-weight: 600;
+			line-height: 0.92;
+			letter-spacing: 0;
+		}
+
+		p {
+			max-width: 680px;
+			margin: 24px auto 0;
+			color: rgba(36, 54, 47, 0.7);
+			font-size: 18px;
+			line-height: 1.9;
+		}
+	}
+
+	.classic-eyebrow,
+	.classic-meta span,
+	.classic-rail-title,
+	.classic-card-meta,
+	.classic-panel-header p,
+	.classic-pending p {
+		font-family: "Courier New", monospace;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.classic-eyebrow {
+		display: inline-block;
+		margin: 0 0 20px;
+		border: 1px solid rgba(141, 113, 68, 0.18);
+		border-radius: 999px;
+		padding: 8px 18px;
+		color: rgba(36, 54, 47, 0.58);
+		font-size: 12px;
+	}
+
+	.classic-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		justify-content: center;
+		margin-top: 24px;
+
+		span {
+			border: 1px solid rgba(141, 113, 68, 0.18);
+			border-radius: 999px;
+			padding: 8px 12px;
+			background: rgba(255, 255, 255, 0.52);
+			color: rgba(36, 54, 47, 0.62);
+			font-size: 12px;
+		}
+	}
+
+	.classic-shell {
+		display: grid;
+		grid-template-columns: 260px minmax(0, 1fr);
+		gap: 24px;
+		align-items: start;
+	}
+
+	.classic-rail {
+		position: sticky;
+		top: 116px;
+		border: 1px solid rgba(141, 113, 68, 0.18);
+		border-radius: 24px;
+		padding: 18px;
+		background: rgba(255, 253, 246, 0.72);
+		box-shadow: 0 20px 70px rgba(87, 70, 42, 0.08);
+	}
+
+	.classic-rail-title {
+		margin-bottom: 14px;
+		color: rgba(36, 54, 47, 0.5);
+		font-size: 12px;
+	}
+
+	.classic-chapter-list {
+		display: grid;
+		gap: 8px;
+	}
+
+	.classic-chapter-button {
+		display: grid;
+		grid-template-columns: 38px 1fr;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+		border: 1px solid transparent;
+		border-radius: 16px;
+		padding: 11px;
+		background: transparent;
+		color: rgba(36, 54, 47, 0.64);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+		span {
+			display: grid;
+			width: 34px;
+			height: 34px;
+			place-items: center;
+			border-radius: 50%;
+			background: rgba(154, 109, 23, 0.1);
+			color: #8f650f;
+			font-family: "Courier New", monospace;
+			font-size: 12px;
+		}
+
+		&:hover {
+			transform: translateX(2px);
+			background: rgba(255, 255, 255, 0.62);
+			color: #111;
+		}
+
+		&.active {
+			border-color: rgba(154, 109, 23, 0.28);
+			background: #fff8df;
+			color: #6e4a05;
+		}
+	}
+
+	.classic-pane {
+		min-width: 0;
+	}
+
+	.classic-panel {
+		display: none;
+		border: 1px solid rgba(141, 113, 68, 0.18);
+		border-radius: 30px;
+		padding: clamp(22px, 4vw, 44px);
+		background: rgba(255, 253, 246, 0.84);
+		box-shadow: 0 24px 90px rgba(87, 70, 42, 0.1);
+
+		&.active {
+			display: block;
+			animation: classicIn 0.34s ease both;
+		}
+	}
+
+	@keyframes classicIn {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.classic-panel-header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 20px;
+
+		p {
+			margin: 0 0 10px;
+			color: #9a6d17;
+			font-size: 12px;
+		}
+
+		h2 {
+			margin: 0;
+			font-size: clamp(38px, 5vw, 74px);
+			line-height: 1.02;
+		}
+	}
+
+	.classic-stepper {
+		display: inline-flex;
+		overflow: hidden;
+		border: 1px solid rgba(141, 113, 68, 0.2);
+		border-radius: 999px;
+		background: #fff;
+
+		button,
+		select {
+			border: 0;
+			background: transparent;
+			color: inherit;
+			font: inherit;
+		}
+
+		button {
+			width: 40px;
+			cursor: pointer;
+		}
+
+		select {
+			max-width: 180px;
+			padding: 10px 8px;
+		}
+	}
+
+	.classic-gist {
+		max-width: 760px;
+		margin: 26px 0 0;
+		color: rgba(36, 54, 47, 0.72);
+		font-size: 21px;
+		line-height: 1.8;
+	}
+
+	blockquote {
+		margin: 28px 0 0;
+		border-left: 4px solid #b9821a;
+		border-radius: 18px;
+		padding: 22px 26px;
+		background: #fff7df;
+		color: #6f4c10;
+		font-size: 22px;
+		line-height: 1.7;
+	}
+
+	.classic-card-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 22px;
+		margin-top: 34px;
+	}
+
+	.classic-card {
+		border: 1px solid rgba(141, 113, 68, 0.16);
+		border-radius: 24px;
+		padding: 16px;
+		background: rgba(255, 255, 255, 0.62);
+	}
+
+	.classic-card-meta {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 12px;
+		color: rgba(36, 54, 47, 0.48);
+		font-size: 12px;
+	}
+
+	.classic-card-frame {
+		display: block;
+		width: 100%;
+		overflow: hidden;
+		border: 1px solid rgba(141, 113, 68, 0.2);
+		border-radius: 18px;
+		padding: 0;
+		background: #eee7d7;
+		cursor: pointer;
+		transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+		&:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 18px 46px rgba(87, 70, 42, 0.16);
+		}
+
+		img,
+		.classic-image-placeholder {
+			display: block;
+			width: 100%;
+			aspect-ratio: 16 / 9;
+		}
+
+		img {
+			object-fit: cover;
+		}
+	}
+
+	.classic-image-placeholder {
+		display: grid;
+		place-items: center;
+		padding: 22px;
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.42), transparent 42%),
+			linear-gradient(180deg, #f2ead9, #ded3bf);
+		color: rgba(36, 54, 47, 0.54);
+		text-align: center;
+
+		span,
+		em {
+			font-family: "Courier New", monospace;
+			font-size: 12px;
+			font-style: normal;
+			letter-spacing: 0.12em;
+		}
+
+		strong {
+			display: block;
+			margin: 8px 0;
+			color: rgba(36, 54, 47, 0.78);
+			font-size: clamp(24px, 4vw, 44px);
+		}
+	}
+
+	.classic-card-copy {
+		padding: 16px 4px 2px;
+
+		p {
+			margin: 0 0 10px;
+			color: #1d2c27;
+			font-size: 20px;
+			font-weight: 700;
+			line-height: 1.55;
+		}
+
+		span {
+			color: rgba(36, 54, 47, 0.64);
+			font-size: 16px;
+			line-height: 1.75;
+		}
+	}
+
+	.classic-pending {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 24px;
+		margin-top: 26px;
+		border: 1px dashed rgba(141, 113, 68, 0.26);
+		border-radius: 26px;
+		padding: 24px 28px;
+		background: rgba(255, 253, 246, 0.58);
+
+		p {
+			margin: 0 0 8px;
+			color: #9a6d17;
+			font-size: 12px;
+		}
+
+		h2 {
+			margin: 0;
+			font-size: 22px;
+		}
+
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			justify-content: flex-end;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		li {
+			border: 1px solid rgba(141, 113, 68, 0.18);
+			border-radius: 999px;
+			padding: 8px 12px;
+			background: #fff;
+			color: rgba(36, 54, 47, 0.66);
+		}
+	}
+
+	.classic-footer {
+		margin-top: 28px;
+		color: rgba(36, 54, 47, 0.48);
+		font-size: 14px;
+		text-align: center;
+	}
+
+	.classic-lightbox {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
+		display: grid;
+		place-items: center;
+		padding: 28px;
+		background: rgba(14, 21, 18, 0.78);
+		backdrop-filter: blur(14px);
+
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	.classic-lightbox-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+		width: min(1120px, 100%);
+		overflow: hidden;
+		border-radius: 28px;
+		background: #fbf7eb;
+		box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+	}
+
+	.classic-lightbox-visual {
+		display: grid;
+		min-height: 420px;
+		place-items: center;
+		background: #e7ddc8;
+		color: rgba(36, 54, 47, 0.55);
+		text-align: center;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		span {
+			font-family: "Courier New", monospace;
+			letter-spacing: 0.14em;
+		}
+
+		strong {
+			max-width: 70%;
+			font-size: 28px;
+			line-height: 1.5;
+		}
+	}
+
+	.classic-lightbox-copy {
+		padding: 36px;
+
+		p {
+			margin: 0 0 18px;
+			color: #9a6d17;
+			font-family: "Courier New", monospace;
+			letter-spacing: 0.08em;
+		}
+
+		h2 {
+			margin: 0 0 20px;
+			font-size: 32px;
+			line-height: 1.35;
+		}
+
+		span {
+			color: rgba(36, 54, 47, 0.68);
+			font-size: 18px;
+			line-height: 1.9;
+		}
+	}
+
+	.classic-lightbox-close {
+		position: absolute;
+		top: 26px;
+		right: 26px;
+		width: 48px;
+		height: 48px;
+		border: 1px solid rgba(255, 255, 255, 0.34);
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.12);
+		color: #fff;
+		font-size: 28px;
+		cursor: pointer;
+	}
+
+	@media (max-width: 920px) {
+		.classic-topbar,
+		.classic-shell,
+		.classic-pending,
+		.classic-lightbox-inner {
+			grid-template-columns: 1fr;
+		}
+
+		.classic-topbar {
+			display: grid;
+		}
+
+		.classic-mantra {
+			display: none;
+		}
+
+		.classic-rail {
+			position: static;
+		}
+
+		.classic-card-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.classic-panel-header {
+			display: grid;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.classic-reader {
+			width: min(100vw - 22px, 100%);
+			padding-top: 12px;
+		}
+
+		.classic-hero {
+			padding: 56px 8px 40px;
+		}
+
+		.classic-pending ul {
+			justify-content: flex-start;
+		}
+	}
+</style>

@@ -1,0 +1,19 @@
+---
+import MainHead from "../components/MainHead.astro";
+import ClassicReader from "../components/ClassicReader.astro";
+import { liaofanReader as reader } from "../data/classicReaders";
+---
+
+<html lang="zh-CN">
+	<head>
+		<MainHead
+			title={reader.seoTitle}
+			description={reader.description}
+			keywords={reader.keywords}
+			canonicalPath="/liaofan/"
+		/>
+	</head>
+	<body class="classic-reader-body">
+		<ClassicReader reader={reader} />
+	</body>
+</html>
