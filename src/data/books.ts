@@ -35,6 +35,7 @@ export const books2026: BookItem[] = [
 	{ no: 26, title: '周易说什么', note: '化玄奥为平易，将卦象哲理拉回日常决策与修身之道。', mark: '韩鹏杰', tone: 'gold' },
 	{ no: 27, title: '十一种孤独', mark: '理查德·耶茨', tone: 'blue' },
 	{ no: 28, title: '鹅之书', mark: '李翊云', tone: 'paper' },
+	{ no: 29, title: '最美的小事', mark: '斯特雷德', tone: 'rose' },
 ];
 
 export const bookStats = {
