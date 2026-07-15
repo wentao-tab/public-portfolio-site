@@ -47,8 +47,7 @@ const readerLinks = [
 		<p>{reader.description}</p>
 		<div class="classic-meta">
 			<span>{reader.byline}</span>
-			<span>{chapterCount} 个维护章节</span>
-			<span>图片待补</span>
+			<span>{chapterCount} 个原文章节</span>
 		</div>
 	</section>
 
@@ -101,23 +100,19 @@ const readerLinks = [
 									data-classic-open-card={card.id}
 									data-classic-title={`${reader.title} · ${chapter.title}`}
 									data-classic-sentence={card.sentence}
-									data-classic-plain={card.plain}
+									data-classic-plain={card.plain ?? ""}
 									data-classic-image={card.image ?? ""}
 									aria-label={`打开 ${chapter.title} 第 ${cardIndex + 1} 张卡片`}
 								>
 									{card.image ? (
 										<img src={card.image} alt={`${chapter.title} 配图 ${cardIndex + 1}`} loading="lazy" decoding="async" />
 									) : (
-										<div class="classic-image-placeholder">
-											<span>IMAGE PENDING</span>
-											<strong>{chapter.title}</strong>
-											<em>配图待补</em>
-										</div>
+										<div class="classic-image-placeholder" aria-hidden="true"></div>
 									)}
 								</button>
 								<div class="classic-card-copy">
 									<p>{card.sentence}</p>
-									<span>{card.plain}</span>
+									{card.plain && <span>{card.plain}</span>}
 								</div>
 							</article>
 						))}
@@ -126,16 +121,6 @@ const readerLinks = [
 			))}
 		</section>
 	</div>
-
-	<section class="classic-pending">
-		<div>
-			<p>明早待确认</p>
-			<h2>先把骨架搭稳，图片和全文校对再补。</h2>
-		</div>
-		<ul>
-			{reader.pending.map((item) => <li>{item}</li>)}
-		</ul>
-	</section>
 
 	<footer class="classic-footer">{reader.footer}</footer>
 
@@ -204,10 +189,11 @@ const readerLinks = [
 				const image = button.dataset.classicImage;
 				visual.innerHTML = image
 					? `<img src="${image}" alt="">`
-					: `<span>配图待补</span><strong>${button.dataset.classicSentence ?? ""}</strong>`;
+					: `<strong>${button.dataset.classicSentence ?? ""}</strong>`;
 				title.textContent = button.dataset.classicTitle ?? "";
 				sentence.textContent = button.dataset.classicSentence ?? "";
 				plain.textContent = button.dataset.classicPlain ?? "";
+				plain.hidden = !button.dataset.classicPlain;
 				lightbox.hidden = false;
 				document.documentElement.classList.add("classic-lightbox-open");
 			});
@@ -234,10 +220,11 @@ const readerLinks = [
 		margin: 0;
 		min-height: 100vh;
 		background:
-			radial-gradient(circle at 18% 12%, rgba(198, 165, 95, 0.12), transparent 28rem),
-			linear-gradient(180deg, #faf8f1 0%, #f4efe3 100%);
+			linear-gradient(90deg, rgba(21, 36, 43, 0.04) 1px, transparent 1px),
+			linear-gradient(180deg, #f7f1e5, #e9efea 48%, #f4ead9);
+		background-size: 34px 34px, auto;
 		color: #24362f;
-		font-family: "LXGW WenKai", "Noto Serif SC", "Songti SC", serif;
+		font-family: Iowan Old Style, Songti SC, "Noto Serif CJK SC", PingFang SC, serif;
 	}
 
 	:global(.classic-lightbox-open) {
@@ -245,25 +232,29 @@ const readerLinks = [
 	}
 
 	.classic-reader {
-		width: min(1440px, calc(100vw - 40px));
+		width: 100%;
 		margin: 0 auto;
-		padding: 30px 0 52px;
+		padding: 0 0 52px;
 	}
 
 	.classic-topbar {
 		position: sticky;
-		top: 18px;
-		z-index: 10;
+		top: 0;
+		z-index: 20;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 18px;
-		padding: 14px 18px;
-		border: 1px solid rgba(141, 113, 68, 0.18);
-		border-radius: 28px;
-		background: rgba(255, 253, 246, 0.86);
-		box-shadow: 0 20px 70px rgba(87, 70, 42, 0.12);
+		min-height: 88px;
+		padding: 14px max(18px, calc((100vw - 1440px) / 2 + 24px));
+		border-bottom: 1px solid rgba(143, 111, 53, 0.22);
+		background:
+			linear-gradient(90deg, rgba(159, 65, 53, 0.08), transparent 18%, transparent 82%, rgba(47, 101, 91, 0.08)),
+			radial-gradient(circle at 18% 20%, rgba(183, 137, 59, 0.16), transparent 28%),
+			rgba(246, 240, 226, 0.94);
+		box-shadow: 0 10px 34px rgba(37, 31, 20, 0.06);
 		backdrop-filter: blur(18px);
+		box-sizing: border-box;
 	}
 
 	.classic-brand {
@@ -286,23 +277,25 @@ const readerLinks = [
 
 		strong {
 			display: block;
-			font-size: 20px;
+			font-size: 19px;
 			line-height: 1.2;
 		}
 	}
 
 	.classic-brand-mark {
 		display: grid;
-		width: 44px;
-		height: 44px;
+		width: 54px;
+		height: 54px;
 		place-items: center;
 		border-radius: 50%;
-		background: #efe3ca;
+		background:
+			radial-gradient(circle at 38% 32%, rgba(255, 255, 255, 0.84), transparent 38%),
+			#efe3ca;
 		color: #9a6d17;
-		box-shadow: inset 0 0 0 1px rgba(154, 109, 23, 0.14);
+		box-shadow: inset 0 0 0 1px rgba(154, 109, 23, 0.14), 0 14px 30px rgba(111, 76, 16, 0.12);
 
 		span {
-			font-size: 20px;
+			font-size: 22px;
 			font-weight: 700;
 		}
 	}
@@ -332,10 +325,11 @@ const readerLinks = [
 	.classic-link {
 		border: 1px solid rgba(141, 113, 68, 0.22);
 		border-radius: 999px;
-		padding: 9px 14px;
+		padding: 10px 16px;
 		color: rgba(36, 54, 47, 0.72);
 		text-decoration: none;
 		background: rgba(255, 255, 255, 0.58);
+		font-size: 15px;
 		transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
 
 		&:hover {
@@ -351,23 +345,26 @@ const readerLinks = [
 	}
 
 	.classic-hero {
-		padding: 96px 20px 64px;
+		width: min(1180px, calc(100vw - 40px));
+		margin: 0 auto;
+		padding: 76px 20px 54px;
 		text-align: center;
 
 		h1 {
 			margin: 0;
-			font-size: clamp(54px, 8vw, 132px);
+			color: #172823;
+			font-size: clamp(56px, 6.5vw, 96px);
 			font-weight: 600;
-			line-height: 0.92;
+			line-height: 1.05;
 			letter-spacing: 0;
 		}
 
 		p {
-			max-width: 680px;
-			margin: 24px auto 0;
+			max-width: 760px;
+			margin: 20px auto 0;
 			color: rgba(36, 54, 47, 0.7);
-			font-size: 18px;
-			line-height: 1.9;
+			font-size: 19px;
+			line-height: 1.85;
 		}
 	}
 
@@ -410,6 +407,8 @@ const readerLinks = [
 	}
 
 	.classic-shell {
+		width: min(1320px, calc(100vw - 40px));
+		margin: 0 auto;
 		display: grid;
 		grid-template-columns: 260px minmax(0, 1fr);
 		gap: 24px;
@@ -418,11 +417,15 @@ const readerLinks = [
 
 	.classic-rail {
 		position: sticky;
-		top: 116px;
+		top: 112px;
 		border: 1px solid rgba(141, 113, 68, 0.18);
-		border-radius: 24px;
+		border-radius: 26px;
 		padding: 18px;
-		background: rgba(255, 253, 246, 0.72);
+		background:
+			linear-gradient(rgba(255, 255, 255, 0.52) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.44) 1px, transparent 1px),
+			rgba(255, 253, 246, 0.78);
+		background-size: 18px 18px;
 		box-shadow: 0 20px 70px rgba(87, 70, 42, 0.08);
 	}
 
@@ -487,7 +490,11 @@ const readerLinks = [
 		border: 1px solid rgba(141, 113, 68, 0.18);
 		border-radius: 30px;
 		padding: clamp(22px, 4vw, 44px);
-		background: rgba(255, 253, 246, 0.84);
+		background:
+			linear-gradient(rgba(178, 151, 93, 0.055) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(178, 151, 93, 0.045) 1px, transparent 1px),
+			rgba(255, 253, 246, 0.9);
+		background-size: 22px 22px;
 		box-shadow: 0 24px 90px rgba(87, 70, 42, 0.1);
 
 		&.active {
@@ -522,7 +529,8 @@ const readerLinks = [
 
 		h2 {
 			margin: 0;
-			font-size: clamp(38px, 5vw, 74px);
+			color: #172823;
+			font-size: clamp(42px, 5vw, 78px);
 			line-height: 1.02;
 		}
 	}
@@ -556,8 +564,8 @@ const readerLinks = [
 	.classic-gist {
 		max-width: 760px;
 		margin: 26px 0 0;
-		color: rgba(36, 54, 47, 0.72);
-		font-size: 21px;
+		color: rgba(36, 54, 47, 0.56);
+		font-size: 18px;
 		line-height: 1.8;
 	}
 
@@ -569,7 +577,7 @@ const readerLinks = [
 		background: #fff7df;
 		color: #6f4c10;
 		font-size: 22px;
-		line-height: 1.7;
+		line-height: 1.9;
 	}
 
 	.classic-card-grid {
@@ -623,29 +631,12 @@ const readerLinks = [
 	}
 
 	.classic-image-placeholder {
-		display: grid;
-		place-items: center;
-		padding: 22px;
+		display: block;
+		padding: 0;
 		background:
-			linear-gradient(135deg, rgba(255, 255, 255, 0.42), transparent 42%),
-			linear-gradient(180deg, #f2ead9, #ded3bf);
-		color: rgba(36, 54, 47, 0.54);
-		text-align: center;
-
-		span,
-		em {
-			font-family: "Courier New", monospace;
-			font-size: 12px;
-			font-style: normal;
-			letter-spacing: 0.12em;
-		}
-
-		strong {
-			display: block;
-			margin: 8px 0;
-			color: rgba(36, 54, 47, 0.78);
-			font-size: clamp(24px, 4vw, 44px);
-		}
+			radial-gradient(circle at 72% 18%, rgba(183, 137, 59, 0.14), transparent 11rem),
+			linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent 42%),
+			linear-gradient(180deg, #f4ecdc, #ded2bd);
 	}
 
 	.classic-card-copy {
@@ -707,7 +698,10 @@ const readerLinks = [
 	}
 
 	.classic-footer {
+		width: min(1320px, calc(100vw - 40px));
 		margin-top: 28px;
+		margin-left: auto;
+		margin-right: auto;
 		color: rgba(36, 54, 47, 0.48);
 		font-size: 14px;
 		text-align: center;
