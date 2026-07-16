@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0715',
+		title: '法筏喻。',
+		desc: '工具是用来过河的，不是用来证明自己有船。',
+		date: '2026-07-15',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0713',
 		title: '大千世界。',
 		desc: '把尺度放大，很多执着会自动变小。',

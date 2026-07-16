@@ -1,0 +1,166 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="法筏喻。"
+	description="工具是用来过河的，不是用来证明自己有船。"
+	keywords="金刚经,法筏喻,读书感悟,阅读笔记"
+	canonicalPath="/notes/jingangjing-0715/"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.07.15</div>
+			<h1 class="font-huiwen">法筏喻。</h1>
+			<p class="lead">工具是用来过河的，不是用来证明自己有船。</p>
+
+			<p>佛法里常说，法像筏子。人在此岸，要过河，需要筏；过了河，还背着筏走，就变成负担。</p>
+			<p>这句话放到学习、工作、修行都很准确。一本书、一个方法、一个工作流、一个 AI 工具，刚开始能帮你打开局面。但如果你开始执着“我必须用这一套”“我这套才高级”“不用它就不对”，工具就反过来绑住你。</p>
+			<p>很多人不是没有工具，而是工具太多、身份太重。收藏很多方法，切换很多系统，最后真正过河的动作反而变少了。</p>
+			<p>法筏喻提醒的是：判断一个方法的标准，不是它看起来多正确，而是它有没有让你更清楚、更自由、更能行动。有效就用；不适合就放；用完就别背着。</p>
+
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天检查一个你常用的方法或工具：它是在帮你推进，还是已经变成你拖延、证明、装配系统感的理由？</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0715-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		margin-bottom: 12px;
+		color: #9b7532;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.note-reminder {
+		margin-top: 46px;
+		padding: 28px 30px;
+		border: 1px solid rgba(139, 106, 43, 0.22);
+		border-radius: 2px;
+		background: rgba(255, 248, 232, 0.54);
+
+		h2 {
+			margin: 0 0 12px;
+			color: #8b6a2b;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.note-hero {
+			width: calc(100vw - 24px);
+			margin: 34px auto 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+		}
+
+		.note-reminder {
+			padding: 22px;
+		}
+	}
+</style>
