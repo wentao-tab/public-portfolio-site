@@ -14,6 +14,11 @@ export interface ClassicChapter {
 	cards: ClassicCard[];
 }
 
+export interface ClassicAudio {
+	src: string;
+	label: string;
+}
+
 export interface ClassicReaderData {
 	slug: string;
 	title: string;
@@ -27,6 +32,7 @@ export interface ClassicReaderData {
 	mantra: [string, string];
 	footer: string;
 	pending: string[];
+	audio?: ClassicAudio;
 	chapters: ClassicChapter[];
 }
 
@@ -42,7 +48,11 @@ export const heartSutraReader: ClassicReaderData = {
 	brandSubtitle: "照见五蕴皆空",
 	mantra: ["照见五蕴皆空", "心无挂碍"],
 	footer: "《般若波罗蜜多心经》玄奘译本原文分段整理。",
-	pending: ["配图素材", "诵读音频", "逐句卡片"],
+	pending: ["配图素材", "逐句卡片"],
+	audio: {
+		src: "/assets/xinjing/heart-sutra-recitation.mp3",
+		label: "诵读",
+	},
 	chapters: [
 		{
 			chapter: 1,

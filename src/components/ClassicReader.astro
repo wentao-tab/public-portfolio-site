@@ -8,6 +8,7 @@ interface Props {
 
 const { reader } = Astro.props;
 const chapterCount = reader.chapters.length;
+const audioSource = reader.audio?.src ? withBase(reader.audio.src) : "";
 const readerLinks = [
 	{ label: "金刚经", href: "/jingangjing/", slug: "jingangjing" },
 	{ label: "心经", href: "/xinjing/", slug: "xinjing" },
@@ -33,6 +34,19 @@ const readerLinks = [
 			<span>{reader.mantra[1]}</span>
 		</div>
 		<nav class="classic-links" aria-label="经典阅读链接">
+			{audioSource && (
+				<button class="classic-audio-toggle" type="button" data-classic-audio-toggle aria-pressed="false" aria-label="播放诵读音频">
+					<span class="classic-audio-orb" aria-hidden="true">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+					<span class="classic-audio-copy">
+						<strong>{reader.audio?.label ?? "诵读"}</strong>
+						<em data-classic-audio-state>点击播放</em>
+					</span>
+				</button>
+			)}
 			{readerLinks.map((link) => (
 				<a class:list={["classic-link", link.slug === reader.slug && "active"]} href={withBase(link.href)} aria-current={link.slug === reader.slug ? "page" : undefined}>
 					{link.label}
@@ -40,6 +54,12 @@ const readerLinks = [
 			))}
 		</nav>
 	</header>
+
+	{audioSource && (
+		<audio data-classic-audio preload="metadata">
+			<source src={audioSource} type="audio/mpeg" />
+		</audio>
+	)}
 
 	<section class="classic-hero">
 		<p class="classic-eyebrow">CLASSIC READER</p>
@@ -146,6 +166,43 @@ const readerLinks = [
 			const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-classic-panel]"));
 			const selects = Array.from(root.querySelectorAll<HTMLSelectElement>("[data-classic-select]"));
 			let activeChapter = 1;
+			const classicAudio = root.querySelector<HTMLAudioElement>("[data-classic-audio]");
+			const audioToggle = root.querySelector<HTMLButtonElement>("[data-classic-audio-toggle]");
+			const audioState = root.querySelector<HTMLElement>("[data-classic-audio-state]");
+
+			const setClassicAudioPlaying = (isPlaying: boolean) => {
+				root.classList.toggle("classic-audio-playing", isPlaying);
+				root.classList.remove("classic-audio-blocked");
+				audioToggle?.setAttribute("aria-pressed", String(isPlaying));
+				audioToggle?.setAttribute("aria-label", isPlaying ? "暂停诵读音频" : "播放诵读音频");
+				if (audioState) audioState.textContent = isPlaying ? "播放中" : "点击播放";
+			};
+
+			const setClassicAudioBlocked = (error: unknown) => {
+				root.classList.remove("classic-audio-playing");
+				root.classList.add("classic-audio-blocked");
+				audioToggle?.setAttribute("aria-pressed", "false");
+				if (audioToggle && error instanceof Error) audioToggle.dataset.audioError = error.name ?? "play-error";
+				if (audioState) audioState.textContent = "再点一次";
+			};
+
+			audioToggle?.addEventListener("click", async () => {
+				if (!classicAudio) return;
+				if (classicAudio.paused) {
+					try {
+						if (classicAudio.readyState === 0) classicAudio.load();
+						await classicAudio.play();
+					} catch (error) {
+						setClassicAudioBlocked(error);
+					}
+				} else {
+					classicAudio.pause();
+				}
+			});
+
+			classicAudio?.addEventListener("play", () => setClassicAudioPlaying(true));
+			classicAudio?.addEventListener("pause", () => setClassicAudioPlaying(false));
+			classicAudio?.addEventListener("ended", () => setClassicAudioPlaying(false));
 
 			const showChapter = (chapter: string | number | undefined) => {
 				activeChapter = Number(chapter);
@@ -320,6 +377,127 @@ const readerLinks = [
 		flex-wrap: wrap;
 		gap: 8px;
 		justify-content: flex-end;
+	}
+
+	[data-classic-audio] {
+		display: none;
+	}
+
+	.classic-audio-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
+		min-height: 42px;
+		border: 1px solid rgba(141, 113, 68, 0.24);
+		border-radius: 999px;
+		padding: 7px 13px 7px 8px;
+		background: rgba(255, 252, 241, 0.72);
+		color: #24362f;
+		font: inherit;
+		cursor: pointer;
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.58);
+		transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+
+		&:hover {
+			transform: translateY(-1px);
+			border-color: rgba(154, 109, 23, 0.34);
+			background: #fff8df;
+			box-shadow: 0 12px 28px rgba(111, 76, 16, 0.12);
+		}
+	}
+
+	.classic-audio-orb {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 2px;
+		width: 28px;
+		height: 28px;
+		flex: 0 0 auto;
+		border-radius: 50%;
+		background: #efe3ca;
+		box-shadow: inset 0 0 0 1px rgba(154, 109, 23, 0.12);
+
+		span {
+			display: block;
+			width: 3px;
+			height: 10px;
+			border-radius: 999px;
+			background: #9a6d17;
+			opacity: 0.82;
+		}
+	}
+
+	.classic-audio-copy {
+		display: grid;
+		gap: 1px;
+		text-align: left;
+
+		strong {
+			font-size: 14px;
+			line-height: 1.1;
+		}
+
+		em {
+			color: rgba(36, 54, 47, 0.48);
+			font-family: "Courier New", monospace;
+			font-size: 10px;
+			font-style: normal;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+	}
+
+	.classic-reader.classic-audio-playing {
+		.classic-audio-toggle {
+			border-color: rgba(154, 109, 23, 0.36);
+			background: #fff2c8;
+			box-shadow: 0 14px 34px rgba(111, 76, 16, 0.14);
+		}
+
+		.classic-audio-orb {
+			animation: classicAudioPulse 1.8s ease-in-out infinite;
+
+			span {
+				animation: classicAudioBars 0.86s ease-in-out infinite;
+
+				&:nth-child(2) {
+					animation-delay: 0.12s;
+				}
+
+				&:nth-child(3) {
+					animation-delay: 0.24s;
+				}
+			}
+		}
+	}
+
+	.classic-reader.classic-audio-blocked .classic-audio-toggle {
+		border-color: rgba(159, 65, 53, 0.34);
+		background: #fff0e8;
+	}
+
+	@keyframes classicAudioPulse {
+		0%,
+		100% {
+			box-shadow: inset 0 0 0 1px rgba(154, 109, 23, 0.12), 0 0 0 0 rgba(154, 109, 23, 0.22);
+		}
+
+		50% {
+			box-shadow: inset 0 0 0 1px rgba(154, 109, 23, 0.12), 0 0 0 7px rgba(154, 109, 23, 0);
+		}
+	}
+
+	@keyframes classicAudioBars {
+		0%,
+		100% {
+			transform: scaleY(0.58);
+		}
+
+		50% {
+			transform: scaleY(1);
+		}
 	}
 
 	.classic-link {
