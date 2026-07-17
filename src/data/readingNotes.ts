@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0717',
+		title: '时间观。',
+		desc: '很多焦虑，是把还没到的未来当成已经发生。',
+		date: '2026-07-17',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0715',
 		title: '法筏喻。',
 		desc: '工具是用来过河的，不是用来证明自己有船。',
