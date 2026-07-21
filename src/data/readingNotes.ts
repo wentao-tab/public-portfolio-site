@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0721',
+		title: '威仪。',
+		desc: '一个人的修行，不只在想法里，也在动作的秩序里。',
+		date: '2026-07-21',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0717',
 		title: '时间观。',
 		desc: '很多焦虑，是把还没到的未来当成已经发生。',
