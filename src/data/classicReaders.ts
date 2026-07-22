@@ -180,10 +180,12 @@ export const liaofanReader: ClassicReaderData = {
 				{
 					id: "liaofan-c01-s01",
 					sentence: "命由我作，福自己求。",
+					image: "/assets/liaofan/liaofan-c01.png",
 				},
 				{
 					id: "liaofan-c01-s02",
 					sentence: "一切福田，不离方寸；从心而觅，感无不通。",
+					image: "/assets/liaofan/liaofan-c01.png",
 				},
 			],
 		},
@@ -196,10 +198,12 @@ export const liaofanReader: ClassicReaderData = {
 				{
 					id: "liaofan-c02-s01",
 					sentence: "改过之法，第一要发耻心，第二要发畏心，第三须发勇心。",
+					image: "/assets/liaofan/liaofan-c02.png",
 				},
 				{
 					id: "liaofan-c02-s02",
 					sentence: "务要日日知非，日日改过；一日不知非，即一日安于自是；一日无过可改，即一日无步可进。",
+					image: "/assets/liaofan/liaofan-c02.png",
 				},
 			],
 		},
@@ -212,10 +216,12 @@ export const liaofanReader: ClassicReaderData = {
 				{
 					id: "liaofan-c03-s01",
 					sentence: "善有真，有假；有端，有曲；有阴，有阳。",
+					image: "/assets/liaofan/liaofan-c03.png",
 				},
 				{
 					id: "liaofan-c03-s02",
 					sentence: "有是，有非；有偏，有正；有半，有满；有大，有小；有难，有易。皆当深辨。",
+					image: "/assets/liaofan/liaofan-c03.png",
 				},
 			],
 		},
@@ -228,10 +234,12 @@ export const liaofanReader: ClassicReaderData = {
 				{
 					id: "liaofan-c04-s01",
 					sentence: "满招损，谦受益。",
+					image: "/assets/liaofan/liaofan-c04.png",
 				},
 				{
 					id: "liaofan-c04-s02",
 					sentence: "天道亏盈而益谦；地道变盈而流谦；鬼神害盈而福谦；人道恶盈而好谦。",
+					image: "/assets/liaofan/liaofan-c04.png",
 				},
 			],
 		},
