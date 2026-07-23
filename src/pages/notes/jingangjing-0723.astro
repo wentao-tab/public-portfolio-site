@@ -1,0 +1,167 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="净信。"
+	description="真正的信，不是给自己找确定答案，而是在不确定里保持清明。"
+	keywords="金刚经,净信,正信希有,读书感悟,阅读笔记"
+	canonicalPath="/notes/jingangjing-0723/"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.07.23</div>
+			<h1 class="font-huiwen">净信。</h1>
+			<p class="lead">真正的信，不是给自己找确定答案，而是在不确定里保持清明。</p>
+
+			<p>《金刚经》第六品讲“正信希有”。佛说后世若有人听到这些章句，能生信心，是很难得的。这里的“信”，不是盲目相信，也不是情绪上被打动一下，而是一种经过理解后的稳定。</p>
+			<p>为什么难？因为《金刚经》说的东西，常常会拆掉我们最想抓住的东西：我、功德、成就、身份、确定感。一般人听了会不安：如果无我，那我努力什么？如果无所得，那我修什么？如果法尚应舍，那我靠什么？</p>
+			<p>所以“净信”不是简单说“我相信佛法”，而是心里没有那么多交易：我信这个，是不是能马上变好？是不是能证明我更高级？是不是能换来福报？这些一多，信就不净了。</p>
+			<p>南怀瑾讲《金刚经》，很重视这种“不被形式骗走”的信。真正的信，是你愿意把一句话拿回生活里试：遇到评价时，看看自己有没有我相；遇到困难时，看看自己是不是只想逃；读不懂时，愿意再读一遍，而不是立刻放弃。</p>
+			<p>净信不是答案感，而是继续求证的力量。</p>
+
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天遇到一个你暂时不懂、不顺、不确定的事，不急着否定。先问：如果我再看一遍，会不会看到不同层次？</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0723-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		margin-bottom: 12px;
+		color: #9b7532;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.note-reminder {
+		margin-top: 46px;
+		padding: 28px 30px;
+		border: 1px solid rgba(139, 106, 43, 0.22);
+		border-radius: 2px;
+		background: rgba(255, 248, 232, 0.54);
+
+		h2 {
+			margin: 0 0 12px;
+			color: #8b6a2b;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.note-hero {
+			width: calc(100vw - 24px);
+			margin: 34px auto 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+		}
+
+		.note-reminder {
+			padding: 22px;
+		}
+	}
+</style>

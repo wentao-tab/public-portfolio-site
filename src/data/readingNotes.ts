@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0723',
+		title: '净信。',
+		desc: '真正的信，不是给自己找确定答案，而是在不确定里保持清明。',
+		date: '2026-07-23',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0722-fude-gongde',
 		title: '福德与功德。',
 		desc: '福德让事情有条件发生，功德让自己有能力承接。',
