@@ -39,6 +39,8 @@ export const books2026: BookItem[] = [
 	{ no: 30, title: '云水一年', note: '跟着日子缓慢行走，在山水与四季里重新学习安静生活。', tone: 'sage' },
 	{ no: 31, title: '正常人', note: '亲密关系里的靠近与错过，温柔又刺痛地写出年轻人的自尊和脆弱。', tone: 'sea' },
 	{ no: 32, title: '了不起的我', note: '用心理学拆解自我成长，把改变从口号落回可执行的日常练习。', tone: 'gold' },
+	{ no: 33, title: '飞跃疯人院', note: '在荒诞制度里保存人的清醒与反抗，疯癫外壳下是对自由的尖锐追问。', tone: 'ink' },
+	{ no: 34, title: '快乐就是哈哈哈哈哈哈', note: '用松弛和自嘲抵抗生活褶皱，把普通日子笑成更轻的出口。', tone: 'sun' },
 ];
 
 export const bookStats = {
