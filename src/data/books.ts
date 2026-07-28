@@ -33,9 +33,12 @@ export const books2026: BookItem[] = [
 	{ no: 24, title: '沉思录', note: '帝王的深夜自省，至今仍是斯多葛派的床头书。', tone: 'stone' },
 	{ no: 25, title: '赞美闲散', note: '为“无用”正名，闲散不是懒惰而是对抗异化的温柔反抗。', tone: 'paper' },
 	{ no: 26, title: '周易说什么', note: '化玄奥为平易，将卦象哲理拉回日常决策与修身之道。', mark: '韩鹏杰', tone: 'gold' },
-	{ no: 27, title: '十一种孤独', mark: '理查德·耶茨', tone: 'blue' },
-	{ no: 28, title: '鹅之书', mark: '李翊云', tone: 'paper' },
-	{ no: 29, title: '最美的小事', mark: '斯特雷德', tone: 'rose' },
+	{ no: 27, title: '十一种孤独', note: '耶茨写尽现代关系里的疏离与失落，冷静文字背后是难以安放的孤独。', mark: '理查德·耶茨', tone: 'blue' },
+	{ no: 28, title: '鹅之书', note: '两个女孩在想象与现实间彼此照亮，关于友谊、写作和逃离的细密回声。', mark: '李翊云', tone: 'paper' },
+	{ no: 29, title: '最美的小事', note: '把人生的裂缝写成温柔的回答，像一封给困顿时刻的长信。', mark: '斯特雷德', tone: 'rose' },
+	{ no: 30, title: '云水一年', note: '跟着日子缓慢行走，在山水与四季里重新学习安静生活。', tone: 'sage' },
+	{ no: 31, title: '正常人', note: '亲密关系里的靠近与错过，温柔又刺痛地写出年轻人的自尊和脆弱。', tone: 'sea' },
+	{ no: 32, title: '了不起的我', note: '用心理学拆解自我成长，把改变从口号落回可执行的日常练习。', tone: 'gold' },
 ];
 
 export const bookStats = {
