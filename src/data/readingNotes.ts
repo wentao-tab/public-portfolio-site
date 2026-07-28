@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0728',
+		title: '须菩提发问',
+		desc: '真正会学的人，不怕把最根本的问题反复问。',
+		date: '2026-07-28',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0727',
 		title: '祇树给孤独园。',
 		desc: '好的学习和修行，需要一个能承载它的场。',
