@@ -7,9 +7,9 @@ import { booksTdk, pageDescription, pageTag } from "../data/content";
 const shelfBooks = books2026.map((book, index) => ({
 	...book,
 	slug: `${String(book.no).padStart(2, '0')}-${book.title}`,
-	height: 220 + ((index * 37) % 72),
-	width: 54 + ((index * 19) % 34),
-	lean: ((index % 5) - 2) * 1.2,
+	height: 260 + ((index * 41) % 92),
+	width: 58 + ((index * 17) % 30),
+	lean: ((index % 5) - 2) * 1.4,
 }));
 ---
 
@@ -101,11 +101,11 @@ const shelfBooks = books2026.map((book, index) => ({
 					<div class="detail-backdrop" data-close-detail></div>
 					<article class="detail-card" role="dialog" aria-modal="true" aria-label="书籍详情" tabindex="-1">
 						<button type="button" class="detail-close" data-close-detail>返回书架</button>
-							<div class="detail-cover" data-detail-cover>
-								<div class="detail-cover-top">
-									<span>2026 READING</span>
-									<span data-detail-no>01</span>
-								</div>
+						<div class="detail-cover" data-detail-cover>
+							<div class="detail-cover-top">
+								<span>2026 READING</span>
+								<span data-detail-no>01</span>
+							</div>
 							<h2 data-detail-cover-title>{shelfBooks[0]?.title}</h2>
 							<div class="detail-cover-bottom">
 								<span>LIANG WENTAO</span>
@@ -288,18 +288,25 @@ const shelfBooks = books2026.map((book, index) => ({
 	.books-page {
 		display: flex;
 		flex-direction: column;
-		margin: 0 auto;
+		width: min(1480px, calc(100vw - 48px));
+		max-width: none;
+		margin-left: calc((100% - min(1480px, calc(100vw - 48px))) / 2);
 	}
 
 	.complete-shelf {
-		padding-top: 32px;
+		padding-top: clamp(28px, 4vw, 56px);
+	}
+
+	.complete-shelf.border-top {
+		border-top: 0 !important;
 	}
 
 	.shelf-summary {
 		display: grid;
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: 1px;
-		margin: 0 0 28px;
+		width: min(980px, 100%);
+		margin: 0 auto clamp(28px, 4vw, 54px);
 		overflow: hidden;
 		border: 1px solid var(--border);
 		border-radius: 8px;
@@ -330,29 +337,31 @@ const shelfBooks = books2026.map((book, index) => ({
 	.shelf-shell {
 		position: relative;
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
-		gap: 28px;
-		align-items: stretch;
-		min-height: 560px;
-		padding: 28px;
-		overflow: hidden;
-		border: 1px solid var(--border);
-		border-radius: 8px;
+		grid-template-columns: minmax(620px, 1.12fr) minmax(380px, 0.88fr);
+		gap: clamp(36px, 6vw, 92px);
+		align-items: center;
+		min-height: clamp(620px, 60vh, 760px);
+		padding: clamp(24px, 4vw, 52px) 0 28px;
+		overflow: visible;
+		border: 0;
+		border-radius: 0;
 		background:
-			radial-gradient(circle at 28% 18%, rgba(255, 245, 214, 0.68), transparent 32%),
-			linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(248, 244, 235, 0.72));
-		box-shadow: 0 22px 70px rgba(0, 0, 0, 0.06);
+			radial-gradient(circle at 36% 50%, rgba(255, 245, 211, 0.78), transparent 36%),
+			linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(250, 246, 237, 0.42) 50%, rgba(255, 255, 255, 0));
+		box-shadow: none;
 	}
 
 	.shelf-viewport {
 		position: relative;
 		display: flex;
 		align-items: flex-end;
-		min-height: 500px;
+		min-height: clamp(520px, 54vh, 680px);
+		margin-left: -24px;
 		overflow: hidden;
 		perspective: 1200px;
 		cursor: grab;
 		touch-action: none;
+		mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 
 		.is-dragging & {
 			cursor: grabbing;
@@ -361,17 +370,20 @@ const shelfBooks = books2026.map((book, index) => ({
 
 	.shelf-floor {
 		position: absolute;
-		right: 0;
-		bottom: 82px;
-		left: 0;
-		height: 34px;
-		border-radius: 999px;
+		right: 6%;
+		bottom: 104px;
+		left: 8%;
+		height: 36px;
+		border-radius: 0 0 18px 18px;
 		background:
-			linear-gradient(180deg, rgba(122, 82, 43, 0.36), rgba(60, 37, 22, 0.22)),
-			#d7c3a4;
+			linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(73, 49, 28, 0.18)),
+			#b08e62;
 		box-shadow:
-			0 20px 38px rgba(0, 0, 0, 0.12),
-			inset 0 2px 0 rgba(255, 255, 255, 0.5);
+			0 30px 48px rgba(58, 39, 21, 0.2),
+			inset 0 2px 0 rgba(255, 255, 255, 0.44),
+			inset 0 -10px 18px rgba(53, 34, 18, 0.16);
+		transform: perspective(500px) rotateX(22deg);
+		transform-origin: top center;
 	}
 
 	.shelf-track {
@@ -380,9 +392,9 @@ const shelfBooks = books2026.map((book, index) => ({
 		z-index: 1;
 		display: flex;
 		align-items: flex-end;
-		gap: 12px;
+		gap: 10px;
 		min-width: max-content;
-		padding: 0 45% 102px;
+		padding: 0 50% 128px;
 		transform: translate3d(calc(0px - var(--shelf-x)), 0, 0) rotateX(0.01deg);
 		transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
 		transform-style: preserve-3d;
@@ -395,17 +407,19 @@ const shelfBooks = books2026.map((book, index) => ({
 		justify-content: space-between;
 		width: var(--book-w);
 		height: var(--book-h);
-		padding: 14px 9px;
+		padding: 16px 10px 15px;
 		border: 1px solid rgba(0, 0, 0, 0.18);
-		border-radius: 4px 7px 7px 4px;
+		border-radius: 3px 9px 9px 3px;
 		color: #171717;
 		background: #eee5d6;
 		box-shadow:
-			8px 0 0 rgba(0, 0, 0, 0.12),
-			14px 18px 28px rgba(0, 0, 0, 0.16);
+			inset 12px 0 18px rgba(255, 255, 255, 0.22),
+			inset -12px 0 16px rgba(47, 31, 17, 0.08),
+			10px 0 0 rgba(0, 0, 0, 0.14),
+			20px 28px 34px rgba(35, 24, 12, 0.2);
 		transform:
 			translateZ(0)
-			rotateY(-11deg)
+			rotateY(-18deg)
 			rotateZ(var(--book-lean));
 		transform-origin: bottom center;
 		transition:
@@ -416,18 +430,28 @@ const shelfBooks = books2026.map((book, index) => ({
 		&::before {
 			content: "";
 			position: absolute;
-			inset: 0 auto 0 6px;
-			width: 1px;
-			background: rgba(255, 255, 255, 0.44);
+			top: 10px;
+			bottom: 10px;
+			left: 8px;
+			width: 2px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.46);
 		}
 
 		&::after {
 			content: "";
 			position: absolute;
-			inset: 12px;
-			border: 1px solid rgba(255, 255, 255, 0.38);
-			border-radius: 3px;
+			top: 8px;
+			right: -9px;
+			bottom: 6px;
+			width: 10px;
+			border-radius: 0 7px 7px 0;
+			background:
+				repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0 1px, rgba(0, 0, 0, 0.08) 1px 2px),
+				linear-gradient(90deg, rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.18)),
+				inherit;
 			pointer-events: none;
+			transform: skewY(3deg);
 		}
 
 		&:hover,
@@ -435,11 +459,13 @@ const shelfBooks = books2026.map((book, index) => ({
 			z-index: 5;
 			filter: saturate(1.08);
 			box-shadow:
-				10px 0 0 rgba(0, 0, 0, 0.14),
-				18px 24px 44px rgba(0, 0, 0, 0.22);
+				inset 12px 0 18px rgba(255, 255, 255, 0.24),
+				inset -12px 0 16px rgba(47, 31, 17, 0.09),
+				12px 0 0 rgba(0, 0, 0, 0.15),
+				24px 32px 54px rgba(35, 24, 12, 0.26);
 			transform:
-				translate3d(0, -34px, 96px)
-				rotateY(-24deg)
+				translate3d(0, -38px, 112px)
+				rotateY(-26deg)
 				rotateZ(0deg);
 		}
 	}
@@ -459,10 +485,10 @@ const shelfBooks = books2026.map((book, index) => ({
 		position: relative;
 		z-index: 1;
 		align-self: center;
-		max-height: 150px;
+		max-height: 180px;
 		color: rgba(0, 0, 0, 0.86);
 		font-family: 'Huiwen-mincho', var(--font-body);
-		font-size: 1.02rem;
+		font-size: 1.08rem;
 		font-weight: 700;
 		line-height: 1.1;
 		letter-spacing: 0;
@@ -474,22 +500,23 @@ const shelfBooks = books2026.map((book, index) => ({
 		flex-direction: column;
 		justify-content: center;
 		min-width: 0;
-		padding: 24px 4px 24px 8px;
+		padding: 24px 4px 24px 0;
 
 		h2 {
 			margin: 0;
 			color: var(--color-100);
 			font-family: 'Huiwen-mincho', var(--font-body);
-			font-size: clamp(2.8rem, 6vw, 5.2rem);
+			font-size: clamp(3.6rem, 7vw, 7.1rem);
 			font-weight: 400;
-			line-height: 1.05;
+			line-height: 0.98;
 			overflow-wrap: anywhere;
 		}
 
 		p {
-			margin: 22px 0 0;
+			max-width: 620px;
+			margin: 26px 0 0;
 			color: var(--color-300);
-			font-size: 1.05rem;
+			font-size: 1.08rem;
 			line-height: 1.85;
 		}
 	}
@@ -515,7 +542,7 @@ const shelfBooks = books2026.map((book, index) => ({
 		display: flex;
 		gap: 10px;
 		align-items: center;
-		margin-top: 30px;
+		margin-top: 34px;
 	}
 
 	.shelf-nav,
