@@ -140,6 +140,7 @@ const shelfBooks = books2026.map((book, index) => ({
 				let dragStart = 0;
 				let dragDelta = 0;
 				let dragging = false;
+				let closeTimer;
 
 				const pad = (n) => String(n).padStart(2, "0");
 
@@ -177,20 +178,28 @@ const shelfBooks = books2026.map((book, index) => ({
 						if (!activeBook || !scene || !track) return;
 						const sceneWidth = scene.clientWidth;
 						const maxOffset = Math.max(0, track.scrollWidth - sceneWidth);
-						const centerTarget = activeBook.offsetLeft - sceneWidth * 0.32;
+						const centerTarget = activeBook.offsetLeft - sceneWidth * 0.53;
 						const offset = Math.max(0, Math.min(maxOffset, centerTarget));
 						track.style.setProperty("--x", `${offset}px`);
 					});
 				}
 
 				function openDetail() {
-					detail.classList.add("is-open");
+					window.clearTimeout(closeTimer);
+					root.classList.remove("is-returning");
+					root.classList.add("is-inspecting");
 					detail.setAttribute("aria-hidden", "false");
+					window.setTimeout(() => detail.classList.add("is-open"), 660);
 				}
 
 				function closeDetail() {
+					window.clearTimeout(closeTimer);
 					detail.classList.remove("is-open");
+					root.classList.add("is-returning");
 					detail.setAttribute("aria-hidden", "true");
+					closeTimer = window.setTimeout(() => {
+						root.classList.remove("is-inspecting", "is-returning");
+					}, 1180);
 				}
 
 				prev.addEventListener("click", () => setActive(active - 1));
@@ -200,7 +209,8 @@ const shelfBooks = books2026.map((book, index) => ({
 
 				booksEl.forEach((item, index) => {
 					item.addEventListener("click", () => {
-						setActive(index);
+						if (index === active) openDetail();
+						else setActive(index);
 					});
 				});
 
@@ -489,48 +499,113 @@ const shelfBooks = books2026.map((book, index) => ({
 	.shelf-scene {
 		position: absolute;
 		z-index: 7;
-		inset: 96px 0 88px 31%;
-		overflow: hidden;
-		perspective: 1400px;
+		inset: 82px -9vw 66px 17%;
+		overflow: visible;
+		perspective: 1900px;
 		cursor: grab;
-		mask-image: linear-gradient(90deg, transparent, #000 2.5%, #000 99%, transparent);
+		mask-image: linear-gradient(90deg, #000 0%, #000 98.6%, transparent);
 
 		.is-dragging & {
 			cursor: grabbing;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			z-index: 1;
+			left: -12%;
+			right: -24%;
+			bottom: 230px;
+			height: 110px;
+			background:
+				radial-gradient(ellipse at 50% 70%, rgba(37, 20, 10, 0.5), rgba(37, 20, 10, 0.22) 42%, transparent 74%),
+				linear-gradient(180deg, transparent, rgba(41, 23, 12, 0.16));
+			filter: blur(25px);
+			pointer-events: none;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			z-index: 9;
+			left: -22%;
+			right: -30%;
+			bottom: 262px;
+			height: 48px;
+			background:
+				linear-gradient(180deg, rgba(255, 237, 207, 0.64), rgba(94, 52, 28, 0.2) 45%, rgba(41, 22, 12, 0.44)),
+				linear-gradient(90deg, transparent, rgba(55, 31, 17, 0.32) 22%, rgba(55, 31, 17, 0.24) 78%, transparent);
+			filter: blur(8px);
+			pointer-events: none;
 		}
 	}
 
 	.book-track {
 		--x: 0px;
 		position: absolute;
+		z-index: 6;
 		left: 0;
 		right: auto;
-		bottom: 142px;
+		bottom: 226px;
 		display: flex;
 		align-items: flex-end;
-		gap: 8px;
+		gap: 5px;
 		width: max-content;
-		padding: 0 82vw 0 18vw;
+		padding: 0 140vw 0 30vw;
 		transform: translate3d(calc(0px - var(--x)), 0, 0);
-		transition: transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+		transition: transform 940ms cubic-bezier(0.19, 1, 0.22, 1);
 		transform-style: preserve-3d;
+
+		&::before {
+			content: "";
+			position: absolute;
+			z-index: -1;
+			left: 13vw;
+			right: 84vw;
+			bottom: -34px;
+			height: 82px;
+			background:
+				radial-gradient(ellipse at 48% 46%, rgba(36, 20, 10, 0.54), rgba(36, 20, 10, 0.3) 42%, transparent 73%),
+				linear-gradient(90deg, transparent, rgba(35, 19, 9, 0.24), transparent);
+			filter: blur(18px);
+			pointer-events: none;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			z-index: 7;
+			left: 13vw;
+			right: 83vw;
+			bottom: -9px;
+			height: 24px;
+			background:
+				linear-gradient(90deg, transparent, rgba(55, 31, 15, 0.36) 16%, rgba(55, 31, 15, 0.5) 54%, rgba(55, 31, 15, 0.2) 84%, transparent),
+				radial-gradient(ellipse at 48% 50%, rgba(33, 18, 8, 0.42), transparent 70%);
+			filter: blur(7px);
+			pointer-events: none;
+		}
 	}
 
 	.shelf-board {
 		position: absolute;
-		right: -22%;
-		bottom: 60px;
-		left: -52%;
-		height: 152px;
+		z-index: 8;
+		right: -50%;
+		bottom: 0;
+		left: -92%;
+		height: 312px;
 		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0 9%, rgba(171, 127, 91, 0.96) 10% 42%, rgba(96, 58, 32, 0.98) 76%, rgba(45, 25, 13, 0.98)),
-			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 24px, rgba(0, 0, 0, 0.035) 24px 48px),
-			#9d704f;
+			linear-gradient(180deg, rgba(255, 240, 214, 1) 0 6%, rgba(240, 198, 141, 1) 7% 18%, rgba(188, 121, 76, 1) 35%, rgba(123, 69, 38, 1) 58%, rgba(66, 35, 18, 1) 75%, rgba(24, 13, 8, 1) 100%),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.26), transparent 26%, rgba(0, 0, 0, 0.26) 70%, rgba(255, 255, 255, 0.08)),
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 34px, rgba(66, 34, 17, 0.15) 34px 72px),
+			repeating-linear-gradient(0deg, transparent 0 9px, rgba(255, 255, 255, 0.045) 9px 10px, transparent 10px 22px),
+			#8f5c3b;
 		box-shadow:
-			0 34px 70px rgba(51, 31, 17, 0.36),
-			inset 0 5px 0 rgba(255, 255, 255, 0.5),
-			inset 0 -30px 32px rgba(31, 18, 10, 0.42);
-		transform: perspective(760px) rotateX(16deg);
+			0 82px 120px rgba(35, 20, 11, 0.68),
+			inset 0 13px 0 rgba(255, 255, 255, 0.62),
+			inset 0 -84px 68px rgba(22, 12, 7, 0.72),
+			inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+		transform: perspective(980px) rotateX(12deg) translateZ(0);
 		transform-origin: top center;
 
 		&::before,
@@ -543,23 +618,27 @@ const shelfBooks = books2026.map((book, index) => ({
 		}
 
 		&::before {
-			top: -15px;
-			height: 22px;
+			top: -42px;
+			height: 70px;
 			background:
-				linear-gradient(180deg, rgba(248, 232, 203, 0.92), rgba(164, 112, 73, 0.9)),
-				repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 42px, rgba(90, 46, 22, 0.12) 42px 84px);
+				linear-gradient(180deg, rgba(255, 249, 236, 1) 0 14%, rgba(246, 207, 153, 1) 15% 43%, rgba(159, 91, 49, 0.98) 100%),
+				repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 42px, rgba(83, 42, 20, 0.16) 42px 84px);
 			box-shadow:
-				0 -1px 0 rgba(255, 255, 255, 0.56),
-				0 9px 18px rgba(48, 28, 14, 0.24);
+				0 -1px 0 rgba(255, 255, 255, 0.68),
+				0 18px 30px rgba(48, 28, 14, 0.4),
+				inset 0 -9px 14px rgba(72, 39, 20, 0.3);
 		}
 
 		&::after {
-			bottom: 14px;
-			height: 22px;
-			background: linear-gradient(180deg, rgba(66, 36, 19, 0.74), rgba(30, 17, 10, 0.82));
+			bottom: 54px;
+			height: 86px;
+			background:
+				linear-gradient(180deg, rgba(125, 70, 37, 0.82), rgba(45, 24, 13, 0.98) 68%, rgba(14, 7, 4, 0.98)),
+				repeating-linear-gradient(90deg, transparent 0 52px, rgba(255, 255, 255, 0.07) 52px 104px);
 			box-shadow:
-				inset 0 1px 0 rgba(255, 255, 255, 0.12),
-				0 12px 26px rgba(23, 13, 8, 0.28);
+				inset 0 1px 0 rgba(255, 255, 255, 0.14),
+				inset 0 -22px 30px rgba(0, 0, 0, 0.38),
+				0 24px 42px rgba(23, 13, 8, 0.5);
 		}
 	}
 
@@ -568,20 +647,29 @@ const shelfBooks = books2026.map((book, index) => ({
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		overflow: visible;
 		width: var(--book-w);
 		height: var(--book-h);
 		padding: 18px 9px 16px;
 		border: 1px solid rgba(13, 10, 7, 0.22);
-		border-radius: 3px 9px 9px 3px;
+		border-radius: 4px 10px 10px 4px;
 		color: #191510;
 		background:
-			linear-gradient(90deg, rgba(0, 0, 0, 0.14), transparent 17%, rgba(255, 255, 255, 0.36) 54%, rgba(0, 0, 0, 0.12)),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.28) 0 1px, transparent 1px calc(100% - 2px), rgba(0, 0, 0, 0.18) calc(100% - 2px)),
+			linear-gradient(90deg, rgba(0, 0, 0, 0.24) 0 8px, rgba(255, 255, 255, 0.2) 9px 13px, transparent 14px 68%, rgba(0, 0, 0, 0.12) 88%, rgba(255, 255, 255, 0.2)),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent 35%, rgba(0, 0, 0, 0.12)),
+			repeating-linear-gradient(90deg, transparent 0 18px, rgba(255, 255, 255, 0.08) 18px 19px, transparent 19px 38px),
+			radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.24), transparent 30%),
 			var(--cover, #eadfc9);
 		box-shadow:
-			inset 11px 0 15px rgba(255, 255, 255, 0.26),
-			inset -10px 0 14px rgba(23, 14, 8, 0.14),
-			8px 0 0 rgba(0, 0, 0, 0.17),
-			18px 28px 38px rgba(45, 27, 13, 0.23);
+			inset 13px 0 18px rgba(255, 255, 255, 0.32),
+			inset -13px 0 18px rgba(23, 14, 8, 0.17),
+			5px 0 0 rgba(0, 0, 0, 0.13),
+			11px 0 0 rgba(255, 255, 255, 0.22),
+			0 4px 0 rgba(255, 255, 255, 0.14),
+			12px 20px 34px rgba(45, 27, 13, 0.36),
+			-9px 18px 24px rgba(37, 21, 10, 0.18),
+			0 0 0 1px rgba(255, 255, 255, 0.08);
 		transform: translateZ(0) rotateY(-18deg) rotateZ(var(--book-lean));
 		transform-origin: bottom center;
 		transition:
@@ -589,32 +677,44 @@ const shelfBooks = books2026.map((book, index) => ({
 			height 680ms cubic-bezier(0.22, 1, 0.36, 1),
 			padding 680ms cubic-bezier(0.22, 1, 0.36, 1),
 			border-radius 680ms cubic-bezier(0.22, 1, 0.36, 1),
-			transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
-			box-shadow 360ms ease,
+			transform 820ms cubic-bezier(0.2, 0.86, 0.18, 1),
+			box-shadow 520ms ease,
 			filter 300ms ease;
+		will-change: transform;
+		filter: drop-shadow(0 18px 16px rgba(43, 25, 12, 0.18));
 
 		&::before {
 			content: "";
 			position: absolute;
-			inset: 11px;
-			border: 1px solid rgba(255, 255, 255, 0.33);
-			border-left-color: rgba(0, 0, 0, 0.14);
+			inset: 10px 8px 10px 10px;
+			border: 1px solid rgba(255, 255, 255, 0.44);
+			border-left-color: rgba(0, 0, 0, 0.16);
 			border-radius: inherit;
+			background:
+				repeating-linear-gradient(180deg, transparent 0 18px, rgba(255, 255, 255, 0.08) 18px 19px, transparent 19px 38px),
+				linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent 17%, transparent 84%, rgba(0, 0, 0, 0.08)),
+				linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent);
+			box-shadow:
+				inset 4px 0 0 rgba(255, 255, 255, 0.12),
+				inset -5px 0 10px rgba(0, 0, 0, 0.08);
 			pointer-events: none;
 		}
 
 		&::after {
 			content: "";
 			position: absolute;
-			top: 8px;
-			right: -10px;
-			bottom: 6px;
-			width: 10px;
+			top: 6px;
+			right: -13px;
+			bottom: 5px;
+			width: 13px;
 			border-radius: 0 8px 8px 0;
 			background:
-				repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 1px, rgba(0, 0, 0, 0.08) 1px 2px),
+				repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.44) 0 1px, rgba(0, 0, 0, 0.16) 1px 2px),
 				linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(255, 255, 255, 0.18)),
 				var(--cover, #eadfc9);
+			box-shadow:
+				-4px 0 10px rgba(0, 0, 0, 0.18),
+				8px 12px 18px rgba(33, 20, 10, 0.32);
 			pointer-events: none;
 		}
 
@@ -624,16 +724,70 @@ const shelfBooks = books2026.map((book, index) => ({
 
 		&.is-active {
 			z-index: 10;
-			width: clamp(320px, 22vw, 420px);
-			height: clamp(455px, 54vh, 595px);
-			padding: clamp(28px, 2.8vw, 44px);
+			width: clamp(300px, 18vw, 354px);
+			height: clamp(458px, 52vh, 566px);
+			padding: clamp(26px, 2.4vw, 38px);
 			border-radius: 4px 13px 13px 4px;
-			transform: translate3d(0, -20px, 160px) rotateY(-9deg) rotateZ(0deg);
+			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0deg);
+			filter: drop-shadow(0 34px 32px rgba(43, 25, 12, 0.24));
 			box-shadow:
 				inset 18px 0 24px rgba(255, 255, 255, 0.26),
 				inset -20px 0 24px rgba(23, 14, 8, 0.14),
 				15px 0 0 rgba(0, 0, 0, 0.18),
-				34px 44px 78px rgba(45, 27, 13, 0.34);
+				20px 0 0 rgba(255, 255, 255, 0.18),
+				-44px 20px 58px rgba(39, 23, 12, 0.2),
+				48px 52px 92px rgba(45, 27, 13, 0.42);
+		}
+
+		&.is-active::after {
+			right: -17px;
+			width: 17px;
+			box-shadow:
+				-5px 0 12px rgba(0, 0, 0, 0.18),
+				15px 24px 34px rgba(33, 20, 10, 0.34);
+		}
+	}
+
+	.books-app.is-inspecting {
+		.caption {
+			opacity: 0.16;
+			transform: translateX(-16px);
+			transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.book:not(.is-active) {
+			opacity: 0.54;
+			filter: saturate(0.78) brightness(0.86);
+			transform: translate3d(0, 8px, -18px) rotateY(-22deg) rotateZ(var(--book-lean)) scale(0.97);
+		}
+
+		.book.is-active {
+			transform: translate3d(14vw, -132px, 640px) rotateY(-0.5deg) rotateZ(0) scale(1.03);
+			animation: book-pull 680ms cubic-bezier(0.18, 0.88, 0.2, 1) both;
+			box-shadow:
+				inset 22px 0 28px rgba(255, 255, 255, 0.25),
+				inset -26px 0 28px rgba(23, 14, 8, 0.16),
+				18px 0 0 rgba(0, 0, 0, 0.2),
+				24px 0 0 rgba(255, 255, 255, 0.17),
+				-92px 30px 110px rgba(39, 23, 12, 0.2),
+				82px 76px 126px rgba(45, 27, 13, 0.46);
+		}
+	}
+
+	.books-app.is-returning {
+		.book-detail {
+			transition-delay: 0ms;
+		}
+
+		.book:not(.is-active) {
+			transition-duration: 620ms;
+		}
+
+		.book.is-active {
+			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0) scale(1);
+			animation: book-return 1120ms cubic-bezier(0.19, 1, 0.22, 1) both;
+			transition-duration: 1120ms;
+			transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 		}
 	}
 
@@ -670,18 +824,47 @@ const shelfBooks = books2026.map((book, index) => ({
 	.book.is-active .book-title {
 		align-self: flex-start;
 		width: 100%;
-		max-width: 100%;
+		max-width: calc(100% - 12px);
 		max-height: none;
-		margin-top: clamp(44px, 7vh, 86px);
+		margin-top: clamp(24px, 3vh, 42px);
 		font-family: "Iowan Old Style", Georgia, "Times New Roman", "Songti SC", serif;
-		font-size: clamp(1.86rem, 2.35vw, 3.2rem);
+		font-size: clamp(1.08rem, 1.22vw, 1.52rem);
 		font-weight: 560;
-		line-height: 1.02;
-		letter-spacing: -0.025em;
+		line-height: 1.2;
+		letter-spacing: 0;
 		text-align: left;
 		text-wrap: balance;
+		word-break: keep-all;
 		overflow-wrap: anywhere;
 		writing-mode: horizontal-tb;
+	}
+
+	@keyframes book-pull {
+		0% {
+			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0) scale(1);
+		}
+
+		44% {
+			transform: translate3d(14.4vw, -70px, 430px) rotateY(-2deg) rotateZ(0) scale(1.012);
+		}
+
+		100% {
+			transform: translate3d(14vw, -132px, 640px) rotateY(-0.5deg) rotateZ(0) scale(1.03);
+		}
+	}
+
+	@keyframes book-return {
+		0% {
+			transform: translate3d(14vw, -132px, 640px) rotateY(-0.5deg) rotateZ(0) scale(1.03);
+		}
+
+		52% {
+			transform: translate3d(14.2vw, -72px, 430px) rotateY(-1.8deg) rotateZ(0) scale(1.01);
+		}
+
+		100% {
+			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0) scale(1);
+		}
 	}
 
 	.book.is-active .book-mark {
@@ -809,7 +992,9 @@ const shelfBooks = books2026.map((book, index) => ({
 		opacity: 0;
 		pointer-events: none;
 		transform: translateY(12px);
-		transition: opacity 280ms ease, transform 280ms ease;
+		transition:
+			opacity 360ms ease 170ms,
+			transform 520ms cubic-bezier(0.22, 1, 0.36, 1) 170ms;
 
 		&.is-open {
 			opacity: 1;
