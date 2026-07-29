@@ -1,1000 +1,942 @@
 ---
-import BlogPostLayout from "../layouts/BlogPostLayout.astro";
-import SectionHeader from "../components/SectionHeader.astro";
 import { books2026, bookStats } from "../data/books";
-import { booksTdk, pageDescription, pageTag } from "../data/content";
+import { booksTdk } from "../data/content";
 
+const totalLabel = String(bookStats.total).padStart(2, "0");
 const shelfBooks = books2026.map((book, index) => ({
 	...book,
-	slug: `${String(book.no).padStart(2, '0')}-${book.title}`,
-	height: 260 + ((index * 41) % 92),
-	width: 58 + ((index * 17) % 30),
-	lean: ((index % 5) - 2) * 1.4,
+	height: 360 + ((index * 37) % 128),
+	width: 58 + ((index * 19) % 34),
+	lean: ((index % 7) - 3) * 0.7,
 }));
 ---
 
-<BlogPostLayout
-	title={booksTdk.title || ''}
-	description={booksTdk.description || ''}
-	keywords={booksTdk.keywords || ''}
->
-	<div class="post">
-		<main class="post-wrapper books-page">
-			<SectionHeader
-				tag={pageTag.books}
-				description={pageDescription.books}
-			>
-				我的书单
-			</SectionHeader>
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{booksTdk.title || "梁文韬的 2026 年书单"}</title>
+		<meta name="description" content={booksTdk.description || "梁文韬的 2026 年阅读书架。"} />
+	</head>
+	<body>
+		<main class="books-app" data-book-shelf>
+			<header class="topbar">
+				<a class="brand" href="/" aria-label="返回首页">
+					<span>WENTAO</span>
+					<i>/ reading shelf</i>
+				</a>
+				<div class="top-actions">
+					<span>{totalLabel} VOLUMES</span>
+					<a href="/">返回首页</a>
+				</div>
+			</header>
 
-			<section class="complete-shelf border-top" data-book-shelf>
-				<div class="shelf-summary" aria-label="2026 年阅读概览">
-					<div>
-						<span>YEAR</span>
-						<strong>{bookStats.year}</strong>
-					</div>
-					<div>
-						<span>BOOKS</span>
-						<strong>{bookStats.total}</strong>
-					</div>
-					<div>
-						<span>REREAD</span>
-						<strong>{bookStats.reread}</strong>
-					</div>
-					<div>
-						<span>NOTES</span>
-						<strong>{bookStats.notes}</strong>
-					</div>
+			<section class="shelf-stage" data-total={`${totalLabel} VOLUMES`}>
+				<div class="stage-header" aria-hidden="true">
+					<p>THE COMPLETE SHELF</p>
+					<i></i>
+					<p>AN INTERACTIVE 3D LIBRARY</p>
+				</div>
+				<div class="edition-mark" aria-hidden="true">
+					<span>{totalLabel} VOLUMES</span>
+					<span>01 CONTINUOUS SHELF</span>
 				</div>
 
-				<div class="shelf-shell" data-total={`${bookStats.total} VOLUMES`}>
-					<button type="button" class="shelf-nav shelf-nav-prev" aria-label="上一册">←</button>
-					<button type="button" class="shelf-nav shelf-nav-next" aria-label="下一册">→</button>
-					<div class="shelf-viewport" aria-label={`2026 年书架，共 ${bookStats.total} 本书`}>
-						<div class="shelf-floor" aria-hidden="true"></div>
-						<div class="shelf-track">
-							{shelfBooks.map((book) => (
-								<button
-									type="button"
-									class:list={['shelf-book', `tone-${book.tone}`]}
-									data-book-index={book.no - 1}
-									style={`--book-h:${book.height}px;--book-w:${book.width}px;--book-lean:${book.lean}deg;`}
-									aria-label={`查看 ${book.title}`}
-								>
-									<span class="book-spine-top">#{String(book.no).padStart(2, '0')}</span>
-									<span class="book-spine-title">{book.title}</span>
-									{book.mark && <span class="book-spine-mark">{book.mark}</span>}
-								</button>
-							))}
-						</div>
-					</div>
+				<section class="caption" aria-live="polite">
+					<p class="count">
+						<span data-active-count>01</span>
+						<i></i>
+						<span>{totalLabel}</span>
+					</p>
+					<h1 data-active-title>{shelfBooks[0]?.title}</h1>
+					<p class="author" data-active-mark>{shelfBooks[0]?.mark || "Liang Wentao"}</p>
+					<p class="note" data-active-note>{shelfBooks[0]?.note}</p>
+					<button type="button" class="inspect-book">INSPECT VOLUME <span>↗</span></button>
+				</section>
 
-					<div class="shelf-caption" aria-live="polite">
-						<p class="shelf-count">
-							<span data-active-count>01</span>
-							<i></i>
-							<span>{String(bookStats.total).padStart(2, '0')}</span>
-						</p>
-						<h2 data-active-title>{shelfBooks[0]?.title}</h2>
-						<p data-active-note>{shelfBooks[0]?.note}</p>
-						<div class="shelf-actions">
-							<button type="button" class="inspect-book">抽出这本</button>
-						</div>
-						<p class="shelf-hint">拖拽 · 滚轮 · 方向键浏览，点击书脊查看</p>
+				<button type="button" class="shelf-arrow shelf-arrow--left" aria-label="上一册">←</button>
+				<button type="button" class="shelf-arrow shelf-arrow--right" aria-label="下一册">→</button>
+
+				<div class="shelf-scene" aria-label={`2026 年书架，共 ${bookStats.total} 本书`}>
+					<div class="book-track">
+						{shelfBooks.map((book) => (
+							<button
+								type="button"
+								class:list={["book", `tone-${book.tone}`]}
+								data-book-index={book.no - 1}
+								style={`--book-h:${book.height}px;--book-w:${book.width}px;--book-lean:${book.lean}deg;`}
+								aria-label={`查看 ${book.title}`}
+							>
+								<span class="book-top">#{String(book.no).padStart(2, "0")}</span>
+								<span class="book-title">{book.title}</span>
+								<span class="book-mark">{book.mark || "2026"}</span>
+							</button>
+						))}
 					</div>
+					<div class="shelf-board" aria-hidden="true"></div>
 				</div>
 
 				<nav class="shelf-index" aria-label="书架位置">
-					{shelfBooks.map((book) => (
-						<button
-							type="button"
-							data-dot-index={book.no - 1}
-							aria-label={`跳转到 ${book.title}`}
-							aria-current={book.no === 1 ? 'true' : undefined}
-						>
-							<span></span>
-						</button>
-					))}
+					<div class="ticks">
+						{shelfBooks.map((book) => (
+							<button
+								type="button"
+								data-dot-index={book.no - 1}
+								aria-label={`跳转到 ${book.title}`}
+								aria-current={book.no === 1 ? "true" : undefined}
+							>
+								<span></span>
+							</button>
+						))}
+					</div>
+					<p>DRAG · SCROLL · ARROW KEYS</p>
 				</nav>
 
 				<aside class="book-detail" aria-hidden="true">
-					<div class="detail-backdrop" data-close-detail></div>
-					<article class="detail-card" role="dialog" aria-modal="true" aria-label="书籍详情" tabindex="-1">
-						<button type="button" class="detail-close" data-close-detail>返回书架</button>
-						<div class="detail-cover" data-detail-cover>
-							<div class="detail-cover-top">
-								<span>2026 READING</span>
-								<span data-detail-no>01</span>
-							</div>
-							<h2 data-detail-cover-title>{shelfBooks[0]?.title}</h2>
-							<div class="detail-cover-bottom">
-								<span>LIANG WENTAO</span>
-								<span>BOOK LIST</span>
-							</div>
-						</div>
-						<div class="detail-copy">
-							<p class="detail-kicker">SELECTED VOLUME</p>
-							<h3 data-detail-title>{shelfBooks[0]?.title}</h3>
-							<p class="detail-mark" data-detail-mark>{shelfBooks[0]?.mark}</p>
-							<p class="detail-note" data-detail-note>{shelfBooks[0]?.note}</p>
-							<dl>
-								<div>
-									<dt>编号</dt>
-									<dd data-detail-index>01 / {String(bookStats.total).padStart(2, '0')}</dd>
-								</div>
-								<div>
-									<dt>状态</dt>
-									<dd>2026 书单记录</dd>
-								</div>
-							</dl>
-						</div>
-					</article>
+					<button type="button" class="detail-close">← BACK TO SHELF</button>
+					<div class="detail-cover" data-detail-cover>
+						<p>2026 READING</p>
+						<h2 data-detail-cover-title>{shelfBooks[0]?.title}</h2>
+						<span data-detail-no>01</span>
+					</div>
+					<div class="detail-copy">
+						<p class="detail-kicker">SELECTED VOLUME</p>
+						<h3 data-detail-title>{shelfBooks[0]?.title}</h3>
+						<p data-detail-mark>{shelfBooks[0]?.mark || "Liang Wentao"}</p>
+						<p data-detail-note>{shelfBooks[0]?.note}</p>
+					</div>
 				</aside>
 			</section>
 		</main>
-	</div>
-</BlogPostLayout>
 
-<script is:inline type="application/json" id="books-shelf-data" set:html={JSON.stringify(shelfBooks)} />
+		<script is:inline type="application/json" id="books-shelf-data" set:html={JSON.stringify(shelfBooks)} />
+		<script is:inline>
+			const root = document.querySelector("[data-book-shelf]");
+			const dataNode = document.getElementById("books-shelf-data");
 
-<script is:inline>
-	const root = document.querySelector('[data-book-shelf]');
-	const dataNode = document.getElementById('books-shelf-data');
+			if (root && dataNode?.textContent) {
+				const books = JSON.parse(dataNode.textContent);
+				const track = root.querySelector(".book-track");
+				const scene = root.querySelector(".shelf-scene");
+				const booksEl = Array.from(root.querySelectorAll(".book"));
+				const dots = Array.from(root.querySelectorAll("[data-dot-index]"));
+				const prev = root.querySelector(".shelf-arrow--left");
+				const next = root.querySelector(".shelf-arrow--right");
+				const inspect = root.querySelector(".inspect-book");
+				const detail = root.querySelector(".book-detail");
+				const detailClose = root.querySelector(".detail-close");
+				const activeCount = root.querySelector("[data-active-count]");
+				const activeTitle = root.querySelector("[data-active-title]");
+				const activeMark = root.querySelector("[data-active-mark]");
+				const activeNote = root.querySelector("[data-active-note]");
+				const detailCover = root.querySelector("[data-detail-cover]");
+				const detailNo = root.querySelector("[data-detail-no]");
+				const detailCoverTitle = root.querySelector("[data-detail-cover-title]");
+				const detailTitle = root.querySelector("[data-detail-title]");
+				const detailMark = root.querySelector("[data-detail-mark]");
+				const detailNote = root.querySelector("[data-detail-note]");
+				let active = 0;
+				let dragStart = 0;
+				let dragDelta = 0;
+				let dragging = false;
 
-	if (root && dataNode?.textContent) {
-		const books = JSON.parse(dataNode.textContent);
-		const track = root.querySelector('.shelf-track');
-		const viewport = root.querySelector('.shelf-viewport');
-		const bookButtons = Array.from(root.querySelectorAll('.shelf-book'));
-		const dots = Array.from(root.querySelectorAll('[data-dot-index]'));
-		const prevButton = root.querySelector('.shelf-nav-prev');
-		const nextButton = root.querySelector('.shelf-nav-next');
-		const inspectButton = root.querySelector('.inspect-book');
-		const detail = root.querySelector('.book-detail');
-		const detailCard = root.querySelector('.detail-card');
-		const closeButtons = root.querySelectorAll('[data-close-detail]');
-		const activeCount = root.querySelector('[data-active-count]');
-		const activeTitle = root.querySelector('[data-active-title]');
-		const activeNote = root.querySelector('[data-active-note]');
-		let active = 0;
-		let dragStart = 0;
-		let dragDelta = 0;
-		let isDragging = false;
+				const pad = (n) => String(n).padStart(2, "0");
 
-		const selectors = {
-			detailNo: root.querySelector('[data-detail-no]'),
-			detailCoverTitle: root.querySelector('[data-detail-cover-title]'),
-			detailTitle: root.querySelector('[data-detail-title]'),
-			detailMark: root.querySelector('[data-detail-mark]'),
-			detailNote: root.querySelector('[data-detail-note]'),
-			detailIndex: root.querySelector('[data-detail-index]'),
-			detailCover: root.querySelector('[data-detail-cover]'),
-		};
+				function updateDetail(book) {
+					detailCover.className = `detail-cover tone-${book.tone}`;
+					detailNo.textContent = pad(book.no);
+					detailCoverTitle.textContent = book.title;
+					detailTitle.textContent = book.title;
+					detailMark.textContent = book.mark || "Liang Wentao";
+					detailNote.textContent = book.note || "待读完后补一条短想法。";
+				}
 
-		function two(value) {
-			return String(value).padStart(2, '0');
-		}
+				function setActive(nextIndex) {
+					active = Math.max(0, Math.min(books.length - 1, nextIndex));
+					const book = books[active];
+					activeCount.textContent = pad(book.no);
+					activeTitle.textContent = book.title;
+					activeMark.textContent = book.mark || "Liang Wentao";
+					activeNote.textContent = book.note || "待读完后补一条短想法。";
+					updateDetail(book);
 
-		function setActive(next) {
-			active = Math.max(0, Math.min(books.length - 1, next));
-			const book = books[active];
-			activeCount.textContent = two(book.no);
-			activeTitle.textContent = book.title;
-			activeNote.textContent = book.note || '待读完后补一条短想法。';
+					booksEl.forEach((item, index) => {
+						item.classList.toggle("is-active", index === active);
+						item.setAttribute("aria-current", index === active ? "true" : "false");
+					});
+					dots.forEach((dot, index) => {
+						dot.classList.toggle("is-active", index === active);
+						dot.setAttribute("aria-current", index === active ? "true" : "false");
+					});
+					prev.disabled = active === 0;
+					next.disabled = active === books.length - 1;
 
-			bookButtons.forEach((button, index) => {
-				button.classList.toggle('is-active', index === active);
-				button.setAttribute('aria-current', index === active ? 'true' : 'false');
-			});
-			dots.forEach((dot, index) => {
-				dot.classList.toggle('is-active', index === active);
-				dot.setAttribute('aria-current', index === active ? 'true' : 'false');
-			});
-			prevButton.disabled = active === 0;
-			nextButton.disabled = active === books.length - 1;
-			updateDetail(book);
+					requestAnimationFrame(() => {
+						const activeBook = booksEl[active];
+						if (!activeBook || !scene || !track) return;
+						const sceneWidth = scene.clientWidth;
+						const maxOffset = Math.max(0, track.scrollWidth - sceneWidth);
+						const centerTarget = activeBook.offsetLeft - sceneWidth * 0.32;
+						const offset = Math.max(0, Math.min(maxOffset, centerTarget));
+						track.style.setProperty("--x", `${offset}px`);
+					});
+				}
 
-			requestAnimationFrame(() => {
-				const activeButton = bookButtons[active];
-				const maxOffset = Math.max(0, (track?.scrollWidth || 0) - (viewport?.clientWidth || 0));
-				const rawOffset = activeButton
-					? activeButton.offsetLeft - ((viewport?.clientWidth || 0) - activeButton.offsetWidth) / 2
-					: active * 78;
-				const offset = Math.max(0, Math.min(maxOffset, rawOffset));
-				track?.style.setProperty('--shelf-x', `${offset}px`);
-			});
-		}
+				function openDetail() {
+					detail.classList.add("is-open");
+					detail.setAttribute("aria-hidden", "false");
+				}
 
-		function updateDetail(book) {
-			selectors.detailNo.textContent = two(book.no);
-			selectors.detailCoverTitle.textContent = book.title;
-			selectors.detailTitle.textContent = book.title;
-			selectors.detailMark.textContent = book.mark || '梁文韬 2026 阅读记录';
-			selectors.detailNote.textContent = book.note || '待读完后补一条短想法。';
-			selectors.detailIndex.textContent = `${two(book.no)} / ${two(books.length)}`;
-			selectors.detailCover.className = `detail-cover tone-${book.tone}`;
-		}
+				function closeDetail() {
+					detail.classList.remove("is-open");
+					detail.setAttribute("aria-hidden", "true");
+				}
 
-		function openDetail(index = active) {
-			setActive(index);
-			detail?.classList.add('is-open');
-			detail?.setAttribute('aria-hidden', 'false');
-			document.documentElement.classList.add('is-book-detail-open');
-			window.setTimeout(() => detailCard?.focus?.(), 80);
-		}
+				prev.addEventListener("click", () => setActive(active - 1));
+				next.addEventListener("click", () => setActive(active + 1));
+				inspect.addEventListener("click", openDetail);
+				detailClose.addEventListener("click", closeDetail);
 
-		function closeDetail() {
-			detail?.classList.remove('is-open');
-			detail?.setAttribute('aria-hidden', 'true');
-			document.documentElement.classList.remove('is-book-detail-open');
-		}
+				booksEl.forEach((item, index) => {
+					item.addEventListener("mouseenter", () => setActive(index));
+					item.addEventListener("click", () => {
+						setActive(index);
+						openDetail();
+					});
+				});
 
-		prevButton?.addEventListener('click', () => setActive(active - 1));
-		nextButton?.addEventListener('click', () => setActive(active + 1));
-		inspectButton?.addEventListener('click', () => openDetail(active));
-		closeButtons.forEach((button) => button.addEventListener('click', closeDetail));
+				dots.forEach((dot) => dot.addEventListener("click", () => setActive(Number(dot.dataset.dotIndex))));
 
-		bookButtons.forEach((button, index) => {
-			button.addEventListener('click', () => openDetail(index));
-			button.addEventListener('mouseenter', () => setActive(index));
-		});
+				root.addEventListener("wheel", (event) => {
+					if (detail.classList.contains("is-open")) return;
+					event.preventDefault();
+					const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+					setActive(active + (delta > 0 ? 1 : -1));
+				}, { passive: false });
 
-		dots.forEach((dot) => {
-			dot.addEventListener('click', () => setActive(Number(dot.dataset.dotIndex)));
-		});
+				root.addEventListener("pointerdown", (event) => {
+					if (event.target.closest(".book-detail")) return;
+					dragging = true;
+					dragStart = event.clientX;
+					dragDelta = 0;
+					root.classList.add("is-dragging");
+				});
+				window.addEventListener("pointermove", (event) => {
+					if (!dragging) return;
+					dragDelta = event.clientX - dragStart;
+				});
+				window.addEventListener("pointerup", () => {
+					if (!dragging) return;
+					dragging = false;
+					root.classList.remove("is-dragging");
+					if (Math.abs(dragDelta) > 36) setActive(active + (dragDelta < 0 ? 1 : -1));
+				});
+				window.addEventListener("keydown", (event) => {
+					if (event.key === "Escape") closeDetail();
+					if (detail.classList.contains("is-open")) return;
+					if (event.key === "ArrowLeft") setActive(active - 1);
+					if (event.key === "ArrowRight") setActive(active + 1);
+				});
 
-		root.addEventListener('wheel', (event) => {
-			if (detail?.classList.contains('is-open')) return;
-			event.preventDefault();
-			const direction = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-			setActive(active + (direction > 0 ? 1 : -1));
-		}, { passive: false });
-
-		root.addEventListener('pointerdown', (event) => {
-			if (detail?.classList.contains('is-open') || event.target.closest('.book-detail')) return;
-			isDragging = true;
-			dragStart = event.clientX;
-			dragDelta = 0;
-			root.classList.add('is-dragging');
-		});
-
-		window.addEventListener('pointermove', (event) => {
-			if (!isDragging) return;
-			dragDelta = event.clientX - dragStart;
-		});
-
-		window.addEventListener('pointerup', () => {
-			if (!isDragging) return;
-			root.classList.remove('is-dragging');
-			isDragging = false;
-			if (Math.abs(dragDelta) > 46) {
-				setActive(active + (dragDelta < 0 ? 1 : -1));
+				window.addEventListener("resize", () => setActive(active));
+				setActive(0);
+				window.setTimeout(() => root.classList.add("is-ready"), 80);
 			}
-		});
-
-		window.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') {
-				closeDetail();
-				return;
-			}
-			if (detail?.classList.contains('is-open')) return;
-			if (event.key === 'ArrowLeft') setActive(active - 1);
-			if (event.key === 'ArrowRight') setActive(active + 1);
-			if (event.key === 'Enter') openDetail(active);
-		});
-
-		setActive(0);
-	}
-</script>
+		</script>
+	</body>
+</html>
 
 <style lang="scss">
-	.books-page {
-		display: flex;
-		flex-direction: column;
-		width: min(1480px, calc(100vw - 48px));
-		max-width: none;
-		margin-left: calc((100% - min(1480px, calc(100vw - 48px))) / 2);
+	:global(*) {
+		box-sizing: border-box;
 	}
 
-	.complete-shelf {
-		margin-top: clamp(28px, 4vw, 54px);
-		padding: 8px;
-		border-radius: 18px;
-		background: #1f1f1f;
-		box-shadow: 0 34px 120px rgba(20, 18, 15, 0.16);
-	}
-
-	.complete-shelf.border-top {
-		border-top: 0 !important;
-	}
-
-	.shelf-summary {
-		display: none;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 1px;
-		width: min(980px, 100%);
-		margin: 0 auto clamp(28px, 4vw, 54px);
-		overflow: hidden;
-		border: 1px solid var(--border);
-		border-radius: 8px;
-		background: var(--border);
-
-		div {
-			min-height: 92px;
-			padding: 20px 24px;
-			background: rgba(255, 255, 255, 0.72);
-		}
-
-		span {
-			color: var(--color-400);
-			font-family: var(--font-type);
-			font-size: 0.74rem;
-		}
-
-		strong {
-			display: block;
-			margin-top: 12px;
-			color: var(--color-100);
-			font-family: var(--font-type);
-			font-size: 2rem;
-			line-height: 1;
-		}
-	}
-
-	.shelf-shell {
-		position: relative;
-		display: block;
-		height: min(790px, calc(100vh - 170px));
-		min-height: 680px;
-		overflow: hidden;
-		border: 1px solid rgba(37, 35, 31, 0.18);
-		border-radius: 14px;
-		background:
-			radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.4), transparent 44%),
-			linear-gradient(180deg, rgba(247, 242, 232, 0.92), rgba(226, 217, 202, 0.92));
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
-
-		&::before {
-			content: "THE COMPLETE SHELF  ——  AN INTERACTIVE 3D LIBRARY";
-			position: absolute;
-			z-index: 4;
-			top: 30px;
-			left: clamp(24px, 3.6vw, 58px);
-			color: rgba(37, 35, 31, 0.74);
-			font-family: var(--font-type);
-			font-size: 0.72rem;
-			font-weight: 700;
-			letter-spacing: 0.22em;
-		}
-
-		&::after {
-			content: attr(data-total) "\A 01 CONTINUOUS SHELF";
-			position: absolute;
-			z-index: 4;
-			top: 30px;
-			right: clamp(24px, 3.6vw, 58px);
-			color: rgba(37, 35, 31, 0.54);
-			font-family: var(--font-type);
-			font-size: 0.66rem;
-			font-weight: 700;
-			letter-spacing: 0.2em;
-			line-height: 1.5;
-			text-align: right;
-			white-space: pre;
-		}
-	}
-
-	.shelf-viewport {
-		position: absolute;
-		z-index: 2;
-		inset: 72px 0 70px 30%;
-		display: flex;
-		align-items: flex-end;
-		min-height: 0;
+	:global(html),
+	:global(body) {
+		width: 100%;
+		height: 100%;
 		margin: 0;
 		overflow: hidden;
-		perspective: 1200px;
-		cursor: grab;
-		touch-action: none;
-		mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
+		background: #1f1f1f;
+	}
 
-		.is-dragging & {
-			cursor: grabbing;
+	:global(body) {
+		font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		color: #24211d;
+	}
+
+	button,
+	a {
+		font: inherit;
+	}
+
+	button {
+		cursor: pointer;
+		border: 0;
+		background: none;
+	}
+
+	.books-app {
+		position: relative;
+		width: 100vw;
+		height: 100dvh;
+		overflow: hidden;
+		padding: 12px;
+		background: #1f1f1f;
+		opacity: 0;
+		transition: opacity 420ms ease;
+
+		&.is-ready {
+			opacity: 1;
 		}
 	}
 
-	.shelf-floor {
-		position: absolute;
-		right: -4%;
-		bottom: 48px;
-		left: -44%;
-		height: 96px;
-		border-radius: 0;
-		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(53, 34, 18, 0.2) 42%, rgba(45, 26, 14, 0.42)),
-			#9a714e;
-		box-shadow:
-			0 22px 40px rgba(58, 39, 21, 0.24),
-			inset 0 2px 0 rgba(255, 255, 255, 0.44),
-			inset 0 -18px 24px rgba(35, 22, 12, 0.28);
-		transform: perspective(500px) rotateX(18deg);
-		transform-origin: top center;
-	}
-
-	.shelf-track {
-		--shelf-x: 0px;
-		position: relative;
-		z-index: 1;
+	.topbar {
+		height: 54px;
 		display: flex;
-		align-items: flex-end;
-		gap: 8px;
-		min-width: max-content;
-		height: 100%;
-		padding: 0 62vw 96px 16vw;
-		transform: translate3d(calc(0px - var(--shelf-x)), 0, 0) rotateX(0.01deg);
-		transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
-		transform-style: preserve-3d;
-	}
-
-	.shelf-book {
-		position: relative;
-		display: flex;
-		flex-direction: column;
+		align-items: center;
 		justify-content: space-between;
-		width: var(--book-w);
-		height: var(--book-h);
-		padding: 16px 10px 15px;
-		border: 1px solid rgba(0, 0, 0, 0.18);
-		border-radius: 3px 9px 9px 3px;
-		color: #171717;
-		background: #eee5d6;
+		color: rgba(255, 255, 255, 0.72);
+		padding: 0 8px 10px;
+	}
+
+	.brand {
+		display: inline-flex;
+		gap: 8px;
+		align-items: baseline;
+		color: inherit;
+		text-decoration: none;
+		font-weight: 800;
+		letter-spacing: -0.03em;
+
+		span {
+			font-size: 1.25rem;
+		}
+
+		i {
+			font-style: normal;
+			color: rgba(255, 255, 255, 0.42);
+			font-size: 0.88rem;
+		}
+	}
+
+	.top-actions {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		font-size: 0.74rem;
+		font-weight: 800;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+
+		a {
+			padding: 11px 18px;
+			border-radius: 999px;
+			background: #caff2f;
+			color: #101010;
+			text-decoration: none;
+			letter-spacing: 0;
+			text-transform: none;
+		}
+	}
+
+	.shelf-stage {
+		position: relative;
+		height: calc(100dvh - 78px);
+		overflow: hidden;
+		border-radius: 18px;
+		background:
+			radial-gradient(circle at 51% 45%, rgba(255, 255, 255, 0.84), transparent 42%),
+			linear-gradient(180deg, rgba(250, 246, 237, 0.96), rgba(231, 224, 211, 0.98)),
+			#efe7da;
 		box-shadow:
-			inset 12px 0 18px rgba(255, 255, 255, 0.22),
-			inset -12px 0 16px rgba(47, 31, 17, 0.08),
-			10px 0 0 rgba(0, 0, 0, 0.14),
-			20px 28px 34px rgba(35, 24, 12, 0.2);
-		transform:
-			translateZ(0)
-			rotateY(-20deg)
-			rotateZ(var(--book-lean));
-		transform-origin: bottom center;
-		transition:
-			width 520ms cubic-bezier(0.22, 1, 0.36, 1),
-			height 520ms cubic-bezier(0.22, 1, 0.36, 1),
-			padding 520ms cubic-bezier(0.22, 1, 0.36, 1),
-			border-radius 520ms cubic-bezier(0.22, 1, 0.36, 1),
-			transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-			filter 260ms ease,
-			box-shadow 260ms ease;
+			inset 0 0 0 1px rgba(48, 39, 30, 0.18),
+			0 28px 90px rgba(0, 0, 0, 0.32);
 
 		&::before {
 			content: "";
 			position: absolute;
-			top: 10px;
-			bottom: 10px;
-			left: 8px;
-			width: 2px;
-			border-radius: 999px;
-			background: rgba(255, 255, 255, 0.46);
-		}
-
-		&::after {
-			content: "";
-			position: absolute;
-			top: 8px;
-			right: -9px;
-			bottom: 6px;
-			width: 10px;
-			border-radius: 0 7px 7px 0;
-			background:
-				repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0 1px, rgba(0, 0, 0, 0.08) 1px 2px),
-				linear-gradient(90deg, rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.18)),
-				inherit;
+			inset: 0;
+			opacity: 0.18;
+			background-image: radial-gradient(rgba(44, 40, 35, 0.32) 0.7px, transparent 0.8px);
+			background-size: 10px 10px;
 			pointer-events: none;
-			transform: skewY(3deg);
-		}
-
-		&:hover {
-			z-index: 5;
-			filter: saturate(1.08);
-			box-shadow:
-				inset 12px 0 18px rgba(255, 255, 255, 0.24),
-				inset -12px 0 16px rgba(47, 31, 17, 0.09),
-				12px 0 0 rgba(0, 0, 0, 0.15),
-				24px 32px 54px rgba(35, 24, 12, 0.26);
-			transform:
-				translate3d(0, -38px, 112px)
-				rotateY(-26deg)
-				rotateZ(0deg);
-		}
-
-		&.is-active {
-			z-index: 8;
-			width: clamp(320px, 25vw, 440px);
-			height: clamp(480px, 58vh, 620px);
-			padding: clamp(28px, 3vw, 42px);
-			border-radius: 4px 12px 12px 4px;
-			filter: saturate(1.04);
-			box-shadow:
-				inset 16px 0 22px rgba(255, 255, 255, 0.24),
-				inset -18px 0 22px rgba(47, 31, 17, 0.1),
-				14px 0 0 rgba(0, 0, 0, 0.16),
-				34px 42px 80px rgba(35, 24, 12, 0.3);
-			transform:
-				translate3d(0, -50px, 150px)
-				rotateY(-13deg)
-				rotateZ(0deg);
 		}
 	}
 
-	.book-spine-top,
-	.book-spine-mark {
-		position: relative;
-		z-index: 1;
-		color: rgba(0, 0, 0, 0.58);
-		font-family: var(--font-type);
-		font-size: 0.68rem;
-		line-height: 1;
-		writing-mode: vertical-rl;
-	}
-
-	.book-spine-title {
-		position: relative;
-		z-index: 1;
-		align-self: center;
-		max-height: 180px;
-		color: rgba(0, 0, 0, 0.86);
-		font-family: 'Huiwen-mincho', var(--font-body);
-		font-size: 1.08rem;
-		font-weight: 700;
-		line-height: 1.1;
-		letter-spacing: 0;
-		writing-mode: vertical-rl;
-	}
-
-	.shelf-book.is-active {
-		.book-spine-top,
-		.book-spine-mark {
-			writing-mode: horizontal-tb;
-		}
-
-		.book-spine-top {
-			letter-spacing: 0.18em;
-		}
-
-		.book-spine-title {
-			align-self: flex-start;
-			max-width: 7em;
-			max-height: none;
-			margin-top: clamp(20px, 4vh, 52px);
-			font-family: "Iowan Old Style", Georgia, "Songti SC", serif;
-			font-size: clamp(2.4rem, 3.6vw, 4.7rem);
-			font-weight: 650;
-			line-height: 0.92;
-			letter-spacing: -0.02em;
-			text-align: left;
-			writing-mode: horizontal-tb;
-		}
-
-		.book-spine-mark {
-			margin-top: auto;
-			letter-spacing: 0.14em;
-		}
-	}
-
-	.shelf-caption {
+	.stage-header,
+	.edition-mark {
 		position: absolute;
-		z-index: 6;
-		bottom: clamp(142px, 20vh, 214px);
-		left: clamp(30px, 5vw, 88px);
+		z-index: 5;
+		top: 34px;
 		display: flex;
+		align-items: center;
+		gap: 18px;
+		color: rgba(34, 30, 26, 0.72);
+		font-size: 0.72rem;
+		font-weight: 850;
+		letter-spacing: 0.22em;
+	}
+
+	.stage-header {
+		left: clamp(32px, 4vw, 72px);
+	}
+
+	.stage-header i {
+		width: 42px;
+		height: 1px;
+		background: rgba(34, 30, 26, 0.36);
+	}
+
+	.edition-mark {
+		right: clamp(32px, 4vw, 72px);
 		flex-direction: column;
-		justify-content: center;
-		width: min(430px, 35vw);
-		min-width: 0;
-		padding: 0;
+		align-items: flex-end;
+		gap: 2px;
+		color: rgba(34, 30, 26, 0.48);
+		font-size: 0.68rem;
+	}
+
+	.caption {
+		position: absolute;
+		z-index: 8;
+		left: clamp(44px, 5.6vw, 118px);
+		bottom: clamp(150px, 18vh, 210px);
+		width: min(470px, 34vw);
 		pointer-events: none;
 
 		&::before {
 			content: "";
 			position: absolute;
 			z-index: -1;
-			inset: -42px -80px -36px -90px;
-			background: linear-gradient(90deg, rgba(238, 232, 219, 0.96), rgba(238, 232, 219, 0.72) 62%, rgba(238, 232, 219, 0));
-		}
-
-		h2 {
-			margin: 0;
-			color: #25231f;
-			font-family: "Iowan Old Style", Georgia, "Songti SC", serif;
-			font-size: clamp(3.2rem, 5.3vw, 6.2rem);
-			font-weight: 540;
-			line-height: 0.92;
-			letter-spacing: -0.03em;
-			overflow-wrap: anywhere;
-		}
-
-		p {
-			max-width: 620px;
-			margin: 26px 0 0;
-			color: var(--color-300);
-			font-size: 1rem;
-			line-height: 1.75;
+			inset: -54px -118px -44px -70px;
+			background: linear-gradient(90deg, rgba(240, 233, 220, 0.98), rgba(240, 233, 220, 0.74) 64%, transparent);
+			filter: blur(0.2px);
 		}
 	}
 
-	.shelf-count {
+	.count {
 		display: flex;
-		gap: 12px;
 		align-items: center;
-		margin-bottom: 16px !important;
-		color: var(--color-400) !important;
-		font-family: var(--font-type);
-		font-size: 0.82rem !important;
-		line-height: 1 !important;
+		gap: 13px;
+		margin: 0 0 18px;
+		color: rgba(34, 30, 26, 0.54);
+		font-family: "Courier New", monospace;
+		font-size: 0.78rem;
+		font-weight: 700;
 
 		i {
-			width: 48px;
+			width: 56px;
 			height: 1px;
-			background: var(--color-600);
+			background: rgba(34, 30, 26, 0.32);
 		}
 	}
 
-	.shelf-actions {
-		display: flex;
-		gap: 10px;
-		align-items: center;
-		margin-top: 28px;
-		pointer-events: auto;
+	.caption h1 {
+		margin: 0;
+		color: #201d19;
+		font-family: "Iowan Old Style", Georgia, "Times New Roman", "Songti SC", serif;
+		font-size: clamp(4.3rem, 6vw, 7.6rem);
+		font-weight: 520;
+		line-height: 0.86;
+		letter-spacing: -0.05em;
+		text-wrap: balance;
 	}
 
-	.shelf-nav,
-	.inspect-book,
-	.detail-close {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 44px;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		background: rgba(255, 255, 255, 0.74);
-		color: var(--color-100);
-		font-weight: 700;
-		transition:
-			transform 180ms ease,
-			background 180ms ease,
-			border-color 180ms ease;
-
-		&:hover {
-			transform: translateY(-2px);
-			border-color: var(--color-100);
-			background: #fff;
-		}
+	.author {
+		margin: 24px 0 0;
+		color: rgba(34, 30, 26, 0.72);
+		font-family: "Iowan Old Style", Georgia, serif;
+		font-size: 1.05rem;
+		font-style: italic;
 	}
 
-	.shelf-nav {
-		position: absolute;
-		top: calc(50% - 16px);
-		width: 44px;
-		height: 44px;
-		padding: 0;
-		font-size: 1.2rem;
-		background: rgba(238, 232, 219, 0.68);
-		box-shadow: 0 14px 34px rgba(35, 24, 12, 0.12);
-
-		&:hover {
-			transform: translateY(-2px) scale(1.04);
-		}
-	}
-
-	.shelf-nav-prev {
-		left: clamp(26px, 4vw, 70px);
-	}
-
-	.shelf-nav-next {
-		right: clamp(26px, 4vw, 70px);
+	.note {
+		max-width: 31em;
+		margin: 24px 0 0;
+		color: rgba(34, 30, 26, 0.62);
+		font-size: 1rem;
+		line-height: 1.85;
 	}
 
 	.inspect-book {
-		min-height: 0;
-		padding: 0 0 8px;
-		border: 0;
-		border-bottom: 1px solid currentColor;
-		border-radius: 0;
-		background: transparent;
-		color: #25231f;
-		font-family: var(--font-type);
-		font-size: 0.76rem;
+		position: relative;
+		margin-top: 34px;
+		padding: 0 0 12px;
+		pointer-events: auto;
+		color: #171512;
+		font-size: 0.78rem;
+		font-weight: 900;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
 
 		&::after {
-			content: "↗";
-			margin-left: 18px;
-			font-size: 1rem;
-			transition: transform 180ms ease;
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 1px;
+			background: currentColor;
+			transition: transform 220ms ease;
+			transform-origin: left;
+		}
+
+		&:hover::after {
+			transform: scaleX(0.72);
+		}
+	}
+
+	.shelf-scene {
+		position: absolute;
+		z-index: 4;
+		inset: 96px 0 88px 34%;
+		overflow: hidden;
+		perspective: 1400px;
+		cursor: grab;
+		mask-image: linear-gradient(90deg, transparent, #000 4%, #000 97%, transparent);
+
+		.is-dragging & {
+			cursor: grabbing;
+		}
+	}
+
+	.book-track {
+		--x: 0px;
+		position: absolute;
+		left: 0;
+		right: auto;
+		bottom: 122px;
+		display: flex;
+		align-items: flex-end;
+		gap: 8px;
+		width: max-content;
+		padding: 0 64vw 0 19vw;
+		transform: translate3d(calc(0px - var(--x)), 0, 0);
+		transition: transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+		transform-style: preserve-3d;
+	}
+
+	.shelf-board {
+		position: absolute;
+		right: -6%;
+		bottom: 72px;
+		left: -48%;
+		height: 112px;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(88, 56, 30, 0.26) 38%, rgba(42, 25, 13, 0.58)),
+			#9b7151;
+		box-shadow:
+			0 28px 54px rgba(51, 31, 17, 0.32),
+			inset 0 3px 0 rgba(255, 255, 255, 0.46),
+			inset 0 -22px 28px rgba(31, 18, 10, 0.34);
+		transform: perspective(620px) rotateX(18deg);
+		transform-origin: top center;
+	}
+
+	.book {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: var(--book-w);
+		height: var(--book-h);
+		padding: 18px 9px 16px;
+		border: 1px solid rgba(13, 10, 7, 0.22);
+		border-radius: 3px 9px 9px 3px;
+		color: #191510;
+		background:
+			linear-gradient(90deg, rgba(0, 0, 0, 0.14), transparent 17%, rgba(255, 255, 255, 0.36) 54%, rgba(0, 0, 0, 0.12)),
+			var(--cover, #eadfc9);
+		box-shadow:
+			inset 11px 0 15px rgba(255, 255, 255, 0.26),
+			inset -10px 0 14px rgba(23, 14, 8, 0.14),
+			8px 0 0 rgba(0, 0, 0, 0.17),
+			18px 28px 38px rgba(45, 27, 13, 0.23);
+		transform: translateZ(0) rotateY(-18deg) rotateZ(var(--book-lean));
+		transform-origin: bottom center;
+		transition:
+			width 680ms cubic-bezier(0.22, 1, 0.36, 1),
+			height 680ms cubic-bezier(0.22, 1, 0.36, 1),
+			padding 680ms cubic-bezier(0.22, 1, 0.36, 1),
+			border-radius 680ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+			box-shadow 360ms ease,
+			filter 300ms ease;
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 11px;
+			border: 1px solid rgba(255, 255, 255, 0.33);
+			border-left-color: rgba(0, 0, 0, 0.14);
+			border-radius: inherit;
+			pointer-events: none;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 8px;
+			right: -10px;
+			bottom: 6px;
+			width: 10px;
+			border-radius: 0 8px 8px 0;
+			background:
+				repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 1px, rgba(0, 0, 0, 0.08) 1px 2px),
+				linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(255, 255, 255, 0.18)),
+				var(--cover, #eadfc9);
+			pointer-events: none;
 		}
 
 		&:hover {
-			background: transparent;
-			transform: none;
+			z-index: 6;
+			filter: saturate(1.04) contrast(1.02);
+			transform: translate3d(0, -34px, 110px) rotateY(-22deg) rotateZ(0deg);
+			box-shadow:
+				inset 11px 0 15px rgba(255, 255, 255, 0.28),
+				inset -10px 0 14px rgba(23, 14, 8, 0.14),
+				10px 0 0 rgba(0, 0, 0, 0.18),
+				24px 36px 56px rgba(45, 27, 13, 0.28);
+		}
 
-			&::after {
-				transform: translate(2px, -2px);
-			}
+		&.is-active {
+			z-index: 10;
+			width: clamp(360px, 26vw, 500px);
+			height: clamp(520px, 62vh, 690px);
+			padding: clamp(34px, 3.4vw, 54px);
+			border-radius: 4px 13px 13px 4px;
+			transform: translate3d(0, -54px, 190px) rotateY(-10deg) rotateZ(0deg);
+			box-shadow:
+				inset 18px 0 24px rgba(255, 255, 255, 0.26),
+				inset -20px 0 24px rgba(23, 14, 8, 0.14),
+				15px 0 0 rgba(0, 0, 0, 0.18),
+				34px 44px 78px rgba(45, 27, 13, 0.34);
 		}
 	}
 
-	.shelf-hint {
-		margin-top: 20px !important;
-		color: var(--color-500) !important;
-		font-family: var(--font-type);
-		font-size: 0.74rem !important;
-		line-height: 1 !important;
+	.book-top,
+	.book-mark {
+		position: relative;
+		z-index: 2;
+		color: rgba(15, 12, 9, 0.58);
+		font-family: "Courier New", monospace;
+		font-size: 0.68rem;
+		font-weight: 700;
+		writing-mode: vertical-rl;
+	}
+
+	.book-title {
+		position: relative;
+		z-index: 2;
+		align-self: center;
+		max-height: 240px;
+		color: rgba(15, 12, 9, 0.88);
+		font-family: "Songti SC", "Noto Serif SC", serif;
+		font-size: 1.18rem;
+		font-weight: 800;
+		line-height: 1.05;
+		writing-mode: vertical-rl;
+	}
+
+	.book.is-active .book-top,
+	.book.is-active .book-mark {
+		writing-mode: horizontal-tb;
+		letter-spacing: 0.18em;
+	}
+
+	.book.is-active .book-title {
+		align-self: flex-start;
+		max-width: 7em;
+		max-height: none;
+		margin-top: clamp(28px, 4.6vh, 70px);
+		font-family: "Iowan Old Style", Georgia, "Times New Roman", "Songti SC", serif;
+		font-size: clamp(2.7rem, 3.6vw, 5rem);
+		font-weight: 560;
+		line-height: 0.9;
+		letter-spacing: -0.035em;
+		text-align: left;
+		writing-mode: horizontal-tb;
+	}
+
+	.book.is-active .book-mark {
+		margin-top: auto;
+	}
+
+	.tone-sage { --cover: linear-gradient(180deg, #dcead4, #b8d1b2); }
+	.tone-earth { --cover: linear-gradient(180deg, #d5c3a1, #aa8c65); }
+	.tone-ink { --cover: linear-gradient(180deg, #20242d, #07090d); color: #f7f0df; }
+	.tone-gold { --cover: linear-gradient(180deg, #ffeaa2, #d5a84b); }
+	.tone-rose { --cover: linear-gradient(180deg, #f3c5c6, #d9979b); }
+	.tone-stone { --cover: linear-gradient(180deg, #e2dfd4, #aaa69c); }
+	.tone-sun { --cover: linear-gradient(180deg, #ffca72, #e77d3e); }
+	.tone-paper { --cover: linear-gradient(180deg, #faf5ea, #e3d7c5); }
+	.tone-wine { --cover: linear-gradient(180deg, #9e2a3b, #5e101e); color: #fff7ec; }
+	.tone-blue { --cover: linear-gradient(180deg, #cadcf0, #7d9bc3); }
+	.tone-sea { --cover: linear-gradient(180deg, #bfe7de, #6ea99f); }
+
+	.tone-ink .book-title,
+	.tone-ink .book-top,
+	.tone-ink .book-mark,
+	.tone-wine .book-title,
+	.tone-wine .book-top,
+	.tone-wine .book-mark {
+		color: rgba(255, 250, 238, 0.88);
+	}
+
+	.shelf-arrow {
+		position: absolute;
+		z-index: 12;
+		top: 49%;
+		display: grid;
+		width: 58px;
+		height: 58px;
+		place-items: center;
+		border: 1px solid rgba(35, 30, 26, 0.13);
+		border-radius: 999px;
+		background: rgba(246, 241, 230, 0.76);
+		color: rgba(35, 30, 26, 0.58);
+		box-shadow: 0 16px 42px rgba(38, 29, 18, 0.1);
+		transition: transform 220ms ease, color 220ms ease, background 220ms ease;
+
+		&:hover {
+			color: #171512;
+			background: rgba(255, 255, 255, 0.9);
+			transform: translateY(-2px);
+		}
+
+		&:disabled {
+			opacity: 0.38;
+			pointer-events: none;
+		}
+	}
+
+	.shelf-arrow--left {
+		left: clamp(30px, 4vw, 72px);
+	}
+
+	.shelf-arrow--right {
+		right: clamp(30px, 4vw, 72px);
 	}
 
 	.shelf-index {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		justify-content: center;
-		width: min(1240px, calc(100% - 120px));
-		margin: -52px auto 0;
-		position: relative;
-		z-index: 4;
-		padding-top: 18px;
-		border-top: 1px solid rgba(37, 35, 31, 0.16);
+		position: absolute;
+		z-index: 12;
+		right: clamp(44px, 6vw, 110px);
+		bottom: 22px;
+		left: clamp(44px, 6vw, 110px);
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 38px;
+		align-items: end;
+	}
+
+	.ticks {
+		display: grid;
+		grid-template-columns: repeat(34, minmax(8px, 1fr));
+		gap: 0;
+		border-bottom: 1px solid rgba(40, 34, 28, 0.22);
 
 		button {
-			display: grid;
-			place-items: center;
-			width: 18px;
-			height: 18px;
+			position: relative;
+			height: 26px;
 			padding: 0;
-			border: 0;
-			background: transparent;
-
-			span {
-				width: 6px;
-				height: 6px;
-				border-radius: 50%;
-				background: var(--color-600);
-				transition:
-					width 180ms ease,
-					background 180ms ease;
-			}
-
-			&.is-active span {
-				width: 18px;
-				border-radius: 999px;
-				background: var(--color-100);
-			}
 		}
+
+		span {
+			position: absolute;
+			bottom: -1px;
+			left: 50%;
+			width: 1px;
+			height: 9px;
+			background: rgba(40, 34, 28, 0.28);
+			transform: translateX(-50%);
+			transition: height 180ms ease, background 180ms ease;
+		}
+
+		button:hover span,
+		button.is-active span {
+			height: 26px;
+			background: #161412;
+		}
+	}
+
+	.shelf-index p {
+		margin: 0 0 -3px;
+		color: rgba(40, 34, 28, 0.42);
+		font-size: 0.64rem;
+		font-weight: 900;
+		letter-spacing: 0.22em;
+		white-space: nowrap;
 	}
 
 	.book-detail {
-		position: fixed;
-		z-index: 100;
+		position: absolute;
+		z-index: 30;
 		inset: 0;
 		display: grid;
-		place-items: center;
-		padding: 28px;
-		pointer-events: none;
+		grid-template-columns: minmax(280px, 430px) minmax(320px, 520px);
+		gap: clamp(30px, 5vw, 88px);
+		align-items: center;
+		justify-content: center;
+		padding: clamp(28px, 5vw, 70px);
+		background: rgba(237, 230, 218, 0.94);
 		opacity: 0;
-		transition: opacity 260ms ease;
+		pointer-events: none;
+		transform: translateY(12px);
+		transition: opacity 280ms ease, transform 280ms ease;
 
 		&.is-open {
-			pointer-events: auto;
 			opacity: 1;
-		}
-	}
-
-	.detail-backdrop {
-		position: absolute;
-		inset: 0;
-		background: rgba(20, 18, 15, 0.46);
-		backdrop-filter: blur(14px);
-	}
-
-	.detail-card {
-		position: relative;
-		display: grid;
-		grid-template-columns: minmax(220px, 360px) minmax(280px, 1fr);
-		gap: 36px;
-		width: min(980px, 100%);
-		padding: 28px;
-		border: 1px solid rgba(255, 255, 255, 0.38);
-		border-radius: 8px;
-		background:
-			linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(246, 240, 228, 0.86)),
-			var(--color-999);
-		box-shadow: 0 34px 120px rgba(0, 0, 0, 0.28);
-		transform: translateY(22px) scale(0.96);
-		transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-
-		.is-open & {
-			transform: translateY(0) scale(1);
+			pointer-events: auto;
+			transform: translateY(0);
 		}
 	}
 
 	.detail-close {
 		position: absolute;
-		top: 18px;
-		right: 18px;
-		min-height: 38px;
-		padding: 0 16px;
+		top: 32px;
+		left: 34px;
+		color: rgba(32, 29, 25, 0.64);
+		font-size: 0.78rem;
+		font-weight: 900;
+		letter-spacing: 0.14em;
 	}
 
 	.detail-cover {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		min-height: 480px;
-		padding: 30px;
-		border: 1px solid rgba(0, 0, 0, 0.12);
-		border-radius: 6px;
-		box-shadow:
-			14px 0 0 rgba(0, 0, 0, 0.08),
-			0 28px 54px rgba(0, 0, 0, 0.18);
-		transform: rotateY(-7deg);
-		transform-origin: right center;
+		position: relative;
+		min-height: min(68vh, 620px);
+		padding: 44px;
+		border: 1px solid rgba(20, 16, 12, 0.2);
+		border-radius: 6px 18px 18px 6px;
+		background:
+			linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent 14%, rgba(255, 255, 255, 0.22) 70%),
+			var(--cover, #e9dbc0);
+		box-shadow: 32px 42px 78px rgba(52, 34, 18, 0.22);
+
+		p {
+			margin: 0;
+			font-family: "Courier New", monospace;
+			font-weight: 800;
+			letter-spacing: 0.18em;
+			color: rgba(22, 18, 14, 0.55);
+		}
 
 		h2 {
-			max-width: 6em;
-			margin: 0;
-			color: rgba(0, 0, 0, 0.86);
-			font-family: 'Huiwen-mincho', var(--font-body);
-			font-size: clamp(3rem, 6vw, 5.6rem);
-			font-weight: 400;
-			line-height: 1.08;
-			overflow-wrap: anywhere;
+			margin: 86px 0 0;
+			font-family: "Iowan Old Style", Georgia, "Songti SC", serif;
+			font-size: clamp(3.2rem, 6vw, 6rem);
+			font-weight: 520;
+			line-height: 0.92;
+			letter-spacing: -0.05em;
 		}
-	}
 
-	.detail-cover-top,
-	.detail-cover-bottom {
-		display: flex;
-		justify-content: space-between;
-		color: rgba(0, 0, 0, 0.56);
-		font-family: var(--font-type);
-		font-size: 0.74rem;
+		span {
+			position: absolute;
+			right: 38px;
+			bottom: 34px;
+			font-family: "Courier New", monospace;
+			font-weight: 800;
+			color: rgba(22, 18, 14, 0.46);
+		}
 	}
 
 	.detail-copy {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		padding: 52px 12px 22px;
+		max-width: 560px;
+
+		.detail-kicker {
+			color: rgba(32, 29, 25, 0.45);
+			font-size: 0.72rem;
+			font-weight: 900;
+			letter-spacing: 0.2em;
+		}
 
 		h3 {
-			margin: 0;
-			color: var(--color-100);
-			font-size: clamp(2.1rem, 4vw, 4rem);
-			line-height: 1.12;
+			margin: 18px 0;
+			font-family: "Iowan Old Style", Georgia, "Songti SC", serif;
+			font-size: clamp(3rem, 6vw, 6.5rem);
+			font-weight: 520;
+			line-height: 0.9;
+			letter-spacing: -0.05em;
 		}
 
 		p {
-			margin: 18px 0 0;
-			color: var(--color-300);
+			color: rgba(32, 29, 25, 0.66);
 			font-size: 1.05rem;
 			line-height: 1.9;
 		}
-
-		dl {
-			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: 1px;
-			margin: 32px 0 0;
-			overflow: hidden;
-			border: 1px solid var(--border);
-			border-radius: 8px;
-			background: var(--border);
-		}
-
-		div {
-			padding: 16px;
-			background: rgba(255, 255, 255, 0.72);
-		}
-
-		dt {
-			color: var(--color-400);
-			font-family: var(--font-type);
-			font-size: 0.72rem;
-		}
-
-		dd {
-			margin: 8px 0 0;
-			color: var(--color-100);
-			font-weight: 700;
-		}
 	}
 
-	.detail-kicker,
-	.detail-mark {
-		color: #9a6d18 !important;
-		font-family: var(--font-type);
-		font-size: 0.78rem !important;
-		line-height: 1 !important;
-	}
-
-	.tone-sage { background: linear-gradient(135deg, #dfead0 0%, #f4f9ec 58%, #b6d6bd 100%); }
-	.tone-earth { background: linear-gradient(135deg, #d8c39d 0%, #fbf0d1 54%, #a98a62 100%); }
-	.tone-gold { background: linear-gradient(135deg, #fae5a7 0%, #fff8df 48%, #d4a942 100%); }
-	.tone-rose { background: linear-gradient(135deg, #f6d6d4 0%, #fff4f2 48%, #c67d8c 100%); }
-	.tone-stone { background: linear-gradient(135deg, #d5d9d2 0%, #f7f7f2 50%, #88928b 100%); }
-	.tone-sun { background: linear-gradient(135deg, #ffd66b 0%, #fff6cf 46%, #f07644 100%); }
-	.tone-paper { background: linear-gradient(135deg, #f7f2e8 0%, #ffffff 52%, #e1d5c2 100%); }
-	.tone-blue { background: linear-gradient(135deg, #cddff4 0%, #f7fbff 50%, #6688b8 100%); }
-	.tone-sea { background: linear-gradient(135deg, #cce8e3 0%, #f3fffb 50%, #4f9b91 100%); }
-
-	.tone-ink,
-	.tone-wine {
-		color: #f8f3e7;
-
-		.book-spine-title,
-		.book-spine-top,
-		.book-spine-mark,
-		.detail-cover-top,
-		.detail-cover-bottom,
-		&.detail-cover h2 {
-			color: rgba(255, 255, 255, 0.88);
-		}
-	}
-
-	.tone-ink { background: linear-gradient(135deg, #17191f 0%, #424a53 100%); }
-	.tone-wine { background: linear-gradient(135deg, #5d1f2a 0%, #b36675 48%, #f5dfd9 100%); }
-
-	@media(max-width: 900px) {
-		.detail-card {
-			grid-template-columns: 1fr;
-		}
-
-		.shelf-shell {
-			height: auto;
-			min-height: 720px;
-		}
-
-		.shelf-viewport {
-			inset: 92px 0 180px 0;
-		}
-
-		.shelf-caption {
-			bottom: 82px;
-			left: 28px;
-			width: calc(100% - 56px);
-		}
-
-		.shelf-caption {
-			padding: 0;
-		}
-
-		.detail-cover {
-			min-height: 340px;
-		}
-	}
-
-	@media(max-width: 767px) {
-		.shelf-summary {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		.shelf-track {
-			padding-inline: 36vw 62vw;
-		}
-
-		.shelf-caption h2 {
-			font-size: 2.6rem;
-		}
-
-		.detail-card {
-			gap: 20px;
-			max-height: calc(100vh - 40px);
+	@media (max-width: 920px) {
+		:global(html),
+		:global(body) {
 			overflow: auto;
-			padding: 18px;
 		}
 
-		.detail-copy dl {
+		.books-app {
+			height: auto;
+			min-height: 100dvh;
+		}
+
+		.topbar {
+			height: auto;
+			padding-bottom: 12px;
+		}
+
+		.top-actions span {
+			display: none;
+		}
+
+		.shelf-stage {
+			height: auto;
+			min-height: 900px;
+		}
+
+		.stage-header,
+		.edition-mark {
+			display: none;
+		}
+
+		.caption {
+			top: 78px;
+			bottom: auto;
+			left: 24px;
+			width: calc(100% - 48px);
+		}
+
+		.caption h1 {
+			font-size: clamp(3.4rem, 18vw, 5.3rem);
+		}
+
+		.shelf-scene {
+			inset: 300px 0 108px 0;
+		}
+
+		.book-track {
+			padding-left: 50vw;
+			padding-right: 70vw;
+			bottom: 114px;
+		}
+
+		.book.is-active {
+			width: min(74vw, 360px);
+			height: min(54vh, 520px);
+		}
+
+		.shelf-arrow {
+			top: auto;
+			bottom: 74px;
+		}
+
+		.shelf-index {
+			display: none;
+		}
+
+		.book-detail {
+			position: fixed;
 			grid-template-columns: 1fr;
+			overflow: auto;
 		}
 	}
 </style>
