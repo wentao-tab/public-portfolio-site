@@ -178,10 +178,11 @@ const shelfBooks = books2026.map((book, index) => ({
 						if (!activeBook || !scene || !track) return;
 						const sceneWidth = scene.clientWidth;
 						const maxOffset = Math.max(0, track.scrollWidth - sceneWidth);
-						const centerTarget = activeBook.offsetLeft - sceneWidth * 0.53;
-						const offset = Math.max(0, Math.min(maxOffset, centerTarget));
-						track.style.setProperty("--x", `${offset}px`);
-					});
+      const activeCenter = activeBook.offsetLeft + activeBook.offsetWidth / 2;
+      const centerTarget = activeCenter - sceneWidth * 0.54;
+      const offset = Math.max(0, Math.min(maxOffset, centerTarget));
+      track.style.setProperty("--x", `${offset}px`);
+    });
 				}
 
 				function openDetail() {
@@ -406,13 +407,13 @@ const shelfBooks = books2026.map((book, index) => ({
 		font-size: 0.68rem;
 	}
 
-	.caption {
-		position: absolute;
-		z-index: 5;
-		left: clamp(44px, 5.6vw, 118px);
-		bottom: clamp(150px, 18vh, 210px);
-		width: min(430px, 30vw);
-		pointer-events: none;
+		.caption {
+			position: absolute;
+			z-index: 20;
+			left: clamp(44px, 5.6vw, 118px);
+			bottom: clamp(210px, 24vh, 286px);
+			width: min(460px, 31vw);
+			pointer-events: none;
 
 		&::before {
 			content: "";
@@ -441,11 +442,11 @@ const shelfBooks = books2026.map((book, index) => ({
 		}
 	}
 
-	.caption h1 {
-		margin: 0;
-		color: #201d19;
-		font-family: "Iowan Old Style", Georgia, "Times New Roman", "Songti SC", serif;
-		font-size: clamp(4.3rem, 6vw, 7.6rem);
+		.caption h1 {
+			margin: 0;
+			color: #201d19;
+			font-family: "Iowan Old Style", Georgia, "Times New Roman", "Songti SC", serif;
+			font-size: clamp(4rem, 5.6vw, 7rem);
 		font-weight: 520;
 		line-height: 0.86;
 		letter-spacing: -0.05em;
@@ -496,14 +497,14 @@ const shelfBooks = books2026.map((book, index) => ({
 		}
 	}
 
-	.shelf-scene {
-		position: absolute;
-		z-index: 7;
-		inset: 82px -9vw 66px 17%;
-		overflow: visible;
-		perspective: 1900px;
-		cursor: grab;
-		mask-image: linear-gradient(90deg, #000 0%, #000 98.6%, transparent);
+		.shelf-scene {
+			position: absolute;
+			z-index: 8;
+			inset: 82px 3.5vw 70px 20%;
+			overflow: visible;
+			perspective: 1900px;
+			cursor: grab;
+			mask-image: none;
 
 		.is-dragging & {
 			cursor: grabbing;
@@ -515,8 +516,8 @@ const shelfBooks = books2026.map((book, index) => ({
 			z-index: 1;
 			left: -12%;
 			right: -24%;
-			bottom: 230px;
-			height: 110px;
+				bottom: 190px;
+				height: 96px;
 			background:
 				radial-gradient(ellipse at 50% 70%, rgba(37, 20, 10, 0.5), rgba(37, 20, 10, 0.22) 42%, transparent 74%),
 				linear-gradient(180deg, transparent, rgba(41, 23, 12, 0.16));
@@ -530,8 +531,8 @@ const shelfBooks = books2026.map((book, index) => ({
 			z-index: 9;
 			left: -22%;
 			right: -30%;
-			bottom: 262px;
-			height: 48px;
+				bottom: 216px;
+				height: 44px;
 			background:
 				linear-gradient(180deg, rgba(255, 237, 207, 0.64), rgba(94, 52, 28, 0.2) 45%, rgba(41, 22, 12, 0.44)),
 				linear-gradient(90deg, transparent, rgba(55, 31, 17, 0.32) 22%, rgba(55, 31, 17, 0.24) 78%, transparent);
@@ -540,18 +541,18 @@ const shelfBooks = books2026.map((book, index) => ({
 		}
 	}
 
-	.book-track {
-		--x: 0px;
-		position: absolute;
-		z-index: 6;
-		left: 0;
-		right: auto;
-		bottom: 226px;
+		.book-track {
+			--x: 0px;
+			position: absolute;
+			z-index: 9;
+			left: 0;
+			right: auto;
+			bottom: 186px;
 		display: flex;
 		align-items: flex-end;
 		gap: 5px;
 		width: max-content;
-		padding: 0 140vw 0 30vw;
+			padding: 0 95vw 0 38vw;
 		transform: translate3d(calc(0px - var(--x)), 0, 0);
 		transition: transform 940ms cubic-bezier(0.19, 1, 0.22, 1);
 		transform-style: preserve-3d;
@@ -587,13 +588,13 @@ const shelfBooks = books2026.map((book, index) => ({
 		}
 	}
 
-	.shelf-board {
-		position: absolute;
-		z-index: 8;
-		right: -50%;
-		bottom: 0;
-		left: -92%;
-		height: 312px;
+		.shelf-board {
+			position: absolute;
+			z-index: 7;
+			right: -46%;
+			bottom: 24px;
+			left: -64%;
+			height: 230px;
 		background:
 			linear-gradient(180deg, rgba(255, 240, 214, 1) 0 6%, rgba(240, 198, 141, 1) 7% 18%, rgba(188, 121, 76, 1) 35%, rgba(123, 69, 38, 1) 58%, rgba(66, 35, 18, 1) 75%, rgba(24, 13, 8, 1) 100%),
 			linear-gradient(90deg, rgba(255, 255, 255, 0.26), transparent 26%, rgba(0, 0, 0, 0.26) 70%, rgba(255, 255, 255, 0.08)),
@@ -601,11 +602,11 @@ const shelfBooks = books2026.map((book, index) => ({
 			repeating-linear-gradient(0deg, transparent 0 9px, rgba(255, 255, 255, 0.045) 9px 10px, transparent 10px 22px),
 			#8f5c3b;
 		box-shadow:
-			0 82px 120px rgba(35, 20, 11, 0.68),
-			inset 0 13px 0 rgba(255, 255, 255, 0.62),
-			inset 0 -84px 68px rgba(22, 12, 7, 0.72),
-			inset 0 -1px 0 rgba(0, 0, 0, 0.42);
-		transform: perspective(980px) rotateX(12deg) translateZ(0);
+				0 62px 90px rgba(35, 20, 11, 0.62),
+				inset 0 13px 0 rgba(255, 255, 255, 0.62),
+				inset 0 -58px 58px rgba(22, 12, 7, 0.72),
+				inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+			transform: perspective(980px) rotateX(9deg) translateZ(0);
 		transform-origin: top center;
 
 		&::before,
@@ -617,9 +618,9 @@ const shelfBooks = books2026.map((book, index) => ({
 			pointer-events: none;
 		}
 
-		&::before {
-			top: -42px;
-			height: 70px;
+			&::before {
+				top: -34px;
+				height: 58px;
 			background:
 				linear-gradient(180deg, rgba(255, 249, 236, 1) 0 14%, rgba(246, 207, 153, 1) 15% 43%, rgba(159, 91, 49, 0.98) 100%),
 				repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 42px, rgba(83, 42, 20, 0.16) 42px 84px);
@@ -629,9 +630,9 @@ const shelfBooks = books2026.map((book, index) => ({
 				inset 0 -9px 14px rgba(72, 39, 20, 0.3);
 		}
 
-		&::after {
-			bottom: 54px;
-			height: 86px;
+			&::after {
+				bottom: 38px;
+				height: 70px;
 			background:
 				linear-gradient(180deg, rgba(125, 70, 37, 0.82), rgba(45, 24, 13, 0.98) 68%, rgba(14, 7, 4, 0.98)),
 				repeating-linear-gradient(90deg, transparent 0 52px, rgba(255, 255, 255, 0.07) 52px 104px);
@@ -722,13 +723,13 @@ const shelfBooks = books2026.map((book, index) => ({
 			filter: saturate(1.04) contrast(1.02);
 		}
 
-		&.is-active {
-			z-index: 10;
-			width: clamp(300px, 18vw, 354px);
-			height: clamp(458px, 52vh, 566px);
-			padding: clamp(26px, 2.4vw, 38px);
-			border-radius: 4px 13px 13px 4px;
-			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0deg);
+			&.is-active {
+				z-index: 12;
+				width: clamp(270px, 16vw, 320px);
+				height: clamp(424px, 48vh, 526px);
+				padding: clamp(24px, 2.1vw, 34px);
+				border-radius: 4px 13px 13px 4px;
+				transform: translate3d(0, -42px, 280px) rotateY(-2.5deg) rotateZ(0deg);
 			filter: drop-shadow(0 34px 32px rgba(43, 25, 12, 0.24));
 			box-shadow:
 				inset 18px 0 24px rgba(255, 255, 255, 0.26),
@@ -761,9 +762,9 @@ const shelfBooks = books2026.map((book, index) => ({
 			transform: translate3d(0, 8px, -18px) rotateY(-22deg) rotateZ(var(--book-lean)) scale(0.97);
 		}
 
-		.book.is-active {
-			transform: translate3d(14vw, -132px, 640px) rotateY(-0.5deg) rotateZ(0) scale(1.03);
-			animation: book-pull 680ms cubic-bezier(0.18, 0.88, 0.2, 1) both;
+			.book.is-active {
+				transform: translate3d(0, -118px, 600px) rotateY(-0.5deg) rotateZ(0) scale(1.02);
+				animation: book-pull 680ms cubic-bezier(0.18, 0.88, 0.2, 1) both;
 			box-shadow:
 				inset 22px 0 28px rgba(255, 255, 255, 0.25),
 				inset -26px 0 28px rgba(23, 14, 8, 0.16),
@@ -783,9 +784,9 @@ const shelfBooks = books2026.map((book, index) => ({
 			transition-duration: 620ms;
 		}
 
-		.book.is-active {
-			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0) scale(1);
-			animation: book-return 1120ms cubic-bezier(0.19, 1, 0.22, 1) both;
+			.book.is-active {
+				transform: translate3d(0, -42px, 280px) rotateY(-2.5deg) rotateZ(0) scale(1);
+				animation: book-return 1120ms cubic-bezier(0.19, 1, 0.22, 1) both;
 			transition-duration: 1120ms;
 			transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 		}
@@ -839,33 +840,33 @@ const shelfBooks = books2026.map((book, index) => ({
 		writing-mode: horizontal-tb;
 	}
 
-	@keyframes book-pull {
-		0% {
-			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0) scale(1);
+		@keyframes book-pull {
+			0% {
+				transform: translate3d(0, -42px, 280px) rotateY(-2.5deg) rotateZ(0) scale(1);
+			}
+
+			44% {
+				transform: translate3d(8px, -66px, 420px) rotateY(-1.8deg) rotateZ(0) scale(1.01);
+			}
+
+			100% {
+				transform: translate3d(0, -118px, 600px) rotateY(-0.5deg) rotateZ(0) scale(1.02);
+			}
 		}
 
-		44% {
-			transform: translate3d(14.4vw, -70px, 430px) rotateY(-2deg) rotateZ(0) scale(1.012);
-		}
+		@keyframes book-return {
+			0% {
+				transform: translate3d(0, -118px, 600px) rotateY(-0.5deg) rotateZ(0) scale(1.02);
+			}
 
-		100% {
-			transform: translate3d(14vw, -132px, 640px) rotateY(-0.5deg) rotateZ(0) scale(1.03);
-		}
-	}
+			52% {
+				transform: translate3d(6px, -66px, 420px) rotateY(-1.7deg) rotateZ(0) scale(1.01);
+			}
 
-	@keyframes book-return {
-		0% {
-			transform: translate3d(14vw, -132px, 640px) rotateY(-0.5deg) rotateZ(0) scale(1.03);
+			100% {
+				transform: translate3d(0, -42px, 280px) rotateY(-2.5deg) rotateZ(0) scale(1);
+			}
 		}
-
-		52% {
-			transform: translate3d(14.2vw, -72px, 430px) rotateY(-1.8deg) rotateZ(0) scale(1.01);
-		}
-
-		100% {
-			transform: translate3d(14vw, -48px, 300px) rotateY(-3deg) rotateZ(0) scale(1);
-		}
-	}
 
 	.book.is-active .book-mark {
 		margin-top: auto;
@@ -1107,10 +1108,11 @@ const shelfBooks = books2026.map((book, index) => ({
 			display: none;
 		}
 
-		.caption {
-			top: 78px;
-			bottom: auto;
-			left: 24px;
+			.caption {
+				z-index: 20;
+				top: 78px;
+				bottom: auto;
+				left: 24px;
 			width: calc(100% - 48px);
 		}
 
@@ -1122,16 +1124,33 @@ const shelfBooks = books2026.map((book, index) => ({
 			inset: 300px 0 108px 0;
 		}
 
-		.book-track {
-			padding-left: 50vw;
-			padding-right: 70vw;
-			bottom: 114px;
-		}
+			.book-track {
+				padding-left: 50vw;
+				padding-right: 80vw;
+				bottom: 132px;
+			}
 
-		.book.is-active {
-			width: min(74vw, 360px);
-			height: min(54vh, 520px);
-		}
+			.book.is-active {
+				width: min(74vw, 320px);
+				height: min(54vh, 500px);
+			}
+
+			.shelf-board {
+				left: -20%;
+				right: -20%;
+				bottom: 28px;
+				height: 170px;
+			}
+
+			.shelf-board::before {
+				top: -26px;
+				height: 44px;
+			}
+
+			.shelf-board::after {
+				bottom: 26px;
+				height: 52px;
+			}
 
 		.shelf-arrow {
 			top: auto;
