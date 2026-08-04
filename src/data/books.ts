@@ -41,6 +41,8 @@ export const books2026: BookItem[] = [
 	{ no: 32, title: '了不起的我', note: '用心理学拆解自我成长，把改变从口号落回可执行的日常练习。', tone: 'gold' },
 	{ no: 33, title: '飞跃疯人院', note: '在荒诞制度里保存人的清醒与反抗，疯癫外壳下是对自由的尖锐追问。', tone: 'ink' },
 	{ no: 34, title: '快乐就是哈哈哈哈哈哈', note: '用松弛和自嘲抵抗生活褶皱，把普通日子笑成更轻的出口。', tone: 'sun' },
+	{ no: 35, title: '入门', note: '从一扇小门开始，把陌生知识慢慢变成可以使用的理解。', tone: 'stone' },
+	{ no: 36, title: '红鱼之姻', note: '在偶然与命运交错的关系里，写人与人如何相遇、牵引与告别。', tone: 'rose' },
 ];
 
 export const bookStats = {
