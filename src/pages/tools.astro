@@ -6,6 +6,7 @@ import { withBase } from '../utils/paths';
 
 const nanjingToolUrl = withBase('/tools/nanjing-travel-map/');
 const nanjingCover = withBase('/assets/cover/cover-nanjing-route-atlas.png');
+const dailyJournalToolUrl = 'https://dailly-journal.vercel.app/?v=8708d45';
 const wenxiToolUrl = 'https://wentao-tab.github.io/Wenxi-ai-clone/';
 const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 const sleepToolUrl = withBase('/sleep/');
@@ -29,8 +30,29 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 				小工具
 			</SectionHeader>
 
-			<section class="tools-list border-top">
-				<article class="tool-card">
+	<section class="tools-list border-top">
+		<article class="tool-card">
+			<a class="tool-preview journal-preview" href={dailyJournalToolUrl} target="_blank" rel="noreferrer" aria-label="打开日常日记">
+				<div class="journal-sheet" aria-hidden="true">
+					<span class="journal-label">DAILY / JOURNAL</span>
+					<strong>日常<br />日记</strong>
+					<span class="journal-rule"></span>
+					<span class="journal-date">TODAY / ONE PAGE</span>
+				</div>
+			</a>
+			<div class="tool-info">
+				<div>
+					<p class="tool-kicker">JOURNAL TOOL</p>
+					<h2>日常日记</h2>
+					<p>把当天的片段、情绪和想法留下来，慢慢看见自己的生活。</p>
+				</div>
+				<a class="tool-link" href={dailyJournalToolUrl} target="_blank" rel="noreferrer">
+					打开完整工具
+					<span>↗</span>
+				</a>
+			</div>
+		</article>
+		<article class="tool-card">
 					<a class="tool-preview" href={nanjingToolUrl} target="_blank" rel="noreferrer" aria-label="打开出发吧！从南京">
 						<img src={nanjingCover} alt="金陵路线图鉴，从南京查看全国目的地路线与玩法攻略" loading="lazy" />
 					</a>
@@ -194,6 +216,60 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 
 	.sutra-chat-preview {
 		background: #071724;
+	}
+
+	.journal-preview {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 28px;
+		background: #e5efe6;
+	}
+
+	.journal-sheet {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: min(78%, 330px);
+		aspect-ratio: 0.78;
+		padding: 28px 24px;
+		border: 1px solid rgba(31, 67, 47, 0.3);
+		border-radius: 4px;
+		background:
+			linear-gradient(rgba(31, 67, 47, 0.08) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(31, 67, 47, 0.08) 1px, transparent 1px),
+			#f7f4e8;
+		background-size: 22px 22px;
+		box-shadow: 18px 20px 0 rgba(72, 103, 80, 0.12), 0 18px 36px rgba(31, 67, 47, 0.16);
+		color: #203f31;
+		transform: rotate(-2deg);
+		transition: transform 0.35s ease, box-shadow 0.35s ease;
+	}
+
+	.journal-preview:hover .journal-sheet {
+		transform: rotate(0deg) translateY(-4px);
+		box-shadow: 18px 24px 0 rgba(72, 103, 80, 0.12), 0 22px 42px rgba(31, 67, 47, 0.2);
+	}
+
+	.journal-label,
+	.journal-date {
+		font-family: var(--font-type);
+		font-size: 0.72rem;
+		letter-spacing: 0.14em;
+		color: #718271;
+	}
+
+	.journal-sheet strong {
+		font-size: clamp(2rem, 4vw, 3rem);
+		line-height: 1.1;
+		letter-spacing: 0.02em;
+	}
+
+	.journal-rule {
+		width: 42px;
+		height: 2px;
+		background: #d5ad43;
 	}
 
 	.forest-preview img,
