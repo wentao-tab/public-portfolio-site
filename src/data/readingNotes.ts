@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
 	{
+		slug: 'jingangjing-0810',
+		title: '次第乞食',
+		desc: '真正的平等，不是情绪上的热心，而是行动里的不分别。',
+		date: '2026-08-10',
+		category: 'jingangjing',
+		cover: '/assets/cover/cover-jingangjing-0610.png',
+	},
+	{
 		slug: 'jingangjing-0728',
 		title: '须菩提发问',
 		desc: '真正会学的人，不怕把最根本的问题反复问。',
