@@ -1,0 +1,165 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import DetailInteractions from "../../components/DetailInteractions.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BlogPostLayout
+	title="饭食讫。"
+	description="一件事完成了，就要承认它已经完成，不要让心继续加戏。"
+	keywords="金刚经,饭食讫,读书感悟,阅读笔记"
+	canonicalPath="/notes/jingangjing-0817-fanshiqie/"
+>
+	<main class="reading-note">
+		<section class="note-hero">
+			<img src={withBase('/assets/cover/header-jingangjing-0610.png')} alt="金刚经的读后感悟" />
+		</section>
+
+		<article class="note-content">
+			<a class="note-back" href={withBase('/')} aria-label="返回首页">
+				<span>←</span>
+				返回首页
+			</a>
+			<div class="note-meta">READING NOTE · 2026.08.17</div>
+			<h1 class="font-huiwen">饭食讫。</h1>
+			<p class="lead">一件事完成了，就要承认它已经完成，不要让心继续加戏。</p>
+
+			<p>《金刚经》开头写佛乞食回来，“饭食讫”，吃完了。这个“讫”很干脆：到这里为止。没有把吃饭变成负担，也没有吃完还一直惦记刚才好不好、够不够、别人怎么看。</p>
+			<p>我觉得这对日常很实用。很多事真正消耗我们的，不是做事本身，而是做完以后还不肯结束。消息发出去了，还反复想措辞；工作交付了，还一直担心评价；关系里说完一句话，还在脑子里复盘十遍。</p>
+			<p>“饭食讫”是在提醒：该吃饭时吃饭，该结束时结束。完成感不是别人给的，是自己要学会划句号。</p>
+
+			<section class="note-reminder">
+				<h2>今日小提醒</h2>
+				<p>今天做完一件事后，明确说一句“这件事到这里先完成”。然后不要立刻反复检查，给自己十分钟空白。</p>
+			</section>
+		</article>
+		<DetailInteractions
+			articleSelector=".note-content"
+			storageKey="jingangjing-0817-fanshiqie-comments"
+		/>
+	</main>
+</BlogPostLayout>
+
+<style lang="scss">
+	:global(.train-1) {
+		display: none !important;
+	}
+
+	.reading-note {
+		width: 100%;
+		margin: 0 auto 88px;
+	}
+
+	.note-hero {
+		width: min(1120px, calc(100vw - 48px));
+		margin: 56px auto 72px;
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.note-back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		margin: 0 0 22px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: var(--color-400);
+		font-size: 0.86rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 0.22s ease, transform 0.22s ease;
+
+		span {
+			font-size: 0.95rem;
+			transform: translateY(-1px);
+		}
+
+		&:hover {
+			transform: translateX(-3px);
+			color: #8b6a2b;
+			text-decoration: none;
+		}
+	}
+
+	.note-content {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 24px;
+
+		h1 {
+			margin: 12px 0 32px;
+			font-family: 'Huiwen-mincho', serif !important;
+			font-size: clamp(2.6rem, 4.2vw, 4rem);
+			font-weight: 400;
+			line-height: 1.18;
+			color: var(--color-100);
+			letter-spacing: 0;
+			text-align: left;
+		}
+
+		p {
+			margin: 0 0 1.35em;
+			color: var(--color-200);
+			font-size: 1.08rem;
+			line-height: 2.05;
+		}
+
+		.lead {
+			color: #8b6a2b;
+			font-family: 'Huiwen-mincho', var(--font-body);
+			font-size: clamp(1.55rem, 3vw, 2rem);
+			line-height: 1.6;
+			margin-bottom: 1.45em;
+		}
+	}
+
+	.note-meta {
+		margin-bottom: 12px;
+		color: #9b7532;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.note-reminder {
+		margin-top: 46px;
+		padding: 28px 30px;
+		border: 1px solid rgba(139, 106, 43, 0.22);
+		border-radius: 2px;
+		background: rgba(255, 248, 232, 0.54);
+
+		h2 {
+			margin: 0 0 12px;
+			color: #8b6a2b;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.note-hero {
+			width: calc(100vw - 24px);
+			margin: 34px auto 48px;
+		}
+
+		.note-content {
+			padding: 0 22px;
+		}
+
+		.note-reminder {
+			padding: 22px;
+		}
+	}
+</style>

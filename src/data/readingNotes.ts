@@ -12,6 +12,14 @@ export interface ReadingNote {
 
 export const readingNotes: ReadingNote[] = [
   {
+    slug: 'jingangjing-0817-fanshiqie',
+    title: '饭食讫。',
+    desc: '一件事完成了，就要承认它已经完成，不要让心继续加戏。',
+    date: '2026-08-17',
+    category: 'jingangjing',
+    cover: '/assets/cover/cover-jingangjing-0610.png',
+  },
+  {
     slug: 'jingangjing-0812-shouyibuo',
     title: '收衣钵。',
     desc: '一件事结束后，要把它收回来，不要让它继续占着心。',
