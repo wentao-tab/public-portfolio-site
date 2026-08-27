@@ -72,15 +72,9 @@ const toolEntries = [
 ];
 
 const experienceEntries = [
-	{ role: 'Visiting Lecturer', org: 'École Intuit Lab, Delhi', date: "Aug ’26 – Dec ’26", logo: 'intuit' },
-	{ role: 'Member', org: 'South Park Commons', date: "Oct ’25 – Apr ’26", logo: 'commons' },
-	{ role: 'Visiting Lecturer', org: 'École Intuit Lab, Delhi', date: "Aug ’25 – Dec ’25", logo: 'intuit' },
-	{ role: 'Co-founder', org: 'Public Knowledge Studio', date: "Jan ’25 – Aug ’26", logo: 'pks' },
-	{ role: 'Guest Lecturer', org: 'Delhi Technological University', date: "Jan ’25 – May ’25", logo: 'dtu' },
-	{ role: 'Product Designer II', org: 'Microsoft', date: "Sep ’22 – Dec ’24", logo: 'microsoft' },
-	{ role: 'Product Designer I', org: 'Microsoft', date: "Jul ’20 – Sep ’22", logo: 'microsoft' },
-	{ role: 'MDes, Interaction Design', org: 'IDC, IIT Bombay', date: "Jul ’18 – Jun ’20", logo: 'iit' },
-	{ role: 'Design Intern', org: 'Microsoft', date: "Jun ’19 – Jul ’19", logo: 'microsoft' },
+	{ date: '2019. 6-至今', org: '南京文思海辉信息技术有限公司', role: 'UI/UX' },
+	{ date: '2016. 8-2019. 6', org: '江苏千米网络科技股份有限公司', role: 'UI' },
+	{ date: '2016. 01-2016. 08', org: '北京智鸟科技有限公司', role: 'UI' },
 ];
 
 const pageDescription = '梁文韬的个人入口：产品设计、阅读思考、AI 实验和一些正在使用的小工具。';
@@ -234,29 +228,21 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 			</div>
 		</section>
 
-		<section class="index-section experience-section" data-index-section="experience" aria-labelledby="experience-heading">
-			<header class="section-heading">
-				<h2 id="experience-heading">Experience</h2>
-			</header>
-			<div class="experience-list" data-experience-stack>
-				{experienceEntries.map((entry, index) => (
-					<div class="experience-card" data-experience-card style={`--experience-index: ${index}; --experience-count: ${experienceEntries.length}`}>
-						<div class={`experience-logo logo-${entry.logo}`} aria-hidden="true">
-							{entry.logo === 'intuit' && <><small>école</small><strong>intuit<br />lab</strong></>}
-							{entry.logo === 'commons' && <strong>◈</strong>}
-							{entry.logo === 'pks' && <strong>✱</strong>}
-							{entry.logo === 'dtu' && <strong>DEL TECH</strong>}
-							{entry.logo === 'microsoft' && <i><b></b><b></b><b></b><b></b></i>}
-							{entry.logo === 'iit' && <strong>⚙<br /><small>IIT</small></strong>}
-						</div>
-						<div class="experience-copy">
-							<div>{entry.role}</div>
-							<div>{entry.org}</div>
-						</div>
-						<time>{entry.date}</time>
+	<section class="index-section experience-section" data-index-section="experience" aria-labelledby="experience-heading">
+		<header class="section-heading">
+			<h2 id="experience-heading">工作经验描述</h2>
+		</header>
+		<div class="experience-list" data-experience-stack>
+			{experienceEntries.map((entry, index) => (
+				<div class="experience-card" data-experience-card style={`--experience-index: ${index}; --experience-count: ${experienceEntries.length}`}>
+					<time>{entry.date}</time>
+					<div class="experience-copy">
+						<div>{entry.org}</div>
 					</div>
-				))}
-			</div>
+					<div class="experience-role">{entry.role}</div>
+				</div>
+			))}
+		</div>
 		</section>
 		</div>
 	</main>
@@ -1546,15 +1532,18 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		position: relative;
 		z-index: calc(var(--experience-count, 1) - var(--experience-index, 0));
 		display: grid;
-		grid-template-columns: 64px minmax(0, 1fr) auto;
+		grid-template-columns: minmax(150px, 0.9fr) minmax(0, 2fr) minmax(72px, 0.55fr);
 		align-items: center;
-		gap: 20px;
-		min-height: 112px;
-		margin-top: -14px;
-		padding: 16px 22px;
-		border: 1px solid var(--index-border);
-		border-radius: 26px;
-		background: #1b1b1b;
+		gap: 24px;
+		min-height: 88px;
+		margin-top: 0;
+		padding: 22px 0;
+		border-top: 1px solid var(--index-border);
+		border-bottom: 0;
+		border-right: 0;
+		border-left: 0;
+		border-radius: 0;
+		background: transparent;
 		color: var(--index-ink);
 		transform-origin: bottom center;
 		scale: 1;
@@ -1573,7 +1562,7 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 
 	.experience-card:hover {
 		border-color: rgba(241, 240, 235, 0.3);
-		background: #242424;
+		background: rgba(241, 240, 235, 0.04);
 	}
 
 	.experience-logo {
@@ -1667,13 +1656,20 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 
 	.experience-copy {
 		min-width: 0;
-		font-size: clamp(1.2rem, 2.1vw, 1.6rem);
-		letter-spacing: -0.035em;
+		font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+		letter-spacing: 0;
 		line-height: 1.28;
 	}
 
 	.experience-copy div:last-child {
-		color: rgba(241, 240, 235, 0.78);
+		color: inherit;
+	}
+
+	.experience-role {
+		color: var(--index-muted);
+		font-size: clamp(1rem, 1.8vw, 1.25rem);
+		letter-spacing: 0;
+		text-align: right;
 	}
 
 	.experience-card time {
@@ -1871,11 +1867,16 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		}
 
 		.project-card,
-		.tool-card,
-		.experience-card {
+		.tool-card {
 			grid-template-columns: 60px minmax(0, 1fr) auto;
 			gap: 16px;
 			padding: 14px 16px;
+		}
+
+		.experience-card {
+			grid-template-columns: minmax(110px, 0.8fr) minmax(0, 2fr) minmax(56px, 0.45fr);
+			gap: 16px;
+			padding: 18px 0;
 		}
 
 		.project-thumb,
@@ -1894,12 +1895,18 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		}
 
 		.project-card,
-		.tool-card,
-		.experience-card {
+		.tool-card {
 			grid-template-columns: 52px minmax(0, 1fr);
 			gap: 13px;
 			min-height: 88px;
 			padding: 12px;
+		}
+
+		.experience-card {
+			grid-template-columns: minmax(0, 1fr) auto;
+			gap: 8px 12px;
+			min-height: 88px;
+			padding: 16px 0;
 		}
 
 		.project-thumb,
@@ -1911,9 +1918,25 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		}
 
 		.project-card-date,
-		.tool-card-action,
-		.experience-card time {
+		.tool-card-action {
 			display: none;
+		}
+
+		.experience-card time {
+			grid-column: 1 / -1;
+			grid-row: 1;
+			padding-top: 0;
+			font-size: 0.82rem;
+		}
+
+		.experience-copy {
+			grid-column: 1;
+			grid-row: 2;
+		}
+
+		.experience-role {
+			grid-column: 2;
+			grid-row: 2;
 		}
 	}
 </style>
