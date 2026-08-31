@@ -21,12 +21,7 @@ export const nav: Nav = {
 	avatar: withBase('/assets/author.png'),
     items: [
         { label: '首页', href: withBase('/'), target: '_self' },// target 为 '_blank' 打开新链接
-        { label: '项目', href: withBase('/project'), target: '_self' },
-        { label: '关于', href: withBase('/about'), target: '_self' },
-        { label: '书单', href: withBase('/books'), target: '_self' },
-        { label: '工具', href: withBase('/tools'), target: '_self' },
-        { label: '知识库', href: 'https://www.yuque.com/yuqueyonghuu7sppu/uoarmx', target: '_blank' },
-        { label: '笔记', href: 'https://flomoapp.com/mine/', target: '_blank' },
+        { label: '文韬认知随笔', href: withBase('/essays/'), target: '_self' },
     ],
 };
 

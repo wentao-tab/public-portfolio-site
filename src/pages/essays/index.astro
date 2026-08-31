@@ -1,0 +1,158 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../utils/paths";
+---
+
+<BaseLayout
+	title="文韬认知随笔"
+	description="记录梁文韬关于生活、自由、创造与内在秩序的思考。"
+	keywords="梁文韬,认知随笔,人生思考,生活,自由,创造"
+>
+	<main class="essay-index">
+		<header class="essay-header">
+			<p class="essay-kicker">WENTAO'S COGNITION NOTES</p>
+			<h1 class="font-huiwen">文韬认知随笔</h1>
+			<p>把对生活、自由、创造和内在秩序的思考，慢慢留下来。</p>
+		</header>
+
+		<section class="essay-list" aria-label="文章列表">
+			<a class="essay-card" href={withBase('/essays/life-manual/')}>
+				<div class="essay-cover">
+					<img
+						src={withBase('/assets/essays/wentao-life-manual.png')}
+						alt="文韬的人生说明书框架图"
+					/>
+				</div>
+				<div class="essay-copy">
+					<p class="essay-date">2026.08.31 · 人生框架</p>
+					<h2>文韬的人生说明书</h2>
+					<p>三个长期目标、七种长期资产、五个长期机制，最后回到：我想成为怎样的人。</p>
+					<span>阅读全文 →</span>
+				</div>
+			</a>
+		</section>
+	</main>
+</BaseLayout>
+
+<style lang="scss">
+	:global(body) {
+		background: #fbfaf6;
+	}
+
+	.essay-index {
+		width: min(1120px, calc(100% - 40px));
+		min-height: calc(100vh - 160px);
+		margin: 0 auto;
+		padding: clamp(72px, 10vw, 132px) 0 120px;
+	}
+
+	.essay-header {
+		max-width: 760px;
+		margin-bottom: 64px;
+
+		h1 {
+			margin: 12px 0 22px;
+			color: var(--color-100);
+			font-size: clamp(3rem, 7vw, 6.4rem);
+			font-weight: 400;
+			line-height: 1.05;
+			letter-spacing: -0.04em;
+		}
+
+		p:last-child {
+			max-width: 560px;
+			margin: 0;
+			color: var(--color-300);
+			font-size: 1.05rem;
+			line-height: 1.9;
+		}
+	}
+
+	.essay-kicker,
+	.essay-date {
+		margin: 0;
+		color: #9b7a35;
+		font-family: var(--font-type);
+		font-size: 0.76rem;
+		letter-spacing: 0.1em;
+	}
+
+	.essay-card {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+		gap: 0;
+		overflow: hidden;
+		border: 1px solid rgba(34, 47, 40, 0.12);
+		border-radius: 20px;
+		background: #fff;
+		box-shadow: 0 18px 60px rgba(49, 55, 45, 0.08);
+		color: inherit;
+		text-decoration: none;
+		transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+		&:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 24px 70px rgba(49, 55, 45, 0.13);
+			text-decoration: none;
+		}
+	}
+
+	.essay-cover {
+		min-height: 360px;
+		background: #f1ecdc;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.essay-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: clamp(32px, 5vw, 64px);
+
+		h2 {
+			margin: 18px 0 20px;
+			color: #19231f;
+			font-family: 'Huiwen-mincho', serif;
+			font-size: clamp(2rem, 3vw, 3rem);
+			font-weight: 400;
+			line-height: 1.28;
+		}
+
+		p:not(.essay-date) {
+			margin: 0 0 32px;
+			color: #66706b;
+			line-height: 1.85;
+		}
+
+		span {
+			color: #82611d;
+			font-weight: 600;
+		}
+	}
+
+	@media (max-width: 760px) {
+		.essay-index {
+			width: min(100% - 28px, 1120px);
+			padding-top: 56px;
+		}
+
+		.essay-header {
+			margin-bottom: 40px;
+		}
+
+		.essay-card {
+			grid-template-columns: 1fr;
+		}
+
+		.essay-cover {
+			min-height: 0;
+			aspect-ratio: 16 / 9;
+		}
+	}
+</style>
