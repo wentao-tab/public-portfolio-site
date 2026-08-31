@@ -21,7 +21,6 @@ export const nav: Nav = {
 	avatar: withBase('/assets/author.png'),
     items: [
         { label: '首页', href: withBase('/'), target: '_self' },// target 为 '_blank' 打开新链接
-        { label: '文韬认知随笔', href: withBase('/essays/'), target: '_self' },
     ],
 };
 
