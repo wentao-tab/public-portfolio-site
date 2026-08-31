@@ -583,7 +583,6 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 	};
 
 	setupFoldStack('[data-tool-stack]', '[data-tool-card]', 'is-tool-waiting', '--tool-depth');
-	setupFoldStack('[data-experience-stack]', '[data-experience-card]', 'is-experience-waiting', '--experience-depth');
 
 
 </script>
@@ -1552,12 +1551,6 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 
 	.experience-card:first-child {
 		margin-top: 0;
-	}
-
-	.experience-card.is-experience-waiting {
-		position: sticky;
-		bottom: calc(56px - 8px * var(--experience-depth, 0));
-		scale: calc(1 - (0.14 * var(--experience-depth, 0) / 3));
 	}
 
 	.experience-card:hover {
