@@ -46,6 +46,11 @@ export const books2026: BookItem[] = [
 	{ no: 37, title: '最美的小事', note: '把人生的裂缝写成温柔的回答，像一封给困顿时刻的长信。', mark: '斯特雷德', tone: 'rose' },
 	{ no: 38, title: '反与正；婚礼集；夏天集', note: '在反复与正面之间，写亲密关系、成长和季节里那些难以说尽的经验。', tone: 'paper' },
 	{ no: 39, title: '津巴多普心理学', note: '从行为、环境与选择理解人，认识心理如何影响日常生活。', tone: 'ink' },
+	{ no: 40, title: '智能简史', tone: 'blue' },
+	{ no: 41, title: '我们的问题是什么', tone: 'gold' },
+	{ no: 42, title: '燕子呢喃', tone: 'sage' },
+	{ no: 43, title: '白鹤鸣叫', tone: 'paper' },
+	{ no: 44, title: '如何获得内心安宁', tone: 'stone' },
 ];
 
 export const bookStats = {
