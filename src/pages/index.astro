@@ -166,7 +166,7 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 					<path class="home-mark-layer" data-home-mark-layer data-lag="0.32" stroke="#963D97" d="M20 26H88M54 26V134M108 134L140 24L172 134M119 96H161M230 24C201 24 190 45 190 79C190 113 201 134 230 134C259 134 270 113 270 79C270 45 259 24 230 24Z" pathLength="1" stroke-width="11.2" stroke-dasharray="1" stroke-dashoffset="1" />
 					<path class="home-mark-layer" data-home-mark-layer data-lag="0.40" stroke="#009DDC" d="M20 26H88M54 26V134M108 134L140 24L172 134M119 96H161M230 24C201 24 190 45 190 79C190 113 201 134 230 134C259 134 270 113 270 79C270 45 259 24 230 24Z" pathLength="1" stroke-width="11.2" stroke-dasharray="1" stroke-dashoffset="1" />
 					<path class="home-mark-layer" data-home-mark-layer data-lag="0.52" stroke="#242624" d="M20 26H88M54 26V134M108 134L140 24L172 134M119 96H161M230 24C201 24 190 45 190 79C190 113 201 134 230 134C259 134 270 113 270 79C270 45 259 24 230 24Z" pathLength="1" stroke-width="11.2" stroke-dasharray="1" stroke-dashoffset="1" />
-					<circle data-home-mark-dot cx="20" cy="26" r="5.6" fill="#242624" />
+					<circle data-home-mark-dot cx="20" cy="26" r="0" fill="#242624" />
 				</svg>
 			</div>
 		</section>
@@ -391,7 +391,10 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 				layer.style.strokeDashoffset = String(1 - layerDrawn);
 				layer.setAttribute('stroke-width', String(strokeWidth));
 			});
-			if (homeMarkDot) homeMarkDot.setAttribute('r', String(strokeWidth / 2));
+			if (homeMarkDot) {
+				const dotReveal = smoothStep(markProgress / 0.04);
+				homeMarkDot.setAttribute('r', String(strokeWidth / 2 * dotReveal));
+			}
 			/* The original does not replace the mark with a second logo. The plate
 				and the traced mark share one scale value; the plate only fades in over
 				the same settling band, then both release from sticky together. */
