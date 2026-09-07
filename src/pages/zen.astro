@@ -1,0 +1,85 @@
+---
+import MainHead from '../components/MainHead.astro';
+
+const zenUrl = 'https://yinian-sign.ufp818001.chatgpt.site/zen?models=separate&embed=portfolio&v=e50ee42';
+---
+
+<html lang="zh-CN">
+	<head>
+		<MainHead
+			title="净心禅堂｜梁文韬"
+			description="点一炷香，听一声钟，让心在经句之前安静下来。"
+			keywords="净心禅堂,佛像,点香,静坐,冥想,梁文韬"
+			canonicalPath="/zen/"
+		/>
+	</head>
+	<body class="zen-embed-body">
+		<a class="back-link" href="/tools/" aria-label="返回小工具">← 返回小工具</a>
+		<iframe
+			class="zen-frame"
+			src={zenUrl}
+			title="净心禅堂"
+			loading="eager"
+			allow="autoplay; fullscreen; clipboard-write"
+		></iframe>
+	</body>
+</html>
+
+<style>
+	:root {
+		color-scheme: dark;
+	}
+
+	body.zen-embed-body {
+		margin: 0;
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		background: #090806;
+	}
+
+	.zen-frame {
+		display: block;
+		width: 100vw;
+		height: 100vh;
+		border: 0;
+		background: #090806;
+	}
+
+	.back-link {
+		position: fixed;
+		right: 22px;
+		bottom: 22px;
+		z-index: 10;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 9px 13px;
+		border: 1px solid rgba(239, 220, 184, 0.26);
+		border-radius: 999px;
+		background: rgba(18, 13, 9, 0.58);
+		color: rgba(255, 239, 214, 0.76);
+		font-size: 12px;
+		line-height: 1;
+		text-decoration: none;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(12px);
+		transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+	}
+
+	.back-link:hover,
+	.back-link:focus-visible {
+		border-color: rgba(240, 194, 125, 0.7);
+		background: rgba(57, 37, 20, 0.76);
+		color: #f0c27d;
+	}
+
+	@media (max-width: 720px) {
+		.back-link {
+			right: 12px;
+			bottom: 12px;
+			padding: 8px 11px;
+			font-size: 11px;
+		}
+	}
+</style>

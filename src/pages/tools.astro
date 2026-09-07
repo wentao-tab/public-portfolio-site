@@ -11,6 +11,8 @@ const wenxiToolUrl = 'https://wentao-tab.github.io/Wenxi-ai-clone/';
 const wenxiCover = withBase('/assets/cover/cover-wenxi-prompt-atlas.png');
 const sleepToolUrl = withBase('/sleep/');
 const sleepToolCover = withBase('/assets/cover/cover-linlai-tool.png');
+const zenToolUrl = withBase('/zen/');
+const zenToolCover = 'https://yinian-sign.ufp818001.chatgpt.site/assets/zen/backgrounds/dawn.jpg';
 const jingangjingToolUrl = withBase('/jingangjing/');
 const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
 const yingzuorushiToolUrl = withBase('/sutra-chat/');
@@ -63,6 +65,22 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 							<p>一张从南京出发的旅行手账地图，用来快速比较周边目的地、交通方式和门到门耗时。</p>
 						</div>
 						<a class="tool-link" href={nanjingToolUrl} target="_blank" rel="noreferrer">
+							打开完整工具
+							<span>↗</span>
+						</a>
+					</div>
+				</article>
+				<article class="tool-card">
+					<a class="tool-preview zen-preview" href={zenToolUrl} aria-label="打开净心禅堂">
+						<img src={zenToolCover} alt="净心禅堂，佛像、点香与静坐空间" loading="lazy" />
+					</a>
+					<div class="tool-info">
+						<div>
+							<p class="tool-kicker">ZEN HALL</p>
+							<h2>净心禅堂</h2>
+							<p>点一炷香，听一声钟，让心在经句之前安静下来。</p>
+						</div>
+						<a class="tool-link" href={zenToolUrl}>
 							打开完整工具
 							<span>↗</span>
 						</a>
@@ -216,6 +234,10 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 
 	.sutra-chat-preview {
 		background: #071724;
+	}
+
+	.zen-preview {
+		background: #17120d;
 	}
 
 	.journal-preview {
