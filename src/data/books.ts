@@ -6,6 +6,42 @@ export interface BookItem {
 	tone: string;
 }
 
+export const books2025: BookItem[] = [
+	{ no: 1, title: '关于说话的一切', tone: 'sage' },
+	{ no: 2, title: '罪与罚', tone: 'ink' },
+	{ no: 3, title: '无名咖啡馆', tone: 'earth' },
+	{ no: 4, title: '一生之敌', tone: 'wine' },
+	{ no: 5, title: '人生真相', tone: 'stone' },
+	{ no: 6, title: '一句顶一万句', tone: 'paper' },
+	{ no: 7, title: '输出力', tone: 'blue' },
+	{ no: 8, title: '精力管理', tone: 'sea' },
+	{ no: 9, title: '掌控习惯', tone: 'sun' },
+	{ no: 10, title: '延迟满足', tone: 'gold' },
+	{ no: 11, title: '被讨厌的勇气', tone: 'rose' },
+	{ no: 12, title: '论恐惧', tone: 'ink' },
+	{ no: 13, title: '人生因孤单而丰盛', tone: 'sage' },
+	{ no: 14, title: '如何才能合理痛快生活', tone: 'earth' },
+	{ no: 15, title: '与预期性焦虑共舞', tone: 'blue' },
+	{ no: 16, title: '沉默的大多数', tone: 'paper' },
+	{ no: 17, title: '人生海海', tone: 'sea' },
+	{ no: 18, title: '人生枷锁', tone: 'wine' },
+	{ no: 19, title: '透过结构看世界', tone: 'stone' },
+	{ no: 20, title: '鱼不在乎', tone: 'sun' },
+	{ no: 21, title: '平凡世界1', tone: 'sage' },
+	{ no: 22, title: '占有还是存在', tone: 'ink' },
+	{ no: 23, title: '反脆弱', mark: '塔勒布 ❤️', tone: 'gold' },
+	{ no: 24, title: '西西弗的神话', tone: 'paper' },
+	{ no: 25, title: '随机漫步的傻瓜', mark: '塔勒布 ❤️', tone: 'blue' },
+	{ no: 26, title: '平凡世界2', tone: 'earth' },
+	{ no: 27, title: '地下室手记', tone: 'ink' },
+	{ no: 28, title: '过于喧嚣的孤独', tone: 'rose' },
+	{ no: 29, title: '身份的焦虑', tone: 'stone' },
+	{ no: 30, title: '黑天鹅', mark: '塔勒布 ❤️', tone: 'ink' },
+	{ no: 31, title: '瓦尔登湖', mark: '卢梭', tone: 'sea' },
+	{ no: 32, title: '平凡世界3', tone: 'sun' },
+	{ no: 33, title: '人生解忧：佛学入门四十讲', tone: 'gold' },
+];
+
 export const books2026: BookItem[] = [
 	{ no: 1, title: '窄门', note: '文字极美，读后余韵悠长，隐喻中藏着令人深陷的代入感。', tone: 'sage' },
 	{ no: 2, title: '平凡世界3', note: '普通人平凡而伟大的故事，最朴实的叙述最动人。', tone: 'earth' },

@@ -1,0 +1,9 @@
+---
+import BookShelf from "../../components/BookShelf.astro";
+import { books2025 } from "../../data/books";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="我的书单-2025" description="2025 年阅读书单。">
+  <BookShelf books={books2025} title="我的书单-2025" year="2025" />
+</BaseLayout>
