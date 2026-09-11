@@ -48,10 +48,9 @@ export const books2026: BookItem[] = [
 	{ no: 39, title: '津巴多普心理学', note: '从行为、环境与选择理解人，认识心理如何影响日常生活。', tone: 'ink' },
 	{ no: 40, title: '智能简史', tone: 'blue' },
 	{ no: 41, title: '我们的问题是什么', tone: 'gold' },
-	{ no: 42, title: '燕子呢喃', tone: 'sage' },
-	{ no: 43, title: '白鹤鸣叫', tone: 'paper' },
-	{ no: 44, title: '如何获得内心安宁', tone: 'stone' },
-	{ no: 45, title: '明朝那些年', tone: 'earth' },
+	{ no: 42, title: '燕子呢喃，白鹤鸣叫', tone: 'sage' },
+	{ no: 43, title: '如何获得内心安宁', tone: 'stone' },
+	{ no: 44, title: '明朝那些年', tone: 'earth' },
 ];
 
 export const bookStats = {
