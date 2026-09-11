@@ -4,11 +4,12 @@ import type { BookItem } from "../data/books";
 interface Props {
   books: BookItem[];
   coverByBookNo?: Record<number, number>;
+  coverDirectory?: string;
   title?: string;
   year: string;
 }
 
-const { books, coverByBookNo = {}, title = "我的书单", year } = Astro.props;
+const { books, coverByBookNo = {}, coverDirectory = "books", title = "我的书单", year } = Astro.props;
 const formatBookNo = (no: number) => String(no).padStart(2, "0");
 const notesCount = books.filter((book) => book.note).length;
 const rereadCount = books.filter((book) => book.mark?.includes("刷")).length;
@@ -41,7 +42,7 @@ const otherYearUrl = year === "2026" ? "/books/2025/" : "/books/";
     <ol class="books-grid">
       {books.map((book) => {
         const coverNo = coverByBookNo[book.no];
-        const cover = coverNo ? `/assets/books/${formatBookNo(coverNo)}.jpg` : undefined;
+        const cover = coverNo ? `/assets/${coverDirectory}/${formatBookNo(coverNo)}.jpg` : undefined;
 
         return (
           <li class={`book-card tone-${book.tone}`}>
