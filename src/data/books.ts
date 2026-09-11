@@ -51,6 +51,8 @@ export const books2026: BookItem[] = [
 	{ no: 42, title: '燕子呢喃，白鹤鸣叫', tone: 'sage' },
 	{ no: 43, title: '如何获得内心安宁', tone: 'stone' },
 	{ no: 44, title: '明朝那些年', tone: 'earth' },
+	{ no: 45, title: '大雪降至', tone: 'blue' },
+	{ no: 46, title: '落在我身上的雨', tone: 'paper' },
 ];
 
 export const bookStats = {
