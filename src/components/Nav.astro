@@ -1,273 +1,168 @@
 ---
-// import Icon, { Props as IconProps } from './Icon.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import Effect from "../effects/Effect.astro";
-import {nav} from '../data/content';
-import EffectSwitch from "../effects/EffectSwitch.astro";
-import NavMobile from "../components/NavMobile.astro";
-import GitHubStars from './GitHubStars.astro';
+import { nav } from '../data/content';
 import { withBase } from '../utils/paths';
 
 const currentPath = Astro.url.pathname;
+const currentYear = new Date().getFullYear();
 ---
 
-<nav>
+<nav class="site-nav" aria-label="主导航">
 	<div class="container nav-wrapper">
-		<div class="menu-header">
-			<div class="site-title">
-				<a href={withBase('/')} class="author">
-					<figure class="avatar">
-						<img class="avatar__img"
-							src={nav.avatar} alt=""
-							draggable="false">
-					</figure>
-				</a>
-				<EffectSwitch  transition:persist/>
-			</div>
-		</div>
-		<div id="menu-content">
-			<div class="menu-footer pc-nav">
-				<ul class="nav-items">
-					{nav.items?.map(item => (
-						<li>
-							<a
-							 	aria-current={currentPath === item.href ? 'page' : undefined}
-								 class:list={[
-									'link',
-									{
-										active: item.href === withBase('/')
-											? currentPath === item.href
-											: currentPath.startsWith(item.href),
-									},
-								]}
-								href={item.href}
-								target={item.target || '_self'}
-							>
-								{item.label}
-							</a>
-						</li>
-    				))}
-					<li>
-						<GitHubStars />
-					</li>
-				</ul>
+		<a href={withBase('/')} class="site-brand" aria-label="返回文韬个人首页">
+			<span class="site-brand__name">WENTAO</span>
+			<span class="site-brand__meta">PERSONAL INDEX / {currentYear}</span>
+		</a>
 
-				<div class="theme-toggle" style="transform:scale(0.75)">
-					<ThemeToggle />
-				</div>
-			</div>
-			<NavMobile/>
+		<div class="site-nav__actions">
+			<ul class="site-nav__links">
+				{nav.items?.map(item => (
+					<li>
+						<a
+							aria-current={currentPath === item.href ? 'page' : undefined}
+							class:list={[
+								'site-nav__link',
+								{
+									'is-active': item.href === withBase('/')
+										? currentPath === item.href
+										: currentPath.startsWith(item.href),
+								},
+							]}
+							href={item.href}
+							target={item.target || '_self'}
+						>
+							{item.label}
+						</a>
+					</li>
+				))}
+				<li><a class="site-nav__link" href="https://github.com/wentao-tab" target="_blank" rel="noreferrer">GitHub ↗</a></li>
+			</ul>
+			<div class="site-nav__theme"><ThemeToggle /></div>
 		</div>
 	</div>
 </nav>
-<Effect transition:persist/>
-<script>
-	class MenuButton extends HTMLElement {
-		constructor() {
-			super();
-
-			// Inject menu toggle button when JS runs.
-			this.appendChild(this.querySelector('template')!.content.cloneNode(true));
-			const btn = this.querySelector('button')!;
-
-			// Hide menu (shown by default to support no-JS browsers).
-			const menu = document.getElementById('menu-content')!;
-			menu.hidden = true;
-
-			/** Set whether the menu is currently expanded or collapsed. */
-			const setExpanded = (expand: boolean) => {
-				btn.setAttribute('aria-expanded', expand ? 'true' : 'false');
-				menu.hidden = !expand;
-			};
-
-			// Toggle menu visibility when the menu button is clicked.
-			btn.addEventListener('click', () => setExpanded(menu.hidden));
-
-			// Hide menu button for large screens.
-			const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
-				setExpanded(e.matches);
-				btn.hidden = e.matches;
-			};
-			const mediaQueries = window.matchMedia('(min-width: 50em)');
-			handleViewports(mediaQueries);
-			mediaQueries.addEventListener('change', handleViewports);
-		}
-	}
-	customElements.define('menu-button', MenuButton);
-</script>
 
 <style>
-
-	nav {
-		z-index: 9999;
-		position: relative;
-		font-family: var(--font-brand);
-		font-weight: 500;
+	.site-nav {
 		position: sticky;
 		top: 0;
-		-webkit-backdrop-filter: saturate(300%) blur(5px);
-		backdrop-filter: saturate(300%) blur(5px);
-		background-color: rgba(var(--color-999-rgb), 0.65);
+		z-index: 9999;
+		border-bottom: 1px solid var(--color-700);
+		background: rgba(var(--color-999-rgb), 0.92);
+		-webkit-backdrop-filter: blur(14px);
+		backdrop-filter: blur(14px);
 	}
-	.bg-ticker{
+
+	.nav-wrapper,
+	.site-nav__actions,
+	.site-nav__links,
+	.site-brand {
+		display: flex;
+		align-items: center;
+	}
+
+	.nav-wrapper {
+		min-height: 4.5rem;
+		justify-content: space-between;
+		gap: 1.5rem;
+	}
+
+	.site-brand {
+		gap: 0.8rem;
+		color: var(--color-100);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.site-brand__name {
+		font-family: 'Courier New', monospace;
+		font-size: 0.92rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+	}
+
+	.site-brand__meta {
+		padding-left: 0.8rem;
+		border-left: 1px solid var(--color-600);
+		color: var(--color-400);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+	}
+
+	.site-nav__actions {
+		gap: 1.1rem;
+	}
+
+	.site-nav__links {
+		gap: 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-nav__link {
+		color: var(--color-400);
+		font-family: var(--font-brand);
+		font-size: 0.86rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-decoration: none;
+		transition: color 180ms ease;
+	}
+
+	.site-nav__link:hover,
+	.site-nav__link:focus-visible,
+	.site-nav__link.is-active {
+		color: var(--color-100);
+	}
+
+	.site-nav__theme {
+		display: flex;
+		align-items: center;
+	}
+
+	:global(.site-nav theme-toggle button) {
+		position: relative;
+		width: 2.1rem;
+		height: 2.1rem;
+		border: 1px solid var(--color-600);
+		border-radius: 0.35rem;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	:global(.site-nav theme-toggle .icon) {
 		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		top: -50px;
+		inset: 0;
 		width: 100%;
 		height: 100%;
-		z-index: -1;
-	}
-	.menu-header {
-		display: flex;
-		justify-content: space-between;
-		gap: 0.5rem;
-		padding: 0;
+		padding: 0.5rem;
+		color: var(--color-100) !important;
 	}
 
-	.site-title {
-		display: flex;
-		gap: 0.5rem;
-		justify-content: flex-start;
-		align-items: center;
-		line-height: 1.1;
-		color: var(--color-0);
-		font-weight: 400;
-		text-decoration: none;
-		font-size: 1.5rem;
-		letter-spacing: 0.1px;
-		&:hover{
-			color:rgb(236, 72, 113);
-		}
-	}
-	.logo {
-		max-height: 30px;
-	}
-	.logo path{
-		fill: var(--color-100);
-	}
-    .avatar{
-        display: inline-block;
-        position: relative;
-        line-height: 1;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-	.avatar__img{
-		display: block;
-		border-radius: 50%;
-    }
-	.avatar__name{
-		line-height: normal;
-		font-weight: 400;
-		font-size: 22px;
-    }
-	.nav-wrapper{
-		display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 1rem;
-	}
-	.nav-items {
-		margin: 0;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		font-size:1rem;
-		font-weight: normal;
-		line-height:1;
-		list-style: none;
-		padding: 0;
-		position: relative;
-		border: 0;
-		gap: calc(var(--gap)*1.5);
-	}
-	.nav-items li{
-		margin:0;
-	}
-	:global(.github-stars) {
-		flex: none;
-	}
-	.link {
-		display: inline-block;
-		color: var(--color-300);
-		text-decoration: none;
+	:global(.site-nav theme-toggle .icon.light::before) {
+		display: none;
 	}
 
-	.link.active {
-		color: var(--color-100);
-		font-weight: bold;
+	:global(html:not(.theme-dark) .site-nav theme-toggle .icon.dark),
+	:global(.theme-dark .site-nav theme-toggle .icon.light) {
+		display: none;
 	}
 
-	.menu-footer {
-		--icon-size: var(--text-xl);
-		--icon-padding: 0.5rem;
-		display: flex;
-		justify-content: space-between;
-		gap: 0.75rem;
-		padding: .35rem 0rem;
+	:global(.site-nav theme-toggle button:hover) {
+		border-color: var(--color-400);
+		background: var(--color-800);
 	}
 
-	.socials {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.625rem;
-		font-size: var(--icon-size);
-	}
-
-	.social {
-		display: flex;
-		padding: var(--icon-padding);
-		text-decoration: none;
-		color: var(--accent-dark);
-		transition: color var(--theme-transition);
-	}
-
-	.social:hover,
-	.social:focus {
-		color: var(--accent-text-over);
-	}
-
-	.theme-toggle {
-		display: flex;
-		align-items: center;
-		height: calc(var(--icon-size) + 2 * var(--icon-padding));
-	}
-	.languages {
-		display: flex;
-		align-items: center;
-		height: calc(var(--icon-size) + 2 * var(--icon-padding));
-	}
-
-	@media (min-width: 60em) {
-		.socials {
-			display: flex;
-			justify-content: flex-end;
-			gap: 0;
-		}
-	}
-	@media (max-width: 576px) {
-		.nav-wrapper{
-			display: flex;
-			align-items: center;
-			gap: 0rem;
-
-		}
-		.menu-header{
-			padding:8px 0;
-		}
-		.menu-footer{
-			padding: 0;
-		}
-	}
-	.pc-nav{
- 	 	display: none;
-	}
-	@media (min-width: 767px) {
-		.pc-nav{
-			display: flex;
-		}
+	@media (max-width: 42rem) {
+		.nav-wrapper { min-height: 4rem; gap: 0.75rem; }
+		.site-brand { gap: 0.55rem; }
+		.site-brand__name { font-size: 0.78rem; }
+		.site-brand__meta { padding-left: 0.55rem; font-size: 0.58rem; letter-spacing: 0.08em; }
+		.site-nav__links { gap: 0.7rem; }
+		.site-nav__links li:last-child { display: none; }
+		.site-nav__link { font-size: 0.78rem; }
+		.site-nav__actions { gap: 0.6rem; }
 	}
 </style>
