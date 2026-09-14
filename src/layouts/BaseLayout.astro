@@ -10,8 +10,10 @@ interface Props {
 	keywords?: string | undefined;
 	favicon?: string | undefined;
 	enableViewTransitions?: boolean | undefined;
+	enableReleaseProbe?: boolean | undefined;
 }
-const { title, description,keywords, favicon, enableViewTransitions = false } = Astro.props;
+const { title, description,keywords, favicon, enableViewTransitions = false, enableReleaseProbe = false } = Astro.props;
+const buildId = import.meta.env.PUBLIC_BUILD_ID ?? 'local';
 ---
 <html lang=en transition:animate={enableViewTransitions ? 'none' : undefined}>
 	<head>
@@ -29,6 +31,34 @@ const { title, description,keywords, favicon, enableViewTransitions = false } = 
 			// Add “loaded” class once the document has completely loaded.
 			addEventListener('load', () => document.documentElement.classList.add('loaded'));
 		</script>
+		{enableReleaseProbe && (
+			<script define:vars={{ buildId }}>
+				const checkForNewBookShelfBuild = async () => {
+					if (buildId === 'local') return;
+
+					try {
+						const response = await fetch(`/site-version.json?ts=${Date.now()}`, { cache: 'no-store' });
+						const { version } = await response.json();
+
+						if (!version || version === buildId) return;
+
+						const freshUrl = new URL(window.location.href);
+						if (freshUrl.searchParams.get('v') !== version) {
+							freshUrl.searchParams.set('v', version);
+							window.location.replace(freshUrl);
+						}
+					} catch {
+						// Keep the current shelf usable if a version check cannot reach Pages.
+					}
+				};
+
+				checkForNewBookShelfBuild();
+				addEventListener('visibilitychange', () => {
+					if (document.visibilityState === 'visible') checkForNewBookShelfBuild();
+				});
+				setInterval(checkForNewBookShelfBuild, 120000);
+			</script>
+		)}
 
 		<style>
 			:root {

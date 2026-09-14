@@ -13,6 +13,8 @@ const { books, coverByBookNo = {}, coverDirectory = "books", title = "我的书�
 const formatBookNo = (no: number) => String(no).padStart(2, "0");
 const notesCount = books.filter((book) => book.note).length;
 const rereadCount = books.filter((book) => book.mark?.includes("刷")).length;
+const buildId = import.meta.env.PUBLIC_BUILD_ID;
+const currentBuildUrl = (path: string) => buildId && buildId !== "local" ? `${path}?v=${buildId}` : path;
 const bookTurn = {
   forwards: {
     old: { name: "book-turn-forward-out", duration: "560ms", easing: "cubic-bezier(0.32, 0.72, 0, 1)", fillMode: "both" },
@@ -43,9 +45,9 @@ const bookTurn = {
       </div>
       <div class="books-toolbar-tail">
         <nav class="books-year-switcher" aria-label="切换书单年份">
-          <a class:list={["books-year-tab", { "is-active": year === "2026" }]} href="/books/">2026</a>
+          <a class:list={["books-year-tab", { "is-active": year === "2026" }]} href={currentBuildUrl("/books/")}>2026</a>
           <span aria-hidden="true">/</span>
-          <a class:list={["books-year-tab", { "is-active": year === "2025" }]} href="/books/2025/">2025</a>
+          <a class:list={["books-year-tab", { "is-active": year === "2025" }]} href={currentBuildUrl("/books/2025/")}>2025</a>
         </nav>
         <p id="books-list-title" class="books-total">共 {books.length} 本</p>
       </div>
