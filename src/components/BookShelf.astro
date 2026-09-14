@@ -13,20 +13,28 @@ const { books, coverByBookNo = {}, coverDirectory = "books", title = "我的书�
 const formatBookNo = (no: number) => String(no).padStart(2, "0");
 const notesCount = books.filter((book) => book.note).length;
 const rereadCount = books.filter((book) => book.mark?.includes("刷")).length;
-const otherYear = year === "2026" ? "2025" : "2026";
-const otherYearUrl = year === "2026" ? "/books/2025/" : "/books/";
+const bookTurn = {
+  forwards: {
+    old: { name: "book-turn-forward-out", duration: "560ms", easing: "cubic-bezier(0.32, 0.72, 0, 1)", fillMode: "both" },
+    new: { name: "book-turn-forward-in", duration: "560ms", easing: "cubic-bezier(0.32, 0.72, 0, 1)", fillMode: "both" },
+  },
+  backwards: {
+    old: { name: "book-turn-back-out", duration: "560ms", easing: "cubic-bezier(0.32, 0.72, 0, 1)", fillMode: "both" },
+    new: { name: "book-turn-back-in", duration: "560ms", easing: "cubic-bezier(0.32, 0.72, 0, 1)", fillMode: "both" },
+  },
+};
 ---
 
 <main class="books-page">
   <section class="books-hero" aria-labelledby="books-title">
     <div>
-      <p class="books-kicker">READING SHELF · {year}</p>
-      <h1 id="books-title">{title}</h1>
+      <p class="books-kicker">READING SHELF</p>
+      <h1 id="books-title" transition:name="books-title" transition:animate="none">{title}</h1>
     </div>
     <p class="books-lede">把读过的、反复读的和仍在心里回响的书，留在这里。</p>
   </section>
 
-  <section class="books-list-section" aria-labelledby="books-list-title">
+  <section class="books-list-section" aria-labelledby="books-list-title" transition:name="books-shelf" transition:animate={bookTurn}>
     <div class="books-toolbar">
       <div class="books-filters" aria-label="书单概览">
         <span class="books-filter is-active">已读 · {books.length}</span>
@@ -34,7 +42,11 @@ const otherYearUrl = year === "2026" ? "/books/2025/" : "/books/";
         {rereadCount > 0 && <span class="books-filter">重读 · {rereadCount}</span>}
       </div>
       <div class="books-toolbar-tail">
-        <a class="books-year-link" href={otherYearUrl}>{otherYear} 书单 <span aria-hidden="true">→</span></a>
+        <nav class="books-year-switcher" aria-label="切换书单年份">
+          <a class:list={["books-year-tab", { "is-active": year === "2026" }]} href="/books/">2026</a>
+          <span aria-hidden="true">/</span>
+          <a class:list={["books-year-tab", { "is-active": year === "2025" }]} href="/books/2025/">2025</a>
+        </nav>
         <p id="books-list-title" class="books-total">共 {books.length} 本</p>
       </div>
     </div>
@@ -157,14 +169,31 @@ const otherYearUrl = year === "2026" ? "/books/2025/" : "/books/";
     color: #fff;
   }
 
-  .books-year-link {
-    color: #2d766e;
-    font-size: 0.78rem;
-    text-decoration: none;
+  .books-year-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    color: #a0aaa4;
+    font: 0.72rem/1 "Courier New", monospace;
+    letter-spacing: 0.04em;
   }
 
-  .books-year-link:hover { text-decoration: underline; }
-  .books-year-link span { padding-left: 0.15rem; }
+  .books-year-tab {
+    color: inherit;
+    text-decoration: none;
+    transition: color 180ms ease, transform 180ms ease;
+  }
+
+  .books-year-tab:hover {
+    color: #2d766e;
+    transform: translateY(-1px);
+  }
+
+  .books-year-tab.is-active {
+    color: #2d766e;
+    font-weight: 700;
+    pointer-events: none;
+  }
 
   .books-total {
     margin: 0;
@@ -319,5 +348,42 @@ const otherYearUrl = year === "2026" ? "/books/2025/" : "/books/";
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.9rem 0.85rem;
     }
+  }
+</style>
+
+<style is:global>
+  ::view-transition-group(books-shelf) {
+    perspective: 1800px;
+  }
+
+  ::view-transition-old(books-shelf),
+  ::view-transition-new(books-shelf) {
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  @keyframes book-turn-forward-out {
+    from { opacity: 1; transform: perspective(1800px) rotateY(0deg); transform-origin: left center; }
+    to { opacity: 0.16; transform: perspective(1800px) rotateY(-78deg); transform-origin: left center; }
+  }
+
+  @keyframes book-turn-forward-in {
+    from { opacity: 0.16; transform: perspective(1800px) rotateY(78deg); transform-origin: right center; }
+    to { opacity: 1; transform: perspective(1800px) rotateY(0deg); transform-origin: right center; }
+  }
+
+  @keyframes book-turn-back-out {
+    from { opacity: 1; transform: perspective(1800px) rotateY(0deg); transform-origin: right center; }
+    to { opacity: 0.16; transform: perspective(1800px) rotateY(78deg); transform-origin: right center; }
+  }
+
+  @keyframes book-turn-back-in {
+    from { opacity: 0.16; transform: perspective(1800px) rotateY(-78deg); transform-origin: left center; }
+    to { opacity: 1; transform: perspective(1800px) rotateY(0deg); transform-origin: left center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(books-shelf),
+    ::view-transition-new(books-shelf) { animation-duration: 1ms !important; }
   }
 </style>
