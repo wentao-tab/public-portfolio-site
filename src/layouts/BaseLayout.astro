@@ -12,7 +12,7 @@ interface Props {
 	enableViewTransitions?: boolean | undefined;
 	enableReleaseProbe?: boolean | undefined;
 }
-const { title, description,keywords, favicon, enableViewTransitions = false, enableReleaseProbe = false } = Astro.props;
+const { title, description,keywords, favicon, enableViewTransitions = false, enableReleaseProbe = true } = Astro.props;
 const buildId = import.meta.env.PUBLIC_BUILD_ID ?? 'local';
 ---
 <html lang=en transition:animate={enableViewTransitions ? 'none' : undefined}>
