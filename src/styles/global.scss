@@ -501,6 +501,17 @@ body {
 		}
 	}
 }
+
+/* 隐藏页面本身的右侧滚动条，保留页面与内部区域的滚动能力。 */
+html,
+body {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		width: 0 !important;
+	}
+}
 /*------------------------------------------------------------------
 	 #common base class  style
 	-------------------------------------------------------------------*/
