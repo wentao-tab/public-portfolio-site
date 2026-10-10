@@ -102,39 +102,39 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 
 			<div class="sticker-board" aria-label="个人入口贴纸">
 				<a class="sticker sticker-generated sticker-notebook" href={withBase('/jingangjing/')} data-home-text="慢慢读书">
-					<img src={withBase('/assets/home-stickers/home-notebook-v1.png')} alt="金刚经配图版" />
+					<img src={withBase('/assets/home-stickers/home-notebook-v1-fast.webp')} decoding="async" alt="金刚经配图版" />
 					<span>金刚经配图版</span>
 				</a>
 				<a class="sticker sticker-generated sticker-compass" href={withBase('/tools/nanjing-travel-map/')} data-home-text="在城市里散步">
-					<img src={withBase('/assets/home-stickers/home-nanjing-route-v2.webp')} alt="南京城市路线地图" />
+					<img src={withBase('/assets/home-stickers/home-nanjing-route-v2-fast.webp')} decoding="async" alt="南京城市路线地图" />
 					<span>出发吧！从南京</span>
 				</a>
 				<a class="sticker sticker-generated sticker-coffee" href={withBase('/sleep/')} data-home-text="慢慢喝一杯咖啡">
-					<img src={withBase('/assets/home-stickers/home-bird-sleep-v2.webp')} alt="月夜里安睡的小鸟" />
+					<img src={withBase('/assets/home-stickers/home-bird-sleep-v2-fast.webp')} decoding="async" alt="月夜里安睡的小鸟" />
 					<span>鸟鸣睡眠舱</span>
 				</a>
 				<a class="sticker sticker-generated sticker-paper-plane" href={withBase('/project/fengcheng-vpp/')} data-home-text="把复杂的事做成工具">
-					<img src={withBase('/assets/home-stickers/home-vpp-cockpit-v2.webp')} alt="风光储能源接入智慧驾驶舱" />
+					<img src={withBase('/assets/home-stickers/home-vpp-cockpit-v2-fast.webp')} decoding="async" alt="风光储能源接入智慧驾驶舱" />
 					<span>凤城项目</span>
 				</a>
 				<a class="sticker sticker-generated sticker-prompt-cards" href={withBase('/books/')} data-home-text="整理读过的东西">
-					<img src={withBase('/assets/home-stickers/home-book-stack-v2.webp')} alt="带书签与眼镜的一摞书" />
+					<img src={withBase('/assets/home-stickers/home-book-stack-v2-fast.webp')} decoding="async" alt="带书签与眼镜的一摞书" />
 					<span>我的书单</span>
 				</a>
 				<a class="sticker sticker-generated sticker-listening" href="https://dailly-journal.vercel.app/?v=8708d45" target="_blank" rel="noreferrer" data-home-text="听一会儿日常">
-					<img src={withBase('/assets/home-stickers/home-daily-journal-v2.webp')} alt="记录日夜生活的日记本" />
+					<img src={withBase('/assets/home-stickers/home-daily-journal-v2-fast.webp')} decoding="async" alt="记录日夜生活的日记本" />
 					<span>日常日记</span>
 				</a>
 				<a class="sticker sticker-generated sticker-life-manual" href={withBase('/essays/life-manual/')} data-home-text="读一读我的人生说明书">
-					<img src={withBase('/assets/home-stickers/home-life-manual-v2.webp')} alt="带人生路径与清单的人生说明书" />
+					<img src={withBase('/assets/home-stickers/home-life-manual-v2-fast.webp')} decoding="async" alt="带人生路径与清单的人生说明书" />
 					<span>文韬的人生说明书</span>
 				</a>
 				<a class="sticker sticker-generated sticker-prompt-atlas" href="https://wentao-tab.github.io/Wenxi-ai-clone/" target="_blank" rel="noreferrer" data-home-text="试试新的想法">
-					<img src={withBase('/assets/home-stickers/home-prompt-atlas-v2.webp')} alt="用放大镜查看提示词卡片的图鉴" />
+					<img src={withBase('/assets/home-stickers/home-prompt-atlas-v2-fast.webp')} decoding="async" alt="用放大镜查看提示词卡片的图鉴" />
 					<span>提示词图鉴</span>
 				</a>
 				<a class="sticker sticker-generated sticker-sutra" href={withBase('/sutra-chat/')} data-home-text="把经文放回今天">
-					<img src={withBase('/assets/home-stickers/home-sutra-dialogue-v2.webp')} alt="经卷、莲花与现代对话" />
+					<img src={withBase('/assets/home-stickers/home-sutra-dialogue-v2-fast.webp')} decoding="async" alt="经卷、莲花与现代对话" />
 					<span>应作如是</span>
 				</a>
 			</div>
@@ -153,7 +153,7 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 			</div>
 
 			<div class="home-note" role="note">
-				<img src={withBase('/assets/home-stickers/home-personal-index-card-v2.webp')} alt="" aria-hidden="true" />
+				<img src={withBase('/assets/home-stickers/home-personal-index-card-v2-fast.webp')} decoding="async" alt="" aria-hidden="true" />
 				<div class="home-note-copy">
 					<span>个人索引 / 2026</span>
 					<p>设计、阅读、AI 和正在做的小工具。</p>
@@ -509,13 +509,6 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		sticker.addEventListener('blur', () => {
 			if (!sticker.classList.contains('is-open')) setHomeState();
 		});
-		sticker.addEventListener('click', (event) => {
-			if (sticker.classList.contains('is-open')) return;
-			event.preventDefault();
-			stickers.forEach((item) => item.classList.remove('is-open'));
-			sticker.classList.add('is-open');
-			setHomeState(stickerLine, label);
-		});
 	});
 
 		document.addEventListener('click', (event) => {
@@ -606,6 +599,10 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 	}
 
 	.index-page {
+		--font-body: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+		--font-brand: var(--font-body);
+		--font-type: 'Courier New', monospace;
+		-webkit-font-smoothing: antialiased;
 		--index-ink: #18211e;
 		--index-muted: #68736d;
 		--index-border: rgba(24, 33, 30, 0.14);
@@ -695,7 +692,7 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		translate: var(--home-drift-x, 0px) var(--home-drift-y, 0px);
 		opacity: calc(1 - var(--home-fade, 0));
 		text-decoration: none;
-		transition: transform 0.28s ease, filter 0.28s ease;
+		transition: transform 0.18s ease, filter 0.18s ease, scale 0.15s ease;
 		will-change: translate, opacity;
 	}
 
@@ -704,6 +701,16 @@ const pageDescription = '梁文韬的个人入口：产品设计、阅读思考�
 		z-index: 8;
 		filter: drop-shadow(0 18px 18px rgba(24, 33, 30, 0.18));
 		transform: scale(1.08) rotate(0deg) !important;
+	}
+
+	.sticker:focus-visible {
+		outline: 2px solid #87652a;
+		outline-offset: 8px;
+		border-radius: 12px;
+	}
+
+	.sticker:active {
+		scale: 0.96;
 	}
 
 	.sticker img {

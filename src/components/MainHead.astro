@@ -29,6 +29,11 @@ const toAbsoluteUrl = (value: string) => {
 };
 const canonicalUrl = toAbsoluteUrl(canonicalPath ?? Astro.url.pathname);
 const imageUrl = toAbsoluteUrl(image);
+const isHomepage = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const fontStylesheets = [
+	'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600;700&family=Special+Elite&family=Inconsolata:wght@400;600&display=swap',
+	'https://unpkg.com/@chinese-fonts/hwmct@3.0.0/dist/%E6%B1%87%E6%96%87%E6%98%8E%E6%9C%9D%E4%BD%93/result.css',
+];
 ---
 
 <meta charset="UTF-8" />
@@ -36,6 +41,9 @@ const imageUrl = toAbsoluteUrl(image);
 <meta name="keywords" content={keywords} />
 <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
 <link rel="canonical" href={canonicalUrl} />
+{!isHomepage && fontStylesheets.map(href => (
+	<link rel="stylesheet" href={href} media="print" onload="this.setAttribute('media', 'all')" />
+))}
 
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
