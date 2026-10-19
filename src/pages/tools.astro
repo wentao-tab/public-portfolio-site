@@ -17,12 +17,14 @@ const jingangjingToolUrl = withBase('/jingangjing/');
 const jingangjingCover = withBase('/assets/cover/cover-jingangjing-tool.png');
 const yingzuorushiToolUrl = withBase('/sutra-chat/');
 const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp');
+const voiceToolUrl = withBase('/voice/');
+const voiceToolCover = withBase('/assets/cover/cover-yunyang-voice.svg');
 ---
 
 <BaseLayout
 	title="梁文韬的小工具"
-	description="梁文韬的个人小工具集合，包含南京出发旅行地图等轻量工具。"
-	keywords="梁文韬,小工具,南京出发,旅行地图,旅游工具"
+	description="梁文韬的个人小工具集合，包含云扬配音、南京出发旅行地图等轻量工具。"
+	keywords="梁文韬,小工具,云扬配音,文字转语音,南京出发,旅行地图,旅游工具"
 >
 	<div class="section hero">
 		<div class="container">
@@ -33,6 +35,19 @@ const yingzuorushiCover = withBase('/assets/cover/cover-yingzuorushi-chat.webp')
 			</SectionHeader>
 
 	<section class="tools-list border-top">
+		<article class="tool-card">
+			<a class="tool-preview" href={voiceToolUrl} aria-label="打开云扬配音">
+				<img src={voiceToolCover} alt="云扬配音，输入文字、在线试听并下载 MP3" loading="lazy" />
+			</a>
+			<div class="tool-info">
+				<div>
+					<p class="tool-kicker">VOICE TOOL</p>
+					<h2>云扬配音</h2>
+					<p>写下想说的话，用云扬的沉稳男声生成配音。支持语速调节、在线试听，一键下载 MP3。</p>
+				</div>
+				<a class="tool-link" href={voiceToolUrl}>打开完整工具<span>↗</span></a>
+			</div>
+		</article>
 		<article class="tool-card">
 			<a class="tool-preview journal-preview" href={dailyJournalToolUrl} target="_blank" rel="noreferrer" aria-label="打开日常日记">
 				<div class="journal-sheet" aria-hidden="true">

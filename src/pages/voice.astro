@@ -1,0 +1,23 @@
+---
+import MainHead from '../components/MainHead.astro';
+import { withBase } from '../utils/paths';
+const voiceUrl = 'https://wentao-yunyang-voice.ufp818001.chatgpt.site/';
+---
+
+<html lang="zh-CN">
+	<head>
+		<MainHead title="云扬配音｜梁文韬" description="输入文字，使用云扬普通话男声生成配音，在线试听并下载 MP3。" keywords="云扬配音,文字转语音,MP3,中文配音,梁文韬" canonicalPath="/voice/" />
+	</head>
+	<body>
+		<iframe src={voiceUrl} title="云扬配音工作台" allow="autoplay" loading="eager"></iframe>
+		<a class="back-link" href={withBase('/tools/')}>← 返回小工具</a>
+	</body>
+</html>
+
+<style>
+	:root { color-scheme: light; }
+	body { margin: 0; background: #f7f6f2; }
+	iframe { display: block; width: 100%; height: 100vh; height: 100dvh; border: 0; }
+	.back-link { position: fixed; right: 18px; bottom: 16px; z-index: 10; padding: 10px 14px; border: 1px solid #e4e4da; border-radius: 999px; background: #fffdf8f2; color: #626958; font: 12px/1.4 -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif; text-decoration: none; box-shadow: 0 4px 18px #28351c0d; }
+	.back-link:hover, .back-link:focus-visible { color: #bd4a2c; border-color: #dbb09e; }
+</style>
