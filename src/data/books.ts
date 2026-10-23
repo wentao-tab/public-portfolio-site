@@ -89,6 +89,8 @@ export const books2026: BookItem[] = [
 	{ no: 44, title: '明朝那些年', tone: 'earth' },
 	{ no: 45, title: '大雪降至', tone: 'blue' },
 	{ no: 46, title: '落在我身上的雨', tone: 'paper' },
+	{ no: 47, title: '禅与摩托车维修艺术', tone: 'sage' },
+	{ no: 48, title: '源泉', tone: 'earth' },
 ];
 
 export const bookStats = {
