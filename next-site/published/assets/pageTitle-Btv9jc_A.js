@@ -1,0 +1,1 @@
+function e(e,t){return e.toLowerCase().includes(t.toLowerCase())}export{e as t};

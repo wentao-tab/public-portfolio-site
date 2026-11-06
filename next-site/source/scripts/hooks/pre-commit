@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# 極簡 pre-commit（C4）：擋自己手滑——只跑 CI 裡最快、最常爆的那幾項。
+# 條件觸發：動到前端 ts/tsx 才跑 tsc+oxlint；動到 css 才跑 biome；動到後端 rs 才跑 clippy。
+# 跳過（趕時間/WIP commit）：git commit --no-verify
+set -euo pipefail
+
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+
+# 只看「這次要 commit」的已暫存檔（ACM=新增/改/複製，不含刪除）
+staged="$(git diff --cached --name-only --diff-filter=ACM)"
+[ -z "$staged" ] && exit 0
+
+fail=0
+
+if echo "$staged" | grep -qE '\.(ts|tsx)$'; then
+  echo "▶ tsc --noEmit"
+  pnpm exec tsc --noEmit || fail=1
+  echo "▶ oxlint src (type-aware)"
+  # 指令與門檻都跟 CI 那道一字不差 —— 兩邊若用不同規則集，就會有兩份各自漂移的認知。
+  # 存量數字要維護（曾經是 193 vs 270，差額 77 全是 type-aware 專屬規則）。
+  # 早期不帶 --type-aware 是因為它會吃爆記憶體；@types/three 打了 patch 之後
+  # 實測 3.16s / 1.2GB，而同一個 hook 裡的 tsc 本來就要 7.9s / 1.1GB，不差這 1.4s。
+  # --quiet 只影響印不印，不影響 --max-warnings 計數（免得每次 commit 噴兩百行）。
+  pnpm exec vp lint --type-aware --tsconfig=tsconfig.json src --quiet --max-warnings 0 || fail=1
+  # 格式。⚠️ 這道要排在 oxlint **之後**：oxfmt 會把單行的 `if (x) { a; return; }`
+  # 展開成多行，而 `// eslint-disable-next-line` 只蓋下一行——展開之後違規就跑到
+  # 抑制範圍外了。導入 oxfmt 那次一次撞到 6 處，全靠 oxlint 的 --max-warnings 0 才發現。
+  echo "▶ oxfmt --check"
+  pnpm exec vp fmt --check src scripts server packages tests || fail=1
+fi
+
+if echo "$staged" | grep -qE '\.css$'; then
+  echo "▶ biome（CSS）"
+  # 規則集與 CI 那道相同；--reporter=summary 只影響印不印，不影響判定——
+  # 存量的 211 個 warning 每次 commit 展開就是兩百行，理由同上面 oxlint 的 --quiet。
+  # 不帶 --error-on-warnings：擋的是格式漂移與 error 類。
+  pnpm exec biome check --config-path=.config/biome.json --reporter=summary . || fail=1
+  # 間距 token 的棘輪。放在 pre-commit 是因為它的回饋是「你這行該寫 var(--space-2)」——
+  # 那種事在 commit 前知道，比在 CI 紅了之後才回來改省事。
+  echo "▶ 間距 token"
+  pnpm check:css-tokens || fail=1
+fi
+
+if echo "$staged" | grep -qE '^backend/.*\.rs$'; then
+  echo "▶ cargo clippy（backend）"
+  ( cd backend && cargo clippy --all-targets -- -D warnings ) || fail=1
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo
+  echo "✗ pre-commit 檢查沒過——修掉上面的錯再 commit。"
+  echo "  （確定要先存草稿：git commit --no-verify）"
+  exit 1
+fi
+
+echo "✓ pre-commit checks passed"

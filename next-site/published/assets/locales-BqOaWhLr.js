@@ -1,0 +1,1 @@
+var e=[`zh-TW`,`zh-CN`,`en`],t=`zh-TW`,n={"zh-TW":``,"zh-CN":`zh-cn`,en:`en`,ja:`ja`,ko:`ko`};function r(e,t=``){let r=[n[e],t.replace(/^\/+/,``)].filter(Boolean).join(`/`);return r?`/${r}`:`/`}export{r as i,n,e as r,t};

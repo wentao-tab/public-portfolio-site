@@ -1,0 +1,15 @@
+/* 清空預設樣式 - overflow 由 index.css 統一處理 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 整站的底：黑紙（2026-10 翻新拿掉了原本疊在上面的紫、粉、藍星雲漸層）。
+   星星與土星畫在上面的畫布裡，這裡只負責一個乾淨的黑 */
+.App {
+  position: relative; /* 為了讓 fixed 定位的子元素正確 */
+  width: 100%;
+  background-color: var(--ground);
+  min-height: 100vh; /* 確保背景至少填滿視窗高度 */
+}

@@ -1,0 +1,1150 @@
+/* 文章裡的區塊（2026-10 翻新）：沒有底色、沒有圓角卡片。
+   - 旁白類（作者註、提示、引言）：左邊一條細線，上面一行等寬小字標籤
+   - 互動類（投票、數字、圖表、分頁、檔案樹）：四角框（index.css 的 --corner-frame），跟文章摘要同一種框
+   - 標籤一律等寬小字、--paper-3；按鈕與選項是細線框，不填色 */
+
+/* 作者註（MDX <Note>）：站長旁白 */
+.mdx-note {
+  margin: var(--space-7) 0;
+  padding: var(--space-0-5) 0 var(--space-0-5) var(--space-4-5);
+  border-left: 1px solid var(--paper-3);
+}
+
+.mdx-note-label {
+  margin-bottom: var(--space-1-5);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+
+/* 舊版的引號圖示：標籤本身已經說明這是註，不需要再加符號 */
+.mdx-note-quote {
+  display: none;
+}
+
+.mdx-note-content {
+  color: var(--paper-2);
+  font-size: var(--fs-16);
+  line-height: var(--lh-170);
+}
+
+.mdx-note-content > :first-child {
+  margin-top: 0;
+}
+
+.mdx-note-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── 行內作者註解 <Annot>：點線底，hover 時實線由左長出 + 冒出小卡 ──
+   照提案：暖白點線、小卡是夜色底加一條細框，不帶琥珀（琥珀只給「一個點」）。 */
+/* 註解標記是行內的 <button>（見 mdx-blocks 的 Annot）：歸零按鈕預設樣式，
+   讓它在文章段落裡看起來就是一段帶虛線底的文字。 */
+.annot {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  position: relative;
+  cursor: help;
+  outline: none;
+}
+.annot-text {
+  position: relative;
+  /* 持久的可發現提示：淡點線底（讓讀者知道這裡有註） */
+  border-bottom: 1px dotted var(--paper-3);
+  padding-bottom: var(--space-px);
+}
+/* hover/focus：實線由左長出，蓋在虛線上 */
+.annot-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--paper);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-300) var(--easing-standard);
+}
+.annot:hover .annot-text::after,
+.annot:focus-visible .annot-text::after,
+.annot[data-open="true"] .annot-text::after {
+  transform: scaleX(1);
+}
+
+.annot-card {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 0;
+  z-index: 30;
+  min-width: 11rem;
+  max-width: 19rem;
+  width: max-content;
+  padding: var(--space-3) var(--space-3-5);
+  border-radius: 0;
+  /* 夜色底。箭頭的 border-*-color 也要同一個值，所以用一個變數，改一處就好 */
+  --annot-bg-rgb: var(--ground-rgb);
+  background: rgba(var(--annot-bg-rgb), 0.96);
+  border: 1px solid var(--rule);
+  box-shadow: none;
+  color: var(--paper-2);
+  font-size: var(--fs-13);
+  line-height: var(--lh-160);
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  transform-origin: bottom left;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-200) ease,
+    transform var(--dur-200) var(--easing-back);
+}
+.annot:hover .annot-card,
+.annot:focus-within .annot-card,
+.annot[data-open="true"] .annot-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+/* 小箭頭指回文字 */
+.annot-card::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 1.1rem;
+  border: 6px solid transparent;
+  border-top-color: rgba(var(--annot-bg-rgb), 0.95);
+}
+.annot-card-label {
+  display: block;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+  margin-bottom: var(--space-1);
+}
+.annot-card-body {
+  display: block;
+}
+
+/* ── portal 版小卡（掛到 body、fixed 定位）：覆蓋原本 absolute/hover 那套，
+   left/top 由 JS inline 給；預設在詞上方（translateY(-100%)），空間不夠改下方。 ── */
+.annot-card--portal {
+  position: fixed;
+  bottom: auto;
+  left: auto;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-100%);
+  animation: annot-portal-in 0.16s ease;
+}
+.annot-card--portal.annot-card--below {
+  transform: none;
+}
+@keyframes annot-portal-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* 下方時箭頭改指上 */
+.annot-card--below::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: rgba(var(--annot-bg-rgb), 0.95);
+}
+
+/* ── 防劇透 <Spoiler>：模糊，點擊揭開 ── */
+/* 未揭開時是 <button>（見 mdx-blocks 的 Spoiler）：要把瀏覽器預設樣式歸零，
+   才能維持「行內文字被模糊遮住」的外觀。揭開後換成 <span>，這些歸零不影響它。 */
+.spoiler {
+  font: inherit;
+  color: inherit;
+  border: none;
+  text-align: inherit;
+  cursor: pointer;
+  border-radius: var(--r-4);
+  padding: 0 var(--space-1);
+  background: var(--white-06);
+  filter: blur(var(--blur-8));
+  transition:
+    filter var(--dur-400) ease,
+    background var(--dur-400) ease;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+.spoiler:hover {
+  background: var(--white-10);
+}
+.spoiler--revealed {
+  filter: none;
+  background: rgba(var(--paper-rgb), 0.06);
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+}
+
+/* ── <BarChart> 吃資料的長條圖容器 ── */
+.mdx-chart {
+  margin: var(--space-7) 0;
+  padding: var(--space-4) var(--space-2-5) var(--space-2);
+  background: var(--corner-frame);
+}
+.mdx-chart-title {
+  margin: 0 0 var(--space-2-5) var(--space-1-5);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+.mdx-chart-loading {
+  height: 300px;
+  margin: var(--space-7) 0;
+  background: var(--corner-frame);
+}
+.mdx-chart-empty {
+  margin: var(--space-7) 0;
+  padding: var(--space-5);
+  border-radius: var(--r-10);
+  border: 1px dashed rgba(var(--red-300-rgb), 0.35);
+  color: rgba(var(--red-300-rgb), 0.8);
+  font-size: var(--fs-14);
+  text-align: center;
+}
+/* hover tooltip */
+.mdx-chart-tip {
+  padding: var(--space-2) var(--space-2-5);
+  background: rgba(var(--ground-rgb), 0.96);
+  border: 1px solid var(--rule);
+}
+.mdx-chart-tip-label {
+  font-size: var(--fs-12);
+  color: var(--white-50);
+  margin-bottom: var(--space-0-5);
+}
+.mdx-chart-tip-value {
+  font-size: var(--fs-16);
+  font-weight: 600;
+  color: #b5a8ff;
+}
+/* 多序列 tooltip 的每列（Chart 用） */
+.mdx-chart-tip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-13);
+  margin-top: var(--space-0-5);
+}
+.mdx-chart-tip-swatch {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: var(--r-2);
+  flex: 0 0 auto;
+}
+.mdx-chart-tip-name {
+  color: var(--white-60);
+  margin-right: var(--space-2-5);
+}
+.mdx-chart-tip-row .mdx-chart-tip-value {
+  margin-left: auto;
+  font-size: var(--fs-14);
+  color: #fff;
+}
+/* recharts 圖例文字改亮 */
+.mdx-chart .recharts-legend-item-text {
+  color: var(--white-60);
+}
+/* ── 互動圖表：圖 + 滑桿 ── */
+.mdx-chart-interactive {
+  margin: var(--space-7) 0;
+  padding: var(--space-4) var(--space-2-5) var(--space-4-5);
+  background: var(--corner-frame);
+}
+/* 外面那層已經框起來了，裡面的圖不要再框一次 */
+.mdx-chart-interactive .mdx-chart {
+  margin: 0;
+  background: none;
+}
+.mdx-chart-sliders {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) var(--space-2-5) 0;
+}
+.mdx-chart-slider {
+  display: grid;
+  grid-template-columns: minmax(4rem, 6rem) 1fr 4rem;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-13);
+}
+.mdx-chart-slider-label {
+  color: var(--white-60);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mdx-chart-slider input[type="range"] {
+  width: 100%;
+  accent-color: #3987e5;
+  cursor: pointer;
+}
+.mdx-chart-slider-value {
+  text-align: right;
+  color: var(--white-80);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-13);
+}
+
+/* ── <Ruby> CJK 注音 ── */
+.mdx-ruby rt {
+  font-size: 0.55em;
+  color: var(--white-55);
+  font-weight: 400;
+}
+
+/* ── <Mention> 社群提及：圖示＋帳號，細線框、不填色，刻意做小、不搶內文 ── */
+.mdx-mention {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32em;
+  padding: 0.05em 0.5em 0.05em 0.42em;
+  margin: 0 0.06em;
+  border-radius: var(--r-2);
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--paper);
+  font-size: 0.88em;
+  font-weight: 500;
+  line-height: var(--lh-150);
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition:
+    background var(--dur-200) ease,
+    border-color var(--dur-200) ease,
+    color var(--dur-200) ease;
+}
+.mdx-mention svg {
+  flex: 0 0 auto;
+  font-size: 0.95em;
+  opacity: 0.9;
+}
+.mdx-mention:hover {
+  border-color: var(--paper-3);
+}
+.mdx-mention:hover svg {
+  opacity: 1;
+}
+/* .post-content a 的連結樣式（底線、顏色，specificity 0,1,1）會蓋過上面 .mdx-mention(0,1,0)，
+   用 .post-content a.mdx-mention(0,2,1)搶回來。圖示以 currentColor 上色。 */
+.post-content a.mdx-mention {
+  color: var(--paper);
+  border: 1px solid var(--rule);
+  text-decoration: none;
+}
+.post-content a.mdx-mention:hover {
+  color: var(--paper);
+  border-color: var(--paper-3);
+}
+
+/* ── <CodeTabs> 多檔程式碼分頁：外框跟一般程式碼區塊一樣（細線、淡底），
+   分頁是一排等寬小字檔名，現在這個底下一條線。程式碼區 shiki 呈現與一般 code block 一致。 ── */
+.mdx-codetabs {
+  margin: var(--space-6) 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-6);
+  overflow: hidden;
+  background: rgba(var(--paper-rgb), 0.03);
+}
+.mdx-codetabs-bar {
+  display: flex;
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+}
+.mdx-codetabs-tab {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: var(--space-2-5) 0 var(--space-2);
+  border: none;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: var(--paper-3);
+  font-size: var(--fs-12);
+  font-weight: 400;
+  font-family: var(--mono-font);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-200) ease,
+    color var(--dur-200) ease;
+}
+/* 檔案類型的彩色圖示：檔名本身已經說明類型，翻新後不放圖示 */
+.mdx-codetabs-tab-icon {
+  display: none;
+}
+/* 站上有全域 button{background:紫}＋button:hover{紫底+光暈}；tab 各互動態一律壓掉陰影/外框，
+   背景改用下面的中性 pill。.mdx-codetabs-tab:hover(0,2,0) 贏過全域 button:hover(0,1,1)。 */
+.mdx-codetabs-tab:hover,
+.mdx-codetabs-tab:focus,
+.mdx-codetabs-tab:focus-visible,
+.mdx-codetabs-tab:active {
+  box-shadow: none;
+  border-color: transparent;
+  outline: none;
+}
+.mdx-codetabs-tab:hover {
+  background: transparent;
+  color: var(--paper-2);
+}
+.mdx-codetabs-tab.active,
+.mdx-codetabs-tab.active:hover,
+.mdx-codetabs-tab.active:focus {
+  background: transparent;
+  border-bottom-color: var(--paper);
+  color: var(--paper);
+  box-shadow: none;
+}
+/* 程式碼本體走共用 .code-surface-body（見 BlogPost.css）→ 行號/收合/內距與一般 code block 一致。 */
+/* 細緻中性滾動條（不用紫，配合去紫方向；避開 OS 預設那條粗醜的） */
+.mdx-codetabs ::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+.mdx-codetabs ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mdx-codetabs ::-webkit-scrollbar-thumb {
+  background: var(--white-15);
+  border-radius: var(--r-4);
+}
+.mdx-codetabs ::-webkit-scrollbar-thumb:hover {
+  background: var(--white-20);
+}
+.mdx-codetabs * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--white-15) transparent;
+}
+
+/* ── <Tabs>/<Tab> 內容分頁：四角框，上面一排字，現在這一頁底下一條線；每頁放整段內容（prose+code） ── */
+.mdx-tabs {
+  margin: var(--space-7) 0;
+  background: var(--corner-frame);
+}
+.mdx-tabs-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  padding: var(--space-3) var(--space-5-5) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.mdx-tabs-pill {
+  padding: var(--space-1-5) 0 var(--space-2);
+  border: none;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  margin-bottom: -1px;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: var(--paper-3);
+  font-size: var(--fs-14);
+  font-weight: 400;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-200) ease,
+    color var(--dur-200) ease;
+}
+/* 蓋掉全域 button:hover 的底色與光暈（specificity 0,2,0 > 0,1,1） */
+.mdx-tabs-pill:hover,
+.mdx-tabs-pill:focus,
+.mdx-tabs-pill:focus-visible {
+  background: transparent;
+  border-color: transparent;
+  color: var(--paper-2);
+  box-shadow: none;
+  outline: none;
+}
+.mdx-tabs-pill.active,
+.mdx-tabs-pill.active:hover,
+.mdx-tabs-pill.active:focus {
+  background: transparent;
+  border-bottom-color: var(--paper);
+  color: var(--paper);
+  box-shadow: none;
+}
+.mdx-tabs-panel {
+  padding: var(--space-4-5) var(--space-5-5);
+}
+.mdx-tabs-panel > .mdx-tab > :first-child {
+  margin-top: 0;
+}
+.mdx-tabs-panel > .mdx-tab > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── <Math> KaTeX ── */
+.mdx-math-block {
+  margin: var(--space-6) 0;
+  overflow-x: auto;
+  text-align: center;
+}
+.mdx-math-loading {
+  height: 2.4rem;
+  margin: var(--space-6) 0;
+}
+.mdx-math-inline {
+  white-space: nowrap;
+}
+
+/* ── <Sketch> mermaid→Excalidraw 手繪風 SVG ── */
+.mdx-sketch {
+  margin: var(--space-7) 0;
+  text-align: center;
+}
+.mdx-sketch-canvas {
+  overflow-x: auto;
+}
+.mdx-sketch-canvas--loading {
+  min-height: 180px;
+}
+.mdx-sketch-loading {
+  min-height: 220px;
+  margin: var(--space-7) 0;
+  background: var(--corner-frame);
+}
+/* 圖說：跟文章裡的圖片同一種（小一號、淡一階、靠左） */
+.mdx-sketch-caption {
+  margin-top: var(--space-2-5);
+  font-size: var(--fs-13);
+  line-height: var(--lh-170);
+  color: var(--paper-3);
+  text-align: left;
+}
+.mdx-sketch-error {
+  margin: var(--space-6) 0;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--r-10);
+  border: 1px dashed rgba(var(--red-300-rgb), 0.35);
+  background: rgba(var(--red-300-rgb), 0.06);
+  color: var(--red-300);
+  font-size: var(--fs-14);
+}
+.mdx-sketch-error pre {
+  margin: var(--space-1-5) 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: var(--fs-13);
+  opacity: 0.9;
+}
+
+.mdx-error {
+  margin: var(--space-6) 0;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--r-10);
+  border: 1px solid rgba(var(--red-300-rgb), 0.4);
+  background: rgba(var(--red-300-rgb), 0.06);
+  color: var(--red-300);
+  font-size: var(--fs-14);
+}
+
+.mdx-error pre {
+  margin: var(--space-2) 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: var(--fs-13);
+  opacity: 0.9;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   新增 block：Diff / Install / ImageCompare / Kbd / Details /
+   Steps / FileTree / Stat / Video / YouTube
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Diff：沿用 .code-block-wrapper 外框，只加紅綠行底 + 統計 ── */
+/* grid 讓每行變全寬 row（忽略 shiki 的 \n 空白）→ 行底能鋪滿 */
+.mdx-diff .shiki-output code {
+  display: grid;
+}
+.mdx-diff .shiki-output .line.diff-line-add {
+  background: rgba(var(--diff-add-rgb), 0.15);
+  box-shadow: inset 3px 0 var(--diff-add);
+}
+.mdx-diff .shiki-output .line.diff-line-del {
+  background: rgba(var(--diff-del-rgb), 0.15);
+  box-shadow: inset 3px 0 var(--diff-del);
+}
+.mdx-diff-stat {
+  display: inline-flex;
+  gap: var(--space-2);
+  font-size: var(--fs-12);
+  font-variant-numeric: tabular-nums;
+}
+.mdx-diff-stat-add {
+  color: var(--diff-add);
+}
+.mdx-diff-stat-del {
+  color: var(--diff-del);
+}
+
+/* ── Install：外層留白（內部走 CodeTabs 樣式）── */
+.mdx-install {
+  margin: var(--space-6) 0;
+}
+
+/* ── ImageCompare ── */
+.mdx-imgcompare {
+  margin: var(--space-7) 0;
+}
+.mdx-imgcompare-frame {
+  position: relative;
+  border-radius: var(--r-2);
+  overflow: hidden;
+}
+.mdx-imgcompare-frame img {
+  display: block;
+  width: 100%;
+}
+.mdx-imgcompare-badge {
+  position: absolute;
+  z-index: 2; /* 蓋在 slider 兩張圖之上，否則會被內部堆疊吃掉（只有一側看得到） */
+  top: 0.6rem;
+  padding: var(--space-0-5) var(--space-2);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  letter-spacing: var(--ls-12);
+  color: var(--paper);
+  background: rgba(var(--ground-rgb), 0.7);
+  pointer-events: none;
+}
+.mdx-imgcompare-badge--before {
+  left: 0.6rem;
+}
+.mdx-imgcompare-badge--after {
+  right: 0.6rem;
+}
+.mdx-imgcompare-loading {
+  height: 320px;
+  background: var(--corner-frame);
+}
+.mdx-imgcompare figcaption {
+  margin-top: var(--space-2-5);
+  font-size: var(--fs-13);
+  line-height: var(--lh-170);
+  color: var(--paper-3);
+}
+
+/* ── Kbd ── */
+.mdx-kbd {
+  display: inline-block;
+  padding: var(--space-0-5) var(--space-2);
+  margin: 0 var(--space-0-5);
+  font-size: 0.82em;
+  line-height: var(--lh-140);
+  font-family: var(--mono-font);
+  color: var(--paper);
+  background: none;
+  border: 1px solid var(--paper-3);
+  border-bottom-width: 2px;
+  border-radius: var(--r-2);
+}
+
+/* ── Details（段落級收合）：照提案，細線框、前面一個等寬的「＋／−」── */
+.mdx-details {
+  margin: var(--space-3) 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-6);
+  overflow: hidden;
+}
+.mdx-details-summary {
+  cursor: pointer;
+  padding: var(--space-3) var(--space-4-5);
+  font-weight: 400;
+  color: var(--paper);
+  list-style: none;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  align-items: baseline;
+}
+.mdx-details-summary::-webkit-details-marker {
+  display: none;
+}
+.mdx-details-summary::before {
+  content: "+";
+  flex: none;
+  width: 1.4em;
+  font-family: var(--mono-font);
+  color: var(--paper-3);
+}
+.mdx-details[open] .mdx-details-summary::before {
+  content: "−";
+}
+/* 展開／收合動畫：::details-content + interpolate-size 讓 auto 高度可以內插。
+   不支援的瀏覽器會退回原本的瞬間展開（漸進增強，不需要 JS 量高度）。 */
+.mdx-details {
+  interpolate-size: allow-keywords;
+}
+.mdx-details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--dur-300) var(--easing-standard),
+    content-visibility var(--dur-300) allow-discrete;
+}
+.mdx-details[open]::details-content {
+  block-size: auto;
+}
+.mdx-details-summary:hover::before {
+  color: var(--paper);
+}
+.mdx-details-body {
+  padding: var(--space-1) var(--space-4-5) var(--space-1-5);
+}
+.mdx-details-body > :first-child {
+  margin-top: var(--space-1);
+}
+
+/* ── Steps：步驟號是等寬小字（01、02…）掛在一條點線上，跟章節號同一種寫法（CSS counter）── */
+.mdx-steps {
+  counter-reset: mdx-step;
+  margin: var(--space-7) 0;
+  padding-left: var(--space-2);
+}
+.mdx-step {
+  position: relative;
+  counter-increment: mdx-step;
+  padding: 0 0 var(--space-6) var(--space-8);
+  border-left: 1px dotted var(--paper-3);
+}
+.mdx-step:last-child {
+  border-left-color: transparent;
+  padding-bottom: 0;
+}
+/* 號碼蓋在線上：底色是夜色，線在號碼那一段斷開 */
+.mdx-step::before {
+  content: counter(mdx-step, decimal-leading-zero);
+  position: absolute;
+  left: -0.85rem;
+  top: 0.15rem;
+  width: 1.7rem;
+  padding: var(--space-0-5) 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  letter-spacing: var(--ls-12);
+  line-height: var(--lh-140);
+  text-align: center;
+  color: var(--paper-2);
+  background: var(--ground);
+}
+.mdx-step-title {
+  font-weight: 600;
+  color: var(--paper);
+  margin-bottom: var(--space-1-5);
+}
+.mdx-step-body > :first-child {
+  margin-top: 0;
+}
+
+/* ── FileTree ── */
+.mdx-filetree {
+  margin: var(--space-6) 0;
+  padding: var(--space-3-5) var(--space-4-5);
+  background: var(--corner-frame);
+  font-family: var(--mono-font);
+  font-size: var(--fs-14);
+  line-height: var(--lh-185);
+  overflow-x: auto;
+}
+.mdx-filetree-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--paper-2);
+  white-space: nowrap;
+}
+.mdx-filetree-row--folder {
+  color: var(--paper);
+  font-weight: 400;
+}
+/* 圖示（彩色檔案類型）壓成單色、淡一階，讓檔名讀得出來 */
+.mdx-filetree-icon {
+  font-size: var(--fs-14);
+  color: var(--paper-3);
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+/* ── Stat 數字磚 ── */
+.mdx-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3-5);
+  margin: var(--space-7) 0;
+}
+.mdx-stat {
+  position: relative;
+  flex: 1 1 130px;
+  padding: var(--space-4) var(--space-4-5);
+  background: var(--corner-frame);
+}
+.mdx-stat-value {
+  font-size: var(--fs-28);
+  font-weight: 400;
+  color: var(--paper);
+  line-height: var(--lh-110);
+  font-variant-numeric: tabular-nums;
+}
+.mdx-stat-unit {
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  color: var(--paper-3);
+  margin-left: var(--space-1);
+}
+.mdx-stat-label {
+  margin-top: var(--space-2);
+  font-size: var(--fs-13);
+  color: var(--paper-2);
+}
+.mdx-stat-hint {
+  margin-top: var(--space-0-5);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+}
+.mdx-stat-trend {
+  position: absolute;
+  top: 1rem;
+  right: 1.1rem;
+}
+.mdx-stat-trend--up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 7px solid var(--paper-2);
+}
+.mdx-stat-trend--down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--paper-3);
+}
+.mdx-stat-trend--flat {
+  width: 10px;
+  height: 1px;
+  background: var(--paper-3);
+}
+
+/* ── Video ── */
+.mdx-video {
+  margin: var(--space-7) 0;
+}
+/* 影片播放器（控制列、進度條…）樣式全在 components/VideoPlayer.css。 */
+
+.mdx-youtube {
+  position: relative;
+  margin: var(--space-7) 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-2);
+  overflow: hidden;
+  background: var(--ground);
+}
+.mdx-youtube-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.mdx-youtube-facade {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  outline: none;
+}
+.mdx-youtube-facade:hover,
+.mdx-youtube-facade:focus-visible {
+  box-shadow: none;
+  outline: none;
+}
+.mdx-youtube-facade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--black-20);
+  transition: background var(--dur-200);
+}
+.mdx-youtube-facade:hover::after {
+  background: var(--black-06);
+}
+/* 播放鈕照提案：一個細線圓圈，跟站上自己的影片同一顆（不用 YouTube 的紅） */
+.mdx-youtube-play {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 1px solid var(--paper-2);
+  border-radius: var(--r-round);
+  background: none;
+  color: var(--paper);
+  font-size: var(--fs-18);
+  padding-left: var(--space-1);
+}
+
+/* ── Refs 參考連結區（文末）：照提案，沒有框；一行等寬小字標籤，底下是 01、02… 編號的清單，
+   每列是說明，後面跟著等寬小字的連結（不觸發 hover 卡）── */
+.mdx-refs {
+  margin: var(--space-12) 0 var(--space-7);
+}
+.mdx-refs-title {
+  margin-bottom: var(--space-2);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+.mdx-refs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: mdx-ref;
+  display: grid;
+  gap: var(--space-2-5);
+}
+.mdx-refs-row {
+  counter-increment: mdx-ref;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3-5);
+  font-size: var(--fs-14);
+  line-height: var(--lh-160);
+}
+.mdx-refs-row::before {
+  content: counter(mdx-ref, decimal-leading-zero);
+  flex: none;
+  width: 1.6rem;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  color: var(--paper-3);
+}
+.mdx-refs-label {
+  flex: 0 1 auto;
+  color: var(--paper-2);
+  font-weight: 400;
+}
+.mdx-refs-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3-5);
+}
+.mdx-refs .mdx-refs-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  border-bottom: 0;
+  transition:
+    text-decoration-color var(--dur-150) ease,
+    color var(--dur-150) ease;
+}
+.mdx-refs .mdx-refs-link:hover {
+  color: var(--paper);
+  text-decoration-color: var(--paper-3);
+}
+/* 品牌圖示（彩色）：提案的清單只有字，翻新後不放 */
+.mdx-refs-icon {
+  display: none;
+}
+
+/* ── Poll 內嵌投票（票數存後端，localStorage 防重複）──
+   四角框；選項是細線框、不填色，投完後結果長條是一層很淡的暖白，百分比用等寬小字。 */
+.mdx-poll {
+  margin: var(--space-7) 0;
+  padding: var(--space-4-5) var(--space-5);
+  background: var(--corner-frame);
+}
+.mdx-poll-q {
+  font-size: var(--fs-16);
+  font-weight: 400;
+  color: var(--paper);
+  margin-bottom: var(--space-3-5);
+}
+.mdx-poll-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+.mdx-poll-opt {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 2.5rem;
+  padding: var(--space-2) var(--space-3-5);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: var(--paper-2);
+  font-size: var(--fs-14);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background var(--dur-150) ease,
+    color var(--dur-150) ease;
+}
+.mdx-poll-opt:hover:not(:disabled),
+.mdx-poll-opt:focus-visible:not(:disabled) {
+  background: transparent;
+  border-color: var(--paper-3);
+  box-shadow: none;
+  color: var(--paper);
+  outline: none;
+}
+.mdx-poll-opt:disabled {
+  cursor: default;
+}
+.mdx-poll-opt--mine {
+  border-color: var(--paper-3);
+  color: var(--paper);
+}
+/* 結果長條：低飽和、鋪在底層，不搶字 */
+.mdx-poll-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(var(--paper-rgb), 0.06);
+  transition: width var(--dur-500) var(--easing-standard);
+  pointer-events: none;
+}
+.mdx-poll-opt--mine .mdx-poll-bar {
+  background: rgba(var(--paper-rgb), 0.1);
+}
+.mdx-poll-opt-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+/* 自己投的那項：一個琥珀小點（「你在這裡」），不用打勾字元（字型會渲成 √ 很怪） */
+.mdx-poll-check {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: var(--r-round);
+  background: var(--amber);
+  flex: 0 0 auto;
+}
+.mdx-poll-pct {
+  position: relative;
+  flex: 0 0 auto;
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-3);
+}
+.mdx-poll-opt--mine .mdx-poll-pct {
+  color: var(--paper-2);
+}
+.mdx-poll-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+}
+.mdx-poll-peek {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: var(--paper-2);
+  font-size: var(--fs-11);
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.mdx-poll-peek:hover,
+.mdx-poll-peek:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  color: var(--paper);
+  outline: none;
+}
+.mdx-poll-voted {
+  margin-left: auto;
+  color: var(--paper-3);
+}
+
+/* ⚠ index.css 的 @layer base 有全站 `button:hover, button:focus { background:#6a4acf;
+   border-color:#6a4acf; box-shadow:0 0 12px 2px }`（specificity 0,1,1）。本檔這顆是
+   <button>，光靠 .class（0,1,0）壓不過互動態 → 必須用 .class:hover/:focus（0,2,0）。 */
+.annot:hover,
+.annot:focus,
+.annot:focus-visible {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+/* .spoiler:hover 只換了背景，全域那條的紫框與紫光暈仍會漏進來 */
+.spoiler:hover,
+.spoiler:focus,
+.spoiler:focus-visible {
+  border-color: transparent;
+  box-shadow: none;
+}
+.spoiler:focus {
+  background: var(--white-10);
+}

@@ -1,0 +1,101 @@
+/* 電子報退訂頁（從信裡點過來）：跟 404、離線頁同一套（2026-10 翻新）——
+   字靠左、紙色的宋體、Email 用琥珀色的等寬字、按鈕是等寬字加點線底線的連結。
+   .unsubscribe-card 只是一欄字（沒有卡片外框了），名字留著是 e2e 拿它找元素 */
+
+.unsubscribe-shell {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding: var(--page-top) max(var(--space-10), calc(50% - 640px)) var(--page-bottom);
+  font-family: var(--serif);
+  color: var(--paper);
+}
+
+.unsubscribe-card {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 520px;
+}
+
+.unsubscribe-title {
+  margin: 0;
+  font-size: var(--fs-32);
+  font-weight: 600;
+  line-height: var(--lh-130);
+  color: var(--paper);
+}
+
+.unsubscribe-body {
+  margin: 0;
+  font-size: var(--fs-16);
+  line-height: var(--lh-170);
+  color: var(--paper-2);
+}
+
+.unsubscribe-email {
+  font-family: var(--mono-font);
+  font-size: 0.9em;
+  color: var(--amber);
+  overflow-wrap: anywhere;
+}
+
+.unsubscribe-status {
+  margin: 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-12);
+  letter-spacing: var(--ls-6);
+  color: var(--paper-3);
+}
+
+.unsubscribe-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.unsubscribe-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  padding-bottom: var(--space-px);
+  font-family: var(--mono-font);
+  font-size: var(--fs-12);
+  letter-spacing: var(--ls-6);
+  color: var(--paper-2);
+  border-bottom: 1px dotted var(--paper-3);
+  cursor: pointer;
+  transition:
+    color var(--dur-200) ease,
+    border-color var(--dur-200) ease;
+}
+
+/* 確認退訂：這一頁唯一要做的事，用琥珀 */
+.unsubscribe-btn--danger {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+
+.unsubscribe-btn:hover,
+.unsubscribe-btn:focus-visible {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+
+.unsubscribe-btn:focus-visible {
+  outline: 1px solid var(--amber);
+  outline-offset: var(--space-1);
+}
+
+@media (max-width: 768px) {
+  .unsubscribe-shell {
+    padding-inline: var(--space-5);
+  }
+
+  .unsubscribe-title {
+    font-size: var(--fs-24);
+  }
+}

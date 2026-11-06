@@ -1,0 +1,56 @@
+import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
+import { postIdent } from '../../../lib/postPath';
+import { buildAlternateLinks, localeFromPrefix, toLocales } from '@/i18n/start-i18n';
+import { LocaleProvider } from '@/i18n/LocaleProvider';
+import FullBlogPost from '@/components/blog/BlogPost';
+import { postDetailQueryOptions, recentPostsQueryOptions, blogCategoriesDetailQueryOptions } from '@/data/blogList';
+import { articleJsonLd, articleMeta } from '@/seo/seoMeta';
+
+// 帶前綴文章頁:/$locale/blog/:id(/en/blog/39 等)。loader 依 locale 抓翻譯版內容。
+// Tier-2：同 /blog/$id —— BlogPost 直接 SSR（不再 ClientOnly + BlogPostPage fallback），消除雙渲染。
+export const Route = createFileRoute('/$locale/blog/$id')({
+  loader: async ({ context, params }) => {
+    const locale = localeFromPrefix(params.locale);
+    if (!locale || locale === 'zh-TW') throw notFound();
+    try {
+      // 側欄 / 上下篇導覽 / 站內連結卡的「首幀完整」：平行預取清單 + 分類（同 /blog/$id）。
+      // 參數對齊元件端 useQuery（limit=200、該語系 locale），否則 queryKey 不符 → 白預取、
+      // 上下篇導覽 hydration 後才補上造成 CLS（詳見 /blog/$id 的 loader 說明）。
+      const [post] = await Promise.all([
+        context.queryClient.ensureQueryData(postDetailQueryOptions(params.id, locale)),
+        context.queryClient.prefetchQuery(recentPostsQueryOptions(200, locale)),
+        context.queryClient.prefetchQuery(blogCategoriesDetailQueryOptions(locale)),
+      ]);
+      // 同 /blog/$id：非 canonical 的識別碼（數字 id / 舊 slug）一律 301 到 slug 網址。
+      // 必須用 `to` + `params` 而不是 `href`，理由見 /blog/$id（hover 預載會無窮迴圈卡死頁面）。
+      const ident = postIdent(post);
+      if (ident !== params.id) {
+        throw redirect({ to: '/$locale/blog/$id', params: { locale: params.locale, id: ident }, statusCode: 301 });
+      }
+      return { post, locale };
+    } catch (e) {
+      if (e instanceof Response || (e as { isRedirect?: boolean }).isRedirect) throw e;
+      throw notFound();
+    }
+  },
+  head: ({ loaderData, params }) => {
+    if (!loaderData) return {};
+    const { post, locale } = loaderData;
+    return {
+      // og/twitter 也在這裡出（理由同 /blog/$id）
+      meta: articleMeta(post, `/${params.locale}/blog/${postIdent(post)}`, locale),
+      links: buildAlternateLinks(`blog/${postIdent(post)}`, locale, toLocales(post.available_locales)),
+      scripts: [articleJsonLd(post, `/${params.locale}/blog/${postIdent(post)}`, locale)],
+    };
+  },
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { locale } = Route.useLoaderData();
+  return (
+    <LocaleProvider locale={locale}>
+      <FullBlogPost />
+    </LocaleProvider>
+  );
+}

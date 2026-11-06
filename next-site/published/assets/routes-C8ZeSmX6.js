@@ -1,0 +1,1 @@
+import{o as e}from"./rolldown-runtime-C0FnF6B9.js";import{t}from"./jsx-runtime-BdxMnOeJ.js";import{t as n}from"./locales-BqOaWhLr.js";import{lt as r}from"./index-D2HViBC8.js";import{t as i}from"./MainPage-DcpTYtVD.js";var a=e(t()),o=()=>(0,a.jsx)(r,{locale:n,children:(0,a.jsx)(i,{})});export{o as component};

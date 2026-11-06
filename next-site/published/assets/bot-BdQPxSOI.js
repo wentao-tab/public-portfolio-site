@@ -1,0 +1,1 @@
+var e=/bot|crawl|spider|slurp|bing|google|baidu|yandex|duckduck|facebookexternalhit|embedly|quora|whatsapp|telegram|discord|slack|lighthouse|headless|preview/i;function t(t){return!!t&&e.test(t)}export{t};

@@ -1,0 +1,1 @@
+function e(e,t){if(Object.hasOwn(e,t))return e[t]}function t(t,n,r){return e(t,n)??r}export{t as n,e as t};

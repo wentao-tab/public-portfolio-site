@@ -1,0 +1,895 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "loadingData": "Loading data",
+    "errorBackendApi": "Can't reach the backend API",
+    "retry": "Retry",
+    "close": "Close",
+    "imageViewer": "Image viewer",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "send": "Send",
+    "search": "Search",
+    "all": "All",
+    "more": "More",
+    "today": "Today",
+    "justNow": "Just now",
+    "daysAgo": "{{count}}d ago",
+    "weeksAgo": "{{count}}w ago",
+    "monthsAgo": "{{count}}mo ago",
+    "yearsAgo": "{{count}}y ago",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago"
+  },
+  "nav": {
+    "home": "Home",
+    "notes": "Notes",
+    "more": "More",
+    "backHome": "Back to home",
+    "downloadResume": "Pick a resume to download",
+    "resumeSE": "Software Engineer",
+    "resumeClubs": "School clubs",
+    "watch": "Watching",
+    "thinking": "Murmurs",
+    "menu": "Navigation menu"
+  },
+  "siteNav": {
+    "signIn": "Sign in",
+    "notes": "Notes",
+    "moments": "Murmurs",
+    "works": "Work",
+    "collection": "Collection",
+    "about": "About",
+    "more": "More",
+    "photos": "Photos",
+    "setup": "Setup",
+    "friends": "Friends",
+    "messages": "Messages",
+    "log": "Log",
+    "colophon": "This site",
+    "search": "Search",
+    "language": "Language",
+    "account": "Account",
+    "menu": "Menu",
+    "close": "Close",
+    "home": "Home",
+    "allPosts": "All {{count}} notes",
+    "allMoments": "All murmurs",
+    "allWorks": "All {{count}} works",
+    "watching": "Watching",
+    "reading": "Reading",
+    "listening": "Listening",
+    "recently": "Lately",
+    "episode": "Ep. {{ep}}",
+    "aboutLead": "Wentaoshuai, someone who writes code and occasionally builds things.",
+    "aboutAll": "About me"
+  },
+  "user": {
+    "adminPanel": "Admin panel",
+    "logout": "Sign out",
+    "signInWithGithub": "Sign in with GitHub",
+    "signInWithGoogle": "Sign in with Google"
+  },
+  "hero": {
+    "description": "Sora to Ki (宙と木), Wentaoshuai's personal space. Someone who writes code and occasionally builds things."
+  },
+  "footer": {
+    "tagline": "Stay hungry. Stay foolish.",
+    "poweredBy": "Powered by",
+    "viewersOnline": "{{count}} viewers right now",
+    "statsLine": "{{posts}} posts · writing for {{days}} days",
+    "loading": "Loading…",
+    "sections": {
+      "about": "About",
+      "more": "More",
+      "contact": "Contact"
+    },
+    "links": {
+      "aboutSite": "About this site",
+      "aboutMe": "About me",
+      "aboutProject": "About the project",
+      "photos": "Photos",
+      "setup": "Setup",
+      "activity": "Activity",
+      "messages": "Leave a note",
+      "email": "Email",
+      "github": "GitHub",
+      "rss": "RSS Feed",
+      "sitemap": "Sitemap",
+      "subscribe": "Subscribe",
+      "status": "Status"
+    }
+  },
+  "notFound": {
+    "pageTitle": "404 — Page not found",
+    "seoDescription": "Looks like you're lost. This page doesn't exist.",
+    "lostMessage": "Contact lost.",
+    "subMessage": "The last signal came from these coordinates. Nothing since.",
+    "backHome": "Back to home",
+    "requested": "Last coordinates",
+    "lostFor": "Signal lost for",
+    "toNotes": "Go to notes",
+    "reconnect": "Re-establish contact (home)",
+    "search": "Search the site",
+    "pageTitleShort": "Page not found"
+  },
+  "home": {
+    "orbit": {
+      "title": "Wentaoshuai: notes, murmurs, work and collections",
+      "notesCount": "{{count}} posts · latest {{date}}",
+      "momentsCount": "latest {{date}}",
+      "worksCount": "{{count}} projects",
+      "collectionLine": "{{anime}} anime, {{films}} films, {{series}} series watched",
+      "aboutLine": "Falling from 2004 to now",
+      "aboutCount": "2004 –"
+    }
+  },
+  "commandPalette": {
+    "label": "Global command palette",
+    "placeholder": "Search pages, posts, categories, tags…",
+    "empty": "No matches",
+    "groups": {
+      "pages": "Pages",
+      "posts": "Posts",
+      "categories": "Categories",
+      "tags": "Tags"
+    },
+    "home": "Home",
+    "keys": {
+      "move": "move",
+      "open": "open",
+      "toggle": "toggle"
+    }
+  },
+  "contextMenu": {
+    "back": "Back",
+    "forward": "Forward",
+    "reload": "Reload",
+    "openNewTab": "Open link in new tab",
+    "copyLink": "Copy link address",
+    "random": "A random post",
+    "top": "Back to top",
+    "hint": "Hold Shift while right-clicking for the browser menu"
+  },
+  "backToTop": {
+    "label": "Back to top"
+  },
+  "activity": {
+    "title": "Activity dashboard",
+    "description": "Wentaoshuai's live activity dashboard.",
+    "loading": "Loading activity",
+    "labels": {
+      "gameCollection": "Games owned",
+      "publicProjects": "Public repos",
+      "codedToday": "Today's code"
+    },
+    "steam": {
+      "ingame": "In game",
+      "online": "Online",
+      "offline": "Offline",
+      "playingTwoWeeks": "Playing now · last 2 weeks",
+      "recentTwoWeeks": "Last 2 weeks"
+    },
+    "wakatime": {
+      "todayCoding": "Today's coding time",
+      "noDataWeek": "No coding logs this week"
+    },
+    "refresh": "Refresh",
+    "units": {
+      "min": "min",
+      "hr": "hr"
+    },
+    "gamesUnit": "{{count}} games",
+    "badgesUnit": "{{count}} badges",
+    "titlesUnit": "{{count}} titles",
+    "playtime2w": "Last 2w",
+    "playtimeTotal": "Total",
+    "github": {
+      "contributions": "<b>{{count}}</b> contributions in the last year",
+      "lastYear": "Last year"
+    }
+  },
+  "blog": {
+    "views": "{{count}} reads",
+    "summary": "Summary",
+    "aiGen": "AI-generated",
+    "readDone": "Finished",
+    "minutesLeft": "{{count}} min left",
+    "sameCategory": "Also in {{name}}",
+    "title": "Notes",
+    "subtitle": "As the stars wheel on, every flicker of curiosity leaves an arc.",
+    "all": "All",
+    "more": "{{count}} more",
+    "minutes": "{{count}} min",
+    "metaTitle": "Notes",
+    "description": "Wentaoshuai's technical notes, learning logs, and life sketches. Frontend architecture, Rust, system design, and more.",
+    "heroTitle": "Notes",
+    "loading": "Loading posts",
+    "search": "Search posts...",
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "popular": "Popular"
+    },
+    "comment": "Comment",
+    "unlike": "Unlike",
+    "share": "Share",
+    "shareCopied": "Copied!",
+    "postCount": "Posts",
+    "heatmapTotal": "posts",
+    "heatmapAria": "Writing activity over the last 26 weeks",
+    "heatmapLess": "less",
+    "heatmapMore": "more",
+    "codeCopy": "Copy",
+    "keyInsights": "Key Insights",
+    "codeCopied": "Copied!",
+    "shareCopyLink": "Copy link",
+    "shareMore": "More...",
+    "shareTitle": "Share",
+    "commentTitle": "Comments",
+    "subscribeTitle": "Subscribe",
+    "statPosts": "Posts",
+    "statTags": "Tags",
+    "statReads": "Reads",
+    "sideCategories": "Categories",
+    "sideTags": "Tags",
+    "sideFeatured": "Featured",
+    "sideActivity": "Writing activity",
+    "sideNav": "Navigation",
+    "navHome": "Home",
+    "navMessages": "Messages",
+    "navSetup": "Setup",
+    "navJourney": "Journey",
+    "clearAll": "Clear all",
+    "clearFilters": "Clear filters",
+    "collapse": "Collapse",
+    "expandAll": "Show all",
+    "emptyFiltered": "No matching posts",
+    "emptyNone": "No posts yet",
+    "emptyFilteredHint": "Try adjusting your search or browsing another category",
+    "emptyNoneHint": "Content is on its way — stay tuned",
+    "loadFailed": "Failed to load",
+    "inColumn": "Filed under column:",
+    "otherInColumn": "More in this column:",
+    "toc": "Contents",
+    "backToArticleTop": "Back to top of article",
+    "seriesLabel": "Series",
+    "prevPost": "Previous",
+    "nextPost": "Next",
+    "lastUpdated": "Updated",
+    "nearbyNav": "Nearby posts",
+    "font": "Font",
+    "originalText": "original",
+    "sameTag": "Also tagged #{{name}}",
+    "sameTagNone": "This is the only post with this tag.",
+    "fontNames": {
+      "noto-serif": "Noto Serif",
+      "source-han": "Noto Sans",
+      "lxgw": "LXGW WenKai",
+      "misans": "MiSans"
+    },
+    "revised": "Revised"
+  },
+  "thinking": {
+    "title": "Murmurs",
+    "subtitle": "Catching a stray noise that cuts through the silence.",
+    "ending": "Most of the time, just thinking out loud.",
+    "empty": "Nothing here yet.",
+    "notFound": "Thought not found.",
+    "label": "",
+    "like": "Like",
+    "comments": "{{count}} comments",
+    "older": "Earlier",
+    "verb": {
+      "watched": "watched",
+      "read": "read",
+      "listened": "listened to",
+      "played": "played",
+      "shared": "shared"
+    },
+    "kind": {
+      "film": "Film",
+      "tv": "Series",
+      "anime": "Anime",
+      "book": "Book",
+      "track": "Track"
+    }
+  },
+  "watch": {
+    "favManage": "Manage favorites",
+    "favEmpty": "No favorites yet",
+    "favSearchPlaceholder": "Search TMDb title…",
+    "favSearching": "Searching…",
+    "favQuotePlaceholder": "A short note… (optional)",
+    "kindFilm": "Film",
+    "kindTv": "TV / Anime"
+  },
+  "setup": {
+    "title": "My Setup",
+    "description": "Wentaoshuai's gear: the main rig, the home server running this site, networking and smart home — plus a map of how it all connects.",
+    "heroTitle": "Setup",
+    "subtitle": "Taking precision apart, giving obsession a place to rest.",
+    "cat": {
+      "main-rig": {
+        "short": "Main rig"
+      },
+      "server": {
+        "short": "Server"
+      },
+      "network": {
+        "short": "Network & mobile"
+      },
+      "smart-home": {
+        "short": "Smart home"
+      },
+      "peripherals": {
+        "short": "Peripherals"
+      },
+      "base-ii": {
+        "short": "Hometown"
+      }
+    },
+    "roles": {
+      "nanokvm": "Remote power and BIOS access — still reachable when the server hangs",
+      "headless": "Makes the monitor-less server think a display is attached so the GPU outputs properly",
+      "googleTv": "The Matter hub for the house",
+      "hub3": "Light, temperature/humidity and motion sensing over Matter; its light level drives the night-time lighting automation",
+      "rm4": "Learns the AC’s infrared codes so Home Assistant can control it",
+      "esp32": "A 433MHz transmitter built from two boards, mimicking the ceiling light’s stock remote",
+      "doorbell": "Battery doorbell, online through its hub"
+    },
+    "topo": {
+      "internet": "Internet",
+      "switch": "Switch",
+      "sensors": "Light · temp · motion",
+      "irBlaster": "IR blaster",
+      "rfBlaster": "433MHz RF",
+      "rig": "Main rig",
+      "ac": "AC",
+      "light": "Ceiling light",
+      "netWired": "Wired",
+      "netMain": "Main network",
+      "netIot": "IoT only",
+      "matterHub": "Matter hub",
+      "doorbellHub": "Doorbell hub",
+      "doorbell": "Doorbell",
+      "appliances": "Appliances",
+      "appliancesSub": "Dehumidifier · purifier · cam…"
+    },
+    "appliances": {
+      "title": "Other connected appliances",
+      "types": {
+        "dehumidifier": "Dehumidifier",
+        "airPurifier": "Air purifier",
+        "catTower": "Pet air purifier + heated cat bed",
+        "feeder": "Auto feeder",
+        "camera": "Camera",
+        "plug": "Smart plug"
+      }
+    },
+    "sheet": {
+      "tabs": "Sheets",
+      "memoryTitle": "The one back home",
+      "memoryText": "The backup base when I'm back home. There are no photos of it; this is roughly how I remember it.",
+      "fromMemory": "FROM MEMORY",
+      "root": "Every automation starts here",
+      "drag": "← drag sideways to see the whole sheet →",
+      "to": {
+        "voice": "Google Home voice",
+        "climate": "Temperature & humidity",
+        "ac": "Air conditioner",
+        "light": "Ceiling light",
+        "door": "Front door"
+      },
+      "subsystemTitle": "Subsystems",
+      "uplink": "Uplink: commands",
+      "downlink": "Downlink: reports",
+      "telemetry": "Telemetry",
+      "telemetryEvery": "Sent back by this server, every 30 seconds",
+      "telemetryWait": "Waiting for signal",
+      "subsystem": {
+        "cdh": "Command & data handling",
+        "eps": "Electrical power",
+        "tcs": "Thermal control",
+        "data": "Data recording",
+        "comm": "Communications",
+        "bus": "Bus",
+        "struct": "Structure",
+        "crew": "Crew interface"
+      }
+    }
+  },
+  "newsletter": {
+    "title": "Subscribe to the newsletter",
+    "namePlaceholder": "Your name (optional)",
+    "emailPlaceholder": "Your email *",
+    "submit": "Subscribe",
+    "success": "Subscribed! Thanks ✨",
+    "errorGeneric": "Subscription failed, please try again",
+    "errorNetwork": "Network error, please try again later",
+    "description": "Get the latest posts and tech notes straight in your inbox.",
+    "privacyNote": "We respect your privacy and never share your info.",
+    "confirmedTitle": "Subscribed",
+    "alreadyBody": "You subscribed to the newsletter with <em>{{email}}</em>.",
+    "nextNotice": "The next post will be sent to you.",
+    "okBtn": "OK",
+    "unsubBtn": "Unsubscribe",
+    "subscribeIntro": "One email whenever there is a new post.",
+    "namePlaceholderShort": "Name (optional)",
+    "emailPlaceholderShort": "Email *",
+    "processing": "Sending…",
+    "subscribe": "Subscribe",
+    "unsubProcessing": "Processing…",
+    "unsubConfirmJs": "Unsubscribe {{email}}?",
+    "unsubFailed": "Unsubscribe failed",
+    "unsubDone": "Unsubscribed.",
+    "privacy": "Your address is only used to send new posts. Every email has an unsubscribe link.",
+    "successWithEmoji": "Done. The next post will land in your inbox.",
+    "fieldName": "Name (optional)",
+    "fieldEmail": "Email"
+  },
+  "unsubscribe": {
+    "verifying": "Verifying link…",
+    "confirmTitle": "Confirm unsubscribe?",
+    "processing": "Processing…",
+    "successTitle": "Unsubscribed ✓",
+    "errorTitle": "Something went wrong",
+    "missingToken": "Link is missing a token. Use the unsubscribe link at the bottom of an email.",
+    "invalidLink": "Link is invalid or expired.",
+    "unsubscribeFailed": "Unsubscribe failed",
+    "bodyConfirm": "You're about to unsubscribe <em>{{email}}</em> from the Wentaoshuai newsletter.<br />Once unsubscribed, future posts won't reach your inbox.",
+    "btnConfirm": "Confirm unsubscribe",
+    "btnKeep": "Never mind, keep me",
+    "bodyDoneEmail": "<em>{{email}}</em> has been removed from the list.",
+    "bodyDoneFarewell": "Sorry to see you go — come back anytime.",
+    "viewLatest": "Check recent posts →",
+    "btnBackHome": "Back to home"
+  },
+  "oauth": {
+    "loggingIn": "Signing in...",
+    "errorNoCode": "Sign-in failed: no authorization code received",
+    "errorGeneric": "Sign-in failed, please try again later"
+  },
+  "about": {
+    "title": "About",
+    "description": "Wentaoshuai — full-stack engineer. Skills, experience, communities and journey."
+  },
+  "portfolio": {
+    "title": "Projects",
+    "description": "Things built and being built — capstones, tools, self-hosted services."
+  },
+  "photos": {
+    "title": "Photography",
+    "description": "Wentaoshuai's photography — light and shadow from the road.",
+    "heading": "Photos",
+    "subtitle": "Faint signals that crossed the void, developed here line by line.",
+    "station": "DSN · GROUND STATION",
+    "stationLabel": "A ground station dish receiving a signal from a distant probe",
+    "passesLabel": "Frames received per month: most in {{month}}, {{count}} frames",
+    "frame": "Photo {{date}}",
+    "viewer": {
+      "share": "Share this photo",
+      "shareShort": "Share",
+      "shareTitle": "Photo",
+      "shareText": "A photo by Wentaoshuai",
+      "close": "Close viewer",
+      "closeHint": "Close (Esc)",
+      "prev": "Previous photo",
+      "next": "Next photo"
+    },
+    "exif": {
+      "info": "Photo",
+      "title": "Title",
+      "description": "Description",
+      "basic": "Basics",
+      "size": "Dimensions",
+      "fileSize": "File size",
+      "format": "Format",
+      "ratio": "Aspect ratio",
+      "camera": "Camera",
+      "make": "Make",
+      "model": "Model",
+      "lens": "Lens",
+      "shooting": "Exposure",
+      "focal": "Focal length",
+      "aperture": "Aperture",
+      "shutter": "Shutter",
+      "flash": "Flash",
+      "whiteBalance": "White balance",
+      "taken": "Taken",
+      "location": "Location",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "altitude": "Altitude",
+      "tags": "Tags"
+    }
+  },
+  "aboutFall": {
+    "kick": "About",
+    "title": "Hold on.",
+    "hint": "Scroll down",
+    "landPre": "Past countless naive, uncertain yesterdays,",
+    "land": "touchdown.",
+    "surface": "Surface",
+    "surfaceTitle": "In hand",
+    "surfaceSub": "What I have carried along.",
+    "skill": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "mobile": "Mobile",
+      "devops": "DevOps",
+      "design": "Design",
+      "data": "Data",
+      "network": "Network",
+      "productivity": "Productivity",
+      "ai": "AI Tools",
+      "teaching": "Teaching"
+    },
+    "layer1": "Layer one",
+    "layer1Title": "What I have done",
+    "core": "Core",
+    "coreLine": "Further down are the things not yet written.",
+    "fallMeter": "Above ground",
+    "digMeter": "Below ground"
+  },
+  "works": {
+    "title": "Works",
+    "subtitle": "In the silent deep, carving out marks one inch at a time.",
+    "origin": "Origin",
+    "legendCore": "Size: amount of code",
+    "legendSurface": "Surface: main language",
+    "legendRings": "Rings: other languages",
+    "legendMoons": "Moons: GitHub stars",
+    "legendHover": "Hover: unfolds into the 3D body"
+  },
+  "collection": {
+    "title": "Collection",
+    "subtitle": "Wherever gravity reaches, fragments of light that once lit my way.",
+    "kind": {
+      "anime": "Anime",
+      "film": "Film",
+      "tv": "Series"
+    },
+    "status": {
+      "read": "Read",
+      "reading": "Reading",
+      "to-read": "To read"
+    },
+    "watch": {
+      "title": "Watching",
+      "anime": "anime",
+      "animeEp": "episodes",
+      "film": "films",
+      "tv": "series",
+      "tvEp": "episodes",
+      "live": "Watching now",
+      "last": "Last watched",
+      "episode": "Episode {{n}}"
+    },
+    "books": {
+      "title": "Bookshelf",
+      "total": "books"
+    },
+    "music": {
+      "title": "Listening",
+      "tracks": "top tracks",
+      "live": "Playing now",
+      "last": "Just played"
+    },
+    "hint": "SCROLL TO SEE FARTHER",
+    "sky": {
+      "unit": {
+        "s": "light-sec",
+        "m": "light-min",
+        "h": "light-hr",
+        "d": "light-days",
+        "y": "light-years"
+      },
+      "ago": {
+        "now": "just now",
+        "s": "{{n}}s ago",
+        "m": "{{n}} min ago",
+        "h": "{{n}} hr ago"
+      },
+      "reach": "View {{n}} {{unit}}\nSignals here were sent {{date}}",
+      "away": "{{n}} {{unit}} away · sent {{date}}",
+      "live": "Transmitting now",
+      "queued": "Not sent yet, still on Earth",
+      "beyond": "Older than the records, at their outer edge",
+      "records": "Records begin {{date}}",
+      "mark": {
+        "earth": "Earth",
+        "geo": "Geostationary orbit",
+        "iss": "ISS",
+        "moon": "Moon",
+        "jwst": "James Webb Space Telescope",
+        "sun": "Sun",
+        "mercury": "Mercury",
+        "venus": "Venus",
+        "mars": "Mars",
+        "asteroids": "Asteroid belt",
+        "jupiter": "Jupiter",
+        "saturn": "Saturn",
+        "uranus": "Uranus",
+        "neptune": "Neptune",
+        "kuiper": "Kuiper belt",
+        "newHorizons": "New Horizons",
+        "voyager1": "Voyager 1",
+        "heliopause": "Heliopause",
+        "oort": "Oort Cloud",
+        "proxima": "Proxima Centauri",
+        "barnard": "Barnard's Star",
+        "wolf359": "Wolf 359",
+        "lalande": "Lalande 21185",
+        "sirius": "Sirius",
+        "epsEri": "Epsilon Eridani",
+        "procyon": "Procyon",
+        "tauCeti": "Tau Ceti",
+        "scale-sec": "1 light-second · a second ago",
+        "scale-min": "1 light-minute · a minute ago",
+        "scale-hour": "1 light-hour · an hour ago",
+        "scale-day": "1 light-day · a day ago",
+        "scale-year": "1 light-year · a year ago"
+      }
+    }
+  },
+  "friends": {
+    "title": "Friends",
+    "subtitle": "Deep space is long and lonely, but look back and there is always starlight.",
+    "noSignal": "No signal yet",
+    "noFeed": "No RSS",
+    "legendCenter": "Center: this site",
+    "legendBeacon": "Ticks: recent posts, older ones further behind",
+    "legendSignal": "Rings: new post within {{days}} days",
+    "legendDock": "Click a star: dock",
+    "dockWith": "Dock with {{name}}",
+    "docked": "Docked",
+    "recent": "Recent posts",
+    "visit": "Visit the site",
+    "undock": "Undock",
+    "legendDim": "Dimmer: longer since the last update",
+    "dockLabel": "Two ships about to dock, a signal passing between them",
+    "cardTitle": "This site",
+    "siteDesc": "Someone who writes code and occasionally builds things",
+    "formTitle": "Be the next one",
+    "fieldName": "Name",
+    "fieldNameHint": "Your site's name",
+    "fieldUrl": "URL",
+    "fieldRss": "RSS (optional)",
+    "fieldDesc": "One line",
+    "fieldEmail": "Email (optional)",
+    "fieldEmailHint": "I'll reply here once I've looked",
+    "submit": "Send request",
+    "sending": "Sending",
+    "errRequired": "This one is required",
+    "errUrl": "Needs to be a URL starting with http:// or https://",
+    "errEmail": "That email doesn't look right",
+    "sent": "Got it. Once I've had a look, you'll show up in this sky.",
+    "sendFailed": "Couldn't send: {{reason}}. You can also write to",
+    "rulesTitle": "Before entering orbit",
+    "rule1": "The site loads, has its own domain and HTTPS (a free subdomain is fine).",
+    "rule2": "Original content. No repost sites, ad farms or SEO farms.",
+    "rule3": "If you have RSS, a signal shows up here whenever you post.",
+    "rule4": "Link here from your site first and I'll reply sooner.",
+    "drawer": "Exchange links"
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "The long night is silent, waiting for a pulse from far away.",
+    "rx": "RX · waiting for a signal",
+    "rxCount_one": "RX · {{count}} signal received",
+    "rxCount_other": "RX · {{count}} signals received",
+    "txReady": "TX · ready",
+    "txSending": "TX · sending",
+    "logTitle": "Received signals",
+    "emptyTitle": "No signal yet.",
+    "emptyText": "The first message will show up on this line.",
+    "privatePre": "For something private, write to",
+    "privateMid": ". Bug reports and feature ideas fit better in",
+    "privatePost": "."
+  },
+  "signal": {
+    "formTitle": "Send a signal",
+    "loginWith": "Sign in",
+    "asUser": "Writing as {{name}}",
+    "useAnonymous": "Go anonymous",
+    "useAccount": "Use my account",
+    "fieldName": "Name",
+    "fieldEmail": "Email (optional, never shown)",
+    "fieldWebsite": "Website (optional)",
+    "fieldText": "Your message",
+    "meter": "{{count}} chars · {{seconds}} s of signal",
+    "captcha": "{{a}} + {{b}} = ?",
+    "replyingTo": "Replying to {{name}}",
+    "cancelReply": "Cancel",
+    "reply": "Reply",
+    "like": "Received",
+    "admin": "Owner",
+    "submit": "Send signal",
+    "sentPending": "Signal sent. It will show up here after review.",
+    "sentApproved": "Signal sent.",
+    "errEmpty": "Nothing written yet",
+    "errName": "A name is required",
+    "errCaptcha": "Wrong answer, here's a new one",
+    "errFailed": "Couldn't send it, try again in a bit",
+    "rule1": "Anonymous messages appear after review; signed-in ones appear right away",
+    "rule2": "Sign in with GitHub or Google, or stay anonymous",
+    "rule3": "Your email is never shown; no ads or sales pitches",
+    "heading": "Responses",
+    "rxCount_one": "RX · {{count}} signal received",
+    "rxCount_other": "RX · {{count}} signals received",
+    "empty": "No signals yet. The first one will show up here.",
+    "closed": "Responses are closed for this post; the channel is receive-only.",
+    "react": {
+      "title": "Responses",
+      "like": "Like",
+      "helpful": "Helpful",
+      "more": "Want more"
+    },
+    "writeSomething": "Write something"
+  },
+  "log": {
+    "title": "Flight log",
+    "subtitle": "Breaking free of gravity, I become the open sky.",
+    "met": "MISSION ELAPSED TIME · since {{date}}",
+    "metValue": "{{days}} d {{hms}}",
+    "total_one": "{{count}} contribution so far",
+    "total_other": "{{count}} contributions so far",
+    "noContrib": "No data from GitHub",
+    "now": "Now",
+    "contrib_one": "{{count}} contribution",
+    "contrib_other": "{{count}} contributions",
+    "legendHeight": "Height: cumulative GitHub contributions",
+    "legendDots": "Dots: redesigns (hover for which)",
+    "legendHeat": "Lights on the ground: contributions per day, seven rows a week",
+    "statusLabel": "Right now",
+    "coding": "Coding today",
+    "codingValue": "{{h}} h {{m}} min",
+    "codingVia": "WakaTime",
+    "languages": "Languages this week",
+    "playing": "Playing lately",
+    "played2w": "{{hours}} h in the last two weeks · {{owned}} games on Steam",
+    "longest": "Most played: {{name}}, {{hours}} h"
+  },
+  "colophon": {
+    "title": "Colophon",
+    "subtitle": "Nothing else here: only the night, white ink, and a faint light.",
+    "hint": "Click a star and the sextant turns to measure it.",
+    "star": {
+      "material": "Materials",
+      "type": "Type",
+      "sky": "Sky",
+      "rule1": "Rule 01",
+      "rule2": "Rule 02",
+      "rule3": "Rule 03",
+      "license": "License",
+      "qa": "Q&A"
+    },
+    "title_material": "Only three things",
+    "text_material": "Amber only ever appears on a single point: where you are, or what is happening. It is never a fill color.",
+    "title_type": "Three typefaces",
+    "text_type": "One for Chinese and every mixed sentence, one for large all-English display text, one for dates and numbers.",
+    "title_sky": "One sky",
+    "text_sky": "Every page is one kind of thing in this sky, all made from the dots and lines of the dotted Saturn on the home page.",
+    "title_rule1": "One signal per screen",
+    "text_rule1": "The Saturn on the home page was drawn one step at a time. Walk through them in order; at the satellites step you can pick one yourself.",
+    "title_rule2": "Only dots and lines",
+    "text_rule2": "Every photo on the photos page is received like this. In the last step, see what happens with nothing but dots.",
+    "title_rule3": "Grown from data",
+    "text_rule3": "Every star on the works spiral grows from the numbers of one repo. Adjust the numbers to make one, then watch it grow step by step.",
+    "title_license": "License",
+    "text_license": "Code is open source under AGPL-3.0; posts, photos and other content are all rights reserved.",
+    "swatchGround": "Black is the paper",
+    "swatchPaper": "White is the ink",
+    "swatchAmber": "Amber is the signal",
+    "fontSerif": "Source Han Serif: Chinese and every mixed sentence",
+    "fontLatin": "Instrument Serif: only large all-English text, never bold",
+    "fontMono": "Monospace: dates and numbers",
+    "homePage": "Home",
+    "skyIs": {
+      "home": "moons around Saturn",
+      "notes": "rings of star trails",
+      "moments": "passing comets",
+      "works": "a spiral course outward",
+      "collection": "signals sent from Earth",
+      "photos": "pictures downlinked from deep space",
+      "setup": "a spacecraft's blueprints",
+      "friends": "stars around one center",
+      "messages": "radio waves received",
+      "log": "a launch from the ground",
+      "about": "a free fall"
+    },
+    "cell": "Cell",
+    "genSize": "Code size",
+    "genLangs": "Languages",
+    "genStars": "GitHub stars",
+    "genCommits": "Commits",
+    "genMain": "Main language",
+    "genOther": "Other",
+    "saturnToy": "The home page Saturn, drawn up to the current step",
+    "photoToy": "A photo from the gallery, received up to the current step",
+    "workToy": "A body grown from the numbers below",
+    "stepsLabel": "Steps",
+    "stepNext": "Next →",
+    "stepAgain": "From the top ↺",
+    "genPushed": "Last push",
+    "daysAgo": "d ago",
+    "steps": {
+      "saturn": {
+        "light": {
+          "t": "A sphere and a light",
+          "d": "It starts as a sphere and a sun shining from the upper left. The lit side is bright, the far side is dark."
+        },
+        "strokes": {
+          "t": "Strokes instead of shading",
+          "d": "No fill: just rows of horizontal lines, thicker where it is brighter. On the dark side the lines thin out to nothing, leaving only black and white."
+        },
+        "bands": {
+          "t": "Real cloud bands",
+          "d": "Brightness follows the bands Cassini photographed: the equatorial zone is brightest, the belts beside it darkest, and the line at 78°N is the edge of the north polar hexagon. A little noise makes the lines waver and break into brush strokes."
+        },
+        "rings": {
+          "t": "Rings and shadows",
+          "d": "The rings are concentric strokes too, spaced like the real ones: the B ring is densest, the Cassini Division is empty, and the A ring has the Encke Gap. The planet casts its shadow on the rings, and the rings cast theirs on the planet."
+        },
+        "satellites": {
+          "t": "Only one lights up",
+          "d": "Five orbits outside, one satellite each, matching the five sections on the home page. Amber goes to only one at a time: try tapping another."
+        },
+        "trails": {
+          "t": "Long exposure",
+          "d": "Last comes the background: with the shutter held open, every star drags an arc around the pole. The notes page keeps this idea, where each post is one star trail."
+        }
+      },
+      "photo": {
+        "raw": {
+          "t": "The original",
+          "d": "One photo from the gallery. A picture taken in space never appears in front of you directly; it has to make the trip down first."
+        },
+        "bits": {
+          "t": "Into 0s and 1s",
+          "d": "The camera turns the image into 0s and 1s and sends them row by row. At first, all you see is this flickering field of digits."
+        },
+        "gray": {
+          "t": "Row by row, in grayscale",
+          "d": "The ground station decodes one row at a time. Brightness arrives first, so the photo surfaces from top to bottom. The amber line is the row being received."
+        },
+        "color": {
+          "t": "One sweep of color",
+          "d": "Once the brightness is in, a single sweep from left to right maps the color back. Every photo on the photos page is received this way when it scrolls into view."
+        },
+        "dots": {
+          "t": "Only dots",
+          "d": "The same photo with one dot per cell, sized by brightness. Make the cells bigger and the photo slowly turns into a field of stars."
+        }
+      },
+      "work": {
+        "numbers": {
+          "t": "A handful of numbers",
+          "d": "On GitHub, a repo is just a few numbers: how much code, which languages, how many stars and commits, how long since the last push. Try adjusting them."
+        },
+        "surface": {
+          "t": "Size and surface",
+          "d": "More code makes a bigger planet. The main language picks the surface: TypeScript gives gas bands, Rust cratered rock, Python ice, anything else meridians. More commits mean more bands and craters."
+        },
+        "rings": {
+          "t": "Rings and moons",
+          "d": "Each language beyond the main one adds a ring, with a line style per language: solid for TypeScript, dashed for Rust, dotted for Python. GitHub stars become moons, up to four."
+        },
+        "body": {
+          "t": "Unfolding into 3D",
+          "d": "The works page normally shows only the line symbol; hover and it unfolds into a dotted 3D star, dense on the lit side and sparse on the dark side. The more recent the last push, the faster it spins."
+        },
+        "spiral": {
+          "t": "Onto the spiral",
+          "d": "Finally it joins the spiral on the works page: the center is the start, and newer works sit farther out. The one you just made is the newest, so it goes on the outermost turn."
+        }
+      }
+    },
+    "fontReading": "Articles can also be read in a sans, a handwritten-style or a modern sans face, each served per language by this site. MiSans is a free commercial font by Xiaomi."
+  },
+  "og": {
+    "tagline": "Someone who writes code and occasionally builds things."
+  }
+}

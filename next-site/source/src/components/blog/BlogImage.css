@@ -1,0 +1,117 @@
+/* 文章內文圖片與點擊放大的燈箱（見 BlogImage.tsx）。 */
+
+.blog-image-clickable {
+  cursor: zoom-in;
+  border-radius: var(--r-2);
+  max-width: 100%;
+}
+
+.blog-image-exif--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.blog-image-exif span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  letter-spacing: var(--ls-1);
+}
+
+/* 給 Radix Dialog 的對話框邊界，不參與版面：圖與關閉鈕照舊是遮罩的直接排版子項 */
+.image-lightbox-content {
+  display: contents;
+}
+
+.image-lightbox-img {
+  max-width: 92vw;
+  max-height: 86vh;
+  object-fit: contain;
+  border-radius: var(--r-2);
+  /* 原圖載到之前，用文章裡已經載好的那張墊著（JS 給 background-image） */
+  background-size: cover;
+  background-position: center;
+  cursor: default;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 燈箱開著時，文章裡那張藏起來：看起來是同一張圖飛出去再飛回來 */
+.blog-image-zoom.is-zoomed img {
+  visibility: hidden;
+}
+
+/* 圖說：跟文章裡的圖說同一種（小一號、淡一階） */
+.image-lightbox-cap {
+  max-width: min(92vw, 720px);
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-13);
+  line-height: var(--lh-170);
+  color: var(--paper-3);
+  text-align: center;
+  cursor: default;
+}
+
+/* 燈箱開著時頂欄藏起來：遮罩只有 95% 不透明，右上角頂欄那顆點會從關閉鈕的圓圈裡透出來 */
+body:has(.image-lightbox-overlay) .snav {
+  visibility: hidden;
+}
+
+/* 關閉：細線圓圈，裡面兩條細線交叉（CSS 畫，不靠圖示字型） */
+.image-lightbox-close {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-round);
+  background: none;
+  color: var(--paper-2);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-200) ease,
+    color var(--dur-200) ease;
+}
+
+.image-lightbox-close::before,
+.image-lightbox-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+}
+
+.image-lightbox-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.image-lightbox-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.image-lightbox-close:hover,
+.image-lightbox-close:focus-visible {
+  border-color: var(--paper);
+  color: var(--paper);
+  outline: none;
+}
+
+/* 收回去的時候：背景、圖說、關閉鈕一起淡掉，只剩圖飛回原位 */
+.image-lightbox-overlay.is-closing {
+  background-color: transparent;
+}
+
+.image-lightbox-overlay.is-closing :is(.image-lightbox-cap, .image-lightbox-close) {
+  opacity: 0;
+}
+
+.image-lightbox-cap,
+.image-lightbox-close {
+  transition: opacity var(--dur-250) ease;
+}

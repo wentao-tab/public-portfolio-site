@@ -1,0 +1,321 @@
+/* 長文閱讀頁的共用外框：版面骨架、內文排版、目錄、閱讀進度環。
+   blog/BlogPost 與 about/InfoPage 兩邊都用，誰都不擁有，所以放 common/。
+   ⚠ 改這裡會同時影響文章頁與 /about-site /history /messages /friends /about。 */
+
+/* ── Global scrollbar for blog post ── */
+.blog-post-container ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.blog-post-container ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.blog-post-container ::-webkit-scrollbar-thumb {
+  background: rgba(var(--brand-rgb), 0.25);
+  border-radius: var(--r-full);
+}
+
+.blog-post-container ::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--brand-rgb), 0.45);
+}
+
+.blog-post-container * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--white-15) transparent;
+}
+
+/* ── Container ── */
+.blog-post-container {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+  overflow: clip;
+  /* critical: keep sticky working */
+  padding-bottom: var(--space-16);
+}
+
+/* ── Dim overlay: uniform color over the starfield canvas ── */
+/* ⚠ 這層原本是 position:fixed —— 對 GPU 來說是一個「視窗大小的獨立合成層」。
+   影片在硬體加速下會被丟進自己的 overlay 平面，而這種 viewport 級的固定層會讓 overlay
+   被蓋掉：畫面全黑，但解碼是好的（canvas 取得到正常影像）、控制列也還在。
+   改成 absolute 貼著文章容器（容器本身 position:relative、高度涵蓋整篇），視覺效果一樣，
+   但不再是 viewport 級的合成層。 */
+.blog-post-dim-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--surface-0-rgb), 0.8);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Copy protection ──
+   ⚠ 這一組（含下面的 code block 與 video 豁免）刻意留在檔案開頭，而 `.post-content`、
+   `.code-block-wrapper`、`.terminal-block` 的 base 樣式在後面——biome 可能為此報
+   noDescendingSpecificity。那是誤判：這裡只設 user-select，base 只設版面與配色，
+   **零屬性重疊**，不是覆蓋關係。
+   不把這組往後搬的理由是它會翻轉與後面三處 user-select 的先後，而防複製是功能不是
+   樣式，不值得為了 lint 冒那個險。被報到的 base 規則各自帶了 biome-ignore 與說明。 */
+.blog-post-container .post-content {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.post-title {
+  font-size: var(--fs-36);
+  font-weight: 700;
+  color: #fff;
+  line-height: var(--lh-130);
+  letter-spacing: var(--ls-n2);
+}
+
+/* ═══════════════════════
+   Markdown Content
+   ═══════════════════════ */
+/* biome-ignore lint/style/noDescendingSpecificity: 前面的 `.blog-post-container .post-content` 只設 user-select（防複製），跟這裡的版面／配色零屬性重疊，不是覆蓋關係。詳見檔案開頭 Copy protection 那段。 */
+.post-content {
+  color: var(--white-80);
+  font-size: var(--fs-16);
+  line-height: var(--lh-185);
+  letter-spacing: var(--ls-1);
+  /* ⚠ 這裡原本是 `content-visibility: auto; contain-intrinsic-size: auto 1200px;`，
+     理由寫「長文章分段延後渲染，大幅改善滾動流暢度」。拿掉的原因是它**量不到效益、
+     但造成 CLS 0.52**（Google 的 poor 門檻是 0.25）。
+
+     成因：整篇文章是**一個** .post-content 元素。content-visibility: auto 在它還沒被
+     渲染時，整篇塌成 contain-intrinsic-size 的 1200px 佔位。於是「捲在深處按 F5」時，
+     瀏覽器拿 docH=2904 的版面還原捲動位置，內容一補上去 docH 變 13157，
+     視口內的東西整批被推走 —— reaction-bar / prev-next-nav / #comments 全部位移。
+
+     實測（tests/e2e/cls.spec.ts 的情境，本機 4~5 次取中位，皆零變異）：
+
+                              CLS      捲動 long task   捲動幀 p95   LCP     load
+       content-visibility: auto   0.5183   200.0ms          63.5ms       376ms   686ms
+       拿掉                       0.0000   199.0ms          61.9ms       372ms   675ms
+
+     捲動與載入兩端都開 6× CPU 節流量過（不節流的桌機量不出差異），四個效能指標
+     全部落在雜訊內甚至略好。也就是說那句「大幅改善滾動流暢度」在這個頁面上不成立
+     —— content-visibility: auto 套在單一巨大容器上本來就是反模式，它的設計場景是
+     「多個大小相近的重複區塊」，套在一個元素上只會得到一次巨大的高度跳動。
+
+     線上同樣重現過（/blog/palworld-dedicated-server-docker：CLS 0.5266，同一個成因）。
+     回歸守門在 tests/e2e/cls.spec.ts。 */
+  /* 中英排版：標點懸掛、行首的全形標點去掉左半空白、中英之間的空隙交給瀏覽器（text-autospace，
+     約 1/8 字寬；不支援的瀏覽器由 BlogPost 改用 pangu 插空白）、日文的小假名與長音不准起首、
+     最後一行不要只剩一兩個字 */
+  hanging-punctuation: first allow-end last;
+  text-spacing-trim: trim-start;
+  text-autospace: normal;
+  line-break: strict;
+  text-wrap: pretty;
+}
+
+/* 內文的小標：各行長度拉平，不要最後一行只掛一個詞 */
+.post-content :is(h2, h3, h4) {
+  text-wrap: balance;
+}
+/* hover 浮窗 — 透過 [data-fn-content] 由 JS 注入文字 */
+.post-content sup a[data-fn-content]::after {
+  content: attr(data-fn-content);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  min-width: 220px;
+  max-width: min(420px, 80vw);
+  padding: var(--space-2-5) var(--space-3-5);
+  background: rgba(var(--surface-1-rgb), 0.95);
+  border: 1px solid rgba(var(--brand-rgb), 0.35);
+  border-radius: var(--r-10);
+  color: var(--white-80);
+  font-size: var(--fs-14);
+  font-weight: 400;
+  line-height: var(--lh-160);
+  letter-spacing: var(--ls-1);
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-200) ease,
+    transform var(--dur-200) ease,
+    visibility var(--dur-200);
+  box-shadow:
+    0 16px 40px var(--black-50),
+    0 0 24px rgba(var(--brand-rgb), 0.2);
+  z-index: 30;
+}
+.post-content sup a[data-fn-content]:hover::after,
+.post-content sup a[data-fn-content]:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.post-content h2 {
+  font-size: var(--fs-24);
+  margin: var(--space-10) 0 var(--space-4);
+  color: #fff;
+  font-weight: 700;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--white-06);
+}
+
+.post-content h3 {
+  font-size: var(--fs-20);
+  margin: var(--space-8) 0 var(--space-3);
+  color: var(--white-95);
+  font-weight: 600;
+}
+
+.post-content h4 {
+  font-size: var(--fs-18);
+  margin: var(--space-6) 0 var(--space-2-5);
+  color: var(--white-90);
+}
+
+/* 標題 hover 錨點：字後面浮出 #，點了跳到/複製該段連結。 */
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  scroll-margin-top: 6rem; /* 錨點跳轉時不被頂部遮住 */
+}
+
+.post-content p {
+  margin: 0 0 var(--space-5);
+}
+
+/* 內文連結：照提案，暖白字、點線底線，滑過時底線變實 */
+.post-content a {
+  color: var(--paper);
+  text-decoration: underline dotted;
+  text-decoration-color: var(--paper-3);
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--dur-200);
+}
+
+.post-content a:hover {
+  text-decoration-color: var(--paper);
+}
+
+/* 引言（別人說的話）：左邊一條點線、淡一階的字，沒有底色。
+   旁白類三種線：引言＝點線、站長註與 NOTE/TIP＝實線、IMPORTANT/WARNING/CAUTION＝亮一階的實線加琥珀點 */
+.post-content blockquote {
+  margin: var(--space-6) 0;
+  padding: var(--space-0-5) 0 var(--space-0-5) var(--space-4-5);
+  border-left: 1px dotted var(--paper-3);
+  color: var(--paper-2);
+}
+
+.post-content ul,
+.post-content ol {
+  padding-left: var(--space-6);
+  margin: var(--space-4) 0;
+}
+
+/* 項目符號與編號。Tailwind 的 preflight 把 ul / ol 的 list-style 歸零，而這裡一直只設了
+   內縮（內縮本來就是給符號留的位置）——於是正式站的文章清單**從來沒有符號，有序清單也沒有數字**，
+   「步驟一、二、三」讀起來就是三行沒編號的字。是做後台 AI 預覽時順手量出來的。
+   只補給 markdown 產生的清單（沒有 class）：投票、延伸閱讀這些 MDX 區塊與 GFM 的待辦清單
+   （contains-task-list）都帶自己的 class，有自己的樣式，不能被這條蓋掉。 */
+.post-content ul:not([class]) {
+  list-style: disc;
+}
+.post-content ol:not([class]) {
+  list-style: decimal;
+}
+.post-content :is(ul, ol):not([class]) ul:not([class]) {
+  list-style: circle;
+}
+
+.post-content li {
+  margin: var(--space-1-5) 0;
+}
+
+.post-content code {
+  background: rgba(var(--paper-rgb), 0.07);
+  color: var(--paper);
+  padding: 0.1em 0.38em;
+  border-radius: var(--r-2);
+  font-size: 0.86em;
+  font-family: var(--mono-font);
+}
+
+.post-content img {
+  max-width: 100%;
+  border-radius: var(--r-2);
+  margin: 0;
+}
+
+.post-content hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: var(--space-8) 0;
+}
+
+/* 表格：照提案，表頭是等寬小字、底下一條細線，列與列之間是點線，沒有直線也沒有底色 */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-6) 0;
+  font-size: var(--fs-14);
+  line-height: var(--lh-160);
+}
+
+.post-content th,
+.post-content td {
+  padding: var(--space-2-5) var(--space-3-5) var(--space-2-5) 0;
+  border: 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.post-content th {
+  padding-top: 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-6);
+  color: var(--paper-3);
+}
+
+.post-content td {
+  border-bottom: 1px dotted var(--rule);
+}
+
+/* ═══════════════════════
+   Comments / Extras
+   ═══════════════════════ */
+.post-extras {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--white-06);
+}
+
+/* 窄螢幕：後台文章產生器的標題縮小 */
+@media (max-width: 950px) {
+  .post-title {
+    font-size: var(--fs-24);
+  }
+}
+
+/* ═══════════════════════
+   Custom Signature Embed
+   ═══════════════════════ */
+.blog-signature {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+  width: 100%;
+  margin-left: auto;
+}
+
+.blog-signature svg {
+  width: 10rem;
+  max-width: 100%;
+}

@@ -1,0 +1,741 @@
+/* 設備（about/Setup）：六張工程圖。頁首是標題與圖紙的切換列，下面一張 1200×900 的圖紙：
+   點格與對位記號是畫布（su-grid），零件線稿與說明是 DOM（位置都是圖紙寬高的比例），
+   滑過零件時亮起來的那一塊、配線圖的線、老家的草圖是疊在上面的另一張畫布（su-fx）。
+   窄螢幕不縮小圖紙（字會小到看不到），改成維持 960 寬、可以左右拖 */
+
+.su {
+  display: grid;
+  gap: var(--space-8);
+  max-width: 1280px;
+  padding: var(--page-top) var(--space-10) var(--page-bottom);
+  margin: 0 auto;
+  font-family: var(--serif);
+  color: var(--paper);
+}
+
+:where(.su) :where(button) {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.su-head {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.su-head-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.su-head h1 {
+  margin: 0;
+  font-size: var(--fs-40);
+  font-weight: 600;
+  line-height: var(--lh-110);
+}
+
+.su-head-title span {
+  font-family: var(--latin-display);
+  font-size: var(--fs-24);
+  color: var(--paper-2);
+}
+
+.su-head p {
+  margin: 0;
+  font-size: var(--fs-14);
+  color: var(--paper-2);
+}
+
+/* ── 圖紙的切換列：一張一個點，選中的是琥珀色 ── */
+.su-tabs {
+  display: flex;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  flex-wrap: wrap;
+  gap: var(--space-1-5) var(--space-5-5);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  letter-spacing: var(--ls-8);
+  color: var(--paper-3);
+}
+
+.su-tabs button {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  transition: color var(--dur-200) ease;
+}
+
+.su-tabs button::before {
+  width: 5px;
+  height: 5px;
+  content: "";
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-full);
+}
+
+.su-tabs button:hover {
+  color: var(--paper-2);
+}
+
+.su-tabs button[aria-pressed="true"] {
+  color: var(--paper);
+}
+
+.su-tabs button[aria-pressed="true"]::before {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+
+.su-tabs button:focus-visible {
+  outline: 1px solid var(--amber);
+  outline-offset: 4px;
+}
+
+/* ── 圖紙 ── */
+/* 只有窄螢幕（圖紙比畫面寬）才左右拖；寬螢幕不開捲動，免得哪個說明稍微超出圖紙就冒出捲軸 */
+.su-scroll {
+  overflow: visible;
+}
+
+.su-sheet {
+  position: relative;
+  container-type: inline-size;
+  width: 100%;
+  min-width: 960px;
+  aspect-ratio: 4 / 3;
+}
+
+.su-grid,
+.su-fx {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 說明文字：小標（等寬、大寫）、名字、規格，一行一行；底下墊一層紙色的光暈，壓在線上也讀得清楚 */
+.su-callout {
+  display: grid;
+  gap: var(--space-px);
+  white-space: nowrap;
+  text-shadow:
+    0 0 6px var(--ground),
+    0 0 14px var(--ground);
+}
+
+.su-callout b {
+  font-size: var(--fs-14);
+  font-weight: 600;
+}
+
+.su-callout span {
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-2);
+}
+
+.su-callout .su-tag {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+}
+
+/* 小標前面的子系統代號（C&DH、EPS⋯）：琥珀色 */
+.su-tag em {
+  font-style: normal;
+  color: rgba(var(--amber-rgb), 0.8);
+}
+
+/* ── 工程概念設計圖：底稿（左上角放在 (left, top)），引線與尺寸線畫在 su-fx 上 ── */
+.su-art {
+  position: absolute;
+  margin: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-300) ease;
+}
+
+.su-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 滑過一個零件時底稿退暗，只剩那個零件（su-fx 上疊的琥珀色）亮著 */
+.su-sheet.has-on .su-art {
+  opacity: 0.45;
+}
+
+/* 編號圈：中心點放在 (left, top)；墊一層紙色，壓在線上也讀得清楚 */
+.su-balloon {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper);
+  background: var(--ground);
+  border: 1px solid var(--paper-2);
+  border-radius: var(--r-round);
+  translate: -50% -50%;
+  transition:
+    color var(--dur-200) ease,
+    border-color var(--dur-200) ease;
+}
+
+.su-balloon[aria-pressed="true"],
+.su-balloon:hover {
+  color: var(--ground);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+.su-balloon:focus-visible {
+  outline: 1px solid var(--amber);
+  outline-offset: 3px;
+}
+
+/* 零件表：圖紙右上，一列一個零件（編號、名字與規格、子系統） */
+.su-bom {
+  position: absolute;
+  top: 7%;
+  left: 71%;
+  width: 27%;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.su-bom-head,
+.su-bom-row {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.su-bom-head {
+  padding-bottom: var(--space-1);
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.su-bom ol {
+  padding: 0;
+  margin: calc(-1 * var(--space-4)) 0 0;
+  list-style: none;
+}
+
+.su-bom-row {
+  width: 100%;
+  padding: var(--space-1-5) 0;
+  border-bottom: 1px dotted var(--rule);
+  transition: color var(--dur-200) ease;
+}
+
+.su-bom-no {
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+}
+
+.su-bom-part {
+  display: grid;
+  min-width: 0;
+}
+
+.su-bom-part b {
+  overflow: hidden;
+  font-size: var(--fs-13);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.su-bom-part span {
+  overflow: hidden;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  color: var(--paper-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.su-bom-tag {
+  display: grid;
+  justify-items: end;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-8);
+  color: var(--paper-3);
+}
+
+.su-bom-tag em {
+  font-style: normal;
+  color: rgba(var(--amber-rgb), 0.8);
+}
+
+.su-bom-row[aria-pressed="true"] .su-bom-no,
+.su-bom-row[aria-pressed="true"] .su-bom-part b {
+  color: var(--amber);
+}
+
+.su-bom-row:hover .su-bom-part span,
+.su-bom-row[aria-pressed="true"] .su-bom-part span {
+  color: var(--paper-2);
+}
+
+.su-bom-row:focus-visible {
+  outline: 1px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* 底稿上沒畫的其他周邊：零件表底下 */
+.su-others {
+  display: grid;
+  gap: var(--space-px);
+  font-size: var(--fs-12);
+  line-height: var(--lh-170);
+  color: var(--paper-2);
+}
+
+.su-others b {
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.su-others .su-tag {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+}
+
+/* 網路與流程圖的節點：中心點放在 (left, top)；說明掛在線稿下面，不影響置中 */
+.su-node {
+  position: absolute;
+  margin: 0;
+  translate: -50% -50%;
+}
+
+.su-node > figcaption {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 50%;
+  text-align: center;
+  translate: -50% 0;
+}
+
+/* 網路與流程圖的節點：線稿可有可無，沒有線稿的就只有一行字（中心點就是那行字） */
+.su-node img {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+}
+
+.su-node:not(:has(img)) > figcaption {
+  position: static;
+  translate: none;
+}
+
+.su-node.is-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  translate: -50% -50%;
+}
+
+.su-node.is-row > figcaption {
+  position: static;
+  text-align: left;
+  translate: none;
+}
+
+/* 單獨放在圖紙上某一點的說明（網際網路、路由器、四路的名字、流程圖的終點） */
+.su-at {
+  position: absolute;
+  text-align: center;
+  translate: -50% -50%;
+}
+
+.su-at.is-right {
+  text-align: left;
+  translate: 0 -50%;
+}
+
+.su-at.is-above {
+  translate: -50% -100%;
+}
+
+/* 接在後面的東西（冷氣、吸頂燈、門鈴）：在節點右邊 */
+.su-end {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 12cqw);
+  text-align: center;
+  translate: -50% -50%;
+}
+
+.su-appliances {
+  width: 260px;
+  white-space: normal;
+}
+
+.su-appliances span {
+  line-height: var(--lh-170);
+}
+
+/* ── 描出來：點落在左上角之後，線稿依離那個角的遠近一個一個由左往右描出來、說明跟著浮出來；
+   換圖紙時（元素重新掛上）也照這樣描一次。點還沒落地前先藏著 ── */
+.su-sheet:not(.is-shown) :is(.su-art, .su-node) > :is(img, figcaption),
+.su-sheet:not(.is-shown) :is(.su-balloon, .su-bom) {
+  opacity: 0;
+}
+
+.su-sheet.is-shown .su-node > img {
+  animation: su-plot 600ms var(--easing-out) both;
+  animation-delay: var(--plot, 0ms);
+}
+
+.su-sheet.is-shown .su-node > figcaption {
+  animation: su-fade 400ms ease both;
+  animation-delay: calc(var(--plot, 0ms) + 300ms);
+}
+
+/* 設計圖：底稿由左往右描出來，編號圈一個一個浮出來（延遲寫在元素上），零件表跟著淡入 */
+.su-sheet.is-shown .su-art > img {
+  animation: su-plot 900ms var(--easing-out) both;
+}
+
+.su-sheet.is-shown .su-balloon {
+  animation: su-fade 300ms ease both;
+}
+
+.su-sheet.is-shown .su-bom {
+  animation: su-fade 500ms ease 300ms both;
+}
+
+@keyframes su-plot {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes su-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ── 子系統對照：圖紙左下角 ── */
+.su-legend {
+  position: absolute;
+  bottom: 1%;
+  left: 1.5%;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: var(--space-px) var(--space-6);
+  margin: 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  color: var(--paper-3);
+}
+
+.su-legend div {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.su-legend dt {
+  min-width: 48px;
+  letter-spacing: var(--ls-12);
+  color: rgba(var(--amber-rgb), 0.8);
+}
+
+.su-legend dd {
+  margin: 0;
+}
+
+/* ── 遙測：HOME SERVER 那張的零件表下面 ── */
+.su-telemetry {
+  position: absolute;
+  top: 66%;
+  left: 84.5%;
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+  translate: -50% 0;
+  text-shadow:
+    0 0 6px var(--ground),
+    0 0 14px var(--ground);
+}
+
+.su-telemetry header {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+}
+
+.su-telemetry i {
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-full);
+}
+
+/* 收到一次就亮一下再退成常亮的小點 */
+.su-telemetry i.is-live {
+  border-color: var(--amber);
+  background: var(--amber);
+  animation: su-ping 1.2s ease-out both;
+}
+
+@keyframes su-ping {
+  from {
+    box-shadow: 0 0 0 0 rgba(var(--amber-rgb), 0.8);
+  }
+
+  to {
+    box-shadow: 0 0 0 10px rgba(var(--amber-rgb), 0);
+  }
+}
+
+.su-telemetry dl {
+  display: flex;
+  gap: var(--space-6);
+  margin: 0;
+}
+
+.su-telemetry dl div {
+  display: grid;
+  justify-items: center;
+}
+
+.su-telemetry dt {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+}
+
+.su-telemetry dd {
+  margin: 0;
+  font-family: var(--latin-display);
+  font-size: var(--fs-28);
+  line-height: var(--lh-110);
+  color: var(--paper);
+}
+
+.su-telemetry p {
+  margin: 0;
+  font-size: var(--fs-10);
+}
+
+/* ── 上行、下行的圖例：任務控制中心下面 ── */
+.su-links {
+  position: absolute;
+  top: 58%;
+  left: 12%;
+  display: grid;
+  gap: var(--space-1);
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-6);
+  color: var(--paper-2);
+  translate: -50% 0;
+}
+
+.su-links span {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.su-links span::before {
+  width: 5px;
+  height: 5px;
+  content: "";
+  border-radius: var(--r-full);
+}
+
+.su-links .is-up::before {
+  background: var(--amber);
+}
+
+.su-links .is-down::before {
+  background: var(--paper);
+}
+
+/* ── 老家：自我介紹與開機自檢 ── */
+.su-memory-intro {
+  position: absolute;
+  top: 8%;
+  left: 6%;
+  width: 320px;
+  white-space: normal;
+}
+
+.su-memory-intro span:last-child {
+  line-height: var(--lh-170);
+}
+
+.su-post {
+  position: absolute;
+  top: 20%;
+  left: 56%;
+  width: min(520px, 40%);
+  font-family: var(--mono-font);
+  font-size: var(--fs-12);
+  line-height: var(--lh-185);
+  color: var(--paper-2);
+}
+
+.su-post-head {
+  margin-bottom: var(--space-2-5);
+  letter-spacing: var(--ls-8);
+  color: var(--paper-3);
+}
+
+.su-post-line,
+.su-post-foot {
+  opacity: 0;
+  animation: su-type 1ms linear both;
+  animation-delay: calc(var(--i) * var(--step));
+}
+
+.su-post-line {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) 30px;
+  gap: var(--space-2);
+  cursor: default;
+}
+
+.su-post-line span {
+  color: var(--paper-3);
+}
+
+.su-post-line b {
+  font-weight: 400;
+  color: var(--paper);
+}
+
+.su-post-line em {
+  font-style: normal;
+  color: var(--paper-3);
+  text-align: right;
+}
+
+.su-post-line.is-on b,
+.su-post-line.is-on em {
+  color: var(--amber);
+}
+
+.su-post-foot {
+  margin-top: var(--space-3);
+  color: var(--paper-3);
+}
+
+/* 一行一行打出來（每一行晚 --step 出現）；最後那行游標一直閃 */
+@keyframes su-type {
+  to {
+    opacity: 1;
+  }
+}
+
+.su-post-foot {
+  animation:
+    su-type 1ms linear both calc(var(--i) * var(--step)),
+    su-blink 1.1s steps(2) infinite calc(var(--i) * var(--step));
+}
+
+@keyframes su-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* ── 標題欄：圖紙右下角 ── */
+.su-titleblock {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-8);
+  color: var(--paper-3);
+  border: 1px solid var(--rule);
+}
+
+.su-titleblock span {
+  padding: var(--space-1-5) var(--space-3);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.su-titleblock span:nth-child(2n) {
+  color: var(--paper-2);
+  border-right: 0;
+}
+
+.su-titleblock span:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.su-drag {
+  display: none;
+  margin: 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-8);
+  color: var(--paper-3);
+  text-align: center;
+}
+
+@media (max-width: 1000px) {
+  .su {
+    padding-inline: var(--space-5);
+  }
+
+  .su-drag {
+    display: block;
+  }
+
+  .su-scroll {
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .su-post-line,
+  .su-post-foot,
+  .su-sheet:is(.is-shown, :not(.is-shown)) :is(.su-art, .su-node) > :is(img, figcaption),
+  .su-sheet:is(.is-shown, :not(.is-shown)) :is(.su-balloon, .su-bom) {
+    opacity: 1;
+    animation: none;
+  }
+}

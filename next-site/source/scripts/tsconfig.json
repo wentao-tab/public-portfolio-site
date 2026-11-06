@@ -1,0 +1,22 @@
+{
+  // 取代根目錄的 tsconfig.scripts.json：那個檔名 project service 不認（只認 tsconfig.json），
+  // 所以 scripts/ 底下的檔案雖然被它 include，eslint 依然找不到 program。
+  // 這些 script 由 tsx 直接執行，不需要 emit，設定只服務型別檢查。
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    // csp.mjs 必須是 .mjs 而不是 .ts：`tests/e2e/stack.mjs` 用純 node 跑（不經 tsx），
+    // 要能直接 import 它。allowJs 讓 TS 從實作推型別，比另外維護一份 .d.mts 好——
+    // 那份宣告漂移了不會有人發現。
+    "allowJs": true
+  },
+  "include": ["**/*.ts", "**/*.mjs"]
+}

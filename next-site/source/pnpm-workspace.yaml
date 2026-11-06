@@ -1,0 +1,90 @@
+packages:
+  - 'packages/*'
+
+# pnpm 11 預設封鎖 postinstall build script,需顯式核可。
+# esbuild:平台 binary 安裝;exifreader:套件的 prepare。兩者為既有相依,允許執行。
+allowBuilds:
+  # ⚠️ pnpm 自己也要核可：12 起 CLI 是 Rust 原生 binary，靠 postinstall 的 install.js
+  #    把它放到位。不核可的話 packageManager 自動接手會裝出一個**佔位符**，
+  #    執行時報 "Syntax error" 而不是「缺少 binary」——症狀跟原因差很遠。
+  pnpm: true
+  # sentry-cli 的 postinstall 下載平台對應的 binary（source map 上傳用，見
+  # scripts/upload-sourcemaps.sh）。不核可的話 pnpm install 會直接失敗。
+  '@sentry/cli': true
+  esbuild: true
+  exifreader: true
+
+# overrides:pnpm 11 起不再讀 package.json 的 pnpm.overrides,設定移到此處(top-level)。
+# 多為 CVE remediation 的 transitive pin(對齊 Dependabot 修補),勿刪。
+overrides:
+  rollup: '^4.59.0'
+  glob: '^10.5.0'
+  '@xmldom/xmldom': '^0.9.10'
+  ajv: '^6.14.0'
+  '@modelcontextprotocol/sdk>ajv': '^8.17.1'
+  'ajv-formats>ajv': '^8.17.1'
+  # Stryker 9 宣告 ajv ~8.18，被上面那條全域 pin 拉成 v6 之後會炸
+  # （`TypeError: Ajv is not a constructor` —— v6 是 CJS 預設匯出，v8 不是）。
+  # 跟上面兩條一樣是範圍例外，不動全域那條。
+  '@stryker-mutator/core>ajv': '^8.17.1'
+  dompurify: '>=3.4.13'
+  picomatch: '^4.0.4'
+  minimatch: '^9.0.7'
+  trim-newlines: '^3.0.1'
+  flatted: '^3.4.2'
+  fast-xml-parser: '^5.3.1'
+  js-yaml: '>=5.2.2'
+  mdast-util-to-hast: '^13.2.1'
+  svgo: '^2.8.1'
+  lodash: '^4.17.21'
+  lodash-es: '^4.18.1'
+  serialize-javascript: '^7.0.5'
+  uuid: '^14.0.0'
+  postcss: '^8.5.25'
+  'nanoid@3': '^3.3.18'
+  'nanoid@>=4.0.0 <5.0.9': '^5.0.9'
+  'brace-expansion@>=2.0.0 <2.1.4': '^2.1.4'
+  '@hono/node-server': '^2.0.5'
+  # @modelcontextprotocol/sdk 直接與經 @hono/node-server 兩條路徑都拉到 hono，
+  # 四筆公告（CORS ReDoS、memo() 跨請求殘留 SSR 輸出、語言中介層複雜度 DoS、
+  # proxy helper 不清 Connection 標頭）在 4.12.34 一起修掉。
+  hono: '^4.12.34'
+  # @lhci/cli → lighthouse → puppeteer-core 這條 devDependency 鏈。
+  ip-address: '^10.3.1'
+  # ⚠️ 同一條鏈上的 extract-zip（GHSA-jmr9-qjv8-65gv，symlink 路徑穿越）**沒得修**：
+  # 公告寫「patched >=2.0.2」，但上游最新就是 2.0.1，那個版本沒有發布過。
+  # 它的用途是解壓 puppeteer 從 Google CDN 抓下來的 Chrome，輸入不是外部可控。
+  # 這裡刻意不加 dependabot ignore——沒有修補版它本來就不會開 PR，
+  # 而修補真的發布時我們要收得到通知。
+  # @stryker-mutator/core 那條鏈（ajv → fast-uri、typed-rest-client → qs）。
+  fast-uri: '^3.1.5'
+  qs: '^6.15.2'
+  sharp: '^0.35.0'
+  # @lhci/cli 透過 inquirer → external-editor 拉進 tmp@0.0.33 與 tmp@0.1.0，
+  # 兩者都有 Dependabot 警示（高：prefix/postfix 未消毒造成路徑穿越；
+  # 低：dir 參數吃符號連結）。實際使用面只在 CI 建暫存目錄、輸入不是外部可控，
+  # 所以不急；但留著就是安全頁上兩筆永遠不會處理的紅字，而雜訊一多，
+  # 真的有事時就沒人看。鎖壞了不會沒人知道——lhci 在 CI 每次都跑。
+  tmp: '^0.2.6'
+  vite@*: 'catalog:'
+  vitest@*: 'catalog:'
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.0.0
+  vitest: 5.0.1
+  vite-plus: 1.0.0
+  '@vitest/coverage-v8': 5.0.1
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: '*'
+    vitest: '*'
+
+# mdast-util-gfm-autolink-literal：email 自動連結的正規式寫成 lookbehind 字面值，Safari < 16.4
+# 解析到就是 SyntaxError，整支文章頁的 chunk 載不起來（GlitchTip 上 iOS 15.4–16.3 的
+# 「invalid group specifier name」）。patch 改成執行期建、不支援就退回沒有 lookbehind 的版本；
+# findEmail 自己會用 previous() 再檢查前一個字，所以兩個版本收的 email 一樣。
+# 升版時先看上游拿掉 lookbehind 了沒，拿掉了這筆就刪掉。
+patchedDependencies:
+  mdast-util-gfm-autolink-literal@2.0.1: patches/mdast-util-gfm-autolink-literal@2.0.1.patch

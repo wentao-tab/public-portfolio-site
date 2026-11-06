@@ -1,0 +1,763 @@
+/* 朋友（about/Friends）：軌道鋪滿整個視窗（畫布 about/friendsSky + 疊在上面的字），標題疊在左上。
+   對接插圖、本站資料、申請表與入軌條件收在右邊的抽屜裡，跟頂欄的選單一樣滑過停一下或點把手才拉出來；
+   拉出來時軌道往左讓位（畫布的 inset），不會被蓋住。窄螢幕的抽屜從底下拉上來 */
+
+.fr {
+  position: relative;
+  height: 100svh;
+  font-family: var(--serif);
+  color: var(--paper);
+}
+
+:where(.fr) :where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.fr) :where(button) {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+:where(.fr) :where(h2) {
+  margin: 0;
+}
+
+.fr-head p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-14);
+  color: var(--paper-2);
+}
+
+.fr-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.fr-title h1 {
+  margin: 0;
+  font-size: var(--fs-40);
+  font-weight: 600;
+  line-height: var(--lh-110);
+}
+
+.fr-latin {
+  font-family: var(--latin-display);
+  font-size: var(--fs-24);
+  color: var(--paper-2);
+}
+
+/* 收：字退掉，只剩軌道收回中心（星旁的字與中心的站名由畫布那一幀一起淡掉） */
+.fr-head,
+.fr-side,
+.fr-legend,
+.fr-list {
+  transition: opacity var(--dur-300) ease;
+}
+
+.fr.is-leaving :is(.fr-head, .fr-side, .fr-legend, .fr-list, .fr-panel) {
+  opacity: 0;
+}
+
+/* 標題疊在天上，不擋滑鼠（星的字與畫布要點得到） */
+.fr-head {
+  position: absolute;
+  top: var(--page-top);
+  left: var(--space-10);
+  z-index: 1;
+  max-width: min(520px, 60vw);
+  pointer-events: none;
+}
+
+/* ── 軌道 ── */
+.fr-sky {
+  position: absolute;
+  inset: 0;
+  /* 預覽星從畫面外飛進來：它的名字不能把頁面撐寬 */
+  overflow: clip;
+}
+
+.fr-sky canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 滑到星或刻點上：可以點 */
+.fr-sky.is-pointing canvas {
+  cursor: pointer;
+}
+
+.fr-center {
+  position: absolute;
+  top: var(--space-6);
+  left: 0;
+  font-size: var(--fs-14);
+  color: var(--paper-2);
+  pointer-events: none;
+  /* 位置由畫布那一幀給（translate 是軌道中心），這裡只負責置中在它底下 */
+  transform: translateX(-50%);
+}
+
+.fr-labels {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.fr-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 300px;
+  opacity: 0;
+  pointer-events: auto;
+  text-shadow:
+    0 0 6px var(--ground),
+    0 0 12px var(--ground);
+}
+
+/* 名字是對接的按鈕 */
+/* 每一行都只有自己那麼寬，對齊由畫布那一幀給（照星在中心的哪一邊連續地變） */
+.fr-label > * {
+  justify-self: start;
+  max-width: 100%;
+}
+
+.fr-name {
+  justify-self: start;
+  font-size: var(--fs-16);
+  line-height: var(--lh-130);
+  color: var(--paper);
+}
+
+.fr-host {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  color: var(--paper-3);
+}
+
+.fr-latest {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  font-size: var(--fs-12);
+  color: var(--paper-2);
+}
+
+.fr-latest time {
+  flex: none;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  line-height: var(--lh-170);
+  color: var(--paper-3);
+}
+
+.fr-latest span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fr-latest.is-quiet {
+  color: var(--paper-3);
+}
+
+.fr a:hover {
+  color: var(--paper);
+}
+
+.fr-name:focus-visible,
+.fr-latest:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+  text-underline-offset: 4px;
+}
+
+/* 介紹掛在名字上方、不佔版面：滑過才浮出來 */
+.fr-desc {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: max-content;
+  max-width: 300px;
+  margin-bottom: var(--space-1);
+  font-size: var(--fs-12);
+  color: var(--paper);
+  opacity: 0;
+  transition: opacity var(--dur-300) ease;
+}
+
+.fr-label.is-on .fr-desc {
+  opacity: 1;
+}
+
+/* 滑過刻點時那一篇的標題 */
+.fr-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  gap: var(--space-2);
+  max-width: 280px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--fs-12);
+  color: var(--paper);
+  background: rgba(var(--ground-rgb), 0.8);
+  border: 1px solid var(--rule);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fr-tip time {
+  flex: none;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  line-height: var(--lh-170);
+  color: var(--paper-3);
+}
+
+/* 對接之後展開的面板：寬螢幕在右半邊、窄螢幕在軌道下半部 */
+.fr-panel {
+  position: absolute;
+  top: 18%;
+  /* 右邊讓出抽屜的把手 */
+  right: var(--space-14);
+  left: 56%;
+  display: grid;
+  gap: var(--space-2);
+  max-height: 80%;
+  padding: var(--space-5);
+  overflow-y: auto;
+  background: rgba(var(--ground-rgb), 0.8);
+  border: 1px solid var(--rule);
+  outline: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(var(--space-2));
+  transition:
+    opacity var(--dur-300) ease,
+    transform var(--dur-300) var(--easing-out),
+    visibility 0s linear var(--dur-300);
+}
+
+.fr-panel.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--dur-300) ease,
+    transform var(--dur-300) var(--easing-out);
+}
+
+.fr-panel-tag {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+}
+
+.fr-panel-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--fs-22);
+  font-weight: 600;
+}
+
+.fr-panel-desc {
+  margin: 0;
+  font-size: var(--fs-13);
+  color: var(--paper-2);
+}
+
+.fr-panel h2 {
+  margin-top: var(--space-3);
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  font-weight: 400;
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+}
+
+.fr-panel-posts {
+  display: grid;
+  gap: var(--space-1);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.fr-panel-posts a {
+  display: grid;
+  grid-template-columns: 5ch minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
+  font-size: var(--fs-13);
+  line-height: var(--lh-150);
+  border-bottom: 1px dotted var(--rule);
+}
+
+.fr-panel-posts time {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  line-height: var(--lh-185);
+  color: var(--paper-3);
+}
+
+.fr-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  font-size: var(--fs-13);
+}
+
+.fr-panel-actions :is(a, button) {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--rule);
+  transition: border-color var(--dur-200) ease;
+}
+
+.fr-panel-actions :is(a, button):hover,
+.fr-panel-actions :is(a, button):focus-visible {
+  border-color: var(--amber);
+}
+
+.fr-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: var(--fs-14);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fr-legend {
+  position: absolute;
+  bottom: var(--space-8);
+  left: var(--space-10);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-4);
+  color: var(--paper-3);
+  pointer-events: none;
+}
+
+/* 對接中圖例讓開（窄螢幕上它跟面板疊在一起） */
+.fr-panel.is-open ~ .fr-legend {
+  opacity: 0;
+}
+
+/* 窄螢幕才出現的清單 */
+.fr-list {
+  display: none;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.fr-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dotted var(--rule);
+}
+
+.fr-list li > a:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.fr-list b {
+  font-size: var(--fs-16);
+  font-weight: 600;
+}
+
+.fr-list-desc {
+  font-size: var(--fs-12);
+  color: var(--paper-2);
+}
+
+/* ── 抽屜 ── */
+/* 整個抽屜是 fixed、平常推到畫面外，只露出左邊那支把手；打開時滑進來。
+   不蓋頂欄：內容區（main-content-container）自己是一個堆疊脈絡，頂欄在它外面，所以上緣留 page-top */
+.fr-side {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: min(380px, 92vw);
+  transform: translateX(100%);
+  transition:
+    transform var(--dur-500) var(--easing-out),
+    opacity var(--dur-300) ease;
+}
+
+.fr-side.is-open {
+  transform: none;
+}
+
+.fr-side-body {
+  display: grid;
+  align-content: start;
+  gap: var(--space-8);
+  height: 100%;
+  padding: var(--page-top) var(--space-6) var(--space-8);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(var(--ground-rgb), 0.96);
+  border-left: 1px solid var(--rule);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+/* 把手：貼在抽屜左緣外面，抽屜收著時它就在視窗右緣。一條豎線、一個空心點、直排的等寬小字；
+   滑過或打開時點變成琥珀實心（跟右鍵選單、指令面板同一套） */
+.fr-handle {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+  translate: 0 -50%;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+  writing-mode: vertical-rl;
+  transition: color var(--dur-200) ease;
+}
+
+.fr-handle::before {
+  content: "";
+  width: 1px;
+  height: 40px;
+  background: var(--rule);
+}
+
+.fr-handle i {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-round);
+  transition:
+    background-color var(--dur-200) ease,
+    border-color var(--dur-200) ease;
+}
+
+.fr-handle:hover,
+.fr-handle:focus-visible,
+.fr-side.is-open .fr-handle {
+  color: var(--paper);
+}
+
+.fr-handle:hover i,
+.fr-handle:focus-visible i,
+.fr-side.is-open .fr-handle i {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+
+.fr-handle:focus-visible {
+  outline: 1px dotted var(--paper-3);
+  outline-offset: -2px;
+}
+
+.fr-dock {
+  position: relative;
+  height: 150px;
+}
+
+.fr-dock canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.fr-side h2 {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  font-weight: 400;
+  letter-spacing: var(--ls-18);
+  color: var(--paper-3);
+}
+
+.fr-card {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.fr-card b {
+  font-size: var(--fs-18);
+  font-weight: 600;
+}
+
+.fr-card dl {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-12);
+}
+
+.fr-card dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px dotted var(--rule);
+}
+
+.fr-card dt {
+  color: var(--paper-3);
+}
+
+.fr-card dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+  color: var(--paper-2);
+  user-select: all;
+}
+
+.fr-form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* 表單的標題是一句話，不是小標 */
+.fr-form h2 {
+  font-family: var(--serif);
+  font-size: var(--fs-18);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--paper);
+}
+
+.fr-input {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.fr-input span {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+
+.fr-input input {
+  padding: var(--space-1) 0;
+  font: inherit;
+  font-size: var(--fs-16);
+  color: var(--paper);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  outline: none;
+  appearance: none;
+}
+
+.fr-input input:focus {
+  border-bottom-color: var(--paper-2);
+}
+
+.fr-input input::placeholder {
+  color: var(--paper-3);
+}
+
+/* 驗證沒過：底線換成琥珀色，原因寫在底下 */
+.fr-input input[aria-invalid="true"] {
+  border-bottom-color: var(--amber);
+}
+
+.fr-error {
+  font-size: var(--fs-12);
+  font-style: normal;
+  color: var(--amber);
+}
+
+.fr-submit {
+  justify-self: start;
+  padding: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+  font-size: var(--fs-14);
+  color: var(--paper);
+  border: 1px solid var(--rule);
+  transition: border-color var(--dur-200) ease;
+}
+
+.fr-submit:hover,
+.fr-submit:focus-visible {
+  border-color: var(--amber);
+}
+
+/* 送出中、送出之後：不能再按，框退回細線 */
+.fr-submit:disabled {
+  cursor: default;
+  color: var(--paper-2);
+  border-color: var(--rule);
+}
+
+.fr-sent {
+  display: block;
+  font-size: var(--fs-12);
+  color: var(--paper-2);
+}
+
+/* 送不出去：跟欄位底下的錯誤同一個顏色 */
+.fr-failed {
+  color: var(--amber);
+}
+
+/* 給機器人填的隱藏欄位：搬到畫面外（display: none 的欄位有些機器人會跳過） */
+.fr-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.fr-sent a {
+  font-family: var(--mono-font);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+}
+
+.fr-rules {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.fr-rules ol {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: var(--space-6);
+  margin: 0;
+  list-style: decimal-leading-zero;
+  font-size: var(--fs-13);
+  line-height: var(--lh-160);
+  color: var(--paper-2);
+}
+
+.fr-rules li::marker {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  color: var(--paper-3);
+}
+
+@media (max-width: 760px) {
+  /* 手機：天空佔一整個畫面，底下接著朋友清單（星旁邊只放得下名字），頁面照常往下捲 */
+  .fr {
+    height: auto;
+  }
+
+  .fr-head {
+    left: var(--space-4);
+  }
+
+  .fr-legend {
+    bottom: var(--space-12);
+    left: var(--space-4);
+  }
+
+  .fr-sky {
+    position: relative;
+    inset: auto;
+    height: 100svh;
+  }
+
+  /* 星旁邊只留名字，其餘列在底下的清單 */
+  .fr-label :is(.fr-host, .fr-latest, .fr-desc) {
+    display: none;
+  }
+
+  .fr-list {
+    display: grid;
+    padding: var(--space-6) var(--space-4) calc(var(--page-bottom) + var(--space-12));
+  }
+
+  /* 抽屜改從底下拉上來；把手是貼在它上緣的一條橫的 */
+  .fr-side {
+    top: auto;
+    left: 0;
+    width: auto;
+    height: min(62svh, 560px);
+    transform: translateY(100%);
+  }
+
+  /* 抽屜拉起來時天只剩上面一小塊：標題與圖例退開，別壓在讓位過去的軌道上 */
+  .fr.is-side-open :is(.fr-head, .fr-legend) {
+    opacity: 0;
+  }
+
+  .fr-side-body {
+    padding: var(--space-6) var(--space-4) var(--space-8);
+    border-top: 1px solid var(--rule);
+    border-left: 0;
+  }
+
+  .fr-handle {
+    top: auto;
+    right: auto;
+    bottom: 100%;
+    left: 50%;
+    flex-direction: row;
+    padding: var(--space-3) var(--space-5);
+    translate: -50% 0;
+    writing-mode: horizontal-tb;
+    background: rgba(var(--ground-rgb), 0.96);
+    border: 1px solid var(--rule);
+    border-bottom: 0;
+  }
+
+  .fr-handle::before {
+    width: 24px;
+    height: 1px;
+  }
+}
+
+/* 跟畫布的窄螢幕門檻同一個（friendsSky 的 NARROW_PX）：對接的船在上方，面板接在下面 */
+@media (max-width: 600px) {
+  .fr-panel {
+    top: 44%;
+    right: 0;
+    left: 0;
+    max-height: 56%;
+    padding: var(--space-4);
+  }
+}

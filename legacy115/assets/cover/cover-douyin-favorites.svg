@@ -1,0 +1,11 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#101014"/>
+  <rect x="88" y="88" width="1024" height="624" rx="34" fill="#18181F" stroke="#F2F2F2" stroke-width="3"/>
+  <text x="150" y="278" fill="#FFFFFF" font-family="Arial, 'PingFang SC', sans-serif" font-size="76" font-weight="800">抖音收藏</text>
+  <text x="154" y="350" fill="#C7CBD6" font-family="Arial, 'PingFang SC', sans-serif" font-size="30">视频灵感、兴趣收藏与内容入口</text>
+  <g transform="translate(780 224)">
+    <path d="M122 0c12 66 50 106 112 113v80c-40 0-76-12-109-36v151c0 94-64 164-154 164-84 0-151-68-151-151 0-90 73-159 166-151v82c-43-7-78 24-78 69 0 40 28 69 66 69 40 0 69-28 69-76V0h79Z" fill="#FFFFFF"/>
+    <path d="M121 0c7 40 23 71 48 91" stroke="#25F4EE" stroke-width="18"/>
+    <path d="M-15 169c-93-8-166 61-166 151 0 83 67 151 151 151" stroke="#FE2C55" stroke-width="18"/>
+  </g>
+</svg>

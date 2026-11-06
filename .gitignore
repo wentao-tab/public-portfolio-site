@@ -24,3 +24,11 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 yarn.lock
+
+# New public-site source: runtime state and generated build internals stay local.
+next-site/source/.output/
+next-site/source/.tanstack/
+next-site/source/.nitro/
+next-site/source/.cache/
+next-site/source/public/monaco/
+next-site/source/public/excalidraw/

@@ -1,0 +1,124 @@
+[package]
+name = "koimsurai-web-backend"
+version = "0.1.0"
+edition = "2024"
+description = "koimsurai.com 的 API 後端（axum + sqlx + SQLite）"
+license = "AGPL-3.0-only"
+
+[dependencies]
+axum = { version = "0.8", features = ["multipart"] }  # multipart 給 /admin/upload
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+# preserve_order：讓解析 JSON（thoughts 的 ref）再序列化時保留原始 key 順序，
+# 與 Express 的 JSON.parse→res.json 一致（byte-level 對拍）。
+# float_roundtrip：serde_json 預設浮點解析快速但有損（差 1 ULP，gallery manifest 的
+# aspectRatio 1.7829716193656093 被 parse 成 …609）；開啟後 parse→serialize 精確 round-trip 對齊 V8。
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+# 0.9：runtime 與 tls 拆開（舊 runtime-tokio-rustls 已移除）。sqlite 為本地檔,不需 TLS → tls-none。
+# sqlite feature 0.9 仍預設 bundled（vendored 靜態連,Docker 免裝 libsqlite3-dev）。
+sqlx = { version = "0.9", features = ["sqlite", "runtime-tokio", "tls-none", "macros"] }
+tower = { version = "0.5", features = ["util"] }
+# set-header：API 回應掛 X-Robots-Tag: noindex（見 router.rs 的說明）
+tower-http = { version = "0.7", features = ["trace", "cors", "set-header"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+dotenvy = "0.15"
+# JWT 驗章/簽章（HS256），對齊 Express 的 jsonwebtoken
+# v10 default features 不含 crypto provider（只有 use_pem）→ 顯式選純 Rust 的 rust_crypto
+# （HS256 用 hmac+sha2，免 C 工具鏈，Docker/CI 都能編）。不然 runtime 會噴 CryptoProvider 找不到。
+jsonwebtoken = { version = "11.0", features = ["rust_crypto"] }
+# bcrypt 驗密碼，相容 Express 的 bcryptjs（$2a/$2b/$2y）
+bcrypt = "0.19"
+# 對外 HTTP 都走它。stream 給 /image-proxy 串流代理；json 只是 serde_json 的薄包裝
+# （serde_json 本來就是相依），換來 `resp.json()` / `.json(&body)`，不必每處自己 text→from_str。
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "stream", "json"] }
+# unfurl（og meta 抽取）用，複製 Express 的 regex
+regex = "1"
+# newsletter unsubscribe token（crypto.randomBytes(16).hex 等價）
+rand = "0.10"
+# in-process cache 的鎖（短臨界區、無 poison；不跨 await 持有）
+parking_lot = "0.12"
+# 上傳圖片的 thumbhash 編成 base64url
+base64 = "0.23"
+# 自家 bahamut SDK（https://crates.io/crates/anigamer；本地開發要改 SDK 時可暫換 path dep）
+anigamer = "0.1.1"   # 0.1.1 起有 ClientOptions::base_urls，sync worker 才測得到
+# 錯誤追蹤 → 自架 GlitchTip（Sentry SDK 相容）。SENTRY_DSN 沒設就整個關閉。
+#
+# default-features = false：預設會拉 native-tls（openssl），而這個專案全線走 rustls
+#   （reqwest、anigamer 都是）。混用會多編一份 openssl，Docker 映像也得多裝系統套件。
+# reqwest + rustls：傳輸層沿用已有的堆疊。
+# backtrace / contexts / panic：panic 自動上報 + 帶 OS/runtime 資訊。
+# logs：結構化日誌（GlitchTip 的 enabledFeatures 有 'logs'）。錯誤旁邊看得到前後文。
+sentry = { version = "0.49", default-features = false, features = [
+    "reqwest", "rustls", "backtrace", "contexts", "panic", "logs",
+] }
+# tracing 事件 → Sentry。掛在既有的 registry 上，handler 一行都不用改。
+sentry-tracing = { version = "0.49", features = ["logs"] }
+# 每個請求一個 Hub + 把請求資訊掛進事件。
+# axum-matched-path：issue 依「路由樣板」聚合而不是依實際網址——
+#   沒有它的話 /api/posts/1 和 /api/posts/2 會變成兩個不同的 issue。
+sentry-tower = { version = "0.49", features = ["http", "axum-matched-path"] }
+# opencc 簡繁轉換（純 Rust、內建 OpenCC 字典，免 libopencc C 依賴）。
+# Tw2s 對 opencc-js {from:'tw',to:'cn'} 實測 byte-identical（33 真實欄位 + 20 對抗案例全過）。
+ferrous-opencc = "0.4"
+# OG 圖：HTML/CSS → PNG。純 Rust，內含真正的排版引擎
+# （taffy = flexbox、parley = 文字排版、icu_segmenter = 斷行規則）。
+#
+# ⚠ 取代原本的 resvg。換掉的理由不是「想用新東西」，是 SVG **沒有排版**：
+#   舊版得自己寫 `wrap_title` 數字元來斷行，而那個做法在線上產出過壞圖——
+#   標點跑到行首（`,在 Windows…`）、`CTranslate2` 被硬切成 `CTr…`。
+#   細節見 handlers/og.rs 的檔頭。
+#
+# ⚠ takumi **不吃系統字型**，CJK 一定要自己註冊（見 og.rs 的 load_cjk_font）。
+#   容器裡的 fonts-noto-cjk 仍然要裝——只是改成由我們讀檔案而不是靠 fontdb 掃描。
+takumi = { version = "2.5.11", features = ["from-html"] }
+# OG 圖是 APNG，而且每一格只存變動的像素（handlers/og_sky.rs 的 encode_apng）。takumi 自己的
+# write_animated_png 每一格都存整張，18 秒的圖會是幾十 MB；要設每格的範圍與 BlendOp 得直接用 png。
+# 它本來就是 takumi／image 的相依（同一個版本），不是新進來的套件。
+png = "0.18"
+# 分享圖的背景照各頁前端的 canvas 畫布逐行移植（handlers/og/canvas.rs 仿 CanvasRenderingContext2D）。
+# 同樣是 takumi 本來就在用的版本，不是新進來的套件。
+tiny-skia = "0.12"
+# upload thumbhash + gallery 圖片管線（取代 sharp）。實測 thumbhash 對 sharp 版 2/5 byte 同、3/5 差 ≤2 字元（視覺零差異）。
+image = "0.25"
+thumbhash = "0.1"
+# gallery sync 的 lossy webp q85/q80（image crate 只有 lossless webp）。libwebp-sys vendored 編譯（輕量 C，非 libvips 量級）。
+webp = "0.3"
+# EXIF：orientation（rotate 對齊 sharp .rotate()）+ 欄位抽取（對齊 exifr pick）
+kamadak-exif = "0.6"
+# 本地時區（upload YYYY/MM 目錄、exif DateTimeOriginal——Express 容器 TZ=Asia/Taipei，
+# JS Date 走本地時區；chrono 尊重 TZ env 對齊）
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+# P4：Rust struct → TS 型別（packages/api-types）。export bin：cargo run --bin export_types
+specta = { version = "=2.0.0-rc.25", features = ["derive"] }
+specta-typescript = "0.0.12"
+specta-serde = "0.0.12"
+utoipa = { version = "5.5.0", features = ["axum_extras"] }
+utoipa-scalar = { version = "0.3.0", features = ["axum"] }
+csv = "1"
+
+# jemalloc（tikv fork）：長跑 server 降 RSS/碎片化。MSVC 不支援 → target cfg 排除。
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+tikv-jemallocator = "0.7"
+
+[dev-dependencies]
+# 整合測試（tests/api.rs）：tower oneshot 打 build_router + 收 body
+http-body-util = "0.1"
+# 快照測試（tests/snapshots.rs）：公開讀取端點的回應形狀。
+# 選它的理由是「不手寫斷言」——`cargo insta test --accept` 直接把預期的 JSON 生出來，
+# 而那批端點（rss/series/books/polls/watch）的回應是幾十個欄位的巢狀結構，
+# 手寫等於挑幾個欄位驗、其餘全放過。redactions 用來遮掉真的會變的值（例如 pubDate）。
+insta = { version = "1.48", features = ["json", "redactions"] }
+# 第三方代理的 mock 上游。thirdparty/watch/spotify 合計 5000+ region 一直測不到，
+# 因為上游位址寫死；`state::ExternalUrls` 讓它可注入之後，還需要一個能扮演上游的東西。
+# 選 wiremock 而不是自己用 axum 架一台：它自帶請求比對與「被呼叫幾次」的驗證，
+# 而「同一個上游只該被打一次」正是快取與去重要驗的事——那部分自己刻會刻很久。
+wiremock = "0.6"
+# property testing：JS 相容層（util.rs / og.rs）的不變量——手挑案例只能覆蓋想得到的，
+# 這些函式要對齊 JS 的 UTF-16 語意，CJK/emoji/surrogate 的邊界靠隨機輸入才掃得到。
+proptest = "1"
+
+# Lint 規則在 workspace root 的 Cargo.toml，單一來源。
+[lints]
+workspace = true

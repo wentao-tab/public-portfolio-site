@@ -1,0 +1,64 @@
+# koimsurai monorepo — Cargo workspace（backend；anigamer 為獨立 repo 不收）
+[workspace]
+resolver = "2"
+members = ["backend"]
+
+# ─── Lint ────────────────────────────────────────────────────────────
+# 寫在 workspace，各 crate 用 `[lints] workspace = true` 繼承——所以只有一份。
+#
+# ⚠️ 在這之前這個 repo **一條 clippy 設定都沒有**，跑的就是預設那五組
+# （correctness / style / complexity / perf / suspicious）。2026-07-11 遷移時的
+# 那次 audit 是人工照 20 條反模式表掃出來的，清完 7 個 warning 就沒把規則固化，
+# 於是後來新寫的程式完全沒有把關。這個檔案的存在就是為了不再發生一次。
+#
+# 邊界：`-D warnings` 是 CI 的跑法（ci.yml 與 pre-commit 都是），所以這裡的
+# **warn 在合流時等同 deny**。不要因為「它只是 warn」就放著不管。
+[workspace.lints.clippy]
+# priority = -1 讓下面個別的 allow 蓋得過整組
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+
+# nursery 整組不開（56 個 option_if_let_else 這種公認會讓程式更難讀的都在裡面），
+# 只個別挑有實質價值的進來。
+or_fun_call = "warn"                   # `unwrap_or(expensive())` 無條件求值
+significant_drop_in_scrutinee = "warn" # match/if-let 的 scrutinee 裡持有鎖 guard
+significant_drop_tightening = "warn"   # 鎖 guard 活得比臨界區久
+redundant_clone = "warn"
+missing_const_for_fn = "warn"
+use_self = "warn"
+
+# ─── allow：實際量過是噪音的 ──────────────────────────────────────────
+# 每條後面是導入當下的數量。要拿掉某條之前先想「這些真的每個都該改嗎」。
+doc_markdown = "allow"           # 468；要求中文註解裡的 Express / SQLite 加反引號
+missing_errors_doc = "allow"     # 60；Err variant 自己 thiserror 描述就夠
+missing_panics_doc = "allow"     # 同上取向
+must_use_candidate = "allow"     # 44；幾乎每個 fn 都會被建議加 #[must_use]
+too_many_lines = "allow"         # 18；handler 本來就長，拆不拆看語意不看行數
+items_after_statements = "allow" # 21；區域 fn 就近定義比搬到頂端好讀
+similar_names = "allow"          # 3
+many_single_char_names = "allow" # 3
+unreadable_literal = "allow"     # 4；port 與短常數加底線反而難讀
+
+# ─── restriction：整組絕對不要開，只個別挑 ────────────────────────────
+# 這組是「有些專案想禁但多數專案不該禁」的集合（連 `else` 都有規則在禁），
+# 開整組會直接淹沒。以下每一條都是量過現存數量才加的。
+todo = "deny"           # 現存 0。半成品不准 merge
+unimplemented = "deny"  # 現存 0
+dbg_macro = "deny"      # 現存 0。上 commit 前清掉
+print_stdout = "deny"   # 正式碼現存 1（export_types 那支 codegen CLI，檔內 allow）
+print_stderr = "deny"   # 正式碼現存 0。要輸出走 tracing，才進得了結構化 log
+
+# ⚠️ `unwrap_used` **不在這裡**，它寫在三個 crate root 的 `#![deny(...)]`
+# （src/lib.rs、src/main.rs、src/bin/export_types.rs），理由見 lib.rs 上面那段。
+# 一句話版本：`[lints]` 是 package 層級、會連 tests/ 一起管，而這條的意圖只針對正式碼。
+
+# ─── rustc 自己的 lint ────────────────────────────────────────────────
+# 預設 warn 的那些在 `-D warnings` 下本來就會擋，這裡只列「預設是 allow、
+# 要主動打開才有」的。同樣每條都量過現存數量。
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny" # unsafe fn 內仍要 explicit unsafe block
+unused_must_use = "deny"        # Result 不能默默扔掉（預設 warn，這裡升 deny）
+trivial_numeric_casts = "warn"  # 現存 0。`5_i32 as i32` 之類的廢操作
+unused_lifetimes = "warn"       # 現存 0
+# missing_docs 不開：現存 689 個，而且這個 crate 沒有對外 API 消費者
+# unreachable_pub 不開：現存 10 個全在 tests/common，那是 include 模式的固有現象

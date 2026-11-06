@@ -1,0 +1,895 @@
+{
+  "common": {
+    "loading": "加载中…",
+    "loadingData": "正在加载数据",
+    "errorBackendApi": "无法连接到后端 API",
+    "retry": "重试",
+    "close": "关闭",
+    "imageViewer": "图片查看",
+    "cancel": "取消",
+    "save": "保存",
+    "submit": "提交",
+    "send": "发送",
+    "search": "搜索",
+    "all": "全部",
+    "more": "更多",
+    "today": "今天",
+    "justNow": "刚刚",
+    "daysAgo": "{{count}} 天前",
+    "weeksAgo": "{{count}} 周前",
+    "monthsAgo": "{{count}} 个月前",
+    "yearsAgo": "{{count}} 年前",
+    "minutesAgo": "{{count}} 分钟前",
+    "hoursAgo": "{{count}} 小时前"
+  },
+  "nav": {
+    "home": "首页",
+    "notes": "手记",
+    "more": "更多",
+    "backHome": "返回首页",
+    "downloadResume": "选择要下载的简历",
+    "resumeSE": "软件工程师",
+    "resumeClubs": "社团经历",
+    "watch": "在看",
+    "thinking": "碎念",
+    "menu": "导航菜单"
+  },
+  "siteNav": {
+    "signIn": "登录",
+    "notes": "手记",
+    "moments": "碎念",
+    "works": "作品",
+    "collection": "收藏",
+    "about": "关于",
+    "more": "更多",
+    "photos": "照片",
+    "setup": "设备",
+    "friends": "朋友",
+    "messages": "留言",
+    "log": "航行日志",
+    "colophon": "此站点",
+    "search": "搜索",
+    "language": "语言",
+    "account": "账号",
+    "menu": "菜单",
+    "close": "关闭",
+    "home": "回首页",
+    "allPosts": "全部 {{count}} 篇",
+    "allMoments": "全部碎念",
+    "allWorks": "全部 {{count}} 件",
+    "watching": "在看",
+    "reading": "在读",
+    "listening": "在听",
+    "recently": "最近",
+    "episode": "第 {{ep}} 集",
+    "aboutLead": "Wentaoshuai，一个写代码的人，偶尔造点东西。",
+    "aboutAll": "关于我"
+  },
+  "user": {
+    "adminPanel": "进入后台",
+    "logout": "登出",
+    "signInWithGithub": "GitHub 登录",
+    "signInWithGoogle": "Google 登录"
+  },
+  "hero": {
+    "description": "宙与木，Wentaoshuai 的个人空间。一个写代码的人，偶尔造点东西。"
+  },
+  "footer": {
+    "tagline": "Stay hungry. Stay foolish.",
+    "poweredBy": "Powered by",
+    "viewersOnline": "正有 {{count}} 人在浏览",
+    "statsLine": "已累计 {{posts}} 篇文 · 写了 {{days}} 天",
+    "loading": "加载中…",
+    "sections": {
+      "about": "关于",
+      "more": "更多",
+      "contact": "联系"
+    },
+    "links": {
+      "aboutSite": "关于本站",
+      "aboutMe": "关于我",
+      "aboutProject": "关于此项目",
+      "photos": "照片廊",
+      "setup": "装备",
+      "activity": "动态",
+      "messages": "写留言",
+      "email": "发邮件",
+      "github": "GitHub",
+      "rss": "RSS 订阅",
+      "sitemap": "站点地图",
+      "subscribe": "订阅",
+      "status": "服务状态"
+    }
+  },
+  "notFound": {
+    "pageTitle": "404 — 页面找不到",
+    "seoDescription": "你迷路了吗？这个页面不存在。",
+    "lostMessage": "失去联系。",
+    "subMessage": "最后一次收到信号，是在这个坐标。之后就没有回应了。",
+    "backHome": "返回首页",
+    "requested": "最后坐标",
+    "lostFor": "信号中断",
+    "toNotes": "去手记",
+    "reconnect": "重新建立连线（回首页）",
+    "search": "搜索站内",
+    "pageTitleShort": "找不到页面"
+  },
+  "home": {
+    "orbit": {
+      "title": "Wentaoshuai 的个人网站：手记、碎念、作品与收藏",
+      "notesCount": "{{count}} 篇 · 最近 {{date}}",
+      "momentsCount": "最近 {{date}}",
+      "worksCount": "{{count}} 件",
+      "collectionLine": "在看 {{anime}} 部动画、{{films}} 部电影、{{series}} 部剧集",
+      "aboutLine": "从 2004 往下掉到现在",
+      "aboutCount": "2004 –"
+    }
+  },
+  "commandPalette": {
+    "label": "全局命令面板",
+    "placeholder": "输入页面、文章、分类或标签…",
+    "empty": "没有相符的结果",
+    "groups": {
+      "pages": "页面",
+      "posts": "文章",
+      "categories": "分类",
+      "tags": "标签"
+    },
+    "home": "首页",
+    "keys": {
+      "move": "移动",
+      "open": "打开",
+      "toggle": "开关"
+    }
+  },
+  "contextMenu": {
+    "back": "上一页",
+    "forward": "下一页",
+    "reload": "刷新",
+    "openNewTab": "在新标签页打开链接",
+    "copyLink": "复制链接地址",
+    "random": "随机一篇文章",
+    "top": "回到顶部",
+    "hint": "按住 Shift 再按右键，是浏览器原本的菜单"
+  },
+  "backToTop": {
+    "label": "回到顶部"
+  },
+  "activity": {
+    "title": "动态仪表板",
+    "description": "Wentaoshuai 的即时活动仪表板。",
+    "loading": "加载活动数据",
+    "labels": {
+      "gameCollection": "游戏收藏",
+      "publicProjects": "公开项目",
+      "codedToday": "今日写码"
+    },
+    "steam": {
+      "ingame": "游戏中",
+      "online": "在线",
+      "offline": "离线",
+      "playingTwoWeeks": "现正游玩 · 最近两周",
+      "recentTwoWeeks": "最近两周"
+    },
+    "wakatime": {
+      "todayCoding": "今日写码时间",
+      "noDataWeek": "本周无编码记录"
+    },
+    "refresh": "刷新",
+    "units": {
+      "min": "分钟",
+      "hr": "小时"
+    },
+    "gamesUnit": "{{count}} 个游戏",
+    "badgesUnit": "{{count}} 个徽章",
+    "titlesUnit": "{{count}} 款",
+    "playtime2w": "近两周",
+    "playtimeTotal": "总",
+    "github": {
+      "contributions": "近一年 <b>{{count}}</b> 次 contribution",
+      "lastYear": "近一年"
+    }
+  },
+  "blog": {
+    "views": "{{count}} 次阅读",
+    "summary": "摘要",
+    "aiGen": "AI 生成",
+    "readDone": "读完了",
+    "minutesLeft": "剩 {{count}} 分",
+    "sameCategory": "同在「{{name}}」",
+    "title": "手记",
+    "subtitle": "群星在流转，给每一瞬的好奇留下一道弧线。",
+    "all": "全部",
+    "more": "还有 {{count}} 篇",
+    "minutes": "约 {{count}} 分",
+    "metaTitle": "手记 · Notes",
+    "description": "Wentaoshuai 的技术手记、学习笔记与生活随笔。涵盖前端架构、Rust、系统设计等主题。",
+    "heroTitle": "手记",
+    "loading": "正在加载文章",
+    "search": "搜索文章...",
+    "sort": {
+      "newest": "最新",
+      "oldest": "最旧",
+      "popular": "热门"
+    },
+    "comment": "留言",
+    "unlike": "取消喜欢",
+    "share": "分享",
+    "shareCopied": "已复制!",
+    "postCount": "文章",
+    "heatmapTotal": "篇文章",
+    "heatmapAria": "近 26 周写作活动",
+    "heatmapLess": "少",
+    "heatmapMore": "多",
+    "codeCopy": "复制",
+    "keyInsights": "关键洞察",
+    "codeCopied": "已复制!",
+    "shareCopyLink": "复制链接",
+    "shareMore": "更多...",
+    "shareTitle": "分享",
+    "commentTitle": "留言",
+    "subscribeTitle": "订阅",
+    "statPosts": "文章",
+    "statTags": "标签",
+    "statReads": "阅读",
+    "sideCategories": "分类",
+    "sideTags": "标签",
+    "sideFeatured": "精选",
+    "sideActivity": "写作活动",
+    "sideNav": "导航",
+    "navHome": "首页",
+    "navMessages": "留言",
+    "navSetup": "配备",
+    "navJourney": "旅程",
+    "clearAll": "清除全部",
+    "clearFilters": "清除筛选",
+    "collapse": "收起",
+    "expandAll": "展开全部",
+    "emptyFiltered": "找不到相关文章",
+    "emptyNone": "暂无文章",
+    "emptyFilteredHint": "尝试调整搜索条件或浏览其他分类",
+    "emptyNoneHint": "内容正在路上，敬请期待",
+    "loadFailed": "加载失败",
+    "inColumn": "此文章收录于专栏：",
+    "otherInColumn": "此专栏的其他文章：",
+    "toc": "目录",
+    "backToArticleTop": "回到文章顶部",
+    "seriesLabel": "系列文",
+    "prevPost": "上一篇",
+    "nextPost": "下一篇",
+    "lastUpdated": "最近更新",
+    "nearbyNav": "邻近文章",
+    "font": "字体",
+    "originalText": "原文",
+    "sameTag": "同标 #{{name}}",
+    "sameTagNone": "这个标签只有这一篇。",
+    "fontNames": {
+      "noto-serif": "思源宋体",
+      "source-han": "思源黑体",
+      "lxgw": "霞鹜文楷",
+      "misans": "MiSans"
+    },
+    "revised": "最后修订"
+  },
+  "thinking": {
+    "title": "碎念",
+    "subtitle": "捕获一道划破寂静的杂音。",
+    "ending": "更多时候，只是想说给空气听。",
+    "empty": "还没有碎念。",
+    "notFound": "找不到这则碎念。",
+    "label": "Moments",
+    "like": "赞",
+    "comments": "{{count}} 条留言",
+    "older": "更早的碎念",
+    "verb": {
+      "watched": "看了",
+      "read": "读了",
+      "listened": "听了",
+      "played": "玩了",
+      "shared": "分享"
+    },
+    "kind": {
+      "film": "电影",
+      "tv": "剧集",
+      "anime": "动画",
+      "book": "书",
+      "track": "歌"
+    }
+  },
+  "watch": {
+    "favManage": "管理一生推",
+    "favEmpty": "还没有任何收藏",
+    "favSearchPlaceholder": "搜索 TMDb 片名…",
+    "favSearching": "搜索中…",
+    "favQuotePlaceholder": "写句短评…（选填）",
+    "kindFilm": "电影",
+    "kindTv": "剧集／动画"
+  },
+  "setup": {
+    "title": "我的装备 · My Setup",
+    "description": "Wentaoshuai 的设备清单：主力机、跑着这个网站的家用服务器、网络与智能家居，还有一张家里怎么连起来的拓扑图。",
+    "heroTitle": "设备",
+    "subtitle": "解构精密，安放偏执。",
+    "cat": {
+      "main-rig": {
+        "short": "主力机"
+      },
+      "server": {
+        "short": "服务器"
+      },
+      "network": {
+        "short": "网络与移动"
+      },
+      "smart-home": {
+        "short": "智能家居"
+      },
+      "peripherals": {
+        "short": "外设"
+      },
+      "base-ii": {
+        "short": "老家"
+      }
+    },
+    "roles": {
+      "nanokvm": "远程开机、进 BIOS，服务器死机时也连得进去",
+      "headless": "让没接显示器的服务器以为有显示器，GPU 才会正常输出",
+      "googleTv": "家里的 Matter 中枢",
+      "hub3": "光照、温湿度、人体感应，通过 Matter 上报；夜间灯光的自动校正靠它的光照度",
+      "rm4": "学习空调的红外遥控码，让空调接进 Home Assistant",
+      "esp32": "两块板子组成的 433MHz 发射器，模拟吸顶灯的原厂遥控器",
+      "doorbell": "电池门铃，通过网关联网"
+    },
+    "topo": {
+      "internet": "互联网",
+      "switch": "交换机",
+      "sensors": "光照・温湿度・人体",
+      "irBlaster": "红外遥控",
+      "rfBlaster": "433MHz 射频",
+      "rig": "主力机",
+      "ac": "空调",
+      "light": "吸顶灯",
+      "netWired": "有线",
+      "netMain": "主网络",
+      "netIot": "IoT 专用",
+      "matterHub": "Matter 中枢",
+      "doorbellHub": "门铃网关",
+      "doorbell": "门铃",
+      "appliances": "联网家电",
+      "appliancesSub": "除湿机・空净・摄像头…"
+    },
+    "appliances": {
+      "title": "其他联网家电",
+      "types": {
+        "dehumidifier": "除湿机",
+        "airPurifier": "空气净化器",
+        "catTower": "喵太座：宠物空净＋加热猫窝",
+        "feeder": "自动喂食器",
+        "camera": "摄像头",
+        "plug": "智能插座"
+      }
+    },
+    "sheet": {
+      "tabs": "图纸",
+      "memoryTitle": "老家的那台",
+      "memoryText": "回老家时的备用基地。没有照片，这是记忆里它大概的样子。",
+      "fromMemory": "凭记忆",
+      "root": "所有自动化从这里发出",
+      "drag": "← 左右拖动看整张图 →",
+      "to": {
+        "voice": "Google Home 语音",
+        "climate": "温湿度感测",
+        "ac": "空调",
+        "light": "吸顶灯",
+        "door": "门口"
+      },
+      "subsystemTitle": "子系统",
+      "uplink": "上行：指令",
+      "downlink": "下行：回报",
+      "telemetry": "遥测",
+      "telemetryEvery": "这台服务器传回来的，每 30 秒更新一次",
+      "telemetryWait": "等待信号",
+      "subsystem": {
+        "cdh": "运算与数据处理",
+        "eps": "电力",
+        "tcs": "热控",
+        "data": "数据记录",
+        "comm": "通信",
+        "bus": "主体",
+        "struct": "结构",
+        "crew": "乘员界面"
+      }
+    }
+  },
+  "newsletter": {
+    "title": "订阅电子报",
+    "namePlaceholder": "您的名字（选填）",
+    "emailPlaceholder": "您的电子邮件 *",
+    "submit": "订阅",
+    "success": "订阅成功！感谢您的订阅 ✨",
+    "errorGeneric": "订阅失败，请稍后再试",
+    "errorNetwork": "网络错误，请稍后再试",
+    "description": "获取最新文章更新与技术分享，直接送到您的信箱。",
+    "privacyNote": "我们重视您的隐私，不会分享您的信息。",
+    "confirmedTitle": "已订阅",
+    "alreadyBody": "你已用 <em>{{email}}</em> 订阅了电子报。",
+    "nextNotice": "下一篇写好时会寄给你。",
+    "okBtn": "好的",
+    "unsubBtn": "退订",
+    "subscribeIntro": "有新文章时，寄一封信给你。",
+    "namePlaceholderShort": "名字（选填）",
+    "emailPlaceholderShort": "电子邮件 *",
+    "processing": "提交中…",
+    "subscribe": "订阅",
+    "unsubProcessing": "处理中…",
+    "unsubConfirmJs": "确定要退订 {{email}}?",
+    "unsubFailed": "退订失败",
+    "unsubDone": "已退订。",
+    "privacy": "邮箱只用来寄新文章，每一封信底下都能退订。",
+    "successWithEmoji": "订好了，下一篇写好时会寄到你的邮箱。",
+    "fieldName": "名字（选填）",
+    "fieldEmail": "Email"
+  },
+  "unsubscribe": {
+    "verifying": "验证链接中…",
+    "confirmTitle": "确认退订?",
+    "processing": "处理中…",
+    "successTitle": "已退订 ✓",
+    "errorTitle": "出了一点问题",
+    "missingToken": "链接缺少 token，请点电子报底部的退订链接。",
+    "invalidLink": "链接无效或已过期。",
+    "unsubscribeFailed": "退订失败",
+    "bodyConfirm": "你正在用 <em>{{email}}</em> 退订 Wentaoshuai 电子报。<br />退订后，未来新文章不会再寄到你的信箱。",
+    "btnConfirm": "确认退订",
+    "btnKeep": "算了，留下来",
+    "bodyDoneEmail": "<em>{{email}}</em> 已从订阅列表中移除。",
+    "bodyDoneFarewell": "抱歉没能继续陪你，未来想回来随时都欢迎。",
+    "viewLatest": "看看最近的文章 →",
+    "btnBackHome": "回首页"
+  },
+  "oauth": {
+    "loggingIn": "正在登录...",
+    "errorNoCode": "登录失败：未收到授权码",
+    "errorGeneric": "登录失败，请稍后再试"
+  },
+  "about": {
+    "title": "关于我",
+    "description": "Wentaoshuai — 全栈工程师。技能、经历、社团与成长轨迹。"
+  },
+  "portfolio": {
+    "title": "作品",
+    "description": "做过的、正在做的——专题、工具与自架服务。"
+  },
+  "photos": {
+    "title": "摄影作品集",
+    "description": "Wentaoshuai 的摄影作品集，记录旅途中的光影故事。",
+    "heading": "照片",
+    "subtitle": "跨越虚空的微弱信号，在此逐行显影。",
+    "station": "DSN · 地面站",
+    "stationLabel": "地面站的碟形天线，接收远处探测器传来的信号",
+    "passesLabel": "每个月收到几张：{{month}} 最多，{{count}} 张",
+    "frame": "照片 {{date}}",
+    "viewer": {
+      "share": "分享这张照片",
+      "shareShort": "分享",
+      "shareTitle": "照片",
+      "shareText": "查看我的照片作品",
+      "close": "关闭查看器",
+      "closeHint": "关闭（Esc）",
+      "prev": "上一张照片",
+      "next": "下一张照片"
+    },
+    "exif": {
+      "info": "照片信息",
+      "title": "标题",
+      "description": "描述",
+      "basic": "基本信息",
+      "size": "尺寸",
+      "fileSize": "文件大小",
+      "format": "格式",
+      "ratio": "比例",
+      "camera": "相机信息",
+      "make": "制造商",
+      "model": "型号",
+      "lens": "镜头",
+      "shooting": "拍摄参数",
+      "focal": "焦距",
+      "aperture": "光圈",
+      "shutter": "快门",
+      "flash": "闪光灯",
+      "whiteBalance": "白平衡",
+      "taken": "拍摄时间",
+      "location": "位置信息",
+      "lat": "纬度",
+      "lng": "经度",
+      "altitude": "海拔",
+      "tags": "标签"
+    }
+  },
+  "aboutFall": {
+    "kick": "关于",
+    "title": "坐稳了。",
+    "hint": "往下滚",
+    "landPre": "掠过无数个稚嫩与迷惘的昨日，",
+    "land": "就此落下。",
+    "surface": "地表",
+    "surfaceTitle": "握在手里的",
+    "surfaceSub": "一路带着的东西。",
+    "skill": {
+      "frontend": "前端开发",
+      "backend": "后端开发",
+      "mobile": "移动开发",
+      "devops": "部署运维",
+      "design": "设计多媒体",
+      "data": "数据存储",
+      "network": "网络通讯",
+      "productivity": "生产力",
+      "ai": "AI 开发",
+      "teaching": "教学工具"
+    },
+    "layer1": "第一层",
+    "layer1Title": "做过的事",
+    "core": "地心",
+    "coreLine": "再往下，是还没写下的事。",
+    "fallMeter": "距离地表",
+    "digMeter": "地表以下"
+  },
+  "works": {
+    "title": "作品",
+    "subtitle": "在无声的深空里，凿出一寸寸痕迹。",
+    "origin": "起点",
+    "legendCore": "星球大小：代码量",
+    "legendSurface": "地貌：主要语言",
+    "legendRings": "环：其他语言",
+    "legendMoons": "卫星：GitHub 星星",
+    "legendHover": "滑过：展开成立体的星"
+  },
+  "collection": {
+    "title": "收藏",
+    "subtitle": "引力所及之处，皆是照亮过我的碎光。",
+    "kind": {
+      "anime": "动画",
+      "film": "电影",
+      "tv": "剧集"
+    },
+    "status": {
+      "read": "读完",
+      "reading": "在读",
+      "to-read": "想读"
+    },
+    "watch": {
+      "title": "在看",
+      "anime": "部动画",
+      "animeEp": "集",
+      "film": "部电影",
+      "tv": "部剧集",
+      "tvEp": "集",
+      "live": "正在看",
+      "last": "最近看的是",
+      "episode": "第 {{n}} 集"
+    },
+    "books": {
+      "title": "书柜",
+      "total": "本"
+    },
+    "music": {
+      "title": "在听",
+      "tracks": "首最常听",
+      "live": "正在听",
+      "last": "刚刚听的是"
+    },
+    "hint": "往下滚，看得更远",
+    "sky": {
+      "unit": {
+        "s": "光秒",
+        "m": "光分",
+        "h": "光时",
+        "d": "光日",
+        "y": "光年"
+      },
+      "ago": {
+        "now": "刚刚",
+        "s": "{{n}} 秒前",
+        "m": "{{n}} 分钟前",
+        "h": "{{n}} 小时前"
+      },
+      "reach": "视野 {{n}} {{unit}}\n这个距离是 {{date}} 发出的信号",
+      "away": "{{n}} {{unit}}外 · {{date}} 发出",
+      "live": "正在发送",
+      "queued": "还没发出，在地球上",
+      "beyond": "比记录更早，在记录的外缘",
+      "records": "记录从 {{date}} 开始",
+      "mark": {
+        "earth": "地球",
+        "geo": "地球同步轨道",
+        "iss": "国际空间站",
+        "moon": "月球",
+        "jwst": "韦布空间望远镜",
+        "sun": "太阳",
+        "mercury": "水星",
+        "venus": "金星",
+        "mars": "火星",
+        "asteroids": "小行星带",
+        "jupiter": "木星",
+        "saturn": "土星",
+        "uranus": "天王星",
+        "neptune": "海王星",
+        "kuiper": "柯伊伯带",
+        "newHorizons": "新视野号",
+        "voyager1": "旅行者1号",
+        "heliopause": "日球层顶",
+        "oort": "奥尔特云",
+        "proxima": "比邻星",
+        "barnard": "巴纳德星",
+        "wolf359": "沃尔夫 359",
+        "lalande": "拉兰德 21185",
+        "sirius": "天狼星",
+        "epsEri": "天苑四",
+        "procyon": "南河三",
+        "tauCeti": "天仓五",
+        "scale-sec": "1 光秒 · 一秒前",
+        "scale-min": "1 光分 · 一分钟前",
+        "scale-hour": "1 光时 · 一小时前",
+        "scale-day": "1 光日 · 一天前",
+        "scale-year": "1 光年 · 一年前"
+      }
+    }
+  },
+  "friends": {
+    "title": "朋友",
+    "subtitle": "深空漫长而孤寂，所幸回头总有星芒。",
+    "noSignal": "还没有收到信号",
+    "noFeed": "没有 RSS",
+    "legendCenter": "中心：这个站",
+    "legendBeacon": "刻点：他最近的文章，越旧离星越远",
+    "legendSignal": "信号环：{{days}} 天内有新文章",
+    "legendDock": "点星：对接",
+    "dockWith": "跟 {{name}} 对接",
+    "docked": "已对接",
+    "recent": "最近的文章",
+    "visit": "前往他的站",
+    "undock": "解除对接",
+    "legendDim": "越暗：越久没更新",
+    "dockLabel": "两艘正要对接的船，中间有一道信号",
+    "cardTitle": "本站资料",
+    "siteDesc": "一个写代码的人，偶尔造点东西",
+    "formTitle": "成为下一颗",
+    "fieldName": "名字",
+    "fieldNameHint": "你的网站名称",
+    "fieldUrl": "网址",
+    "fieldRss": "RSS（选填）",
+    "fieldDesc": "一句话",
+    "fieldEmail": "邮箱（选填）",
+    "fieldEmailHint": "审完会寄到这里",
+    "submit": "送出申请",
+    "sending": "送出中",
+    "errRequired": "这一栏要填",
+    "errUrl": "要是 http:// 或 https:// 开头的网址",
+    "errEmail": "邮箱看起来不对",
+    "sent": "收到了。看过之后就会出现在这片天上。",
+    "sendFailed": "没送出去：{{reason}}。也可以直接写信到",
+    "rulesTitle": "入轨条件",
+    "rule1": "网站能正常浏览，有自己的域名与 HTTPS（免费子域名也可以）。",
+    "rule2": "有原创内容。转帖站、纯广告、SEO 农场不交换。",
+    "rule3": "有 RSS 的话，你写了新文章这里会收到信号。",
+    "rule4": "先在你的站挂上这里的链接，我会更快回复。",
+    "drawer": "交换友链"
+  },
+  "messages": {
+    "title": "留言",
+    "subtitle": "长夜无声，静候来自远方的脉冲。",
+    "rx": "RX · 等待信号",
+    "rxCount_one": "RX · 收到 {{count}} 道信号",
+    "rxCount_other": "RX · 收到 {{count}} 道信号",
+    "txReady": "TX · 待送出",
+    "txSending": "TX · 送出中",
+    "logTitle": "收到的信号",
+    "emptyTitle": "还没有收到信号。",
+    "emptyText": "第一则留言会出现在这条线上。",
+    "privatePre": "不适合公开的话，寄信到",
+    "privateMid": "；bug 反馈或功能建议比较适合开",
+    "privatePost": "。"
+  },
+  "signal": {
+    "formTitle": "送出一道信号",
+    "loginWith": "登录",
+    "asUser": "以 {{name}} 的身份留言",
+    "useAnonymous": "改用匿名",
+    "useAccount": "改用账号",
+    "fieldName": "名字",
+    "fieldEmail": "Email（选填，不公开）",
+    "fieldWebsite": "网站（选填）",
+    "fieldText": "想说的话",
+    "meter": "{{count}} 字 · 信号长度 {{seconds}} 秒",
+    "captcha": "{{a}} + {{b}} = ?",
+    "replyingTo": "回复 {{name}}",
+    "cancelReply": "取消",
+    "reply": "回复",
+    "like": "收到",
+    "admin": "站长",
+    "submit": "送出信号",
+    "sentPending": "信号已送出，审核过后会出现在这里。",
+    "sentApproved": "信号已送出。",
+    "errEmpty": "还没写要说的话",
+    "errName": "要填名字",
+    "errCaptcha": "算式的答案不对，换了一题",
+    "errFailed": "送不出去，稍后再试一次",
+    "rule1": "匿名的留言要先经过审核才会出现；用账号登录的直接出现",
+    "rule2": "可以用 GitHub 或 Google 登录，也可以匿名",
+    "rule3": "Email 不会公开；不收广告与推销",
+    "heading": "回应",
+    "rxCount_one": "RX · 收到 {{count}} 道信号",
+    "rxCount_other": "RX · 收到 {{count}} 道信号",
+    "empty": "还没有收到信号，第一道会出现在这里。",
+    "closed": "这篇关闭了回应，频道只收不发。",
+    "react": {
+      "title": "回应",
+      "like": "喜欢",
+      "helpful": "有帮助",
+      "more": "想知道更多"
+    },
+    "writeSomething": "写点什么"
+  },
+  "log": {
+    "title": "航行日志",
+    "subtitle": "挣脱引力，此身即是长空。",
+    "met": "MISSION ELAPSED TIME · 自 {{date}}",
+    "metValue": "{{days}} 天 {{hms}}",
+    "total_one": "累积 {{count}} 次贡献",
+    "total_other": "累积 {{count}} 次贡献",
+    "noContrib": "没有收到 GitHub 的数据",
+    "now": "现在",
+    "contrib_one": "{{count}} 次贡献",
+    "contrib_other": "{{count}} 次贡献",
+    "legendHeight": "高度：累积的 GitHub 贡献",
+    "legendDots": "点：改版（滑过看是哪一次）",
+    "legendHeat": "地上的灯：每天的贡献，一周七排",
+    "statusLabel": "现在的状态",
+    "coding": "今天写程序",
+    "codingValue": "{{h}} 小时 {{m}} 分",
+    "codingVia": "WakaTime",
+    "languages": "这周的语言",
+    "playing": "最近在玩",
+    "played2w": "近两周 {{hours}} 小时 · Steam 收藏 {{owned}} 款",
+    "longest": "玩最久的是 {{name}}，{{hours}} 小时"
+  },
+  "colophon": {
+    "title": "此站点",
+    "subtitle": "此处无他，唯有黑夜、白墨与微光。",
+    "hint": "点一颗星，六分仪会转过去测它。",
+    "star": {
+      "material": "材料",
+      "type": "字",
+      "sky": "天空",
+      "rule1": "规则 01",
+      "rule2": "规则 02",
+      "rule3": "规则 03",
+      "license": "授权",
+      "qa": "问答"
+    },
+    "title_material": "只有三样东西",
+    "text_material": "琥珀只出现在一个点上：你在哪里、正在发生的事。不拿来当大面积的强调色。",
+    "title_type": "三种字",
+    "text_type": "中文和所有混排的句子是一种，整段英文的大字是一种，日期与数字是一种。",
+    "title_sky": "同一片天空",
+    "text_sky": "每一页都是这片天空里的一种东西，都是首页那颗点线土星的点和线变出来的。",
+    "title_rule1": "一个画面只有一个信号",
+    "text_rule1": "首页那颗土星是一步一步画出来的。照顺序看下去，到卫星那一步可以自己点一颗。",
+    "title_rule2": "只用点与线",
+    "text_rule2": "照片页的每一张照片都是这样收下来的。最后一步，看看只用点会变成什么。",
+    "title_rule3": "由数据长出来",
+    "text_rule3": "作品页螺旋上的每一颗星，都是照一个 repo 的数字长出来的。调整数字做一颗，再一步一步看它怎么长成。",
+    "title_license": "授权",
+    "text_license": "代码以 AGPL-3.0 开源；文章、照片与其他内容保留所有权利。",
+    "swatchGround": "黑，是纸",
+    "swatchPaper": "白，是墨",
+    "swatchAmber": "琥珀，是信号",
+    "fontSerif": "思源宋体：中文与所有混排的句子",
+    "fontLatin": "Instrument Serif：只给整段英文的大字，不加粗",
+    "fontMono": "等宽字：日期与数字",
+    "homePage": "首页",
+    "skyIs": {
+      "home": "绕着土星的卫星",
+      "notes": "一圈一圈的星轨",
+      "moments": "划过的彗星",
+      "works": "往外长的螺旋航线",
+      "collection": "从地球发出的信号",
+      "photos": "从深空传回来的照片",
+      "setup": "太空船的工程图",
+      "friends": "绕着同一个中心的星",
+      "messages": "收到的电波",
+      "log": "从地表升空",
+      "about": "一次下坠"
+    },
+    "cell": "格子",
+    "genSize": "代码量",
+    "genLangs": "语言数",
+    "genStars": "GitHub 星星",
+    "genCommits": "commits",
+    "genMain": "主要语言",
+    "genOther": "其他",
+    "saturnToy": "首页的土星，画到目前这一步",
+    "photoToy": "照片墙里的一张照片，收到目前这一步",
+    "workToy": "依照下面的数字长出来的星体",
+    "stepsLabel": "步骤",
+    "stepNext": "下一步 →",
+    "stepAgain": "从头再看 ↺",
+    "genPushed": "最后推送",
+    "daysAgo": " 天前",
+    "steps": {
+      "saturn": {
+        "light": {
+          "t": "球与光",
+          "d": "先只有一颗球，和一个从左上方照过来的太阳。照到的那面亮，背光的那面暗。"
+        },
+        "strokes": {
+          "t": "换成刷痕",
+          "d": "不涂颜色，改成一列一列的横线，线越粗代表越亮。背光那面的线细到消失，画面上就只剩黑与白。"
+        },
+        "bands": {
+          "t": "真实的云带",
+          "d": "亮暗照卡西尼号拍到的云带排：赤道带最亮，两侧最暗，北纬 78° 那条是北极六角形的边。再加一点噪声，让线起伏、断成一段一段的笔触。"
+        },
+        "rings": {
+          "t": "环与影子",
+          "d": "环也是同心的刷痕，疏密照真实的环：B 环最密、卡西尼缝是空的、A 环里还有恩克缝。星球的影子落在环上，环的影子也落在星球上。"
+        },
+        "satellites": {
+          "t": "一次只亮一颗",
+          "d": "外面五条轨道各有一颗卫星，对应首页的五个分区。琥珀色一次只给一颗：点另一颗试试。"
+        },
+        "trails": {
+          "t": "长曝光",
+          "d": "最后是背景：快门一直开着，每颗星绕着天极拖出一道弧。手记页把这个留了下来，一篇文章就是一道星轨。"
+        }
+      },
+      "photo": {
+        "raw": {
+          "t": "原本的照片",
+          "d": "照片墙里的一张。在太空拍的照片不会直接出现在眼前，要先经过一趟传输。"
+        },
+        "bits": {
+          "t": "变成 0 与 1",
+          "d": "相机把画面转成 0 和 1，一排一排送出去。刚收到的时候，看到的只是这片一直在闪的数字。"
+        },
+        "gray": {
+          "t": "一行一行收成黑白",
+          "d": "地面站一行一行解码，先收到的是亮度，照片从上往下浮出来。琥珀色那条线，是正在收的那一行。"
+        },
+        "color": {
+          "t": "一道扫过去上色",
+          "d": "亮度收完，再一道从左扫到右，把颜色映射回去。照片页的每一张照片进到画面时，都会这样收一次。"
+        },
+        "dots": {
+          "t": "如果只用点",
+          "d": "同一张照片，每一格只留一个点，点的大小就是亮度。格子调大，照片就慢慢变成一片星空。"
+        }
+      },
+      "work": {
+        "numbers": {
+          "t": "一组数字",
+          "d": "一个 repo 在 GitHub 上就是几个数字：代码量、用了哪些语言、几颗星星、多少 commits、多久以前推送。先调调看。"
+        },
+        "surface": {
+          "t": "大小与地貌",
+          "d": "代码越多，星球越大。主要语言决定地貌：TypeScript 是气态的带、Rust 是坑坑洞洞的岩石、Python 是冰，其他是经线。commits 越多，带与坑越多。"
+        },
+        "rings": {
+          "t": "环与卫星",
+          "d": "主要语言之外，每多一种语言多一圈环，线型分语言：实线 TypeScript、虚线 Rust、点线 Python。GitHub 星星变成卫星，最多四颗。"
+        },
+        "body": {
+          "t": "展开成立体",
+          "d": "作品页平常只画线的符号，滑过才展开成点画的立体星：亮面点密、暗面点疏。最后一次推送越近，转得越快。"
+        },
+        "spiral": {
+          "t": "放上螺旋",
+          "d": "最后放上作品页的螺旋：中心是起点，越新的越外圈。你刚做的这颗最新，所以排在最外面。"
+        }
+      }
+    },
+    "fontReading": "读文章时还能换成黑体、楷体或现代无衬线，四种都按语系由站上提供。MiSans 是小米的免费商用字体。"
+  },
+  "og": {
+    "tagline": "一个写代码的人，偶尔造点东西。"
+  }
+}

@@ -1,0 +1,1 @@
+import{o as e}from"./rolldown-runtime-C0FnF6B9.js";import{t}from"./react-Bh3t35_Y.js";var n=e(t(),1);function r(){(0,n.useEffect)(()=>{let e=document.documentElement;return e.dataset.sky=`bare`,()=>{delete e.dataset.sky}},[])}export{r as t};

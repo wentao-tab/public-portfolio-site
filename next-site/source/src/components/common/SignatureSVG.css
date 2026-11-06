@@ -1,0 +1,43 @@
+.signature-svg-container svg {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+/* 暖白單色一筆，跟內文同一支筆；筆順動畫在 SignatureSVG.tsx */
+.signature-path {
+  fill: none;
+  stroke: var(--paper-2);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.signature-dot {
+  fill: var(--paper-2);
+  opacity: 0;
+  transition: opacity var(--dur-150) var(--easing-out);
+}
+
+.signature-dot.is-on,
+.is-written .signature-dot {
+  opacity: 1;
+}
+
+/* 筆尖：琥珀小點＋一圈淡光，只在寫的時候出現 */
+.signature-pen {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.signature-pen-tip {
+  fill: var(--amber);
+}
+
+.signature-pen-glow {
+  fill: rgba(var(--amber-rgb), 0.18);
+}
+
+.is-written .signature-pen {
+  display: none;
+}

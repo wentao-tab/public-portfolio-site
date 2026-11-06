@@ -1,0 +1,1 @@
+function e(){let e=1e3/60,t=-1,n=0,r=!0;return{shouldRender(i,a){if(t>=0){let n=i-t;n>2&&n<40&&(e=e*.95+n*.05)}t=i,n+=1;let o=Math.max(1,Math.round(a/e));return!r&&n<o?!1:(r=!1,n=0,!0)},reset(){t=-1,n=0,r=!0},get vsyncMs(){return e}}}export{e as t};

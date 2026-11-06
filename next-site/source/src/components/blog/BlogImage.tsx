@@ -1,0 +1,450 @@
+import { useState, useEffect, useCallback, useRef, useMemo, type ImgHTMLAttributes, type RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
+import { thumbHashToDataURL, thumbHashToApproximateAspectRatio } from 'thumbhash';
+import { Modal, ModalTitle } from '@/components/common/Modal';
+import './BlogImage.css';
+
+/**
+ * `BlogImage` — 文章內文的 `<img>` 渲染器（ReactMarkdown / MDX 的 `img` 元件）。
+ * - 從 URL 的 `#th=…&w=…&h=…` fragment 解出 thumbhash 佔位圖與原始尺寸（防 CLS）
+ * - 點擊放大：下方的 `ImageLightbox`（從文章裡的位置放大到正中央；捲一小段才收回原位）
+ * - NAS 圖片 hover 顯示完整 EXIF（從 manifest 讀取）
+ *
+ * ⚠ 這個檔原本叫 `gallery/ImageLightbox.tsx`，但它**跟照片牆沒有任何關係**：
+ * 唯一的 export 是 `BlogImage`，呼叫端只有 `blog/BlogPost.tsx` 與 `admin/PostPreview.tsx`
+ * （後台預覽要跟前台同一套渲染），`gallery/` 底下零個。照片牆自己的燈箱是 `PhotoViewer.tsx`。
+ * 元件依「實際 import 圖」分組（見 CLAUDE.md），所以它屬於 `blog/`；
+ * 檔名也跟著改成 export 的名字，`ImageLightbox` 留給檔案內部那個 modal。
+ */
+
+interface ExifData {
+  make?: string;
+  model?: string;
+  LensModel?: string;
+  FNumber?: number | string;
+  ISO?: number | null;
+  ExposureTime?: number | string;
+  FocalLength?: number | string;
+  FocalLengthIn35mmFormat?: string;
+}
+
+interface Photo {
+  thumbnailUrl?: string;
+  originalUrl?: string;
+  urls?: { thumb?: string; full?: string };
+  exif?: ExifData;
+}
+
+/* ── NAS manifest 快取 ── */
+let _manifestCache: Map<string, Photo> | null = null;
+let _manifestLoading = false;
+let _manifestCallbacks: ((map: Map<string, Photo>) => void)[] = [];
+
+const fetchManifest = (): Promise<Map<string, Photo>> => {
+  if (_manifestCache) return Promise.resolve(_manifestCache);
+  if (_manifestLoading) {
+    return new Promise<Map<string, Photo>>((resolve) => {
+      _manifestCallbacks.push(resolve);
+    });
+  }
+  _manifestLoading = true;
+  return fetch('/api/gallery/photos')
+    .then((r) => (r.ok ? (r.json() as Promise<{ photos?: Photo[] } | null>) : null))
+    .then((data) => {
+      if (data?.photos) {
+        // 建立 URL → photo 的快速查詢 map
+        const map = new Map<string, Photo>();
+        data.photos.forEach((p) => {
+          if (p.thumbnailUrl) map.set(p.thumbnailUrl, p);
+          if (p.originalUrl) map.set(p.originalUrl, p);
+          if (p.urls?.thumb) map.set(p.urls.thumb, p);
+          if (p.urls?.full) map.set(p.urls.full, p);
+        });
+        _manifestCache = map;
+      } else {
+        _manifestCache = new Map();
+      }
+      // 透過區域變數傳給 callback，不用 _manifestCache!：模組層級的 let 在 TS 眼中
+      // 隨時可能被別處改掉，賦值後的窄化不會留到閉包裡，只好靠斷言。改綁區域值就沒這問題。
+      const ready = _manifestCache;
+      _manifestCallbacks.forEach((cb) => cb(ready));
+      _manifestCallbacks = [];
+      return ready;
+    })
+    .catch(() => {
+      const empty = new Map<string, Photo>();
+      _manifestCache = empty;
+      _manifestCallbacks.forEach((cb) => cb(empty));
+      _manifestCallbacks = [];
+      return empty;
+    });
+};
+
+// 判斷是否為 NAS 圖片
+const isNASImage = (src?: string): boolean => !!src && src.includes('/nas-images/');
+
+// 取得 NAS 高解析度 URL（thumbnail → 原圖）
+const getNASHighResUrl = (src?: string): string | undefined => {
+  if (!src) return src;
+  // -thumb.webp → .webp (高解析度也是 webp 格式)
+  return src.replace(/-thumb\.webp$/, '.webp');
+};
+
+// 取得內文用的顯示 URL（thumbnail → 高解析度，讓文章內圖片清晰）
+const getNASDisplayUrl = (src?: string): string | undefined => {
+  if (!src || !isNASImage(src)) return src;
+  // 如果是 thumbnail，改用高解析度版本
+  if (src.includes('-thumb.webp')) {
+    return src.replace(/-thumb\.webp$/, '.webp');
+  }
+  return src;
+};
+
+interface ThumbPlaceholder {
+  dataUrl: string;
+  aspectRatio: number;
+}
+
+/**
+ * 從圖片 URL 的 fragment 解出上傳時寫進去的原始像素尺寸（`#th=…&w=1142&h=724`）。
+ *
+ * ⚠ 這是文章頁 CLS 的解藥，不是效能微調。`.blog-image-wrapper` 是
+ * `width: fit-content`——寬度取決於圖片的固有尺寸，而圖還沒載入時固有寬度是 **0**，
+ * 於是 `aspect-ratio` 反推出來的高度也是 0，整個盒子塌掉；等圖載入才撐開，
+ * 底下的內容就整片位移。thumbhash 佔位圖救不了，因為盒子早就塌了。
+ *
+ * 實測（2026-08-07 正式站 /blog/why-i-switched-to-zed）：
+ *   冷啟動（scrollY=0）  CLS 0.0000  ← 圖在畫面外，位移不計入
+ *   捲到 4000px 後重整   CLS 0.3362  ← 四個 <p> 從 0px 長到 432/216/186/101
+ * 最小重現：只有 aspect-ratio → 高 19px；補上 width/height → 高 653px。
+ *
+ * ⚠ 不能改用 `thumbHashToApproximateAspectRatio` 代替：那是**近似值**
+ * （1142×724 解出 1.75、704×85 解出 7），而且比例本身救不了「寬度為 0」——
+ * 要先有確定的寬度，aspect-ratio 才反推得出高度。
+ *
+ * 舊文章的網址沒有 w/h（那是 2026-08 才加的），回 null → 退回原本只有
+ * aspect-ratio 的行為，不會比現在更糟。
+ */
+const decodeSizeFromSrc = (src?: string): { width: number; height: number } | null => {
+  if (!src) return null;
+  const w = /[#&]w=(\d+)/.exec(src);
+  const h = /[#&]h=(\d+)/.exec(src);
+  if (!w || !h) return null;
+  const width = Number(w[1]);
+  const height = Number(h[1]);
+  // 0 或 NaN 比沒有更糟：width="0" 會讓瀏覽器把圖片壓成 0 寬
+  return width > 0 && height > 0 ? { width, height } : null;
+};
+
+/**
+ * 從圖片 URL 的 #th=<base64url> fragment 解出 thumbhash，
+ * 回傳 { dataUrl, aspectRatio } 供模糊佔位使用。沒 fragment 或解析失敗回 null。
+ *
+ * 後端 (`/admin/upload`) 上傳時會把 thumbhash 編進 URL fragment，
+ * 瀏覽器送 HTTP 請求時不會帶 fragment，所以對 nginx 快取無影響。
+ *
+ * ⚠ 這條 regex 到 `&` 為止（`[A-Za-z0-9_-]+` 不含 `&`），所以後面接 `&w=&h=`
+ * 不會把尺寸吃進 hash——舊網址與新網址走同一條路。
+ */
+const decodeThumbHashFromSrc = (src?: string): ThumbPlaceholder | null => {
+  if (!src) return null;
+  const m = /#th=([A-Za-z0-9_-]+)/.exec(src);
+  if (!m) return null;
+  try {
+    let b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    b64 += '='.repeat((4 - (b64.length % 4)) % 4);
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return {
+      dataUrl: thumbHashToDataURL(bytes),
+      aspectRatio: thumbHashToApproximateAspectRatio(bytes),
+    };
+  } catch {
+    return null;
+  }
+};
+
+type BlogImageProps = { src?: string; alt?: string } & ImgHTMLAttributes<HTMLImageElement>;
+
+// 獨立的圖片包裝組件
+export const BlogImage = ({ src, alt, ...props }: BlogImageProps) => {
+  const [showLightbox, setShowLightbox] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [exifData, setExifData] = useState<ExifData | null>(null);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const isNAS = isNASImage(src);
+
+  // 內文顯示用高解析度
+  const displaySrc = getNASDisplayUrl(src);
+  // 點擊放大用原圖
+  const fullSrc = isNAS ? getNASHighResUrl(src) : src;
+
+  // 從 URL #th= fragment 解 thumbhash（後端 /admin/upload 寫入），拿來做模糊佔位。
+  const placeholder = useMemo(() => decodeThumbHashFromSrc(src), [src]);
+  // 原始尺寸（同一個 fragment 的 &w= &h=）。真正預留版面的是這個，不是 aspect-ratio
+  // ——理由見 decodeSizeFromSrc 的註解。
+  const size = useMemo(() => decodeSizeFromSrc(src), [src]);
+
+  // 載入 EXIF 資訊
+  useEffect(() => {
+    if (!isNAS) return;
+    void fetchManifest().then((map) => {
+      if (!src) return;
+      // 嘗試用 thumbnail URL 或高解析度 URL 查詢
+      const photo = map.get(src) ?? map.get(getNASHighResUrl(src) ?? '');
+      if (photo?.exif) setExifData(photo.exif);
+    });
+  }, [src, isNAS]);
+
+  // 判斷 EXIF 是否有足夠資訊顯示（至少要有拍攝參數或相機/鏡頭資訊）
+  const hasExifContent =
+    exifData != null &&
+    (exifData.make != null ||
+      exifData.model != null ||
+      exifData.LensModel != null ||
+      exifData.FNumber != null ||
+      exifData.ISO != null ||
+      exifData.ExposureTime != null ||
+      exifData.FocalLength != null ||
+      exifData.FocalLengthIn35mmFormat != null);
+  // 只有日期 → 不顯示 EXIF overlay（避免只顯示一個 📅 日期很奇怪）
+  const showExif = isNAS && showInfo && hasExifContent;
+
+  // 相機資訊：優先 make+model，fallback 到 LensModel
+  const cameraLabel = exifData
+    ? exifData.make && exifData.model
+      ? `${exifData.make} ${exifData.model}`
+      : (exifData.model ?? '')
+    : '';
+
+  // 鏡頭資訊：去除與相機名稱重複的部分
+  const lensLabel = (() => {
+    if (!exifData?.LensModel) return '';
+    const lens = exifData.LensModel;
+    // 如果 LensModel 完全等於 cameraLabel → 重複，不顯示
+    if (lens === cameraLabel) return '';
+    if (!cameraLabel) return lens;
+    const lensLower = lens.toLowerCase();
+    const camLower = cameraLabel.toLowerCase();
+    // 如果 LensModel 包含相機型號名稱（如 "Pixel 8 Pro back camera"） → 不顯示
+    if (lensLower.includes(camLower)) return '';
+    // 如果相機名稱包含鏡頭名稱 → 重複，不顯示
+    if (camLower.includes(lensLower)) return '';
+    return lens;
+  })();
+
+  return (
+    <>
+      <span
+        className="blog-image-wrapper"
+        onMouseEnter={() => setShowInfo(true)}
+        onMouseLeave={() => setShowInfo(false)}
+      >
+        {/* 圖片包一層 <button>：原本 onClick 直接掛在 <img> 上，那既不可聚焦、
+            也沒有鍵盤操作，報讀器更不會提示它可以按開大圖。 */}
+        <button
+          type="button"
+          // 燈箱開著時原圖藏起來：看起來是同一張圖飛出去、再飛回來
+          className={showLightbox ? 'blog-image-zoom is-zoomed' : 'blog-image-zoom'}
+          onClick={() => setShowLightbox(true)}
+          aria-label={alt ? `放大檢視：${alt}` : '放大檢視圖片'}
+        >
+          <img
+            {...props}
+            ref={imgRef}
+            src={displaySrc}
+            alt={alt ?? ''}
+            // ⚠ 這兩個屬性是版面預留的唯一來源（見 decodeSizeFromSrc）。
+            // CSS 的 `max-width:100%; height:auto` 照樣負責縮放，屬性只是讓瀏覽器
+            // 在圖片載入**之前**就知道要留多高。舊文章沒有 w/h 時退回 undefined，
+            // 行為與這次修正前相同。
+            width={size?.width}
+            height={size?.height}
+            onLoad={() => setImgLoaded(true)}
+            className={`blog-image-clickable${placeholder && !imgLoaded ? ' blog-image-loading' : ''}`}
+            loading="lazy"
+            decoding="async"
+            style={
+              placeholder
+                ? {
+                    ...(props.style ?? {}),
+                    backgroundImage: `url(${placeholder.dataUrl})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    aspectRatio: placeholder.aspectRatio,
+                  }
+                : props.style
+            }
+          />
+        </button>
+        {/* NAS 圖片 hover overlay — 顯示完整 EXIF（從下滑入） */}
+        {isNAS && exifData && hasExifContent && (
+          <span className={`blog-image-exif${showExif ? ' blog-image-exif--visible' : ''}`}>
+            {cameraLabel && <span>📷 {cameraLabel}</span>}
+            {lensLabel && <span>🔍 {lensLabel}</span>}
+            {exifData.FNumber && <span>ƒ/{exifData.FNumber}</span>}
+            {exifData.ISO != null && <span>ISO {exifData.ISO}</span>}
+            {exifData.ExposureTime && <span>{exifData.ExposureTime}s</span>}
+            {(exifData.FocalLength ?? exifData.FocalLengthIn35mmFormat) != null && (
+              <span>
+                {exifData.FocalLengthIn35mmFormat
+                  ? `${exifData.FocalLengthIn35mmFormat.replace(' mm', 'mm')}`
+                  : exifData.FocalLength}
+              </span>
+            )}
+          </span>
+        )}
+      </span>
+      {showLightbox && (
+        <ImageLightbox
+          src={fullSrc}
+          alt={alt}
+          origin={imgRef}
+          naturalWidth={size?.width}
+          onClose={() => setShowLightbox(false)}
+        />
+      )}
+    </>
+  );
+};
+
+interface ImageLightboxProps {
+  src?: string;
+  alt?: string;
+  /** 文章裡那張圖：放大從它的位置出發，收回時回到它（捲動過的話是它現在的位置） */
+  origin: RefObject<HTMLImageElement | null>;
+  /** 原圖的寬（上傳時寫進網址的 &w=）：放大不超過原圖，小圖不會被放到糊掉 */
+  naturalWidth?: number;
+  onClose: () => void;
+}
+
+/** 開著時捲了多少才收回去：小於這段當成手滑，燈箱停著不動 */
+const SCROLL_CLOSE_PX = 56;
+/** 放大與收回的時間（毫秒） */
+const OPEN_MS = 340;
+const CLOSE_MS = 300;
+const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+/** 把 target 那個框變成 from 那個框的 transform（transform-origin 在中心） */
+function flip(from: DOMRect, target: DOMRect) {
+  const dx = from.left + from.width / 2 - (target.left + target.width / 2);
+  const dy = from.top + from.height / 2 - (target.top + target.height / 2);
+  return `translate(${dx}px, ${dy}px) scale(${from.width / target.width})`;
+}
+
+// 燈箱：圖從文章裡的位置放大到正中央。開著時捲動先停住（手滑不算），捲超過一小段才收——
+// 收的時候縮回原圖現在的位置（頁面捲過了，所以是跟著捲動後的那個位置）；Esc、點背景、關閉鈕也一樣收回去
+function ImageLightbox({ src, alt, origin, naturalWidth, onClose }: ImageLightboxProps) {
+  const { t } = useTranslation();
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [closing, setClosing] = useState(false);
+  const closingRef = useRef(false);
+
+  // 放大後的大小：照文章裡那張的比例，塞進視窗（寬 92%、高 86%），不超過原圖
+  const [box] = useState(() => {
+    const o = origin.current?.getBoundingClientRect();
+    const ratio = o && o.height > 0 ? o.width / o.height : 1.5;
+    let w = Math.min(window.innerWidth * 0.92, window.innerHeight * 0.86 * ratio);
+    if (naturalWidth) w = Math.min(w, naturalWidth);
+    return { width: Math.round(w), height: Math.round(w / ratio) };
+  });
+  const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 打開：從文章裡的位置放大過來。燈箱的圖在 Radix 的 Portal 裡，Portal 自己掛好之後才把內容放進來，
+  // 所以不能在這個元件的 layout effect 裡量（那時圖還不在頁面上）；圖接上的那一刻才量、才開始飛
+  const openedRef = useRef(false);
+  const attach = useCallback(
+    (img: HTMLImageElement | null) => {
+      imgRef.current = img;
+      if (!img || openedRef.current) return;
+      openedRef.current = true;
+      const o = origin.current?.getBoundingClientRect();
+      if (!o || reduce()) return;
+      img.animate([{ transform: flip(o, img.getBoundingClientRect()) }, { transform: 'none' }], {
+        duration: OPEN_MS,
+        easing: EASE,
+      });
+    },
+    [origin],
+  );
+
+  const handleClose = useCallback(() => {
+    if (closingRef.current) return;
+    closingRef.current = true;
+    setClosing(true);
+    const img = imgRef.current;
+    const onScreen = (o?: DOMRect) => o && o.bottom > 0 && o.top < window.innerHeight && o.width > 0;
+    // 原圖不在畫面上（捲很遠、或被拿掉了）就不飛回去，淡掉就好
+    if (!img || !onScreen(origin.current?.getBoundingClientRect()) || reduce()) {
+      window.setTimeout(onClose, reduce() ? 0 : CLOSE_MS);
+      return;
+    }
+    // 每一幀重新量原圖的位置再飛過去：收的時候讀者常常還在捲（滾輪與平滑捲動都有慣性），
+    // 終點只在一開始量一次的話，飛到的是舊位置，燈箱一拿掉原圖就在別處，看起來閃一下
+    img.getAnimations().forEach((a) => a.cancel());
+    const target = img.getBoundingClientRect();
+    const t0 = performance.now();
+    const ease = (k: number) => 1 - (1 - k) ** 3;
+    const step = (now: number) => {
+      const k = Math.min(1, (now - t0) / CLOSE_MS);
+      const o = origin.current?.getBoundingClientRect();
+      if (o) {
+        const e = ease(k);
+        const dx = (o.left + o.width / 2 - (target.left + target.width / 2)) * e;
+        const dy = (o.top + o.height / 2 - (target.top + target.height / 2)) * e;
+        const s = 1 + (o.width / target.width - 1) * e;
+        img.style.transform = `translate(${dx}px, ${dy}px) scale(${s})`;
+      }
+      if (k < 1) requestAnimationFrame(step);
+      else onClose();
+    };
+    requestAnimationFrame(step);
+  }, [origin, onClose]);
+
+  // 捲動：累計捲了多少（含頁面已經到底、捲不動時的滾輪），超過一小段才收
+  useEffect(() => {
+    const startY = window.scrollY;
+    let wheel = 0;
+    const check = () => {
+      if (Math.abs(window.scrollY - startY) > SCROLL_CLOSE_PX || Math.abs(wheel) > SCROLL_CLOSE_PX * 2) handleClose();
+    };
+    const onWheel = (e: WheelEvent) => {
+      wheel += e.deltaY;
+      check();
+    };
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('wheel', onWheel, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('wheel', onWheel);
+    };
+  }, [handleClose]);
+
+  // Esc、焦點交給 Modal；捲動不鎖——頁面照常捲，捲夠了燈箱才收（上面的監聽）
+  return (
+    <Modal
+      onClose={handleClose}
+      overlayClassName={closing ? 'image-lightbox-overlay is-closing' : 'image-lightbox-overlay'}
+      lockScroll={false}
+    >
+      {/* display: contents——只是給 Radix 一個「對話框本體」的邊界，不參與版面 */}
+      <div className="image-lightbox-content">
+        <ModalTitle className="sr-only">{(alt ?? '') || t('common.imageViewer')}</ModalTitle>
+        <img
+          ref={attach}
+          src={src}
+          alt={alt ?? ''}
+          className="image-lightbox-img"
+          width={box.width}
+          height={box.height}
+          // 先用文章裡已經載好的那張墊著，原圖載到之前不會一片空白
+          style={{ backgroundImage: origin.current ? `url(${origin.current.currentSrc})` : undefined }}
+        />
+        {alt && <p className="image-lightbox-cap">{alt}</p>}
+        <button type="button" className="image-lightbox-close" onClick={handleClose} aria-label={t('common.close')} />
+      </div>
+    </Modal>
+  );
+}

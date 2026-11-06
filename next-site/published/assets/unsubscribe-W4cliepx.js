@@ -1,0 +1,1 @@
+import{i as e}from"./index-D2HViBC8.js";import{t}from"./Unsubscribe-3RLOn8To.js";var n=e(t);export{n as component};

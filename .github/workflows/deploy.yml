@@ -22,25 +22,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm build
+        run: node scripts/assemble-site.mjs
         env:
           PUBLIC_SITE_URL: https://hiwentao.com/
           PUBLIC_SITE_NAME: 梁文韬的设计与读书思考
           PUBLIC_BASE_PATH: /
           PUBLIC_BUILD_ID: ${{ github.sha }}
+
+      - name: Verify published files
+        run: node scripts/check-published-site.mjs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -1,0 +1,221 @@
+/* 連結卡（LinkCard）。站內文章／碎念卡、Spotify 與 bilibili 內嵌、外部連結卡。
+   ⚠ 不是 blog 專屬——/history、/friends 也在用，所以歸 common/。 */
+
+.link-card-with-text > p {
+  margin-bottom: var(--space-1-5);
+  font-size: var(--fs-16);
+  color: var(--post-text);
+}
+
+/* 四角框（index.css 的 --corner-frame）：跟文章摘要、文章裡其他區塊同一種框。
+   不分服務上品牌色；滑過時標題變亮就好，卡片本身不浮起來 */
+.link-card {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  text-decoration: none;
+  margin: var(--space-5) 0;
+  background: var(--corner-frame);
+  max-width: 100%;
+}
+
+/* 文章裡的連結有點線底線（article-shell.css 的 .post-content a），卡片裡不要 */
+.post-content a.link-card,
+.post-content a.link-card * {
+  text-decoration: none;
+}
+
+/* ── 各服務的卡片、站內卡、載入骨架 ──
+   這幾段原本在 BlogPost.css：/history、/about-site 不載入那支，以前是靠每頁 idle 預載
+   文章頁 chunk 才在幾秒後「補上」，拆掉預載就沒了。跟著元件放在這裡。 */
+.link-card-with-text {
+  margin: var(--space-2) 0;
+}
+
+.link-card-spotify {
+  padding: 0;
+  overflow: hidden;
+}
+
+.link-card-bilibili {
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 站內連結卡的載入骨架：保留與真卡相近的高度 → 資料補上時不位移（主路徑已 SSR-real，
+   此骨架只在「連結指向 top-100 之外的文章」或非文章頁 reuse 時短暫出現）。 */
+.link-card-skeleton {
+  min-height: 64px; /* ≈ 真卡（標題 + 一行等寬小字）高度 → 換成真卡時幾乎不位移 */
+  cursor: default;
+  pointer-events: none;
+}
+
+/* 骨架的光澤（BlogPost 的 SSR fallback 側欄也用同一個 class，它也會載入這支） */
+@keyframes bp-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.bp-skel {
+  border-radius: var(--r-4);
+  background: linear-gradient(90deg, var(--white-04) 25%, var(--white-08) 37%, var(--white-04) 63%);
+  background-size: 200% 100%;
+  animation: bp-shimmer 1.5s ease-in-out infinite;
+}
+
+.link-card-thumb {
+  flex: 0 0 160px;
+  margin: var(--space-2) 0 var(--space-2) var(--space-2);
+  overflow: hidden;
+}
+
+.link-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0;
+}
+
+.link-card-body {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1-5);
+}
+
+.link-card-site {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-6);
+  color: var(--paper-3);
+}
+
+.link-card-url {
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-card-spotify iframe {
+  display: block;
+  border-radius: var(--r-2);
+}
+
+.link-card-embed-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  /* 16:9 */
+  overflow: hidden;
+}
+
+.link-card-bilibili-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.link-card-embed-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-2-5) var(--space-4);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+  text-decoration: none;
+  border-top: 1px solid var(--rule);
+  transition: color var(--dur-200);
+}
+
+.link-card-embed-link:hover {
+  color: var(--paper);
+}
+
+.link-card-title {
+  transition: color var(--dur-200);
+}
+
+/* ── 站內連結（文章、碎念、站內頁面）：不是框，是一條虛線航線通往那裡 ──
+   四角框留給投票、數字、圖表這類「資料」；站內連結是「去別的地方」，畫成一段路：
+   虛線的盡頭一顆點，滑過時點亮成琥珀（那裡就是你要去的地方），標題跟著變亮 */
+.link-card-internal {
+  align-items: center;
+  gap: var(--space-3-5);
+  margin: var(--space-6) 0;
+  background: none;
+}
+
+.link-card-route {
+  position: relative;
+  flex: 0 0 var(--space-12);
+  align-self: flex-start;
+  margin-top: 0.85em;
+  height: 1px;
+  background: repeating-linear-gradient(to right, var(--paper-3) 0 4px, transparent 4px 8px);
+}
+
+.link-card-route::after {
+  content: "";
+  position: absolute;
+  right: calc(-1 * var(--space-1-5));
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-round);
+  background: var(--paper-3);
+  translate: 0 -50%;
+  transition:
+    background var(--dur-200) ease,
+    box-shadow var(--dur-200) ease;
+}
+
+.link-card-internal:hover .link-card-route::after,
+.link-card-internal:focus-visible .link-card-route::after {
+  background: var(--amber);
+  box-shadow: 0 0 8px rgba(var(--amber-rgb), 0.7);
+}
+
+.link-card-internal .link-card-body {
+  padding: 0;
+  gap: var(--space-1);
+}
+
+.link-card-internal .link-card-title {
+  font-size: var(--fs-18);
+  font-weight: 400;
+  color: var(--paper-2);
+  line-height: var(--lh-140);
+}
+
+.link-card:hover .link-card-title {
+  color: var(--paper);
+}
+
+.link-card-internal .link-card-meta {
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+}
+.link-card-skeleton .link-card-body {
+  width: 100%;
+}

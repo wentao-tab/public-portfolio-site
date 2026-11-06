@@ -1,0 +1,275 @@
+/* PhotoViewer：全螢幕照片檢視（2026-10 翻新）。版面照舊（主圖、右邊 EXIF、底下縮圖），外觀照站上的語言：
+   夜色鋪滿、按鈕是細線圓圈、字是暖白的深淺與等寬小字，沒有毛玻璃、陰影與藍紫 */
+
+.photo-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-fullscreen);
+  background: var(--ground);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 照片模糊放大當底：翻新後不用（整片鋪滿的顏色會蓋過照片本身），留著元素只是不顯示 */
+.photo-viewer-background {
+  display: none;
+}
+
+/* 左上：照片的日期 */
+.photo-viewer-info {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.photo-title {
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+
+/* 右上：分享、關閉 */
+.viewer-top-right-buttons {
+  position: absolute;
+  top: 16px;
+  right: 424px; /* 留給 EXIF 面板（400px）＋邊距 */
+  display: flex;
+  gap: var(--space-2-5);
+  z-index: 25;
+  pointer-events: auto;
+}
+
+/* 按鈕：跟文章圖片放大、影片播放鈕同一種細線圓圈。底下墊一層很淡的夜色，亮的照片上才看得到 */
+.action-btn,
+.custom-swiper-button-prev,
+.custom-swiper-button-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-round);
+  background: rgba(var(--ground-rgb), 0.35);
+  color: var(--paper-2);
+  cursor: pointer;
+  box-shadow: none;
+  transition:
+    border-color var(--dur-200) ease,
+    color var(--dur-200) ease,
+    background var(--dur-200) ease,
+    opacity var(--dur-200) ease;
+}
+
+.action-btn {
+  width: 40px;
+  height: 40px;
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+}
+
+/* 蓋掉全域 button:hover 的底色與光暈（specificity 0,2,0 > 0,1,1） */
+.action-btn:hover,
+.action-btn:focus-visible {
+  border-color: var(--paper);
+  background: rgba(var(--ground-rgb), 0.55);
+  color: var(--paper);
+  box-shadow: none;
+}
+
+/* 主圖 */
+.photo-viewer-main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 400px; /* 為右側 EXIF 面板留空間 */
+  bottom: 120px; /* 為底部縮圖留空間 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.main-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.main-swiper .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-zoom-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.swiper-zoom-container img {
+  transition: transform var(--dur-150) var(--easing-standard);
+  transform-origin: center center;
+}
+
+.swiper-slide-zoomed .swiper-zoom-container {
+  cursor: grab;
+}
+
+.swiper-slide-zoomed .swiper-zoom-container:active {
+  cursor: grabbing;
+}
+
+/* Swiper 自己的導航鈕不用 */
+.main-swiper .swiper-button-prev,
+.main-swiper .swiper-button-next {
+  display: none;
+}
+
+/* 上一張、下一張 */
+.custom-swiper-button-prev,
+.custom-swiper-button-next {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 44px;
+  height: 44px;
+  z-index: 20;
+  opacity: 0.8;
+}
+
+.custom-swiper-button-prev {
+  left: 24px;
+}
+
+.custom-swiper-button-next {
+  right: 24px;
+}
+
+.custom-swiper-button-prev svg,
+.custom-swiper-button-next svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+}
+
+.custom-swiper-button-prev:hover,
+.custom-swiper-button-next:hover {
+  border-color: var(--paper);
+  background: rgba(var(--ground-rgb), 0.55);
+  color: var(--paper);
+  opacity: 1;
+}
+
+.custom-swiper-button-prev.swiper-button-disabled,
+.custom-swiper-button-next.swiper-button-disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 載入中：一圈細線 */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--rule);
+  border-top-color: var(--paper-2);
+  border-radius: var(--r-round);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 放大倍率：左下一行等寬小字 */
+.zoom-indicator {
+  position: absolute;
+  bottom: 130px;
+  left: 24px;
+  z-index: 20;
+  padding: var(--space-1) var(--space-2-5);
+  border: 1px solid var(--rule);
+  background: rgba(var(--ground-rgb), 0.7);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-4);
+  color: var(--paper-2);
+}
+
+/* 響應式 */
+@media (max-width: 1024px) {
+  .photo-viewer-main {
+    right: 0;
+  }
+
+  .viewer-top-right-buttons {
+    right: 24px;
+  }
+
+  .gallery-thumbnail-container {
+    right: 0;
+  }
+
+  /* 平板以下不放 EXIF 面板 */
+  .exif-panel {
+    display: none;
+  }
+
+  .custom-swiper-button-prev {
+    left: 16px;
+  }
+
+  .custom-swiper-button-next {
+    right: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-viewer-info {
+    top: 18px;
+    left: 16px;
+  }
+
+  .viewer-top-right-buttons {
+    top: 12px;
+    right: 16px;
+    gap: var(--space-2);
+  }
+
+  .photo-viewer-main {
+    bottom: 100px;
+  }
+
+  .custom-swiper-button-prev,
+  .custom-swiper-button-next {
+    width: 40px;
+    height: 40px;
+  }
+
+  .custom-swiper-button-prev {
+    left: 12px;
+  }
+
+  .custom-swiper-button-next {
+    right: 12px;
+  }
+}

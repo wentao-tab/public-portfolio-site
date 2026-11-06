@@ -1,5 +1,13 @@
 # 项目维护边界
 
+## 2026-11-05 新版迁移（优先于下方旧版路径说明）
+
+- 当前线上内容来自 `next-site/source/` 与 `next-site/published/`，默认入口 `/zh-cn/watch`。
+- 日常改新版页面请定位 `next-site/source/src/`；不要把根目录旧版 `src/` 当作当前页面修改。
+- 新版为 GitHub Pages 公开静态导出；迁移说明和重新导出步骤见 `next-site/README.md`。
+- `npm run build` 负责组装新站、兼容旧链接、检查发布文件。发布仍推送 `main`，等 Actions 成功并验证线上。
+- `legacy115/` 和 Git 标签 `个站旧版115` 是冻结旧版；仅在明确要求恢复或修改归档时处理。
+
 请用中文回答，默认简洁直接。
 
 这个仓库是梁文韬个人站主仓库，线上主域名是 `https://hiwentao.com/`。

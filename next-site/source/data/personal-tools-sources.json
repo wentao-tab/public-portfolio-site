@@ -1,0 +1,14 @@
+{
+  "source": "https://hiwentao.com/tools/",
+  "dateMeaning": "个站入口或工具文件在仓库中首次提交的日期，并非独立工具的最初开发日期。",
+  "repository": "../ricocc-public-portfolio-site",
+  "excluded": ["日常日记", "云扬配音"],
+  "tools": [
+    { "name": "出发吧！从南京", "date": "2026-06-12", "path": "public/tools/nanjing-travel-map/index.html" },
+    { "name": "提示词图鉴", "date": "2026-06-14", "path": "src/pages/tools.astro", "historySearch": "git log --reverse -S wenxiToolUrl -- src/pages/tools.astro" },
+    { "name": "鸟鸣睡眠舱", "date": "2026-06-17", "path": "src/pages/sleep.astro" },
+    { "name": "金刚经配图版", "date": "2026-06-19", "path": "src/pages/jingangjing.astro" },
+    { "name": "应作如是", "date": "2026-06-24", "path": "src/pages/sutra-chat.astro" },
+    { "name": "净心禅堂", "date": "2026-09-07", "path": "src/pages/zen.astro" }
+  ]
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Koimsurai 手記</title>
+    <link>https://hiwentao.com/blog</link>
+    <description>宙と木，Koimsurai 的手記。一個寫代碼的人，偶爾造點東西。</description>
+    <language>zh-TW</language>
+    <lastBuildDate>Tue, 27 Oct 2026 06:07:31 GMT</lastBuildDate>
+    <atom:link href="https://hiwentao.com/rss" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>在星空里，给好奇心留一个位置</title>
+      <link>https://hiwentao.com/blog/a-place-for-curiosity</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/a-place-for-curiosity</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Tue, 27 Oct 2026 03:00:00 GMT</pubDate>
+      <category>设计</category>
+      
+    </item>
+    <item>
+      <title>把想法做成可以触摸的作品</title>
+      <link>https://hiwentao.com/blog/from-idea-to-work</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/from-idea-to-work</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Sun, 25 Oct 2026 03:00:00 GMT</pubDate>
+      <category>创造</category>
+      
+    </item>
+    <item>
+      <title>让动画成为页面的一部分</title>
+      <link>https://hiwentao.com/blog/motion-as-language</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/motion-as-language</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Fri, 23 Oct 2026 03:00:00 GMT</pubDate>
+      <category>设计</category>
+      
+    </item>
+    <item>
+      <title>一次小小的性能实验</title>
+      <link>https://hiwentao.com/blog/a-small-performance-experiment</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/a-small-performance-experiment</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Wed, 21 Oct 2026 03:00:00 GMT</pubDate>
+      <category>技术</category>
+      
+    </item>
+    <item>
+      <title>读书，记录，然后重新出发</title>
+      <link>https://hiwentao.com/blog/read-and-start-again</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/read-and-start-again</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Mon, 19 Oct 2026 03:00:00 GMT</pubDate>
+      <category>生活</category>
+      
+    </item>
+    <item>
+      <title>慢一点，也可以抵达</title>
+      <link>https://hiwentao.com/blog/take-your-time</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/take-your-time</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Sat, 17 Oct 2026 03:00:00 GMT</pubDate>
+      <category>生活</category>
+      
+    </item>
+    <item>
+      <title>写给未来的自己</title>
+      <link>https://hiwentao.com/blog/a-note-to-the-future</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/a-note-to-the-future</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Thu, 15 Oct 2026 03:00:00 GMT</pubDate>
+      <category>创造</category>
+      
+    </item>
+    <item>
+      <title>第一束微光</title>
+      <link>https://hiwentao.com/blog/the-first-light</link>
+      <guid isPermaLink="true">https://hiwentao.com/blog/the-first-light</guid>
+      <description>本地演示内容：记录观察、尝试和创造，检查原版页面的排版与动效。</description>
+      <author>本地演示</author>
+      <pubDate>Tue, 13 Oct 2026 03:00:00 GMT</pubDate>
+      <category>技术</category>
+      
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,168 @@
+/* 404（layout/NotFound）：整個視窗是黑裡的太空人（畫布 layout/lostSky），字在左邊。
+   ⚠ 不畫星星：全站的太空背景就在後面跑 */
+
+.nf-page {
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  font-family: var(--serif);
+  color: var(--paper);
+  --nf-edge: max(var(--space-10), calc(50% - 640px));
+}
+
+.nf-sky {
+  position: absolute;
+  inset: 0;
+}
+
+.nf-sky canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 前景濾鏡：左半邊壓暗一點，字不會壓在最亮的星空上 */
+.nf-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(var(--ground-rgb), 0.6), rgba(var(--ground-rgb), 0) 55%);
+  pointer-events: none;
+}
+
+.nf-inner {
+  position: absolute;
+  top: 50%;
+  left: var(--nf-edge);
+  display: grid;
+  gap: var(--space-3);
+  max-width: 520px;
+  transform: translateY(-50%);
+}
+
+.nf-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.nf-code {
+  font-family: var(--latin-display);
+  font-size: var(--fs-56);
+  line-height: var(--lh-100);
+  color: var(--paper-2);
+}
+
+.nf-title {
+  margin: 0;
+  font-size: var(--fs-32);
+  font-weight: 600;
+  line-height: var(--lh-130);
+}
+
+.nf-sub {
+  margin: 0;
+  font-size: var(--fs-16);
+  color: var(--paper-2);
+}
+
+.nf-addr {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin: var(--space-2) 0 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-12);
+  letter-spacing: var(--ls-4);
+}
+
+.nf-addr-label {
+  color: var(--paper-3);
+}
+
+.nf-addr-path,
+.nf-addr b {
+  font-family: inherit;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--amber);
+  overflow-wrap: anywhere;
+}
+
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-4);
+  font-family: var(--mono-font);
+  font-size: var(--fs-12);
+  letter-spacing: var(--ls-6);
+}
+
+:where(.nf-actions) :where(a, button) {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.nf-link,
+.nf-btn {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding-bottom: var(--space-px);
+  color: var(--paper-2);
+  border-bottom: 1px dotted var(--paper-3);
+  transition:
+    color var(--dur-200) ease,
+    border-color var(--dur-200) ease;
+}
+
+.nf-link:hover,
+.nf-link:focus-visible,
+.nf-btn:hover,
+.nf-btn:focus-visible {
+  color: var(--paper);
+  border-bottom-color: var(--amber);
+}
+
+.nf-kbd {
+  font-family: inherit;
+  color: var(--paper-3);
+}
+
+/* 收：字退掉，只剩太空人淡掉、點從斷端飛走 */
+.nf-inner,
+.nf-scrim {
+  transition: opacity var(--dur-300) ease;
+}
+
+.nf-page.is-leaving :is(.nf-inner, .nf-scrim) {
+  opacity: 0;
+}
+
+@media (max-width: 760px) {
+  .nf-page {
+    --nf-edge: var(--space-4);
+  }
+
+  .nf-scrim {
+    background: linear-gradient(0deg, rgba(var(--ground-rgb), 0.7), rgba(var(--ground-rgb), 0) 60%);
+  }
+
+  .nf-inner {
+    top: auto;
+    right: var(--nf-edge);
+    bottom: var(--page-bottom);
+    transform: none;
+  }
+
+  .nf-title {
+    font-size: var(--fs-24);
+  }
+}

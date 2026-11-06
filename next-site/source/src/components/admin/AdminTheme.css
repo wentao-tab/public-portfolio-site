@@ -1,0 +1,338 @@
+/* ══════════════════════════════════════════
+   後台的材料（2026-10 後台提案）
+   跟前台同一套：黑是紙、白是墨、琥珀是訊號。直角、細線、不浮陰影、不用毛玻璃。
+   版面（側欄、編輯器頂列）在 AdminLayout.css，捲軸在 AdminScrollbars.css；
+   這裡管的是 shadcn 元件與原生表單元素的材料：變數整組換掉，元件內建的
+   utility（框色、浮層、按鈕 variant）跟著改。各頁自己的版面在 AdminPage.css。
+   直角靠 --radius: 0 讓 shadcn 的 rounded-sm／md／lg 歸零；頁面裡不寫 rounded-*。
+   ══════════════════════════════════════════ */
+
+/* shadcn 的變數整組重定義（自成一套，維持字面值，一眼看完整套配色）。
+   shadcn 吃的是 HSL 三元組，所以帶透明度的那幾個（墨 4%／8%／15%／55%／70%）
+   換算成疊在夜色上的實色。 */
+:is(.admin-layout, .admin-mode) {
+  --background: 240 9.1% 4.3%; /* --ground */
+  --foreground: 39 33.3% 91.8%; /* --paper */
+  --card: 240 9.1% 4.3%;
+  --card-foreground: 39 33.3% 91.8%;
+  --popover: 240 9.1% 4.3%;
+  --popover-foreground: 39 33.3% 91.8%;
+  --primary: 39 33.3% 91.8%;
+  --primary-foreground: 240 9.1% 4.3%;
+  --secondary: 240 5% 7.8%; /* 墨 4% */
+  --secondary-foreground: 33 5.1% 65.7%; /* 墨 70% */
+  --muted: 240 5% 7.8%;
+  --muted-foreground: 34 2.9% 52.4%; /* 墨 55%（--paper-meta） */
+  --accent: 240 1.8% 11.2%; /* 墨 8% */
+  --accent-foreground: 39 33.3% 91.8%;
+  --destructive: 13 68% 65.7%; /* --flare */
+  --destructive-foreground: 240 9.1% 4.3%;
+  --border: 0 1.1% 17.5%; /* 墨 15%（--rule） */
+  --input: 0 1.1% 17.5%;
+  --ring: 33 5.1% 65.7%;
+  --radius: 0rem;
+
+  /* 中和全域 button 紫色變數 */
+  --clr-button: transparent;
+  --clr-button-text: var(--paper);
+
+  /* 字：標題、內容、表單的值一律思源宋體；等寬留給標籤、時間與數字（各元件自己指定） */
+  font-family: var(--serif);
+  background: var(--ground);
+  color: var(--paper);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ── 表格：列與列之間是點線，滑過墊一層很淡的墨 ── */
+:is(.admin-layout, .admin-mode) table {
+  background: transparent;
+}
+
+:is(.admin-layout, .admin-mode) thead tr {
+  border-color: var(--rule);
+}
+
+:is(.admin-layout, .admin-mode) tbody tr {
+  border-bottom: 1px dotted var(--rule);
+  transition: background-color var(--dur-150) ease;
+}
+
+:is(.admin-layout, .admin-mode) tbody tr:hover,
+:is(.admin-layout, .admin-mode) tbody tr[data-state="selected"] {
+  background: rgba(var(--paper-rgb), 0.04);
+}
+
+/* ── 輸入框：透明底、一條細框，滑過深一階、聚焦再深一階，沒有光暈 ── */
+/* 編輯器的標題框（.pe-title）只有一條點線、不是方框，排除在外，由 PostEditor.css 自己畫 */
+:is(.admin-layout, .admin-mode) input:not(.monaco-toolbar *, .pe-title),
+:is(.admin-layout, .admin-mode) select:not(.monaco-toolbar *),
+:is(.admin-layout, .admin-mode) textarea:not(.monaco-toolbar *) {
+  background: transparent;
+  /* ⚠ !important 不能拿掉：shadcn 的 <Input>/<Select> 用 border-input 這類 utility，
+     實測拿掉之後邊框從細線變成 rgb(228,228,231)（zinc-200 的亮色），
+     整個後台表單會變成淺色邊框配深色底。 */
+  border-color: var(--rule) !important;
+  color: var(--paper);
+  border-radius: 0;
+  transition: border-color var(--dur-200) ease;
+}
+
+:is(.admin-layout, .admin-mode) input:hover,
+:is(.admin-layout, .admin-mode) select:hover,
+:is(.admin-layout, .admin-mode) textarea:hover {
+  /* base 的 border-color 帶了 !important（見上），狀態變體就必須跟著帶，
+     否則 base 會反過來蓋掉 hover/focus——實測過，hover 時邊框完全不變色。 */
+  border-color: var(--paper-3) !important;
+}
+
+:is(.admin-layout, .admin-mode) input:focus,
+:is(.admin-layout, .admin-mode) select:focus,
+:is(.admin-layout, .admin-mode) textarea:focus {
+  /* 同上：base 帶了 !important，focus 也要帶 */
+  border-color: var(--paper-2) !important;
+  box-shadow: none;
+}
+
+:is(.admin-layout, .admin-mode) ::placeholder {
+  color: var(--paper-meta);
+}
+
+:is(.admin-layout, .admin-mode) input[type="search"] {
+  padding-left: var(--space-10);
+}
+
+/* 核取方塊與單選：不用瀏覽器畫的那顆（accent-color 只換得了顏色，形狀、圓角、勾勾還是系統的）。
+   空的是一個細框；勾起來是琥珀框裡一塊琥珀（單選是圓的） */
+:is(.admin-layout, .admin-mode) :is(input[type="checkbox"], input[type="radio"]) {
+  appearance: none;
+  flex: none;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  border: 1px solid var(--paper-3);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-150) ease,
+    box-shadow var(--dur-150) ease;
+}
+
+:is(.admin-layout, .admin-mode) input[type="radio"] {
+  border-radius: var(--r-round);
+}
+
+:is(.admin-layout, .admin-mode) :is(input[type="checkbox"], input[type="radio"]):hover,
+:is(.admin-layout, .admin-mode) :is(input[type="checkbox"], input[type="radio"]):focus-visible {
+  border-color: var(--paper);
+  outline: none;
+}
+
+:is(.admin-layout, .admin-mode) :is(input[type="checkbox"], input[type="radio"]):checked {
+  border-color: var(--amber);
+  box-shadow:
+    inset 0 0 0 2px var(--ground),
+    inset 0 0 0 7px var(--amber);
+}
+
+/* 數字欄位右邊那對上下箭頭是瀏覽器畫的：收掉，打字就好 */
+:is(.admin-layout, .admin-mode) input[type="number"] {
+  appearance: textfield;
+}
+
+:is(.admin-layout, .admin-mode) input[type="number"]::-webkit-inner-spin-button,
+:is(.admin-layout, .admin-mode) input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+:is(.admin-layout, .admin-mode) label {
+  color: var(--paper-2);
+  font-size: var(--fs-14);
+}
+
+/* ── 浮層（選單、對話框、下拉清單、提示、toast）：跟前台 ⌘K 同一種——夜色底、一條細框、直角、不浮陰影 ── */
+:is(.admin-layout, .admin-mode) [role="menu"],
+:is(.admin-layout, .admin-mode) [role="dialog"],
+:is(.admin-layout, .admin-mode) [role="alertdialog"],
+:is(.admin-layout, .admin-mode) [role="tooltip"],
+:is(.admin-layout, .admin-mode) [data-radix-popper-content-wrapper] [role="listbox"],
+:is(.admin-layout, .admin-mode) [data-sonner-toast] {
+  background: rgba(var(--ground-rgb), 0.95);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+:is(.admin-layout, .admin-mode) [role="menuitem"]:hover,
+:is(.admin-layout, .admin-mode) [role="option"]:hover {
+  background: rgba(var(--paper-rgb), 0.06);
+}
+
+:is(.admin-layout, .admin-mode) [class*="overlay"] {
+  background: rgba(var(--ground-rgb), 0.7);
+}
+
+/* ── 分隔線 ── */
+:is(.admin-layout, .admin-mode) hr,
+:is(.admin-layout, .admin-mode) .separator,
+:is(.admin-layout, .admin-mode) [data-orientation="horizontal"],
+:is(.admin-layout, .admin-mode) [data-orientation="vertical"] {
+  border-color: var(--rule);
+  background: var(--rule);
+}
+
+/* ── 分頁籤：選中的是墨色底線，不是一塊底色 ── */
+:is(.admin-layout, .admin-mode) [role="tab"][data-state="active"] {
+  background: transparent;
+  border-color: var(--paper);
+  color: var(--paper);
+}
+
+:is(.admin-layout, .admin-mode) [role="progressbar"] {
+  background: var(--rule);
+}
+
+:is(.admin-layout, .admin-mode) [role="progressbar"] > div {
+  background: var(--paper);
+}
+
+/* ── 連結：墨 70%，滑過換成實墨 ── */
+:is(.admin-layout, .admin-mode) a {
+  color: var(--paper-2);
+  transition: color var(--dur-150) ease;
+}
+
+:is(.admin-layout, .admin-mode) a:hover,
+:is(.admin-layout, .admin-mode) a:focus-visible {
+  color: var(--paper);
+  text-shadow: none;
+}
+
+/* ── 焦點：一條細墨框，跟前台的 button:focus-visible 同一個寫法 ── */
+:is(.admin-layout, .admin-mode) :is(button, a, [role="tab"]):focus-visible {
+  outline: 1px solid var(--paper-2);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* ── Reset global button base styles for admin ──
+   中和 index.css 那條全站 `button { 紫底 + padding .6em 1.2em + radius 8px }`。
+   後台的按鈕全部由 shadcn 的 utility 決定外觀，套上那條會整排變紫色膠囊。
+
+   ⚠ 這兩條**必須待在 `@layer base` 裡**，理由是 Tailwind v4 用原生 cascade layer：
+   未分層的規則恆勝過 `@layer utilities`，跟特異性無關。原本它們寫在檔案頂層（未分層），
+   於是把後台每一顆按鈕的 `px-3 py-2 rounded-md text-sm` 全部歸零——編輯頁右欄的
+   欄位因此擠成一團、select 沒有圓角也沒有內距。
+
+   放進 base 之後：對上同樣在 base 的全域 `button`（0,0,1）靠 `:is()` 的 (0,2,1) 取勝，
+   對上 utilities 則因為層序在後而讓位，兩邊都對。
+   （v3 時代這條用 `:where()` 降特異性就夠了——那個做法在 v4 已經沒有意義。） */
+@layer base {
+  :is(.admin-layout, .admin-mode) button {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    box-shadow: none;
+  }
+
+  :is(.admin-layout, .admin-mode) button:hover,
+  :is(.admin-layout, .admin-mode) button:focus {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* ── 主要按鈕（shadcn 的 default variant）：透明底、墨 70% 的框，滑過換成琥珀框——
+   跟前台留言表單的送出鈕同一個反應 ── */
+:is(.admin-layout, .admin-mode) .bg-primary,
+:is(.admin-layout, .admin-mode) [class*="bg-primary"] {
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--paper-2);
+}
+
+:is(.admin-layout, .admin-mode) .bg-primary:hover,
+:is(.admin-layout, .admin-mode) [class*="bg-primary"]:hover {
+  background: transparent;
+  border-color: var(--amber);
+}
+
+/* ── 開關（Radix Switch）：細線框裡一顆小圓點，關著是淡墨靠左，開著是實墨靠右、框深一階。
+   它的 class 裡也有 `data-[state=checked]:bg-primary`，上面那條會把底色改成透明；而原本的圓鈕是
+   夜色（bg-background），兩個疊起來就什麼都看不到——所以這裡把圓鈕改成墨色 ── */
+:is(.admin-layout, .admin-mode) button[role="switch"] {
+  background: transparent;
+  border: 1px solid var(--rule);
+}
+
+:is(.admin-layout, .admin-mode) button[role="switch"][data-state="checked"] {
+  border-color: var(--paper-2);
+}
+
+:is(.admin-layout, .admin-mode) button[role="switch"] > span {
+  width: 14px;
+  height: 14px;
+  margin-left: var(--space-1);
+  background: var(--paper-3);
+  box-shadow: none;
+}
+
+:is(.admin-layout, .admin-mode) button[role="switch"][data-state="checked"] > span {
+  background: var(--paper);
+}
+
+:is(.admin-layout, .admin-mode) .text-primary {
+  color: var(--paper-2);
+}
+
+:is(.admin-layout, .admin-mode) .text-primary:hover {
+  color: var(--paper);
+}
+
+/* ── 會刪東西的按鈕：朱色字配點線框，滑過才變實線 ── */
+:is(.admin-layout, .admin-mode) .bg-destructive,
+:is(.admin-layout, .admin-mode) [class*="bg-destructive"] {
+  background: transparent;
+  color: var(--flare);
+  border: 1px dotted rgba(var(--flare-rgb), 0.6);
+}
+
+:is(.admin-layout, .admin-mode) .bg-destructive:hover,
+:is(.admin-layout, .admin-mode) [class*="bg-destructive"]:hover {
+  background: transparent;
+  border-style: solid;
+}
+
+/* ── Zen 模式：寫作專注 ──
+   側欄與編輯器頂列都收起來、內容不再讓出側欄的寬度。
+   Monaco 進入／離開 Zen 時會主動 dispatch resize 重算尺寸（PostEditor 的 350ms 計時器）。 */
+body.zen-mode-active .adm-side,
+body.zen-mode-active .adm-editbar,
+body.zen-mode-active .adm-mobilebar {
+  display: none;
+}
+
+body.zen-mode-active .adm-body {
+  margin-left: 0;
+}
+
+/* PostEditor 右側 metadata 面板（form 內的 aside）— Zen 中藏起來 */
+body.zen-mode-active .adm-main form > aside {
+  display: none;
+}
+
+/* 編輯器主欄：撐滿整個視窗（以前限寬 920px，結果收掉側欄之後反而比平常還窄）；
+   高度在 PostEditor 裡跟著 zenMode 換成視窗高度 */
+body.zen-mode-active .adm-main form > main {
+  padding: var(--space-8) var(--space-12);
+}
+
+/* 進 Zen 時 PostEditor 把編輯框捲到頂端，上面留一點邊 */
+body.zen-mode-active .pe-frame {
+  scroll-margin-top: var(--space-6);
+}

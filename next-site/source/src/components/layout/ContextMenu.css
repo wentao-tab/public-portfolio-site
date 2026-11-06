@@ -1,0 +1,104 @@
+/* 自訂右鍵選單。跟指令面板（⌘K）、連結預覽卡同一種：夜色底、一條細框、直角、不浮陰影；
+   每一項前面一個空心小圓，滑過去變成琥珀實心點 */
+
+.ctx-menu {
+  position: fixed;
+  z-index: var(--z-ctx-menu);
+  min-width: 13rem;
+  padding: var(--space-1) 0 var(--space-1-5);
+  background: rgba(var(--ground-rgb), 0.96);
+  border: 1px solid var(--rule);
+  animation: ctx-in var(--dur-150) var(--easing-out);
+  user-select: none;
+}
+
+@keyframes ctx-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* 上一頁、下一頁、重新整理：一行三個等寬箭頭，底下一條點線 */
+.ctx-nav {
+  display: flex;
+  padding: 0 var(--space-2);
+  border-bottom: 1px dotted var(--rule);
+}
+
+.ctx-nav-btn {
+  flex: 1;
+  padding: var(--space-2) 0;
+  border: none;
+  background: transparent;
+  font-family: var(--mono-font);
+  font-size: var(--fs-14);
+  color: var(--paper-3);
+  cursor: pointer;
+  transition: color var(--dur-150) ease;
+}
+
+.ctx-nav-btn:hover,
+.ctx-nav-btn:focus-visible {
+  color: var(--amber);
+  outline: none;
+}
+
+.ctx-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  background: transparent;
+  font-family: var(--serif);
+  font-size: var(--fs-14);
+  text-align: left;
+  color: var(--paper-2);
+  cursor: pointer;
+  transition: color var(--dur-150) ease;
+}
+
+.ctx-nav + .ctx-item {
+  margin-top: var(--space-1);
+}
+
+.ctx-item:hover,
+.ctx-item:focus-visible {
+  color: var(--paper);
+  outline: none;
+}
+
+.ctx-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--paper-3);
+  border-radius: var(--r-round);
+  transition:
+    background-color var(--dur-150) ease,
+    border-color var(--dur-150) ease;
+}
+
+.ctx-item:hover .ctx-dot,
+.ctx-item:focus-visible .ctx-dot {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+
+.ctx-divider {
+  margin: var(--space-1) var(--space-4);
+  border-top: 1px dotted var(--rule);
+}
+
+.ctx-hint {
+  margin-top: var(--space-1);
+  padding: var(--space-2) var(--space-4) 0;
+  border-top: 1px dotted var(--rule);
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-4);
+  line-height: var(--lh-150);
+  color: var(--paper-3);
+}

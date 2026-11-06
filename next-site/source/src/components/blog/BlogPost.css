@@ -1,0 +1,949 @@
+/* ═══════════════════════════════════════
+   BlogPost.css — 三欄佈局
+   ═══════════════════════════════════════ */
+
+/* --post-* 變數在 index.css 的 :root（LinkCard 也在用）。 */
+
+/* 2026-10 翻新：文章範圍裡的品牌紫收回暖白，定義在 index.css（跟其他公開元件共用同一份） */
+
+/* code block 與終端機視窗都要能被讀者選取複製（terminal-block 是 console/bash/sh 等語言
+   的渲染路徑，先前漏了這條 override → 繼承上面 .post-content 的 none 而選不起來）。 */
+.blog-post-container .code-block-wrapper,
+.blog-post-container .terminal-block {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* ⚠ 防複製的 user-select:none 會被 <video> 繼承，而 Chrome 在 video 帶 user-select:none 時
+   原生控制列會失去互動——hover 不浮出、點擊沒反應（但程式呼叫 play() 仍可播，所以很容易誤判成
+   「被東西蓋住」）。媒體元素一律豁免。 */
+.blog-post-container .mdx-video,
+.blog-post-container video,
+.blog-post-container audio {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* ═══════════════════════
+   Loading / Error
+   ═══════════════════════ */
+.blog-post-container.loading,
+.blog-post-container.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* hover tooltip on meta items */
+
+/* toast */
+.blog-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(var(--surface-1-rgb), 0.95);
+  color: #fff;
+  padding: var(--space-2-5) var(--space-4-5);
+  border-radius: var(--r-full);
+  border: 1px solid rgba(var(--brand-rgb), 0.3);
+  box-shadow: var(--elev-4);
+  font-size: var(--fs-14);
+  z-index: var(--z-toast);
+  backdrop-filter: blur(var(--blur-12));
+}
+
+/* Posts navigation (left sidebar) */
+.posts-nav {
+  padding: var(--space-10) 0 var(--space-2) 0;
+}
+
+/* ═══════════════════════
+   Prev / Next 導覽
+   ═══════════════════════ */
+.prev-next-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3-5);
+  margin: var(--space-12) 0 var(--space-6);
+}
+.prev-next-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+  padding: var(--space-3-5) var(--space-4-5);
+  border-radius: var(--r-12);
+  background: var(--white-02);
+  border: 1px solid var(--white-06);
+  text-decoration: none;
+  color: var(--white-80);
+  transition:
+    border-color var(--dur-300),
+    background var(--dur-300),
+    transform var(--dur-300),
+    box-shadow var(--dur-300);
+  min-height: 72px;
+}
+.prev-next-card:hover {
+  border-color: rgba(var(--brand-rgb), 0.35);
+  background: rgba(var(--brand-rgb), 0.06);
+  box-shadow:
+    0 0 20px rgba(var(--brand-rgb), 0.08),
+    0 8px 24px var(--black-25);
+  transform: translateY(-2px);
+}
+.prev-next-next {
+  align-items: flex-end;
+  text-align: right;
+}
+.prev-next-label {
+  font-size: var(--fs-12);
+  color: var(--white-40);
+  letter-spacing: var(--ls-4);
+}
+.prev-next-card:hover .prev-next-label {
+  color: var(--brand-light);
+}
+.prev-next-title {
+  font-size: var(--fs-16);
+  color: var(--white-90);
+  font-weight: 500;
+  line-height: var(--lh-140);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.prev-next-placeholder {
+  display: block;
+}
+@media (max-width: 640px) {
+  .prev-next-nav {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Series 系列文導覽（文末，文章區塊外） ── */
+.series-nav {
+  margin: var(--space-10) 0 var(--space-6);
+  padding: var(--space-5-5) var(--space-6);
+  background: rgba(var(--brand-rgb), 0.06);
+  border: 1px solid rgba(var(--brand-rgb), 0.2);
+  border-radius: var(--r-12);
+  backdrop-filter: blur(var(--blur-8));
+}
+.series-nav-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3-5);
+  padding-bottom: var(--space-3-5);
+  border-bottom: 1px dashed var(--white-08);
+}
+.series-nav-label {
+  font-size: var(--fs-11);
+  letter-spacing: var(--ls-18);
+  text-transform: uppercase;
+  color: var(--brand-light);
+}
+.series-nav-name {
+  font-size: var(--fs-18);
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--lavender-soft) 0%, var(--brand) 60%, var(--magenta) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+.series-nav-progress {
+  font-size: var(--fs-12);
+  color: var(--white-55);
+}
+.series-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  counter-reset: series-counter;
+}
+.series-nav-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1-5) var(--space-2);
+  border-radius: var(--r-8);
+  transition: background var(--dur-200) ease;
+}
+.series-nav-item:hover {
+  background: var(--white-04);
+}
+.series-nav-num {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-6);
+  background: var(--white-06);
+  color: var(--white-55);
+  font-size: var(--fs-12);
+  font-weight: 600;
+}
+.series-nav-title {
+  color: var(--white-80);
+  text-decoration: none;
+  font-size: var(--fs-16);
+  line-height: var(--lh-150);
+  transition: color var(--dur-200) ease;
+}
+a.series-nav-title:hover {
+  color: var(--brand-light);
+}
+.series-nav-item.is-current {
+  background: rgba(var(--brand-rgb), 0.1);
+}
+.series-nav-item.is-current .series-nav-num {
+  background: linear-gradient(135deg, var(--brand), var(--magenta));
+  color: #fff;
+}
+.series-nav-item.is-current .series-nav-title {
+  color: var(--lavender-soft);
+  font-weight: 600;
+}
+
+/* ═══════════════════════
+   Drop Cap — first letter of article
+   ═══════════════════════ */
+.post-content.drop-cap-first > p:first-of-type::first-letter {
+  float: left;
+  font-size: 3.8em;
+  line-height: 0.8;
+  font-weight: 700;
+  color: var(--post-accent);
+  margin-right: 0.1em;
+  margin-top: 0.05em;
+  font-family: Georgia, "Noto Serif SC", "Noto Serif TC", serif;
+  text-shadow: 0 0 20px var(--post-accent-glow);
+}
+
+/* 腳註樣式 + hover 浮窗（remark-gfm footnotes） */
+.post-content .footnotes {
+  margin-top: var(--space-12);
+  padding-top: var(--space-6);
+  border-top: 1px dashed var(--white-15);
+  font-size: var(--fs-14);
+  color: var(--white-70);
+}
+.post-content .footnotes h2 {
+  font-size: var(--fs-16);
+  letter-spacing: var(--ls-6);
+  text-transform: uppercase;
+  color: var(--white-50);
+  margin-bottom: var(--space-3);
+}
+.post-content sup a[data-footnote-ref],
+.post-content a.footnote-ref,
+.post-content a[id^="user-content-fnref-"] {
+  position: relative;
+  display: inline-block;
+  padding: 0 var(--space-1);
+  margin: 0 var(--space-px);
+  border-radius: var(--r-4);
+  background: rgba(var(--brand-rgb), 0.1);
+  color: var(--brand-light);
+  text-decoration: none;
+  font-size: 0.78em;
+  font-weight: 600;
+  transition: background var(--dur-200) ease;
+}
+.post-content sup a[data-footnote-ref]:hover,
+.post-content a.footnote-ref:hover {
+  background: rgba(var(--brand-rgb), 0.3);
+  color: #fff;
+}
+
+/* ── View Transitions（路由切換時的淡入淡出 + 微動畫）──
+   站內換頁是 TanStack Router 的同頁轉場（Link 的 viewTransition），下面的動畫就是給它的。
+   ⚠ 這裡不要加 `@view-transition { navigation: auto }`（跨頁轉場的開關）。它原本在這裡，
+   於是只有文章頁 opt-in：從文章整頁跳到別頁（頭像選單的「管理後台」是 location.assign）時，
+   舊頁開始轉場、新頁沒 opt-in，瀏覽器中止轉場，新頁冒出沒人接的 rejection
+  （GlitchTip「InvalidStateError: Transition was aborted … opt-in disabled」）。 */
+/* VT 只做「純 crossfade」不帶位移：文章裡的元素有自己的進場動畫，
+   整頁再帶 y+8 淡入會跟它疊加 → 使用者看到「動畫跑兩次 / 抽一下」。 */
+::view-transition-old(root) {
+  animation: blogFadeOut 0.2s ease-out both;
+}
+::view-transition-new(root) {
+  animation: blogFadeIn 0.26s var(--easing-standard) both;
+}
+@keyframes blogFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes blogFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ═══════════════════════
+   GitHub-style Callouts (> [!NOTE] / [!TIP] / [!WARNING] / [!IMPORTANT] / [!CAUTION])
+   由 remark-github-blockquote-alert 轉出 <div class="markdown-alert markdown-alert-{type}">
+   照提案：左邊一條細線，上面一行等寬小字標出類型，沒有底色、沒有圖示、不分顏色——
+   五種的差別交給那一行字，琥珀留給「一個點」，不拿來當警告色。
+   ═══════════════════════ */
+.post-content .markdown-alert {
+  padding: var(--space-0-5) 0 var(--space-0-5) var(--space-4-5);
+  margin: var(--space-6) 0;
+  border-left: 1px solid var(--paper-3);
+  color: var(--paper-2);
+}
+.post-content .markdown-alert-title {
+  display: block;
+  margin-bottom: var(--space-1-5);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  font-weight: 400;
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+.post-content .markdown-alert-title svg {
+  display: none;
+}
+/* 要讀者停下來的三種：線亮一階、標籤前一顆琥珀點（「這裡」） */
+.post-content :is(.markdown-alert-important, .markdown-alert-warning, .markdown-alert-caution) {
+  border-left-color: var(--paper);
+}
+.post-content :is(.markdown-alert-important, .markdown-alert-warning, .markdown-alert-caution) .markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--paper-2);
+}
+.post-content
+  :is(.markdown-alert-important, .markdown-alert-warning, .markdown-alert-caution)
+  .markdown-alert-title::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: var(--r-round);
+  background: var(--amber);
+  box-shadow: 0 0 6px rgba(var(--amber-rgb), 0.7);
+}
+.post-content .markdown-alert p {
+  margin: var(--space-1) 0;
+  color: inherit;
+  font-size: var(--fs-16);
+}
+.post-content .markdown-alert p:last-child {
+  margin-bottom: 0;
+}
+.heading-anchor {
+  margin-left: 0.4em;
+  color: var(--post-accent);
+  font-weight: 400;
+  text-decoration: none;
+  border-bottom: none;
+  opacity: 0;
+  transition: opacity var(--dur-200) ease;
+  user-select: none;
+}
+.post-content h1:hover .heading-anchor,
+.post-content h2:hover .heading-anchor,
+.post-content h3:hover .heading-anchor,
+.post-content h4:hover .heading-anchor {
+  opacity: 0.5;
+}
+.heading-anchor:hover,
+.heading-anchor:focus-visible {
+  opacity: 1;
+  border-bottom: none;
+}
+
+/* Blog image wrapper — centered with EXIF overlay */
+.blog-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: var(--space-6) auto;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* EXIF info overlay — 從下往上滑入 */
+.blog-image-exif {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1-5) var(--space-3-5);
+  background: rgba(var(--ground-rgb), 0.85);
+  border: 1px solid var(--rule);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  color: var(--paper-2);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  max-width: 95%;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    opacity var(--dur-400) ease,
+    transform var(--dur-400) var(--easing-standard);
+}
+
+/* Image Lightbox：夜色鋪滿，圖在中間、圖說在下面 */
+.image-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-fullscreen);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--ground-rgb), 0.95);
+  cursor: zoom-out;
+  animation: lightbox-in var(--dur-300) ease;
+  transition: background-color var(--dur-300) ease;
+}
+
+@keyframes lightbox-in {
+  from {
+    background-color: transparent;
+  }
+}
+
+/* ═══════════════════════
+   Code Block
+   ═══════════════════════ */
+/* 照提案：細線框、小圓角、很淡的暖白底；語言與「複製」是等寬小字 */
+.code-block-wrapper {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-6);
+  overflow: hidden;
+  background: rgba(var(--paper-rgb), 0.03);
+  margin: var(--space-6) 0;
+}
+
+/* Code block custom scrollbar */
+.code-block-wrapper ::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.code-block-wrapper ::-webkit-scrollbar-track {
+  background: var(--white-02);
+  border-radius: var(--r-full);
+}
+
+.code-block-wrapper ::-webkit-scrollbar-thumb {
+  background: var(--white-15);
+  border-radius: var(--r-full);
+  transition: background var(--dur-200);
+}
+
+.code-block-wrapper ::-webkit-scrollbar-thumb:hover {
+  background: var(--white-20);
+}
+
+.code-block-wrapper * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--white-15) transparent;
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-4) 0;
+  background: transparent;
+}
+
+.language-name {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  color: var(--paper-3);
+  letter-spacing: var(--ls-12);
+}
+
+.copy-button {
+  background: none;
+  border: 0;
+  color: var(--paper-3);
+  padding: var(--space-1) 0;
+  border-radius: 0;
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-12);
+  cursor: pointer;
+  transition: color var(--dur-200);
+}
+
+/* 蓋掉全域 button:hover 的底色＋光暈（specificity 0,2,0 > 0,1,1） */
+.copy-button:hover,
+.copy-button:focus,
+.copy-button:focus-visible {
+  background: none;
+  border-color: transparent;
+  color: var(--paper);
+  box-shadow: none;
+  outline: none;
+}
+
+/* ── 終端機渲染（bash/shell 類）：外框跟一般程式碼一樣，標題列是一行等寬小字，無行號，唯讀 ── */
+/* biome-ignore lint/style/noDescendingSpecificity: 前面的 `.blog-post-container .terminal-block` 只設 user-select（防複製），跟這裡的版面／配色零屬性重疊，不是覆蓋關係。詳見檔案開頭 Copy protection 那段。 */
+.terminal-block {
+  margin: var(--space-6) 0;
+  border-radius: var(--r-6);
+  overflow: hidden;
+  background: rgba(var(--paper-rgb), 0.03);
+  border: 1px solid var(--rule);
+}
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--rule);
+}
+.terminal-glyph {
+  color: var(--paper-3);
+  font-family: var(--mono-font);
+  font-size: var(--fs-11);
+  letter-spacing: var(--ls-n4);
+}
+.terminal-title {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+  font-family: var(--mono-font);
+}
+.terminal-block .copy-button {
+  margin-left: auto;
+}
+.terminal-body {
+  overflow-x: auto;
+  padding: var(--space-3-5) 0 var(--space-4);
+}
+.terminal-body .shiki-output,
+.terminal-body .shiki-fallback {
+  margin: 0;
+}
+.terminal-body .shiki-output pre.shiki {
+  margin: 0;
+  padding: 0 var(--space-4-5);
+  /* ⚠ !important 不能拿掉：shiki 會把主題背景寫進 pre 自己的樣式，這裡要的是
+     透明（背景由外層 .terminal-body 畫）。實測拿掉之後變成 rgb(18,18,18)。 */
+  background: transparent !important;
+  font-size: var(--fs-14);
+  line-height: var(--lh-170);
+  font-family: var(--mono-font);
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+.terminal-body .shiki-output code {
+  background: none;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  display: block;
+}
+.terminal-body .shiki-fallback {
+  margin: 0;
+  padding: 0 var(--space-4-5);
+  color: var(--white-80);
+  white-space: pre;
+  font-size: var(--fs-14);
+  line-height: var(--lh-170);
+  font-family: var(--mono-font);
+}
+.terminal-block ::-webkit-scrollbar {
+  height: 7px;
+}
+.terminal-block ::-webkit-scrollbar-thumb {
+  background: var(--white-15);
+  border-radius: var(--r-4);
+}
+/* 底部「下一個提示符 + 閃爍游標」——終端機等待輸入的感覺（唯讀，純視覺） */
+.terminal-cursor-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: var(--space-1) var(--space-4-5) 0;
+}
+.terminal-prompt-sym {
+  color: var(--paper-3);
+  font-family: var(--mono-font);
+  font-size: var(--fs-14);
+}
+/* 等著輸入的游標：琥珀，跟留言框的游標同一個 */
+.terminal-cursor {
+  display: inline-block;
+  width: 0.4rem;
+  height: 1rem;
+  background: var(--amber);
+  animation: terminal-blink 1.05s steps(1) infinite;
+}
+@keyframes terminal-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* ── 共用程式碼本體 .code-surface-body（一般 code block 與 CodeTabs 共用）──
+   內距放在外層 scroll 容器（短碼不硬撐橫向捲軸）；pre 透明底、等寬字、width:max-content；
+   行號由 CSS counter 掛在每個 .line 前。 */
+.code-surface-body .shiki-output,
+.code-surface-body .shiki-fallback {
+  margin: 0;
+  overflow-x: auto;
+  padding: var(--space-4-5) var(--space-5) var(--space-5);
+}
+/* 行號：CSS counter 掛在每行 .line 前 */
+.code-surface-body .shiki-output .line {
+  counter-increment: shiki-ln;
+}
+@keyframes shikiPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ── 長碼收合：超過門檻先夾住高度，底部漸層淡出 + 「展開程式碼(共N行)」條 ── */
+/* 收合高度限制＋過場放在 .code-surface-clip（包住 shiki-output 的外層）：
+   JS 展開時把 max-height 設成實際內容高度 → CSS transition 平滑長開/收合。 */
+.code-surface-clip {
+  overflow: hidden;
+  transition: max-height var(--dur-400) var(--easing-standard);
+}
+/* 蓋掉全域 button:hover 的底色＋光暈（specificity 0,2,0 > 0,1,1） */
+.code-surface-toggle:hover,
+.code-surface-toggle:focus,
+.code-surface-toggle:focus-visible {
+  background: none;
+  color: var(--paper);
+  box-shadow: none;
+  border-color: transparent;
+  outline: none;
+}
+/* 語言標頭：只有字，舊版前面那顆語言圖示不放 */
+.language-name {
+  display: inline-flex;
+  align-items: center;
+  text-transform: none;
+}
+.language-emoji {
+  display: none;
+}
+
+/* ═══════════════════════
+   訂閱電子報（SubscribeModal）
+   跟朋友頁的申請表同一套：夜色底、一條細框、直角；宋體標題、等寬小字的欄位名、底線輸入框、細框的送出鈕
+   ═══════════════════════ */
+.subscribe-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: rgba(var(--ground-rgb), 0.75);
+}
+
+.subscribe-modal {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  width: min(400px, 100%);
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  background: rgba(var(--ground-rgb), 0.96);
+  border: 1px solid var(--rule);
+}
+
+/* 關閉：右上角兩條細線交叉（跟圖片燈箱同一個畫法，不靠圖示字型） */
+.subscribe-close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--paper-3);
+  cursor: pointer;
+  transition: color var(--dur-200) ease;
+}
+
+.subscribe-close::before,
+.subscribe-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 1px;
+  background: currentColor;
+}
+
+.subscribe-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.subscribe-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.subscribe-close:hover,
+.subscribe-close:focus-visible {
+  color: var(--paper);
+  outline: none;
+}
+
+.subscribe-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--fs-22);
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.subscribe-lead {
+  margin: calc(-1 * var(--space-2)) 0 0;
+  font-size: var(--fs-14);
+  line-height: var(--lh-170);
+  color: var(--paper-2);
+}
+
+.subscribe-email {
+  font-family: var(--mono-font);
+  font-size: var(--fs-13);
+  color: var(--paper);
+}
+
+.subscribe-form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.subscribe-field {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.subscribe-field span {
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-12);
+  color: var(--paper-3);
+}
+
+.subscribe-field input {
+  padding: var(--space-1) 0;
+  font: inherit;
+  font-size: var(--fs-16);
+  color: var(--paper);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  outline: none;
+  appearance: none;
+}
+
+.subscribe-field input:focus {
+  border-bottom-color: var(--paper-2);
+}
+
+.subscribe-field input::placeholder {
+  color: var(--paper-3);
+}
+
+.subscribe-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.subscribe-submit {
+  justify-self: start;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 0;
+  font-size: var(--fs-14);
+  color: var(--paper);
+  background: none;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: border-color var(--dur-200) ease;
+}
+
+.subscribe-submit:hover,
+.subscribe-submit:focus-visible {
+  border-color: var(--amber);
+  outline: none;
+}
+
+.subscribe-submit:disabled,
+.subscribe-quiet:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+/* 退訂：不搶戲的一行字 */
+.subscribe-quiet {
+  padding: 0;
+  font-size: var(--fs-13);
+  color: var(--paper-3);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.subscribe-quiet:hover,
+.subscribe-quiet:focus-visible {
+  color: var(--paper);
+  outline: none;
+}
+
+.subscribe-msg {
+  font-size: var(--fs-13);
+  color: var(--paper-2);
+}
+
+.subscribe-msg.error {
+  color: var(--amber);
+}
+
+.subscribe-privacy {
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px dotted var(--rule);
+  font-family: var(--mono-font);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-4);
+  line-height: var(--lh-170);
+  color: var(--paper-3);
+}
+
+/* Back to blog link (error page) */
+.back-to-blog-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding: var(--space-2-5) var(--space-6);
+  border-radius: var(--r-8);
+  background: rgba(var(--brand-rgb), 0.15);
+  border: 1px solid rgba(var(--brand-rgb), 0.3);
+  color: var(--post-accent);
+  text-decoration: none;
+  font-size: var(--fs-14);
+  transition: all var(--dur-200);
+}
+
+.back-to-blog-link:hover {
+  background: rgba(var(--brand-rgb), 0.25);
+}
+
+/* Error page */
+.error-content {
+  text-align: center;
+  z-index: 1;
+  color: #fff;
+}
+
+.error-icon {
+  font-size: var(--fs-48);
+  margin-bottom: var(--space-4);
+}
+
+.error-content h1 {
+  font-size: var(--fs-24);
+  margin-bottom: var(--space-2);
+}
+
+/* biome-ignore lint/style/noDescendingSpecificity: 前面的 `.post-content .markdown-alert p` 是文章裡提示框的段落，這裡是找不到文章時的說明，不同節點、不會同時命中。 */
+.error-content p {
+  color: var(--post-muted);
+  margin-bottom: var(--space-4);
+}
+
+/* ── 文章進場動畫（CSS 版，取代 LCP 關鍵路徑上的 JS 進場）──
+   為什麼用 CSS 而不是 framer-motion：CSS 動畫在「第一幀 paint」就開始跑，不必等 JS hydrate；
+   framer-motion 會把 initial 狀態（opacity:0）寫進 SSR HTML，內容要等 hydration 才顯示，
+   而 Chrome 的 LCP 不計 opacity:0 的元素 → LCP 會被 hydration 時間綁住。
+   只動 transform、不動 opacity：內容第一幀就可見，LCP 完全不受影響，但仍有「滑入」動感。
+   用 backwards（不是 forwards/both）：延遲期間套用起始狀態，動畫結束後把樣式交還給
+   framer-motion —— 換文章時的 exit 動畫（AnimatePresence）才不會被 CSS 的最終狀態卡住。
+   prefers-reduced-motion 由 index.css 的全域覆寫自動處理。 */
+@keyframes post-enter {
+  from {
+    transform: translateY(26px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* 圖片的放大按鈕外殼：只提供焦點與鍵盤語意，外觀完全交給裡面的 <img>
+   （見 BlogImage.tsx — 原本 onClick 掛在 img 上，鍵盤根本按不到）。 */
+.blog-image-zoom {
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  max-width: 100%;
+  cursor: zoom-in;
+}
+
+/* ⚠ index.css 的 @layer base 有全站 `button:hover, button:focus { background:#6a4acf;
+   border-color:#6a4acf; box-shadow:0 0 12px 2px }`（specificity 0,1,1）。本檔這顆是
+   <button>，光靠 .class（0,1,0）壓不過互動態 → 必須用 .class:hover/:focus（0,2,0）。 */
+.blog-image-zoom:hover,
+.blog-image-zoom:focus,
+.blog-image-zoom:focus-visible {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+}
