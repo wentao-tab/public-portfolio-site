@@ -1,0 +1,1 @@
+import{t as e}from"./useNavigate-MmTuyuB7.js";import{i as t,l as n}from"./start-i18n-CXB-Xr-q.js";import{n as r}from"./locales-BqOaWhLr.js";function i(){return n({select:e=>t(e.location.pathname)})}function a(e,t){let n=r[t];return n?e===`/`?`/${n}`:`/${n}${e}`:e}function o(){let t=e(),n=i();return e=>t({href:a(e,n)})}export{i as n,o as r,a as t};

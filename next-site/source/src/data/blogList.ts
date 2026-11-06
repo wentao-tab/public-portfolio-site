@@ -33,13 +33,15 @@ export const postDetailQueryOptions = (id: string | number, lang: string) =>
       const res = await fetch(apiUrl(url));
       if (res.status === 404) throw new Error('LOCALE_NOT_AVAILABLE');
       if (!res.ok) throw new Error('Post not found');
-      const data = (await res.json()) as PostDetailResponse;
+      const data = (await res.json()) as PostDetail;
       if (data.message !== 'success') throw new Error('Post not found');
       // MDX 文章：server 端編譯（compiler 不進 client bundle），結果隨 query dehydrate 到 client。
       // 編譯失敗（Agent 寫錯語法，如 prose 裡有裸 <Tag>）→ 不 404 整篇，退回 markdown 渲染（至少可讀）。
       // mermaid 圖同樣在 server 端渲染（渲染器約 1.5 MB，不進 client bundle），
       // 對照表隨 query dehydrate 到 client；markdown 與 mdx 兩種格式都要，所以放在分支之前。
-      let mermaidSvgs: Record<string, string> | undefined;
+      let mermaidSvgs = data.mermaidSvgs;
+      // 静态站的编译结果随公开数据提供；浏览器切页不再请求不存在的服务端 RPC。
+      if (typeof window !== 'undefined') return data;
       try {
         mermaidSvgs = await renderMermaidSvgs({ data: data.content });
       } catch (e) {

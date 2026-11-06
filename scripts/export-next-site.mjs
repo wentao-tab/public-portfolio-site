@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = join(root, 'next-site/source');
@@ -68,7 +69,9 @@ if (process.argv.includes('--prepare')) {
   }
   // Only public GET responses are exported. Never copy SQLite, sessions or local runtime config.
   snapshots['/api/auth/providers'] = {status: 200, data: {google:{enabled:false,clientId:''},github:{enabled:false,clientId:''}}};
-  snapshots['/api/watch/now'] = {status: 200, data: {watching:null}};
+  if (snapshots['/api/watch/now']?.data.watching?.source !== 'personal') {
+    snapshots['/api/watch/now'] = {status: 200, data: {watching:null}};
+  }
   snapshots['/api/spotify/now-playing'] = {status: 200, data: {is_playing:false,item:null,progress_ms:null}};
   await save(join(root, 'next-site/public-data.json'), JSON.stringify(snapshots));
 
@@ -136,6 +139,7 @@ if (process.argv.includes('--prepare')) {
     for (const locale of (post.available_locales || []).filter(locale => locales.includes(locale))) {
       const prefix = prefixes[locales.indexOf(locale)];
       routes.push('/'+[prefix,'blog',post.id].filter(Boolean).join('/'));
+      if (post.slug) routes.push('/'+[prefix,'blog',post.slug].filter(Boolean).join('/'));
     }
   }
   for (const thought of snapshots[key('/api/thoughts?limit=50')].data.thoughts) {
@@ -165,5 +169,6 @@ if (process.argv.includes('--prepare')) {
   await save(join(target,'release.json'),JSON.stringify({name:'Wentaoshuai',entry:'/zh-cn/watch',archive:'个站旧版115',exportedAt:new Date().toISOString(),routes:[...new Set(routes)],source:'https://github.com/wentao-tab/public-portfolio-site/tree/main/next-site/source',mode:'public-static-export'}));
   await save(join(target,'CNAME'),'hiwentao.com\n');
   await save(join(target,'.nojekyll'),'');
+  execFileSync(process.execPath, [join(root, 'scripts/prepare-static-fonts.mjs')], { stdio: 'inherit' });
   console.log(`Exported ${new Set(routes).size} routes to ${target}`);
 }

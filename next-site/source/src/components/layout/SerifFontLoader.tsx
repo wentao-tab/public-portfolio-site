@@ -11,6 +11,7 @@
 // 照 <html lang> 決定；英文頁用繁中那套的拉丁字形。每一套各自一個字族名，站內切語系時不會互搶。
 // 訪客電腦裡已經裝了那一支字就什麼都不下載：堆疊裡下一個就是本機的那一支。
 import { useEffect } from 'react';
+import coreCodepoints from '@/lib/staticFontCore.json';
 import {
   MAX_CODEPOINTS,
   fallbackFamilyOf,
@@ -33,7 +34,8 @@ const loadedOf = (style: FontStyle, face: SerifFace, w: SerifWeight) => {
   const id = `${style}-${face}-${w}`;
   let set = loadedSets.get(id);
   if (!set) {
-    set = new Set();
+    // 首屏字集已由主样式表注册；只为后续文章新增的字加载完整字体。
+    set = new Set(style === 'serif' && (face === 'tc' || face === 'sc') ? coreCodepoints : []);
     loadedSets.set(id, set);
   }
   return set;

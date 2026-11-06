@@ -1,1 +1,0 @@
-import{t as e}from"./useNavigate-MmTuyuB7.js";import{t}from"./useRouterState-Cjs4fwaY.js";import{n}from"./locales-BqOaWhLr.js";import{i as r}from"./start-i18n-BlCPpWax.js";function i(){return t({select:e=>r(e.location.pathname)})}function a(e,t){let r=n[t];return r?e===`/`?`/${r}`:`/${r}${e}`:e}function o(){let t=e(),n=i();return e=>t({href:a(e,n)})}export{i as n,o as r,a as t};

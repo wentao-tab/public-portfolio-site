@@ -10,6 +10,12 @@
     if (url.origin !== location.origin || !url.pathname.startsWith('/api/')) return nativeFetch(input, init);
     const method = (init?.method || (input instanceof Request ? input.method : 'GET')).toUpperCase();
     if (method !== 'GET' && method !== 'HEAD') return reply({message:'公开展示版暂不支持写入。',error:'READ_ONLY'},405);
+    // 原后端同时接受数字 ID 与 canonical slug，静态适配层也必须保留这个约定。
+    const post = url.pathname.match(/^\/api\/posts\/([^/]+)(\/.*)?$/);
+    if (post) {
+      const item = records['/api/posts?limit=500']?.data.posts?.find(p => p.slug === decodeURIComponent(post[1]));
+      if (item) url.pathname = `/api/posts/${item.id}${post[2] || ''}`;
+    }
     const exact = records[normalized(url)];
     if (exact) return reply(exact.data,exact.status);
     if (url.pathname === '/api/auth/me') return reply({message:'Unauthorized'},401);

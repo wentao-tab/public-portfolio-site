@@ -6,6 +6,7 @@ import ScrollToTop from './ScrollToTop';
 import CSSStarfield from '@/components/backdrop/CSSStarfield';
 import { installStaleChunkReload } from '@/lib/staleChunkReload';
 import BackToTopButton from './BackToTopButton';
+import TransitionLayer from './TransitionLayer';
 
 // 重新部署後舊分頁載不到新 chunk 時重整一次（lib/staleChunkReload）。要在模組載入時就掛：
 // 下面那些 lazy 的 import 在第一次 render 就開始了，等 useEffect 才掛會漏掉
@@ -21,7 +22,6 @@ const SpaceBackdropShell = lazy(() => {
 const CommandPalette = lazy(() => import('./CommandPalette'));
 const ContextMenu = lazy(() => import('./ContextMenu'));
 const SerifFontLoader = lazy(() => import('./SerifFontLoader'));
-const TransitionLayer = lazy(() => import('./TransitionLayer'));
 
 // 全域 app 殼(對齊舊 App.tsx 的 Layout + App 疊法):導覽列 / 背景 / chrome 包住路由內容(children = <Outlet/>)。
 // admin 隱藏導覽列/CommandPalette。
@@ -87,9 +87,7 @@ export default function AppShell({ children }: Readonly<{ children: ReactNode }>
         {/* 換頁轉場：在內容容器裡、導覽列底下（見 TransitionLayer.css）。後台不演 */}
         {!isAdminPage && (
           <ClientOnly fallback={null}>
-            <Suspense fallback={null}>
-              <TransitionLayer />
-            </Suspense>
+            <TransitionLayer />
           </ClientOnly>
         )}
         {!isAdminPage && (

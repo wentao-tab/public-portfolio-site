@@ -7,6 +7,7 @@ import '@fontsource/instrument-serif/400.css';
 import '@fontsource-variable/fira-code';
 import '../index.css';
 import '../App.css';
+import '../staticFontCore.css';
 import { useEffect, type ReactNode } from 'react';
 import { Outlet, createRootRouteWithContext, HeadContent, Scripts, useRouterState } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
@@ -87,7 +88,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang={locale}>
       <head>
-        <script src="/static-api.js" />
+        <script src="/static-api.js" defer />
         <HeadContent />
         {/* WebMCP origin trial。沒有 token，navigator.modelContext 不存在，Lighthouse 的
             「已註冊的 WebMCP 工具 / 結構定義有效」永遠停在「不適用」。

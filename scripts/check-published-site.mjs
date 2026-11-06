@@ -10,6 +10,15 @@ for(const path of required) await access(join(dist,path));
 const entry = await readFile(join(dist,'index.html'),'utf8');
 if(!entry.includes('/zh-cn/watch')) throw new Error('Default entry is incorrect');
 const pages = release.routes;
+const records = JSON.parse(await readFile(join(root,'next-site/public-data.json'),'utf8'));
+for(const post of records['/api/posts?limit=500'].data.posts) {
+  if(!post.slug) continue;
+  for(const locale of post.available_locales || []) {
+    const prefix = {'zh-CN':'zh-cn','zh-TW':'',en:'en'}[locale];
+    if(prefix === undefined) continue;
+    await access(join(dist,prefix,'blog',post.slug,'index.html'));
+  }
+}
 for(const page of pages) {
   const html = await readFile(join(dist,page,'index.html'),'utf8');
   if(!html.includes('<html')) throw new Error('Missing HTML: '+page);
@@ -19,5 +28,5 @@ for(const page of pages) {
 const collection = await readFile(join(dist,'zh-cn/watch/index.html'),'utf8');
 for(const text of ['56','48','源起上册','呼啸山庄','百年孤独','static-api.js']) if(!collection.includes(text)) throw new Error('Collection content missing: '+text);
 const fonts = await readdir(join(dist,'fonts-static'));
-if(fonts.length!==32) throw new Error('Static fonts incomplete');
-console.log(`Verified ${pages.length} public routes, collection data, 32 fonts, entry redirect and legacy archive.`);
+if(fonts.length!==36) throw new Error('Static fonts incomplete');
+console.log(`Verified ${pages.length} public routes, collection data, 36 fonts, entry redirect and legacy archive.`);
