@@ -1,215 +1,31 @@
-# Designer Portfolio Site
+# Wentao Liang's Personal Site · Wentaoshuai
 
-[中文说明](./README.md)
+[简体中文](./README.md) · [Visit hiwentao.com](https://hiwentao.com/) · [Support my work](#support-my-work)
 
-An Astro-based portfolio and blog template for designers, makers, independent developers, and personal brand websites.
+This is where I keep my projects, essays, reading notes, and small tools. I'm interested in product design and everyday experiences, and I like turning questions into things people can try.
 
-- Live site: [ricoui.com](https://ricoui.com/)
-- Repository: [github.com/ricocc/public-portfolio-site](https://github.com/ricocc/public-portfolio-site)
+## Site preview
 
-<img src="public/preview.jpg" alt="Website preview" width="640" style="display:inline-block;margin:12px 0;">
+[![The collection page on hiwentao.com, with a bookshelf in orbit](./README-preview.jpg)](https://hiwentao.com/en/watch/)
 
-## Tech Stack
+- [Collection](https://hiwentao.com/en/watch/) — Things I'm watching, reading, and listening to.
+- [Blog](https://hiwentao.com/en/blog/) and [Thoughts](https://hiwentao.com/en/thinking/) — Notes on books, design, AI experiments, and daily life.
+- [Works](https://hiwentao.com/en/portfolio/) — Personal projects, interactive experiments, and small tools.
+- [Reading archive](https://hiwentao.com/archive/115/books/) — My reading lists by year, with covers and short notes in Chinese.
 
-- Astro `6.4.4`
-- `@astrojs/mdx`
-- `@astrojs/sitemap`
-- `@astrojs/rss`
-- Sass
-- TypeScript
-- Sharp for Astro image optimization
-- pnpm
+## About the author
 
-## Getting Started
+I'm **Wentao Liang (Wentaoshuai)**. I like making things that are clear and useful, and bringing what I learn from books back into my design work and personal projects. [About me](https://hiwentao.com/en/about/) · [GitHub @wentao-tab](https://github.com/wentao-tab)
 
-```bash
-pnpm install
-pnpm dev
-```
+## Support my work
 
-Common commands:
+If you enjoy the site, share it with someone who might like it or [star this repository](https://github.com/wentao-tab/public-portfolio-site). Thanks for stopping by.
 
-| Command | Action |
-| :-- | :-- |
-| `pnpm dev` | Start the local dev server, usually at `localhost:4321` |
-| `pnpm build` | Run `astro check` and build the static site into `dist/` |
-| `pnpm preview` | Preview the production build locally |
-| `pnpm astro check` | Run Astro diagnostics and type checks |
+## Preview locally
 
-## Environment Variables
+Run `npm run dev` from the repository root and open [localhost:14002](http://127.0.0.1:14002/). `npm run build` assembles the current static export and the legacy archive in `dist/` for GitHub Pages. [Maintenance guide (Chinese)](./next-site/README.md)
 
-Copy `.env.example` to `.env` and configure values as needed:
+## Credits and licenses
 
-```bash
-PUBLIC_SITE_URL=https://example.com/
-PUBLIC_SITE_NAME="Your Site Name"
-PUBLIC_GA4_ID=
-PUBLIC_UMAMI_ID=
-```
-
-- `PUBLIC_SITE_URL`: Public site URL, used by sitemap, RSS, and SEO metadata.
-- `PUBLIC_SITE_NAME`: Site name.
-- `PUBLIC_GA4_ID`: Optional Google Analytics 4 ID.
-- `PUBLIC_UMAMI_ID`: Optional Umami website ID.
-
-Leave `PUBLIC_GA4_ID` and `PUBLIC_UMAMI_ID` empty if you do not need analytics.
-
-## Content And Data
-
-Main data files live in `src/data/`:
-
-- `src/data/content.ts`: Site metadata, navigation, SEO text, social links, and page copy.
-- `src/data/home.json`: Homepage portfolio cards.
-- `src/data/project.ts`: Project-list data.
-
-Homepage card example:
-
-```json
-{
-  "id": "10",
-  "cover": "/assets/cover/cover-ricoui-starter.jpg",
-  "useVideo": false,
-  "title": "RicoUI Astro 启动模板",
-  "desc": "Ricoui Starter Template",
-  "url": "https://ricoui-saas-zh.netlify.app/",
-  "detail": "https://ricoui-saas-zh.netlify.app/",
-  "category": "web,recommend",
-  "tag": "Web",
-  "date": "2026-06-07",
-  "mark": true,
-  "opensource": false
-}
-```
-
-Field notes:
-
-- `cover`: Cover image path. Homepage covers currently live in `public/assets/cover/`.
-- `useVideo`: Whether to use a video cover.
-- `title`: Project title.
-- `desc`: Project description.
-- `url`: Live URL.
-- `detail`: Detail page path or external detail URL.
-- `category`: Filter categories. Use comma-separated values for multiple categories, such as `web,recommend`.
-- `tag`: Card tag.
-- `date`: Date used for display and sorting.
-- `mark`: Whether to show the recommendation badge.
-- `opensource`: Whether to show open-source related status.
-
-## Blog Content
-
-Blog posts use the Astro 6 Content Layer API.
-
-- Content config: `src/content.config.ts`
-- Blog directory: `src/content/blog/`
-- Supported formats: `*.md` and `*.mdx`
-
-Example frontmatter:
-
-```yaml
----
-title: Article title
-description: Article description
-publishDate: 2026-06-07
-read: 5
-tags:
-  - Astro
-img: /preview-01.jpg
-img_alt: Preview image
----
-```
-
-The old `src/content/config.ts` has been migrated to `src/content.config.ts`, and the collection uses the `glob()` loader from `astro/loaders`.
-
-## Project Detail Pages
-
-Project detail pages live in:
-
-```text
-src/pages/detail/
-```
-
-If a portfolio card uses an internal `detail` path, such as `/detail/todo`, create the matching `.astro` page under `src/pages/detail/`. Local image galleries now use `import.meta.glob()` and Astro's `<Image />` component.
-
-## GitHub Stars
-
-The desktop navigation and mobile menu include a GitHub icon with a live star count:
-
-```text
-src/components/GitHubStars.astro
-```
-
-On page load, it requests the GitHub public API:
-
-```text
-https://api.github.com/repos/ricocc/public-portfolio-site
-```
-
-The UI is updated with the repository's real `stargazers_count`. Unauthenticated GitHub API requests are rate-limited; for high-traffic deployments, use a cached server endpoint.
-
-## Fonts
-
-- Chinese body font: Noto Sans SC
-- English fonts: Special Elite / Inter / Inconsolata
-- Some Chinese headings are embedded as SVG to keep the runtime font payload smaller.
-
-## Project Structure
-
-```text
-/
-├─ public/
-│  ├─ assets/
-│  │  └─ cover/
-│  ├─ plugins/
-│  └─ favicon.png
-├─ src/
-│  ├─ assets/
-│  ├─ components/
-│  ├─ content/
-│  │  └─ blog/
-│  ├─ data/
-│  ├─ effects/
-│  ├─ layouts/
-│  ├─ pages/
-│  ├─ styles/
-│  └─ content.config.ts
-├─ astro.config.mjs
-├─ package.json
-└─ pnpm-lock.yaml
-```
-
-## Deployment
-
-The project builds to a static site:
-
-```bash
-pnpm build
-```
-
-The generated output is in `dist/` and can be deployed to Netlify, Vercel, Cloudflare Pages, GitHub Pages, or any static hosting service.
-
-## Changelog
-
-- 2026-06-07: Upgraded to Astro 6, migrated to the Content Layer API, and replaced old `Astro.glob()` usage.
-- 2026-06-07: Switched to pnpm and added `sharp` for Astro image optimization.
-- 2026-06-07: Updated homepage portfolio data and cover assets, and removed old `inspoweb` / `cover-travel` entries.
-- 2026-06-07: Added GitHub icon and live star count to desktop and mobile navigation.
-
-## About
-
-Rico is a web and UI designer focused on visual design and independent product development. More notes are published on [Rico's Blog](https://blog.ricocc.com/). You can also find Rico on [Xiaohongshu](https://www.xiaohongshu.com/user/profile/5f2b6903000000000101f51f) and [X](https://x.com/ricouii).
-
-## Other Templates
-
-- **SaaS Template**: [https://github.com/ricocc/ricoui-saas-template](https://github.com/ricocc/ricoui-saas-template)
-- **Portfolio Template**: [https://github.com/ricocc/ricoui-portfolio](https://github.com/ricocc/ricoui-portfolio)
-- **Blog Template**: [https://github.com/ricocc/public-portfolio-site](https://github.com/ricocc/public-portfolio-site)
-
-## Support
-
-If this template helps you, a small contribution is always appreciated.
-
-<img src="public/ricocc/zanshangma.jpg" alt="ricocc-wechat" width="280" style="display:inline-block;margin:12px 0;">
-
-## License
-
-[MIT](./LICENSE)
+- The current site builds on [timo9378/sora-to-ki](https://github.com/timo9378/sora-to-ki). [Source](./next-site/source/) · [AGPL-3.0](./next-site/source/LICENSE)
+- The archived site builds on [ricocc/public-portfolio-site](https://github.com/ricocc/public-portfolio-site). [Version 115 archive](https://hiwentao.com/archive/115/) · [MIT](./LICENSE)
