@@ -225,7 +225,7 @@ export default function Works() {
                   <a
                     href={w.url}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel={w.url.startsWith('https://hiwentao.com/') ? 'noopener' : 'noopener noreferrer'}
                     onFocus={() => (focusRef.current = i)}
                     onBlur={() => (focusRef.current = -1)}
                   >

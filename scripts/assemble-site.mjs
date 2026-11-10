@@ -10,14 +10,38 @@ const release = JSON.parse(await readFile(join(next, 'release.json'), 'utf8'));
 if (!release.routes.includes('/zh-cn/watch')) throw new Error('新版收藏入口缺失，停止发布。');
 await rm(dist,{recursive:true,force:true});
 await mkdir(dist,{recursive:true});
+const toolsWithReturnButton = new Set(['zen/index.html', 'sutra-chat/index.html']);
+const archivedTools = '/archive/115/tools/';
+const defaultPortfolio = '/zh-cn/portfolio/';
+const restoreToolReturn = `<script>
+  (() => {
+    if (!document.referrer) return;
+    const source = new URL(document.referrer);
+    if (source.origin !== location.origin) return;
+    const portfolio = /^\\/(?:zh-cn\\/|en\\/)?portfolio\\/?$/;
+    if (!portfolio.test(source.pathname) && source.pathname !== '${archivedTools}') return;
+    document.querySelector('a[aria-label="返回小工具"]').href = source.pathname + source.search;
+  })();
+</script>`;
 // Existing tool and article links remain usable; their assets live in the archive.
 async function compatibility(dir) {
   for (const entry of await readdir(dir,{withFileTypes:true})) {
     const file = join(dir,entry.name);
     if(entry.isDirectory()) await compatibility(file);
     else if(entry.name.endsWith('.html') && !['index.html','404.html'].includes(relative(legacy,file))) {
-      const dest = join(dist,relative(legacy,file));
-      await mkdir(dirname(dest),{recursive:true}); await cp(file,dest);
+      const route = relative(legacy,file);
+      const dest = join(dist,route);
+      await mkdir(dirname(dest),{recursive:true});
+      if (!toolsWithReturnButton.has(route)) {
+        await cp(file,dest);
+        continue;
+      }
+      const html = await readFile(file,'utf8');
+      const backLink = `href="${archivedTools}" aria-label="返回小工具"`;
+      if (!html.includes(backLink)) throw new Error(`Missing return link in ${route}`);
+      await writeFile(dest, html
+        .replace(backLink, `href="${defaultPortfolio}" aria-label="返回小工具"`)
+        .replace('</body>', `${restoreToolReturn}</body>`));
     }
   }
 }
