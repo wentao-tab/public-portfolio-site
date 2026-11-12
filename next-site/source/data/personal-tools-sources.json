@@ -9,6 +9,7 @@
     { "name": "鸟鸣睡眠舱", "date": "2026-06-17", "path": "src/pages/sleep.astro" },
     { "name": "金刚经配图版", "date": "2026-06-19", "path": "src/pages/jingangjing.astro" },
     { "name": "应作如是", "date": "2026-06-24", "path": "src/pages/sutra-chat.astro" },
-    { "name": "净心禅堂", "date": "2026-09-07", "path": "src/pages/zen.astro" }
+    { "name": "净心禅堂", "date": "2026-09-07", "path": "src/pages/zen.astro" },
+    { "name": "Wtao icons", "date": "2026-11-12", "path": "next-site/source/public/tools/wtao-icons/index.html" }
   ]
 }

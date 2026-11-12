@@ -1,1 +1,0 @@
-import{i as e}from"./index-BF997q5n.js";import{t}from"./Colophon-BX0CyZzl.js";var n=e(t);export{n as component};
