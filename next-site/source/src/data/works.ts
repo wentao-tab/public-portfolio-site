@@ -34,6 +34,7 @@ export const WORKS: WorkEntry[] = [
   tool('sutra-chat', '应作如是', '/sutra-chat/', '2026-06-24', '围绕《金刚经》阅读与思考，整理问题、拆解经文。'),
   tool('zen-hall', '净心禅堂', '/zen/', '2026-09-07', '点一炷香，听一声钟，在静坐中让心安静下来。'),
   tool('wtao-icons', 'Wtao icons', '/tools/wtao-icons/', '2026-11-12', '浏览、预览和下载 19 枚电力设备 SVG 动效图标。'),
+  tool('design-experiments', '设计与实验', '/tools/design-experiments/', '2026-11-13', '把想法做成体验。用可交互的 3D 场景串起界面、工具、阅读与原型。'),
 ];
 
 // 工具直接使用维护中的本地清单，无需查询原作者的 GitHub 仓库。

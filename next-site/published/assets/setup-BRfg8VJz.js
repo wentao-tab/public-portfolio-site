@@ -1,1 +1,0 @@
-import{i as e}from"./index-BGR1rRte.js";import{t}from"./Setup-C_s49ON_.js";var n=e(t);export{n as component};

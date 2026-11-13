@@ -1,0 +1,1 @@
+import{i as e}from"./index-BRnDJQTO.js";import{t}from"./Works-BAEPmmGx.js";var n=e(t);export{n as component};

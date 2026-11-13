@@ -1,0 +1,1 @@
+import{o as e}from"./rolldown-runtime-C0FnF6B9.js";import{t}from"./jsx-runtime-BdxMnOeJ.js";import{ct as n,t as r}from"./index-BRnDJQTO.js";import{t as i}from"./BlogPost-COuRPn11.js";var a=e(t());function o(){let{locale:e}=r.useLoaderData();return(0,a.jsx)(n,{locale:e,children:(0,a.jsx)(i,{})})}export{o as component};

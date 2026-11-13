@@ -155,7 +155,7 @@ if (process.argv.includes('--prepare')) {
     if (!html || !html.includes('<html')) throw new Error('Empty HTML: '+path);
     await save(join(target,path,'index.html'),html);
   });
-  routes.push('/tools/wtao-icons/');
+  routes.push('/tools/wtao-icons/', '/tools/design-experiments/');
   await save(join(target,'index.html'),redirect('/zh-cn/watch'));
   await save(join(target,'404.html'), '<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>页面未找到</title><body style="background:#0a0a0c;color:#f1ece3;font:20px serif;padding:10vw"><h1>页面未找到</h1><p><a style="color:inherit" href="/zh-cn/watch">返回个站</a> · <a style="color:inherit" href="/个站旧版115/">个站旧版115</a></p></body></html>');
   await save(join(target,'robots.txt'),'User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: https://hiwentao.com/sitemap.xml\n');

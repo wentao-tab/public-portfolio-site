@@ -1,0 +1,1 @@
+import{i as e}from"./index-BRnDJQTO.js";import{t}from"./Thinking-CV7SH2t2.js";var n=e(t);export{n as component};
