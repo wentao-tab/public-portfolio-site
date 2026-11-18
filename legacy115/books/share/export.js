@@ -14,7 +14,8 @@ window.booksReady.then((ready) => {
 });
 
 async function renderImage() {
-  await document.fonts.ready;
+  const images = [...poster.querySelectorAll('img')];
+  await Promise.all([document.fonts.ready, ...images.map(image => image.decode())]);
   const canvas = await html2canvas(poster, {
     scale: 1080 / poster.getBoundingClientRect().width,
     logging: false,
@@ -60,7 +61,7 @@ async function exportImage(share) {
 saveButton.addEventListener('click', () => exportImage(false));
 shareButton.addEventListener('click', () => exportImage(true));
 document.addEventListener('click', (event) => {
-  if (event.target.closest('.filter-pill, .book-pedestal, .placard-item, #btnPoster, #btnWide')) {
+  if (event.target.closest('.filter-pill, #btnPoster, #btnWide')) {
     pendingShare = undefined;
     statusLine.textContent = '';
   }
