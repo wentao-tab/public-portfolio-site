@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>这一年的书 · WENTAO / 2026 岁末书单</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper-base: #F6F3EB;
+      --paper-card: #FCFBF7;
+      --paper-edge: #E6DFD1;
+      --ink-forest: #173027;
+      --ink-forest-mid: #284B3E;
+      --ink-body: #2A2C2A;
+      --ink-muted: #6C706A;
+      --ink-faint: #9DA098;
+      --gold-foil: #C59B47;
+      --gold-soft: #E5CFA0;
+      --cinnabar: #A8382B;
+      --walnut-top: #C7A47E;
+      --walnut-front: #8D653F;
+      --walnut-dark: #5A3D22;
+      --night-deep: #132720;
+      --night-card: #1A332A;
+      --lamp-warm: rgba(255, 211, 138, 0.24);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #E5E0D5;
+      color: var(--ink-body);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 28px 16px 64px;
+    }
+
+    /* 顶部悬浮控制台 */
+    .studio-toolbar {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(23, 48, 39, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 8px 14px;
+      border-radius: 999px;
+      box-shadow: 0 12px 32px rgba(15, 32, 26, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.12);
+      margin-bottom: 24px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .studio-toolbar.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-16px);
+    }
+
+    .toolbar-btn {
+      background: transparent;
+      border: none;
+      color: rgba(246, 243, 235, 0.78);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.03em;
+    }
+
+    .toolbar-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .toolbar-btn.active {
+      background: var(--paper-base);
+      color: var(--ink-forest);
+      font-weight: 600;
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .restore-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 101;
+      background: var(--ink-forest);
+      color: var(--paper-base);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+      display: none;
+    }
+
+    .restore-fab.visible {
+      display: block;
+    }
+
+    /* 画册主容器 */
+    .exhibition-canvas {
+      position: relative;
+      width: 100%;
+      max-width: 820px;
+      background-color: var(--paper-base);
+      box-shadow:
+        0 32px 80px rgba(20, 32, 26, 0.18),
+        0 4px 16px rgba(20, 32, 26, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+      overflow: hidden;
+      transition: max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .exhibition-canvas.wide-mode {
+      max-width: 1040px;
+    }
+
+    /* 真实特种棉浆纸噪点纹理层 */
+    .paper-grain-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0.38;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
+    }
+
+    /* 午后阳光窗影与枝叶光斑 (Gobo Lighting) */
+    .sunlight-gobo {
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 560px;
+      height: 520px;
+      pointer-events: none;
+      z-index: 2;
+      background:
+        radial-gradient(ellipse at 72% 18%, rgba(255, 249, 232, 0.85) 0%, rgba(255, 249, 232, 0) 58%),
+        linear-gradient(128deg, rgba(23, 48, 39, 0.045) 0%, transparent 45%),
+        repeating-linear-gradient(
+          -34deg,
+          rgba(23, 48, 39, 0.032) 0px,
+          rgba(23, 48, 39, 0.032) 22px,
+          rgba(255, 252, 242, 0.32) 22px,
+          rgba(255, 252, 242, 0.32) 54px
+        );
+      mask-image: radial-gradient(circle at 75% 20%, black 15%, transparent 72%);
+      -webkit-mask-image: radial-gradient(circle at 75% 20%, black 15%, transparent 72%);
+      filter: blur(6px);
+    }
+
+    /* 顶部题眉索引 */
+    .masthead {
+      position: relative;
+      z-index: 5;
+      padding: 36px 52px 0;
+    }
+
+    .masthead-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(23, 48, 39, 0.16);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--ink-forest-mid);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .masthead-bar .issue-tag {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+    }
+
+    /* 主标题区 (Hero Exhibition Title) */
+    .hero-section {
+      position: relative;
+      z-index: 5;
+      padding: 38px 52px 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+    }
+
+    .hero-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .hero-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      color: var(--gold-foil);
+      margin-bottom: 4px;
+    }
+
+    .hero-main-title {
+      font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+      font-size: clamp(46px, 6.5vw, 64px);
+      line-height: 1.04;
+      color: var(--ink-forest);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 10px rgba(23, 48, 39, 0.06);
+    }
+
+    .hero-subtitle {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      color: var(--ink-forest-mid);
+    }
+
+    .hero-subtitle::before {
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold-foil);
+    }
+
+    /* 朱砂竖排印章 */
+    .cinnabar-seal {
+      writing-mode: vertical-rl;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--cinnabar);
+      border: 1.5px solid var(--cinnabar);
+      padding: 5px 3px;
+      border-radius: 2px;
+      line-height: 1.15;
+      opacity: 0.85;
+      margin-top: 12px;
+      user-select: none;
+    }
+
+    /* 右侧数据铭牌 */
+    .hero-stats {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .stats-figure {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      color: var(--ink-forest);
+    }
+
+    .stats-label {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--ink-muted);
+    }
+
+    .stats-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 0.9;
+      color: var(--ink-forest);
+      position: relative;
+    }
+
+    .stats-number::after {
+      content: "";
+      position: absolute;
+      left: -4px;
+      right: -4px;
+      bottom: 3px;
+      height: 6px;
+      background: rgba(197, 155, 71, 0.25);
+      z-index: -1;
+      border-radius: 2px;
+    }
+
+    .stats-unit {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-forest);
+    }
+
+    .stats-meta {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      background: rgba(23, 48, 39, 0.05);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* 博物馆展陈区：四本年度挚爱精装书 */
+    .featured-stage {
+      position: relative;
+      z-index: 5;
+      padding: 24px 52px 44px;
+    }
+
+    .books-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px;
+      align-items: end;
+      padding: 0 12px;
+      position: relative;
+      z-index: 4;
+    }
+
+    .book-pedestal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .book-pedestal:hover {
+      transform: translateY(-6px);
+    }
+
+    /* 真实物理拟真 3D 精装书体 */
+    .hardcover-3d {
+      position: relative;
+      width: 132px;
+      height: 188px;
+      border-radius: 2px 5px 5px 2px;
+      box-shadow:
+        /* 书本底部与层板接触的深色闭塞阴影 */
+        0 8px 10px -4px rgba(24, 15, 7, 0.65),
+        /* 窗光向右下方投射的柔和环境影 */
+        12px 16px 24px -6px rgba(28, 22, 15, 0.28),
+        /* 书体右侧厚度的立体层次 */
+        3px 0 0 #EAE5D9,
+        4px 0 0 #D5CEBE,
+        5px 0 0 #EAE5D9,
+        6px 0 0 #C7BFA9;
+      overflow: hidden;
+      transition: box-shadow 0.35s ease;
+    }
+
+    .book-pedestal:hover .hardcover-3d {
+      box-shadow:
+        0 14px 18px -4px rgba(24, 15, 7, 0.55),
+        16px 22px 30px -6px rgba(28, 22, 15, 0.32),
+        3px 0 0 #EAE5D9,
+        4px 0 0 #D5CEBE,
+        5px 0 0 #EAE5D9,
+        6px 0 0 #C7BFA9;
+    }
+
+    /* 精装书脊压痕深槽 (Spine Groove) 与左侧高光 */
+    .hardcover-3d::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 14px;
+      z-index: 10;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.32) 0%,
+        rgba(255, 255, 255, 0.08) 28%,
+        rgba(0, 0, 0, 0.24) 62%,
+        rgba(255, 255, 255, 0.16) 78%,
+        rgba(0, 0, 0, 0.04) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* 书封表面微光泽 */
+    .hardcover-3d::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 9;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, transparent 48%, rgba(0, 0, 0, 0.08) 100%);
+      pointer-events: none;
+    }
+
+    /* 封面 1：《金刚经说什么》禅意棉麻烫金装帧 */
+    .cover-jingang {
+      background: linear-gradient(165deg, #FBF9F2 0%, #EFE9D8 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 14px 14px 20px;
+      border-top: 3px solid #B58938;
+    }
+
+    .cover-jingang .top-seal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8px;
+      letter-spacing: 0.16em;
+      color: #8A6B32;
+    }
+
+    .cover-jingang .calligraphy-title {
+      writing-mode: vertical-rl;
+      margin: 4px auto;
+      font-family: 'Ma Shan Zheng', serif;
+      font-size: 27px;
+      line-height: 1.05;
+      color: #1F1D1A;
+      letter-spacing: 0.06em;
+    }
+
+    .cover-jingang .sub-strip {
+      border-top: 1px solid rgba(181, 137, 56, 0.4);
+      padding-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 8.5px;
+      color: #5E4B26;
+      font-weight: 600;
+    }
+
+    .cover-jingang .reread-badge {
+      background: #A8382B;
+      color: #FFF;
+      font-size: 7.5px;
+      padding: 1px 4px;
+      border-radius: 1px;
+    }
+
+    /* 封面 2：《灿烂千阳》暮光琥珀诗意装帧 */
+    .cover-kites {
+      background: linear-gradient(180deg, #F8F4EC 0%, #F7DF9C 48%, #E69A38 82%, #B85D19 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 14px 14px 20px;
+      position: relative;
+    }
+
+    .cover-kites .sun-orb {
+      position: absolute;
+      bottom: 34px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #FFFDF5 10%, rgba(255, 240, 185, 0.4) 65%, transparent 75%);
+    }
+
+    .cover-kites .title-block {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cover-kites .en-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7.5px;
+      letter-spacing: 0.14em;
+      color: #7D5624;
+      text-transform: uppercase;
+    }
+
+    .cover-kites .cn-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #2B1D0E;
+      letter-spacing: 0.08em;
+      margin-top: 3px;
+    }
+
+    .cover-kites .author-line {
+      position: relative;
+      z-index: 2;
+      font-size: 8px;
+      color: rgba(255, 250, 240, 0.92);
+      letter-spacing: 0.1em;
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      padding-top: 5px;
+    }
+
+    /* 封面 3：《献给阿尔吉侬的花束》极简白金几何装帧 */
+    .cover-algernon {
+      background: linear-gradient(160deg, #FFFFFF 0%, #F3F2EE 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 15px 14px 14px 20px;
+    }
+
+    .cover-algernon .en-header {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: #D49B27;
+      line-height: 1.25;
+    }
+
+    .cover-algernon .maze-ring {
+      width: 56px;
+      height: 56px;
+      margin: 4px auto;
+      border-radius: 50%;
+      border: 1px dashed #C7B99B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cover-algernon .maze-ring::after {
+      content: "✦";
+      color: #D49B27;
+      font-size: 14px;
+    }
+
+    .cover-algernon .cn-footer {
+      text-align: center;
+    }
+
+    .cover-algernon .cn-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #222423;
+      letter-spacing: 0.04em;
+    }
+
+    .cover-algernon .author {
+      font-size: 7.5px;
+      color: #7D807C;
+      margin-top: 3px;
+    }
+
+    /* 封面 4：《斯通纳》经典学院派文学色块装帧 */
+    .cover-stoner {
+      background: #F9F8F4;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 12px 14px 18px;
+    }
+
+    .cover-stoner .spine-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+    }
+
+    .cover-stoner .bar {
+      font-size: 6.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 2px 5px;
+      color: #FFF;
+      border-radius: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .bar-red { background: #B83A2D; }
+    .bar-green { background: #1E563B; }
+    .bar-ochre { background: #C88A2B; }
+    .bar-navy { background: #243B55; }
+
+    .cover-stoner .stoner-main {
+      padding-top: 6px;
+      border-top: 1.5px solid #1C1C1C;
+    }
+
+    .cover-stoner .en-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #1A1A1A;
+      line-height: 1;
+    }
+
+    .cover-stoner .cn-sub {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1A1A1A;
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cover-stoner .cn-sub span {
+      font-size: 7.5px;
+      font-weight: 400;
+      color: #666;
+    }
+
+    /* 胡桃木实木展架层板 */
+    .walnut-shelf {
+      position: relative;
+      z-index: 3;
+      margin-top: -2px;
+    }
+
+    .shelf-top-plane {
+      height: 12px;
+      background: linear-gradient(180deg, #D5B591 0%, var(--walnut-top) 100%);
+      border-radius: 3px 3px 0 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    .shelf-front-edge {
+      height: 16px;
+      background: linear-gradient(180deg, var(--walnut-front) 0%, var(--walnut-dark) 100%);
+      border-radius: 0 0 4px 4px;
+      box-shadow:
+        0 14px 28px rgba(38, 23, 10, 0.24),
+        0 4px 8px rgba(38, 23, 10, 0.16);
+    }
+
+    /* 博物馆展签铭牌 */
+    .placards-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px;
+      padding: 14px 12px 0;
+    }
+
+    .placard-item {
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .placard-pill {
+      display: inline-block;
+      background: #EAE4D7;
+      color: var(--ink-forest);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.06em;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      transition: all 0.2s ease;
+    }
+
+    .placard-item:hover .placard-pill,
+    .placard-item.active .placard-pill {
+      background: var(--ink-forest);
+      color: var(--paper-base);
+    }
+
+    /* 互动策展批注条 */
+    .curator-note-bar {
+      margin: 18px 12px 0;
+      padding: 10px 18px;
+      background: rgba(252, 251, 247, 0.72);
+      border-left: 2.5px solid var(--gold-foil);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 12.5px;
+      color: var(--ink-forest-mid);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .curator-note-bar .note-tag {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--gold-foil);
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* 同一年的书架：全量 54 本瑞士网格归档 */
+    .archive-section {
+      position: relative;
+      z-index: 5;
+      padding: 6px 52px 52px;
+    }
+
+    .archive-card {
+      background: var(--paper-card);
+      border-radius: 14px;
+      padding: 32px 36px 36px;
+      box-shadow:
+        0 14px 40px rgba(23, 48, 39, 0.06),
+        0 1px 3px rgba(23, 48, 39, 0.04),
+        inset 0 0 0 1px rgba(23, 48, 39, 0.07);
+    }
+
+    .archive-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 18px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid rgba(23, 48, 39, 0.1);
+    }
+
+    .archive-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .archive-icon {
+      width: 22px;
+      height: 22px;
+      color: var(--ink-forest);
+    }
+
+    .archive-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ink-forest);
+      letter-spacing: 0.08em;
+    }
+
+    .archive-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+
+    /* 维度筛选胶囊 */
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-pill {
+      background: transparent;
+      border: 1px solid rgba(23, 48, 39, 0.14);
+      color: var(--ink-muted);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--ink-forest);
+      color: var(--ink-forest);
+    }
+
+    .filter-pill.active {
+      background: var(--ink-forest);
+      border-color: var(--ink-forest);
+      color: var(--paper-card);
+    }
+
+    /* 三栏精密书目网格 */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 28px;
+      row-gap: 9px;
+    }
+
+    .book-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-body);
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .book-entry:hover {
+      background: rgba(23, 48, 39, 0.045);
+      color: var(--ink-forest);
+    }
+
+    .book-entry.dimmed {
+      opacity: 0.26;
+    }
+
+    .book-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-faint);
+      min-width: 18px;
+      user-select: none;
+    }
+
+    .book-name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .book-entry.is-reread .book-name {
+      color: var(--ink-forest);
+      font-weight: 600;
+    }
+
+    .tag-reread {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--cinnabar);
+      background: rgba(168, 56, 43, 0.09);
+      padding: 0 5px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .tag-note-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold-foil);
+      flex-shrink: 0;
+      align-self: center;
+      opacity: 0.75;
+    }
+
+    .archive-legend {
+      margin-top: 22px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(23, 48, 39, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+
+    .legend-items {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* 底部夜读灯影装帧尾页 */
+    .night-closing {
+      position: relative;
+      z-index: 5;
+      background:
+        radial-gradient(circle at 86% 62%, var(--lamp-warm) 0%, rgba(255, 211, 138, 0.06) 36%, transparent 64%),
+        linear-gradient(168deg, var(--night-card) 0%, var(--night-deep) 100%);
+      color: var(--paper-base);
+      padding: 54px 56px 40px;
+      margin-top: 8px;
+    }
+
+    /* 装帧书页阶梯叠层过渡 (替代生硬波浪线) */
+    .night-closing::before {
+      content: "";
+      position: absolute;
+      top: -14px;
+      left: 24px;
+      right: 24px;
+      height: 14px;
+      background: #234237;
+      border-radius: 10px 10px 0 0;
+      opacity: 0.55;
+    }
+
+    .night-closing::after {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 12px;
+      right: 12px;
+      height: 7px;
+      background: #1D382E;
+      border-radius: 8px 8px 0 0;
+      opacity: 0.85;
+    }
+
+    .closing-grid {
+      display: grid;
+      grid-template-columns: 1fr 140px;
+      gap: 32px;
+      align-items: end;
+    }
+
+    .closing-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--gold-soft);
+      margin-bottom: 18px;
+    }
+
+    .closing-prose {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14.5px;
+      line-height: 2.05;
+      color: rgba(246, 243, 235, 0.9);
+      letter-spacing: 0.04em;
+      max-width: 540px;
+    }
+
+    .closing-poetic-line {
+      margin-top: 24px;
+      font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+      font-size: 26px;
+      color: var(--gold-soft);
+      letter-spacing: 0.08em;
+      position: relative;
+      display: inline-block;
+    }
+
+    .closing-poetic-line::after {
+      content: "";
+      display: block;
+      width: 68%;
+      height: 1px;
+      margin-top: 6px;
+      background: linear-gradient(90deg, var(--gold-foil), transparent);
+    }
+
+    /* 右下角暖灯与典藏书叠静物插画 */
+    .night-still-life {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .lamp-orb-glow {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 35%, #FFFDF7 0%, #FFE2A8 55%, #D99B43 100%);
+      box-shadow:
+        0 0 28px rgba(255, 216, 145, 0.65),
+        0 0 64px rgba(255, 198, 107, 0.35);
+      margin-bottom: 10px;
+    }
+
+    .lamp-base {
+      width: 28px;
+      height: 6px;
+      background: #8D6A3E;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .stacked-books-art {
+      width: 118px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .art-book-1 {
+      width: 96px;
+      height: 11px;
+      background: linear-gradient(90deg, #2D5244, #3E6B5A);
+      border-radius: 2px;
+      border-right: 12px solid #E6DEC8;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .art-book-2 {
+      width: 112px;
+      height: 13px;
+      background: linear-gradient(90deg, #7A5432, #9B6E46);
+      border-radius: 2px;
+      border-left: 14px solid #EFE8D6;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    /* 底部落款栏 */
+    .colophon-footer {
+      margin-top: 34px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(246, 243, 235, 0.16);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      letter-spacing: 0.22em;
+      color: rgba(246, 243, 235, 0.72);
+    }
+
+    .colophon-signature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--paper-base);
+      letter-spacing: 0.24em;
+    }
+
+    .mini-chop {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      background: var(--cinnabar);
+      color: #FFF;
+      font-size: 10px;
+      border-radius: 2px;
+      letter-spacing: 0;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 760px) {
+      .masthead, .hero-section, .featured-stage, .archive-section {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .hero-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-stats {
+        align-items: flex-start;
+        text-align: left;
+      }
+      .books-row, .placards-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .books-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .closing-grid {
+        grid-template-columns: 1fr;
+      }
+      .night-still-life {
+        display: none;
+      }
+      .night-closing {
+        padding: 40px 24px 32px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .archive-section { padding-inline: 12px; }
+      .archive-card { padding: 20px 14px; }
+      .books-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 10px; }
+      .book-entry { font-size: 12px; gap: 4px; padding-inline: 0; }
+      .book-num { min-width: 15px; }
+      .archive-title-wrap { flex-wrap: wrap; }
+      .archive-title { font-size: 17px; }
+    }
+    .studio-toolbar { flex-wrap: wrap; justify-content: center; }
+    .toolbar-btn:disabled { opacity: .55; cursor: wait; }
+    .export-status { color: var(--ink-forest); margin: 0 0 8px; text-align: center; }
+    .export-status:empty { display: none; }
+    .book-name { white-space: normal; overflow: visible; }
+    .book-entry { min-width: 0; }
+    @media (max-width: 380px) {
+      body { padding-left: 8px; padding-right: 8px; }
+      .hardcover-3d { width: 112px; }
+      .masthead-bar > :nth-child(2) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 悬浮 studio 控制栏 -->
+  <div class="studio-toolbar" id="studioToolbar">
+    <button class="toolbar-btn active" id="btnPoster" onclick="setLayoutMode('poster')">长图海报版</button>
+    <button class="toolbar-btn" id="btnWide" onclick="setLayoutMode('wide')">博客宽屏版</button>
+    <div class="toolbar-divider"></div>
+    <button class="toolbar-btn" onclick="togglePureMode()">纯净截图模式</button>
+    <button class="toolbar-btn" id="savePoster" disabled>保存图片</button>
+    <button class="toolbar-btn" id="sharePoster" hidden disabled>分享图片</button>
+  </div>
+  <p class="export-status" id="exportStatus" role="status"></p>
+
+  <button class="restore-fab" id="restoreFab" onclick="togglePureMode()">显示控制栏</button>
+
+  <!-- 博物馆策展级年终书单长卷 -->
+  <main class="exhibition-canvas" id="exhibitionCanvas">
+    <!-- 实体棉浆纸肌理叠加层 -->
+    <div class="paper-grain-overlay"></div>
+    <!-- 午后窗影光斑层 -->
+    <div class="sunlight-gobo"></div>
+
+    <!-- 顶部题眉 -->
+    <header class="masthead">
+      <div class="masthead-bar">
+        <span class="issue-tag">WENTAO / 2026</span>
+        <span>PERSONAL READING ARCHIVE · NO. 01</span>
+        <span>岁末书单</span>
+      </div>
+    </header>
+
+    <!-- 主标题区 -->
+    <section class="hero-section">
+      <div class="hero-left">
+        <div class="hero-title-group">
+          <span class="hero-eyebrow">Annual Reading Exhibition</span>
+          <h1 class="hero-main-title">这一年的书</h1>
+          <p class="hero-subtitle">年度最爱的书</p>
+        </div>
+        <div class="cinnabar-seal">丙午岁末<br>阅历归档</div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stats-figure">
+          <span class="stats-label">全年</span>
+          <span class="stats-number">—</span>
+          <span class="stats-unit">本</span>
+        </div>
+        <div class="stats-meta"></div>
+      </div>
+    </section>
+
+    <!-- 四本年度挚爱精装书展架 -->
+    <section class="featured-stage">
+      <div class="books-row">
+        <!-- 01 金刚经说什么 -->
+        <div class="book-pedestal" onclick="selectFeatured(0)">
+          <div class="hardcover-3d cover-jingang">
+            <div class="top-seal">
+              <span>南怀瑾 讲述</span>
+              <span class="reread-badge">5刷</span>
+            </div>
+            <div class="calligraphy-title">金刚经说什么</div>
+            <div class="sub-strip">
+              <span>东方智慧 · 破执</span>
+              <span>NO.12</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 灿烂千阳 -->
+        <div class="book-pedestal" onclick="selectFeatured(1)">
+          <div class="hardcover-3d cover-kites">
+            <div class="sun-orb"></div>
+            <div class="title-block">
+              <div class="en-sub">A Thousand Splendid Suns</div>
+              <div class="cn-title">灿烂千阳</div>
+            </div>
+            <div class="author-line">[美] 卡勒德·胡赛尼 著</div>
+          </div>
+        </div>
+
+        <!-- 03 献给阿尔吉侬的花束 -->
+        <div class="book-pedestal" onclick="selectFeatured(2)">
+          <div class="hardcover-3d cover-algernon">
+            <div class="en-header">FLOWERS FOR<br>ALGERNON</div>
+            <div class="maze-ring"></div>
+            <div class="cn-footer">
+              <div class="cn-title">献给阿尔吉侬的花束</div>
+              <div class="author">[美] 丹尼尔·凯斯</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 斯通纳 -->
+        <div class="book-pedestal" onclick="selectFeatured(3)">
+          <div class="hardcover-3d cover-stoner">
+            <div class="spine-stack">
+              <div class="bar bar-red">PROMETHEUS UNBOUND</div>
+              <div class="bar bar-green">BEOWULF · KING LEAR</div>
+              <div class="bar bar-ochre">THE CANTERBURY TALES</div>
+              <div class="bar bar-navy">ENGLISH RENAISSANCE</div>
+            </div>
+            <div class="stoner-main">
+              <div class="en-big">STONER</div>
+              <div class="cn-sub">斯通纳 <span>约翰·威廉斯</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 胡桃木实木展架层板 -->
+      <div class="walnut-shelf">
+        <div class="shelf-top-plane"></div>
+        <div class="shelf-front-edge"></div>
+      </div>
+
+      <!-- 展签铭牌 -->
+      <div class="placards-row" id="placardsRow">
+        <div class="placard-item active" onclick="selectFeatured(0)">
+          <span class="placard-pill">金刚经说什么</span>
+        </div>
+        <div class="placard-item" onclick="selectFeatured(1)">
+          <span class="placard-pill">灿烂千阳</span>
+        </div>
+        <div class="placard-item" onclick="selectFeatured(2)">
+          <span class="placard-pill">献给阿尔吉侬的花束</span>
+        </div>
+        <div class="placard-item" onclick="selectFeatured(3)">
+          <span class="placard-pill">斯通纳</span>
+        </div>
+      </div>
+
+      <!-- 策展批注条 -->
+      <div class="curator-note-bar">
+        <span class="note-tag" id="curatorTag">年度重读 · 5刷</span>
+        <span id="curatorText">“五刷不厌，将深奥佛理化为生活通透的智慧，在喧嚣中守住内在定力。”</span>
+      </div>
+    </section>
+
+    <!-- 同一年的书架：年度书目 -->
+    <section class="archive-section">
+      <div class="archive-card">
+        <div class="archive-header">
+          <div class="archive-title-wrap">
+            <svg class="archive-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <h2 class="archive-title">同一年的书架</h2>
+            <span class="archive-en"></span>
+          </div>
+
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="filterBooks('all', this)">全部</button>
+            <button class="filter-pill" onclick="filterBooks('reread', this)">重读精选</button>
+            <button class="filter-pill" onclick="filterBooks('note', this)">笔记归档</button>
+          </div>
+        </div>
+
+        <div class="books-grid" id="booksGrid"></div>
+
+        <div class="archive-legend">
+          <div class="legend-items">
+            <span class="legend-item"><span class="tag-note-dot"></span> 附简介</span>
+            <span class="legend-item"><span class="tag-reread">多刷</span> 深度重读</span>
+          </div>
+          <span>ARCHIVE · HIWENTAO.COM</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 底部夜读灯影装帧寄语 -->
+    <footer class="night-closing">
+      <div class="closing-grid">
+        <div>
+          <div class="closing-kicker">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+            </svg>
+            <span>写给新的一年</span>
+          </div>
+
+          <p class="closing-prose">
+            新的一年，愿你在构建外部世界的秩序与美感时，内心那座安静、自洽的花园始终草木丰茂；愿你永远有清醒的智慧、拒绝的底气，以及认真去爱与生活的力量。
+          </p>
+
+          <div class="closing-poetic-line">岁末清寒，纸短情长，祝你来日方长。</div>
+        </div>
+
+        <!-- 右侧暖光夜读台灯与典藏书叠 -->
+        <div class="night-still-life" aria-hidden="true">
+          <div class="lamp-orb-glow"></div>
+          <div class="lamp-base"></div>
+          <div class="stacked-books-art">
+            <div class="art-book-1"></div>
+            <div class="art-book-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="colophon-footer">
+        <span>HIWENTAO.COM</span>
+        <div class="colophon-signature">
+          <span>文韬</span>
+          <span class="mini-chop">阅</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // 年度挚爱 4 本策展批注
+    const featuredNotes = [
+      {
+        tag: "年度重读 · 5刷",
+        text: "“五刷不厌，将深奥佛理化为生活通透的智慧，在喧嚣中守住内在定力。”"
+      },
+      {
+        tag: "年度挚爱 · 文学",
+        text: "“阿富汗女性的隐秘苦难与光芒，每份坚韧都令人心碎又致敬。”"
+      },
+      {
+        tag: "年度挚爱 · 科幻寓言",
+        text: "“一份份进步报告记录了查理眼中的世界如何改变，温柔而令人心颤。”"
+      },
+      {
+        tag: "年度延伸 · 精神共鸣",
+        text: "“在平庸与倾轧中守住内心的体面与热爱，如静水流深般震撼。”"
+      }
+    ];
+
+    function selectFeatured(index) {
+      const placards = document.querySelectorAll('.placard-item');
+      placards.forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+      });
+      document.getElementById('curatorTag').textContent = featuredNotes[index].tag;
+      document.getElementById('curatorText').textContent = featuredNotes[index].text;
+    }
+
+    async function renderBooksGrid() {
+      const response = await fetch('/archive/115/books/');
+      if (!response.ok) throw new Error('书单读取失败');
+      const shelf = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const favoriteTitles = new Set([
+        '南怀瑾作品集（新版）：金刚经说什么', '灿烂千阳', '献给阿尔吉侬的花束', '斯通纳',
+      ]);
+      const books = [...shelf.querySelectorAll('.book-card')].map((card) => {
+        const [, id, title] = card.querySelector('h2').textContent.trim().match(/^(\d+)\. (.+)$/);
+        const reread = card.querySelector('.book-info p')?.textContent.trim().match(/^\d+刷$/)?.[0];
+        return { id, title, reread, note: Boolean(card.querySelector('.book-note')) };
+      });
+      if (!books.length) throw new Error('书单为空');
+      const otherBooks = books.filter(({ title }) => !favoriteTitles.has(title));
+      document.querySelector('.stats-number').textContent = books.length;
+      document.querySelector('.stats-meta').textContent =
+        `${books.filter(book => book.note).length} 本有简介 · ${books.filter(book => book.reread).length} 本重读`;
+      document.querySelector('.archive-en').textContent = `Reading Index · ${otherBooks.length} 本`;
+      document.querySelector('.filter-pill').textContent = `全部 ${otherBooks.length}`;
+
+      const grid = document.getElementById('booksGrid');
+      for (const book of otherBooks) {
+        const entry = document.createElement('div');
+        entry.className = book.reread ? 'book-entry is-reread' : 'book-entry';
+        entry.dataset.note = book.note;
+        entry.dataset.reread = Boolean(book.reread);
+        const number = document.createElement('span');
+        number.className = 'book-num';
+        number.textContent = book.id;
+        const title = document.createElement('span');
+        title.className = 'book-name';
+        title.textContent = book.title;
+        entry.append(number, title);
+        if (book.reread) {
+          const reread = document.createElement('span');
+          reread.className = 'tag-reread';
+          reread.textContent = book.reread;
+          entry.append(reread);
+        }
+        if (book.note) {
+          const note = document.createElement('span');
+          note.className = 'tag-note-dot';
+          note.title = '附简介';
+          entry.append(note);
+        }
+        grid.append(entry);
+      }
+    }
+
+    function filterBooks(mode, btn) {
+      document.querySelectorAll('.filter-pill').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.book-entry').forEach(entry => {
+        const hasNote = entry.dataset.note === 'true';
+        const isReread = entry.dataset.reread === 'true';
+        if (mode === 'all') {
+          entry.classList.remove('dimmed');
+        } else if (mode === 'reread') {
+          entry.classList.toggle('dimmed', !isReread);
+        } else if (mode === 'note') {
+          entry.classList.toggle('dimmed', !hasNote);
+        }
+      });
+    }
+
+    function setLayoutMode(mode) {
+      const canvas = document.getElementById('exhibitionCanvas');
+      document.getElementById('btnPoster').classList.toggle('active', mode === 'poster');
+      document.getElementById('btnWide').classList.toggle('active', mode === 'wide');
+      canvas.classList.toggle('wide-mode', mode === 'wide');
+    }
+
+    function togglePureMode() {
+      const toolbar = document.getElementById('studioToolbar');
+      const fab = document.getElementById('restoreFab');
+      const isHidden = toolbar.classList.toggle('hidden');
+      fab.classList.toggle('visible', isHidden);
+    }
+
+    document.querySelectorAll('.book-pedestal, .placard-item').forEach((control) => {
+      control.tabIndex = 0;
+      control.setAttribute('role', 'button');
+      control.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          control.click();
+        }
+      });
+    });
+
+    window.booksReady = renderBooksGrid().catch(() => {
+      document.getElementById('exportStatus').textContent = '书单加载失败，请刷新重试。';
+      return false;
+    });
+  </script>
+  <script src="../vendor/html2canvas.min.js" defer></script>
+  <script src="export.js" defer></script>
+</body>
+</html>

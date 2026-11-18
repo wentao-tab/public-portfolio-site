@@ -17,7 +17,7 @@
   cursor: pointer;
 }
 .books-share-dialog {
-  width: min(94vw, 31rem);
+  width: min(96vw, 70rem);
   max-height: calc(100dvh - 1.5rem);
   box-sizing: border-box;
   margin: auto;
@@ -30,7 +30,7 @@
 }
 .books-share-dialog::backdrop { background: #142320ad; }
 html:has(.books-share-dialog[open]) { overflow: hidden; }
-.books-share-bar, .books-share-actions {
+.books-share-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,21 +49,11 @@ html:has(.books-share-dialog[open]) { overflow: hidden; }
   font-size: .85rem;
   cursor: pointer;
 }
-.books-share-dialog button[hidden] { display: none; }
-.books-share-dialog button:disabled { opacity: .5; cursor: wait; }
-.books-share-dialog [data-share-action="save"] {
-  background: #203d33;
-  border-color: #203d33;
-  color: #fff;
-}
-.books-share-canvas {
+.books-share-frame {
   display: block;
-  width: min(100%, max(10rem, (100dvh - 9.2rem) * .5625));
-  height: auto;
-  margin: 0 auto .7rem;
-  background: #efe9da;
-  box-shadow: 0 .25rem 1.25rem #203d3324;
+  width: 100%;
+  height: calc(100dvh - 6rem);
+  border: 0;
+  border-radius: .5rem;
+  background: #e5e0d5;
 }
-.books-share-actions { justify-content: center; flex-wrap: wrap; }
-.books-share-status { margin: .45rem 0 0; text-align: center; font-size: .8rem; }
-.books-share-status:empty { margin: 0; }
