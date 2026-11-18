@@ -26,7 +26,7 @@ for(const page of pages) {
   for(const [,path] of html.matchAll(/(?:src|href)="(\/(?:assets|fonts-static|personal-books|snapshot-images)\/[^"?#]+)(?:[^" ]*)"/g)) await access(join(dist,decodeURIComponent(path)));
 }
 const collection = await readFile(join(dist,'zh-cn/watch/index.html'),'utf8');
-for(const text of ['56','48','源起上册','呼啸山庄','百年孤独','static-api.js']) if(!collection.includes(text)) throw new Error('Collection content missing: '+text);
+for(const text of ['57 本 · 读完 54 · 在读 1 · 想读 3','源起上册','刚刚听的是','鱼不存在','金刚经','灿烂千阳','献给阿尔吉侬的花束','static-api.js']) if(!collection.includes(text)) throw new Error('Collection content missing: '+text);
 const fonts = await readdir(join(dist,'fonts-static'));
 if(fonts.length!==36) throw new Error('Static fonts incomplete');
 console.log(`Verified ${pages.length} public routes, collection data, 36 fonts, entry redirect and legacy archive.`);

@@ -1,0 +1,1 @@
+import{i as e}from"./index-WpcEC1SK.js";import{t}from"./Colophon-CWVSbcog.js";var n=e(t);export{n as component};

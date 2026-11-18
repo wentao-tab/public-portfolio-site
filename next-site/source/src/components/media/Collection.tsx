@@ -38,6 +38,16 @@ import { sameTitle } from '@/lib/pageTitle';
 
 /** 最常聽的取哪一段時間（Spotify 的「最近半年」） */
 const TRACK_RANGE = 'medium_term';
+const personalCollection = {
+  counts: { total: 57, read: 54, reading: 1, toRead: 3 },
+  lastListened: '金刚经',
+  featuredBooks: [
+    { title: '鱼不存在', cover: '/archive/115/assets/books/2025/20.jpg' },
+    { title: '金刚经', cover: '/archive/115/assets/cover/cover-jingangjing-tool.png' },
+    { title: '灿烂千阳', cover: '/personal-books/07.jpg' },
+    { title: '献给阿尔吉侬的花束', cover: '/personal-books/54.jpg' },
+  ],
+};
 /** 每退一個數量級要捲多少（視窗高的倍數；Collection.css 的預設長度照這個算） */
 const DECADE_VH = 0.5;
 /** 滑鼠離一點多近才算滑到它（像素） */
@@ -165,12 +175,23 @@ export default function Collection() {
     [anime, films, tv, favorites, t],
   );
   const signals = useMemo(() => {
+    // 个人收藏页的四颗书球由手选书单决定，和书柜的阅读状态无关。
+    const shelf: Signal[] = personalShelf
+      ? personalCollection.featuredBooks.map(({ title, cover }, index) => ({
+          id: `featured-book-${index}`,
+          kind: 'book',
+          title,
+          meta: '',
+          cover,
+          href: null,
+          at: null,
+          size: 0.35,
+          home: 'shelf',
+        }))
+      : bookSignals(books, (s: BookStatus) => t(`collection.status.${s}`));
     const list: Signal[] = [
       ...watch.signals,
-      ...bookSignals(
-        personalShelf ? books.filter((book) => book.reading_status === 'to-read') : books,
-        (s: BookStatus) => t(`collection.status.${s}`),
-      ),
+      ...shelf,
       ...musicSignals(recent?.tracks ?? [], tracks, playing),
     ];
     if (live && !personalShelf) {
@@ -671,7 +692,7 @@ export default function Collection() {
                     ) : (
                       s.title
                     )}
-                    {`，${s.meta}`}
+                    {s.meta && `，${s.meta}`}
                     {s.quote ? `：「${s.quote}」` : ''}
                   </li>
                 ))}
@@ -682,7 +703,7 @@ export default function Collection() {
     [signals, t],
   );
 
-  const counts = bookCounts(books);
+  const counts = personalShelf ? personalCollection.counts : bookCounts(books);
   const readingBook = books.find((book) => book.reading_status === 'reading');
   const lastTrack = recent?.tracks?.[0]?.track ?? null;
   const latest = watch.latest;
@@ -698,9 +719,11 @@ export default function Collection() {
       : null;
   const musicLive = playing
     ? { on: true, label: t('collection.music.live'), title: playing.name, tail: artistsOf(playing) }
-    : lastTrack
-      ? { on: false, label: t('collection.music.last'), title: lastTrack.name, tail: artistsOf(lastTrack) }
-      : null;
+    : personalShelf
+      ? { on: false, label: t('collection.music.last'), title: personalCollection.lastListened, tail: undefined }
+      : lastTrack
+        ? { on: false, label: t('collection.music.last'), title: lastTrack.name, tail: artistsOf(lastTrack) }
+        : null;
 
   const legend = [
     {
@@ -766,7 +789,7 @@ export default function Collection() {
               </span>
               <span className="cx-scope-text">
                 <b>{hovered.title}</b>
-                <span>{hovered.meta}</span>
+                {hovered.meta && <span>{hovered.meta}</span>}
                 <span className="cx-scope-dist" data-dist="" />
                 {hovered.quote && <q>{hovered.quote}</q>}
               </span>
