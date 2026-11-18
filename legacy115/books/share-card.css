@@ -1,0 +1,69 @@
+.books-share-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem .75rem;
+  margin-bottom: .5rem;
+}
+.books-share-heading .books-kicker { margin: 0; }
+.books-share-trigger {
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  background: transparent;
+  color: inherit;
+  padding: .32rem .75rem;
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.books-share-dialog {
+  width: min(94vw, 31rem);
+  max-height: calc(100dvh - 1.5rem);
+  box-sizing: border-box;
+  margin: auto;
+  padding: .75rem 1rem 1rem;
+  border: 1px solid #d6d8ca;
+  border-radius: 1.15rem;
+  color: #203d33;
+  background: #f8f6ee;
+  box-shadow: 0 1rem 4rem #182c2b40;
+}
+.books-share-dialog::backdrop { background: #142320ad; }
+html:has(.books-share-dialog[open]) { overflow: hidden; }
+.books-share-bar, .books-share-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .55rem;
+}
+.books-share-bar { margin-bottom: .55rem; }
+.books-share-bar h2 { font-size: .9rem; margin: 0; }
+.books-share-dialog button {
+  min-height: 2.25rem;
+  border: 1px solid #b8c0ac;
+  border-radius: 99px;
+  background: transparent;
+  color: inherit;
+  padding: .2rem .8rem;
+  font: inherit;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.books-share-dialog button[hidden] { display: none; }
+.books-share-dialog button:disabled { opacity: .5; cursor: wait; }
+.books-share-dialog [data-share-action="save"] {
+  background: #203d33;
+  border-color: #203d33;
+  color: #fff;
+}
+.books-share-canvas {
+  display: block;
+  width: min(100%, max(10rem, (100dvh - 9.2rem) * .5625));
+  height: auto;
+  margin: 0 auto .7rem;
+  background: #efe9da;
+  box-shadow: 0 .25rem 1.25rem #203d3324;
+}
+.books-share-actions { justify-content: center; flex-wrap: wrap; }
+.books-share-status { margin: .45rem 0 0; text-align: center; font-size: .8rem; }
+.books-share-status:empty { margin: 0; }
