@@ -1,1 +1,0 @@
-import{t as e}from"./ThinkingDetail-oDGO2Oog.js";import{i as t}from"./index-WpcEC1SK.js";var n=t(e);export{n as component};

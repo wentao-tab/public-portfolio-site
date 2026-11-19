@@ -1,0 +1,1 @@
+import{i as e}from"./index-D_OZ4fcs.js";import{t}from"./Thinking-Bg4YXFc8.js";var n=e(t);export{n as component};

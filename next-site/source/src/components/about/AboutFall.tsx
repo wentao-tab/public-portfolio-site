@@ -11,6 +11,7 @@ import { useBareSky } from '@/hooks/useBareSky';
 import { after, isArriving, type Pt } from '@/store/pageTransition';
 import { createFallSky, meterMark, phases, smooth } from './fallSky';
 import './AboutFall.css';
+import AboutIntro from './AboutIntro';
 import { sameTitle } from '@/lib/pageTitle';
 
 /**
@@ -213,6 +214,7 @@ export default function AboutFall() {
             {titleStop}
           </span>
         </h1>
+        <AboutIntro lang={lang} />
         <p className="af-hint">{t('aboutFall.hint')}</p>
       </header>
 

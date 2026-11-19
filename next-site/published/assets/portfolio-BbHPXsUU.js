@@ -1,1 +1,0 @@
-import{i as e}from"./index-WpcEC1SK.js";import{t}from"./Works-CYeccjd_.js";var n=e(t);export{n as component};

@@ -1,0 +1,1 @@
+import{i as e}from"./index-D_OZ4fcs.js";import{t}from"./Log-B2BUMYsw.js";var n=e(t);export{n as component};
