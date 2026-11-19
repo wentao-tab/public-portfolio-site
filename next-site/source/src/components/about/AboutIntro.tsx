@@ -4,9 +4,9 @@ import './AboutIntro.css';
 const seenKey = 'wentao.about-film.seen.v1';
 let seenInMemory = false;
 const labels = {
-  'zh-CN': ['关于 Wentao', '重播短片', '进入关于', '开启声音', '关闭声音', '播放短片', '暂停', '播放'],
-  'zh-TW': ['關於 Wentao', '重播短片', '進入關於', '開啟聲音', '關閉聲音', '播放短片', '暫停', '播放'],
-  en: ['About Wentao', 'Replay film', 'Enter About', 'Sound on', 'Sound off', 'Play film', 'Pause', 'Play'],
+  'zh-CN': ['关于 Wentao', '重播短片', '进入关于', '开启声音', '关闭声音', '有声播放', '暂停', '播放'],
+  'zh-TW': ['關於 Wentao', '重播短片', '進入關於', '開啟聲音', '關閉聲音', '有聲播放', '暫停', '播放'],
+  en: ['About Wentao', 'Replay film', 'Enter About', 'Sound on', 'Sound off', 'Play with sound', 'Pause', 'Play'],
 };
 
 export default function AboutIntro({ lang }: { lang: string }) {
@@ -14,7 +14,7 @@ export default function AboutIntro({ lang }: { lang: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const player = useRef<HTMLVideoElement>(null);
   const [open, setOpen] = useState(false);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
   useLayoutEffect(() => {
@@ -29,13 +29,11 @@ export default function AboutIntro({ lang }: { lang: string }) {
     modal.showModal();
     seenInMemory = true;
     try { localStorage.setItem(seenKey, '1'); } catch { /* Retain the in-memory flag. */ }
-    video.muted = true;
     video.play().catch(() => setPaused(true));
     return () => { video.pause(); modal.close(); };
   }, [open]);
 
   const startReplay = () => {
-    setMuted(true);
     setProgress(0);
     setPaused(false);
     setOpen(true);
@@ -55,11 +53,11 @@ export default function AboutIntro({ lang }: { lang: string }) {
       <div className="afi-screen">
         <header className="afi-bar"><span className="afi-name"><i aria-hidden="true" />Wentao</span><span>{title}</span></header>
         <div className="afi-picture">
-          <video ref={player} src="/about-film/wentao.mp4" poster="/about-film/poster.jpg" playsInline muted={muted}
+          <video ref={player} src="/about-film/wentao.mp4?v=1080" poster="/about-film/poster.jpg?v=1080" playsInline muted={muted}
             onPlay={() => setPaused(false)} onPause={() => setPaused(true)}
             onTimeUpdate={e => setProgress(e.currentTarget.currentTime)}
             onEnded={() => setOpen(false)} onError={() => setOpen(false)} />
-          {paused && <button type="button" className="afi-play" onClick={togglePlay}>{playFilm} ▷</button>}
+          {paused && <button type="button" className="afi-play" onClick={togglePlay}>{muted || progress > 0 ? play : playFilm} ▷</button>}
         </div>
         <footer className="afi-controls">
           <div className="afi-track" aria-hidden="true"><b style={{transform:'scaleX('+ Math.min(progress / 15, 1) +')'}} /></div>

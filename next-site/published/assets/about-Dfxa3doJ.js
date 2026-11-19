@@ -1,1 +1,0 @@
-import{i as e}from"./index-D_OZ4fcs.js";import{t}from"./AboutFall-BaRJLW-i.js";var n=e(t);export{n as component};

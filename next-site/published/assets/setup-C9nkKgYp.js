@@ -1,1 +1,0 @@
-import{i as e}from"./index-D_OZ4fcs.js";import{t}from"./Setup-D_--W5h1.js";var n=e(t);export{n as component};
